@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <style>
+    </style>
+</head>
+<body>
+    <div class="flex justify-center items-center h-screen bg-white-s200">
+        <div class="bg-white p-8 rounded-md shadow-md text-black">
+            <h1 class="text-3xl font-bold mb-4">Login</h1>
+            <form action="/login" method="post">
+                <div class="mb-4">
+                    <label for="email" class="text-black">
+                        <!-- Font awesome icon -->
+                        <i class="fas fa-envelope"></i>
+                    </label>
+                    <input type="email" name="email" placeholder="Email" id="email" required class="block w-full px-4 py-2 text-black bg-gray-300 rounded-md border border-gray-300 focus:outline-none focus:border-blue-700">
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="text-black">
+                        <i class="fas fa-lock"></i>
+                    </label>
+                    <input type="password" name="password" placeholder="Password" id="password" required class="block w-full px-4 py-2 text-black bg-gray-300 rounded-md border border-gray-300 focus:outline-none focus:border-blue-700">
+                </div>
+                <input type="submit" value="Login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                {{#if error}}
+                    <p class="text-red-500 font-bold text-lg my-3">*{{error}}</p>
+                {{/if}}
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SIAC</title>
+
+    <!-- Tailwind CSS Link -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css">
+
+    <!-- Fontawesome Link -->
+    <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+
+  </head>
+  <body class="bg-gray-200">
+    <nav class="flex py-5 bg-gray-500 text-white px-24">
+      <div class="w-1/2 px-10 mr-auto">
+        <h1 class="text-2xl font-bold">Registro de condominios</h1>
+      </div>
+
+      <ul class="w-1/2 px-16 ml-auto flex justify-end pt-1">
+        {{#if name}}
+        <p>{{name}}</p>
+
+        <li class="nav-item px-4">
+          <a href="/desconectarse" class="nav-link font-semibold bg-red-500 hover:bg-red-700 py-3 px-4 rounded-md">Salir</a>
+        </li>
+
+        {{else}}
+        <li class="nav-item px-4">
+          <a href="/ingreso" class="nav-link font-semibold hover:bg-gray-700 py-3 px-4 rounded-md">Ingresar</a>
+        </li>
+
+        <li class="nav-item px-4">
+          <a href="/registro" class="nav-link font-semibold border-2 border-white hover:bg-white hover:text-gray-700 py-3
+            px-4 rounded-md">Registro</a>
+        </li>
+        {{/if}}
+      </ul>
+    </nav>
+
+    {{{body}}}
+
+  </body>
+</html>
