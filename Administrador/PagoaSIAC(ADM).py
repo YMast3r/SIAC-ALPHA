@@ -63,7 +63,7 @@ paso7.click()
 
 time.sleep(5)
 
-paso8= driver.find_element(By.XPATH, '/html/body/div/div/table/tbody/tr[1]/td[4]/a')
+paso8= driver.find_element(By.XPATH, '/html/body/div/div/div/table/tbody/tr/td[4]/a')
 paso8.click()
 
 time.sleep(5)
@@ -94,7 +94,7 @@ time.sleep(5)
 paso12 = driver.find_element(By.XPATH, '//*[@id="imagen"]')
 
 # Cargar la imagen
-imagen = r"C:\Users\gaelh\OneDrive\Documentos\Selenium_SIAC_3.0\Selenium_SIAC_3.0\Condomino\imagenes\modelo-factura-es-puro-750px.png"
+imagen = r"C:\Users\ervin\Downloads\Selenium_SIAC_3.0.1\Condomino\imagenes\modelo-factura-es-puro-750px.png"
 
 paso12.send_keys(imagen)
 

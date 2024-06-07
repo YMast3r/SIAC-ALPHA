@@ -81,11 +81,15 @@ for _ in range(3):  # Cambia 3 por el número de veces que deseas repetir el pro
 
     time.sleep(5)
 
-    # Paso 4: Llenar el campo 'telefono' con el teléfono aleatorio generado
-    paso4 = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, 'telefono')))
-    paso4.send_keys(random_phone)
+    #paso5 = WebDriverWait(driver, 10).until(
+    paso4 = WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable((By.NAME, 'telefono'))
+      )
+    # Limitar el número de teléfono a 10 caracteres
+    paso4.send_keys(fake.random_number(digits=10))
 
     time.sleep(5)
+
 
     # Paso 5: Llenar el campo 'password' con la contraseña aleatoria generada
     paso5 = WebDriverWait(driver, 10).until(

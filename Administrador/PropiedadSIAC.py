@@ -85,7 +85,7 @@ select.select_by_value(random_value)
 
 time.sleep(5)
 
-paso11 = driver.find_element(By.XPATH, '/html/body/div/div/div[2]/div[1]/div/form/table/tbody/tr[4]/td/button')
+paso11 = driver.find_element(By.XPATH, '/html/body/div/div[2]/div[1]/div/form/table/tbody/tr[4]/td/button')
 paso11.click()
 
 time.sleep(5)
@@ -93,7 +93,7 @@ time.sleep(5)
 # Seleccionar aleatoriamente una descripción para descripcionPago
 random_description = random.choice(["Casa unifamiliar aislada","Casa unifamiliar pareada","Casa unifamiliar adosada","Bungalow,Casa de campo","Solar","urbano","Terreno","rústico","Finca","Apartamento","Estudio","Dúplex","Ático"])
 paso12 = WebDriverWait(driver, 10).until(
-    EC.element_to_be_clickable((By.NAME, 'descripcionPago'))
+    EC.element_to_be_clickable((By.NAME, 'descripcionTipoPro'))
 )
 
 paso12.send_keys(random_description)
@@ -110,7 +110,7 @@ paso13.send_keys(str(random_payment))
 
 time.sleep(5)
 
-paso14 = driver.find_element(By.XPATH, '/html/body/div/div/div[2]/div[2]/div/form/table/tbody/tr[3]/td/button')
+paso14 = driver.find_element(By.XPATH, '/html/body/div/div[2]/div[2]/div/form/table/tbody/tr[3]/td/button')
 paso14.click()
 
 time.sleep(15)

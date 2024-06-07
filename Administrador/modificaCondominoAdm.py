@@ -83,7 +83,7 @@ for _ in range(num_iterations):
 
 
     # Paso 2: Llenar el campo 'nombre' con el nombre aleatorio generado
-    paso2 = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div/div[1]/div/table/tbody/tr[1]/td[6]/a')))
+    paso2 = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div/div[1]/div/table/tbody/tr[2]/td[6]/a')))
     paso2.click()
 
     time.sleep(5)

@@ -94,7 +94,7 @@ time.sleep(5)
 paso12 = driver.find_element(By.XPATH, '//*[@id="imagen"]')
 
 # Cargar la imagen
-imagen = r"C:\Users\gaelh\OneDrive\Documentos\Selenium_SIAC_3.0\Selenium_SIAC_3.0\Condomino\imagenes\descarga.png"
+imagen = r"C:\Users\ervin\Downloads\Selenium_SIAC_3.0.1\Condomino\imagenes\descarga.png"
 
 paso12.send_keys(imagen)
 
