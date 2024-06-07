@@ -1,0 +1,164 @@
+{{#if name}}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script><!-- sirve para usar tailwind -->
+</head>
+
+<body class="bg-indigo-300">
+
+    <!-- Sección de Datos -->
+    <div>
+        <a href="/renderSeguimiento"><h1 class="font-semibold text-4xl flex justify-center m-5">Seguimiento</h1></a>
+        <br><h2 class="font-semibold text-2xl flex justify-center m-1 text-gray-700">Condomino</h2>
+        <div class="flex justify-center m-4">
+            <div class="overflow-x-auto max-h-60">
+                <table class="w-96">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Id</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Nombre</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Correo</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">telefono</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each usuario}}
+                            <tr>
+                                <td class="px-4 py-2 bg-white border border-gray-600 text-center">{{this.id}}</td>
+                                <td class="px-4 py-2 bg-white border border-gray-600">{{this.nombre}}</td>
+                                <td class="px-4 py-2 bg-white border border-gray-600">{{this.correo_electronico}}</td>
+                                <td class="px-4 py-2 bg-white border border-gray-600">{{this.telefono}}</td>
+                                <td class="px-4 py-2 bg-white border border-gray-600">{{this.status}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br><h2 class="font-semibold text-2xl flex justify-center m-1 text-gray-700">Incidencia</h2>
+
+    <!-- Sección de Incidencias -->
+    <div>
+        <div class="flex justify-center m-4">
+            <div class="overflow-x-auto max-h-60">
+                <table class="w-96">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Folio</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Asunto</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Tipo</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each incidencia}}
+                        <tr>
+                            <td class="px-4 py-2 bg-white border border-gray-600 text-center">{{this.folio}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.asunto}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.tipo}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.status}}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <p class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Descripción</p>
+                        <p class="px-50 py-50 bg-white border border-gray-600">{{this.descripcion}}</p>
+                        {{/each}}
+            </div>
+        </div>
+
+    <!-- Sección de seguimiento -->
+    <br><h2 class="font-semibold text-2xl flex justify-center m-1 text-gray-700">Seguimientos</h2>
+    <div>
+        <div class="flex justify-center m-4">
+            <div class="overflow-x-auto max-h-60">
+                <table class="w-96">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Folio</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Movimiento</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Empleado</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Comentario</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Status</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Fecha</th>
+                            <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">Evidencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each datos}}
+                        <tr>
+                            <td class="px-4 py-2 bg-white border border-gray-600 text-center">{{this.folio}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.movimiento}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.empleado}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.comentario}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.status}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">{{this.fecha}}</td>
+                            <td class="px-4 py-2 bg-white border border-gray-600">
+                                {{#if this.evidencia}}
+                                    <img src="{{this.evidencia}}" alt="Evidencia" class="w-16 h-16 object-cover rounded-sm">
+                                {{else}}
+                                    No hay evidencia
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+        <div class="flex justify-center m-5">
+            <h1 class="font-semibold text-4xl flex justify-center m-5">Alta</h1>
+        </div>
+        <!-- Formulario para agregar incidencia -->
+        <div class="mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/3 border rounded-lg shadow-lg">
+            <form action="/altaSeguimiento" method="POST" enctype="multipart/form-data">
+                <label for="descripcion">Comentario</label>
+                <br>
+                <textarea name="comentario" id="comentario" placeholder="Comentario" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">{{data.comentario}}</textarea>
+                <br>
+
+                <label for="empleado">Empleado</label>
+                <input type="text" id="empleado" name="empleado" pattern="[a-zA-Z0-9\s]+" title="No se permiten acentos ni caracteres especiales" required placeholder="Empleado"
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300" value="{{data.empleado}}">
+                    
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" name="fecha" required class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300" value="{{data.fecha}}">
+                
+                <label for="status">Status</label>
+                <select id="status" name="status" 
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                    {{#each status}}
+                        {{#isEqual this.correcto 2}}
+                            <option value="{{this.id_status_seguimiento }}" selected>{{this.descripcion}}</option>
+                        {{else}}
+                            <option value="{{this.id_status_seguimiento }}">{{this.descripcion}}</option>
+                        {{/isEqual}}
+                    {{/each}}
+                </select>
+
+                <label for="imagen">Imagen de Evidencia</label>
+                <input type="file" id="imagen" name="imagen" accept="image/*" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+                <!--Sección para mostrar errores-->
+                {{#if error}}
+                    <p class="text-red-500 font-bold text-lg my-3">*{{{error}}}</p>
+                {{/if}}
+            
+                <div class="flex justify-center">
+                    <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-800 focus:bg-gray-900">Agregar seguimiento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="fecha.js"></script>
+</body>
+
+</html>
+{{else}}
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
+    </div>
+{{/if}}

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script><!-- sirve para usar tailwind -->
+</head>
+
+<body class="bg-indigo-300 flex items-center justify-center min-h-screen">
+    {{#if name}}
+
+        {{!-- condición para ver si tiene propiedades --}}
+        {{#if propia}}
+            {{!-- condición para que muestre las propiedades --}}
+            {{#if propiedades}}
+                <div class="text-center">
+                    <h1 class="font-semibold text-4xl flex justify-center m-5">Propiedades del condomino</h1>
+                    <div class="overflow-x-auto max-h-60">
+                        <table class="min-w-max mx-auto">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ID PROPIEDAD</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">DESCRIPCIÓN</th>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">TIPO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each propiedades}}
+                                <tr>
+                                    <td class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">{{this.id_propiedad}}</td>
+                                    <td class="px-6 py-2 bg-gray-100 border border-gray-600">{{this.descripcion}}</td>
+                                    <td class="px-4 py-2 bg-gray-100 border border-gray-600">{{this.tipo_propiedad}}</td>
+                                    <td class="px-4 py-2 bg-gray-100 border border-gray-600"><a
+                                            href="/manPago-{{id_propiedad}}">SELECT</a></td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            {{else}}
+            <div>
+                <a href="/renderRecuperarPropiedadPago">
+                    <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Propiedad</h1>
+                </a>
+
+                {{#if errorDatos}}
+                {{!-- Tabla de la propiedad del usurio --}}
+                <h1  class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedades del condomino</h1>
+                <div class="flex justify-center m-5">
+                    <div class="overflow-x-auto max-h-60">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ID PROPIEDAD</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">DESCRIPCIÓN</th>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">TIPO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each usuarioPro}}
+                                <tr>
+                                    <td class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">{{this.id_propiedad}}</td>
+                                    <td class="px-6 py-2 bg-gray-100 border border-gray-600">{{this.descripcion}}</td>
+                                    <td class="px-4 py-2 bg-gray-100 border border-gray-600">{{this.tipo_propiedad}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {{!-- Tabla del condomino --}}
+                <h1  class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Condomino</h1>
+                <div class="flex justify-center m-5">
+                    <div class="overflow-x-auto max-h-60">
+                        <table class="w-96">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ID</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">NOMBRE</th>
+                                    <th class="px-10 py-2 bg-gray-400 border border-b-2 border-gray-500">CORREO</th>
+                                    <th class="px-8 py-2 bg-gray-400 border border-b-2 border-gray-500">TELÉFONO</th>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ESTADO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each usuario}}
+                                <tr>
+                                    <td class="px-4 py-2 bg-white border border-gray-600 text-center">{{this.id}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.nombre}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.correo_electronico}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.telefono}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.status}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <center>
+                            <h1 class="font-semibold text-4xl flex justify-center m-5">No hay pagos registrados</h1>
+                        </center>
+                    </div>
+                </div>
+                {{else}}
+                </div>
+
+                {{!-- Tabla del condomino --}}
+                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Condomino</h1>
+                <div class="flex justify-center m-5">
+                    <div class="overflow-x-auto max-h-60">
+                        <table class="w-96">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ID</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">NOMBRE</th>
+                                    <th class="px-10 py-2 bg-gray-400 border border-b-2 border-gray-500">CORREO</th>
+                                    <th class="px-8 py-2 bg-gray-400 border border-b-2 border-gray-500">TELÉFONO</th>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ESTADO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each usuario}}
+                                <tr>
+                                    <td class="px-4 py-2 bg-white border border-gray-600 text-center">{{this.id}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.nombre}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.correo_electronico}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.telefono}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.status}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {{!-- Tabla de la propiedad del usurio --}}
+                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedades del condomino</h1>
+                <div class="flex justify-center m-5">
+                    <div class="overflow-x-auto max-h-60">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ID PROPIEDAD</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">DESCRIPCIÓN</th>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">TIPO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each usuarioPro}}
+                                <tr>
+                                    <td class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">{{this.id_propiedad}}</td>
+                                    <td class="px-6 py-2 bg-gray-100 border border-gray-600">{{this.descripcion}}</td>
+                                    <td class="px-4 py-2 bg-gray-100 border border-gray-600">{{this.tipo_propiedad}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <a href="/renderPago">
+                    <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Pagos</h1>
+                </a>
+                <div class="flex justify-center m-5">
+                    <div class="overflow-x-auto max-h-60">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">FOLIO</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">AÑO</th>
+                                    <th class="px-18 py-2 bg-gray-400 border border-b-2 border-gray-500">MES</th>
+                                    <th class="px-25 py-2 bg-gray-400 border border-b-2 border-gray-500">FECHA</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">IMPORTE</th>
+                                    <th class="px-8 py-2 bg-gray-400 border border-b-2 border-gray-500">RECARGO</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">TOTAL</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">REGISTRO</th>
+                                    <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">EVIDENCIA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each datos}}
+                                <tr>
+                                    <td class="px-4 py-2 bg-white border border-gray-600 text-center">{{this.folio}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.año}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.mes}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.fecha}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.importe}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.recargo}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.total}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">{{this.registro}}</td>
+                                    <td class="px-4 py-2 bg-white border border-gray-600">
+                                        {{#if this.evidencia}}
+                                            <img src="{{this.evidencia}}" alt="Evidencia" class="h-36 w-32" onclick="mostrarImagen(this.src)">
+                                        {{else}}
+                                            No hay evidencia
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            {{/if}}
+
+            <div class="mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/3 border rounded-lg shadow-lg">
+                <!-- Encabezado-->
+                <!-- Título del formulario-->
+                <h1 class="text-2x1 m-5 font-bold text-center">Regístra pago aquí</h1>
+
+                <form action="/altaPago" method="POST" class="mt-4" enctype="multipart/form-data">
+                    <!-- Campos para los datos del pago-->
+
+                    <!-- Campo para ingresar el Recargo -->
+                    <label for="recargo"><i class="fas fa-money-bill-alt"></i> Recargo</label>
+                    <input type="tel" id="recargo" name="recargo" placeholder="Recargo"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
+                        value="{{data.recargo}}">
+
+                    <label for="mes"><i class="fas fa-calendar"></i> Mes</label>
+                    <select id="mes" name="mes"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                        {{#each meses}}
+                        {{#isEqual this.mes this.correcto}}
+                        <option value="{{this.mes}}" selected>{{this.descripcion}}</option>
+                        {{else}}
+                        <option value="{{this.mes}}">{{this.descripcion}}</option>
+                        {{/isEqual}}
+                        {{/each}}
+                    </select>
+
+                    <label for="anio"><i class="fas fa-calendar"></i> Año</label>
+                    <select id="anio" name="anio"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                        {{#each años}}
+                        {{#isEqual this.correcto 1}}
+                        <option value="{{this.año}}" selected>{{this.año}}</option>
+                        {{else}}
+                        <option value="{{this.año}}">{{this.año}}</option>
+                        {{/isEqual}}
+                        {{/each}}
+                    </select>
+
+                    <!-- Campo para subir una imagen -->
+                    <label for="imagen"><i class="fas fa-image"></i> Subir imagen</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300" required>
+
+                    <!-- Botón para enviar el formulario -->
+                    <!--Se ajustó el margen superior e inferior del botón para una mejor distribución en dispositivos móviles. (mt-4 mb-2)-->
+                    <button type="submit"
+                        class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">Enviar</button>
+
+                    <!--Sección para mostrar errores-->
+                    {{#if error}}
+                    <p class="text-red-500 font-bold text-lg my-3">*{{{error}}}</p>
+                    {{/if}}
+                </form><!-- Cierre del formulario -->
+            </div> <!-- Cierre del contenedor principal -->
+            </div>
+        {{!-- Condicon de propiedad --}}
+        {{/if}}
+        {{!-- Condicon en caso de que no haya una propiedad --}}
+        {{else}}
+            <h1 class="text-center font-bold text-lg my-10">No hay propiedades con ese condomino</h1>
+        {{!-- Condicon para ver si hay propiedad --}}
+        {{/if}}
+    {{!-- Condicon de sesión --}}
+    {{else}}
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
+        </div>
+    {{!-- Condicon de sesión --}}
+    {{/if}}
+    <script>
+        // Abre una nueva ventana con la imagen en tamaño completo
+        function mostrarImagen(src) {
+        window.open(src, "_blank");
+        }
+        // Obtener los elementos de entrada por su ID
+        const recargoInput = document.getElementById('recargo');
+
+        // Función para validar que el input sea un número entero positivo
+        function validarInput(input) {
+            input.addEventListener('input', function () {
+                // Remover caracteres no numéricos utilizando una expresión regular
+                let valor = input.value.replace(/\D/g, '');
+                // Asignar el valor limpio al campo de entrada
+                input.value = valor;
+            });
+        }
+
+        // Llamar a la función validarInput para cada input
+        validarInput(recargoInput);
+    </script>    
+</body>
+</html>

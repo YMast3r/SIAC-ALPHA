@@ -1,0 +1,159 @@
+{{#if name}}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script><!--sirve para usar tailwind-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body class="bg-indigo-200">
+<div>
+    <a href="/renderManPropiedad" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Propiedades</a>
+
+    <!-- Primera tabla -->
+    <h2 class="font-semibold text-2xl mb-4 text-center text-gray-700">Propiedad</h2>
+    <div class="flex justify-center m-5">
+        <div class="overflow-x-auto max-h-60">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">ID PROPIEDAD</th>
+                        <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">DESCRIPCIÓN</th>
+                        <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">CONDOMINO</th>
+                        <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">TIPO PROPIEDAD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each propiedad}}
+                        <tr>
+                            <td class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">{{this.id_propiedad}}</td>
+                            <td class="px-6 py-2 bg-gray-100 border border-gray-600">{{this.descripcion}}</td>
+                            <td class="px-4 py-2 bg-gray-100 border border-gray-600">{{this.condomino}}</td>
+                            <td class="px-4 py-2 bg-gray-100 border border-gray-600">{{this.tipo_propiedad}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Segunda tabla -->
+    <h2 class="font-semibold text-2xl mb-4 text-center text-gray-700">Tipo Propiedad</h2>
+    <div class="flex justify-center m-5">
+        <div class="overflow-x-auto max-h-60">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">TIPO PROPIEDAD</th>
+                        <th class="px-6 py-2 bg-gray-400 border border-b-2 border-gray-500">DESCRIPCIÓN</th>
+                        <th class="px-4 py-2 bg-gray-400 border border-b-2 border-gray-500">PAGO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each tipoPropiedad}}
+                        <tr>
+                            <td class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">{{this.id_tipo_propiedad}}</td>
+                            <td class="px-6 py-2 bg-gray-100 border border-gray-600">{{this.descripcion}}</td>
+                            <td class="px-4 py-2 bg-gray-100 border border-gray-600">{{this.pago}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+        <!-- Formularios encerrados en tablas -->
+        <div class="flex justify-center mt-5 space-x-10">
+            <div class="w-1/2">
+                <h2 class="font-semibold text-2xl mb-4">Registrar Propiedad</h2>
+                <div class="bg-white p-4 border rounded-lg shadow-lg">
+                    <form action="/altaPropiedad" method="POST">
+                        <table class="w-full">
+                            <tbody>
+                                <tr>
+                                    <td class="p-2">
+                                        <label for="descripcionPropiedad" class="block text-sm">Descripción</label>
+                                        <input type="text" name="descripcionPropiedad" class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300" placeholder="Descripción" id="descripcionPropiedad" required value="{{data.descripcionPropiedad}}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2">
+                                        <label for="condomino" class="block text-sm">Condomino</label>
+                                        <input type="text" name="condomino" class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300" placeholder="Condomino" id="usario" value="{{data.condomino}}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2">
+                                        <label for="tipoPropiedad">Tipo Propiedad</label>
+                                        <select id="tipoPropiedad" name="tipoPropiedad" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                                            {{#each tipoPropiedad}}
+                                                {{#isEqual this.id_status 1}}
+                                                    <option value="{{this.id_tipo_propiedad}}" selected>{{this.descripcion}}</option>
+                                                {{else}}
+                                                    <option value="{{this.id_tipo_propiedad}}">{{this.descripcion}}</option>
+                                                {{/isEqual}}
+                                            {{/each}}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2">
+                                        <button type="submit" class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-sm px-6 py-2 block text-center">Registrar Propiedad</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--Sección para mostrar errores-->
+                        {{#if error}}
+                            <p class="text-red-500 font-bold text-lg my-3">*{{{error}}}</p>
+                        {{/if}}
+                    </form>
+                </div>
+            </div>
+            
+            <div class="w-1/2">
+                <h2 class="font-semibold text-2xl mb-4">Registrar tipo propiedad</h2>
+                <div class="bg-white p-4 border rounded-lg shadow-lg">
+                    <form action="/altaTipoPropiedad" method="POST">
+                        <table class="w-full">
+                            <tbody>
+                                <tr>
+                                    <td class="p-2">
+                                        <label for="descripcionTipoPro" class="block text-sm">Descripción</label>
+                                        <input type="text" name="descripcionTipoPro" class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300" placeholder="Descripción" id="descripcionTipoPro" required  value="{{data.descripcionTipoPro}}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2">
+                                        <label for="pago" class="block text-sm">Pago</label>
+                                        <input type="text" name="pago" class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300" placeholder="Pago" id="pago" required value="{{data.pago}}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2">
+                                        <button type="submit" class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-sm px-6 py-2 block text-center">Registrar Pago</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                       <!--Sección para mostrar errores-->
+                        {{#if errorT}}
+                            <p class="text-red-500 font-bold text-lg my-3">*{{{errorT}}}</p>
+                        {{/if}}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+{{else}}
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
+    </div>
+{{/if}}

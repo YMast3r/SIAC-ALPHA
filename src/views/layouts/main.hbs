@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Codificación del documento y ajuste de la escala para dispositivos móviles -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la página -->
+    <title>SIAC</title>
+    <!-- Enlace a la hoja de estilos de Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css">
+    <!-- Enlace a Font Awesome -->
+    <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200"> <!-- Fondo de la página -->
+<div class="">
+    <!-- Barra de navegación -->
+    <nav class="bg-gray-500 flex items-center justify-between px-4 sm:px-10 py-2">
+        <!-- Logotipo y título -->
+        <div class="flex items-center">
+            <!-- Ajuste del tamaño del logotipo para dispositivos móviles -->
+            <a href="/">
+                <img style="height: 60px;" src="imagenes/logo.png" class="object-cover 2xl:h-40 2xl:w-auto 2xl:mr-10 md:h-20 md:w-auto sm:h-20 sm:w-auto sm:mr-1 mr-4" alt="Logo">
+            </a>
+            <!-- Ajuste del tamaño del título para dispositivos móviles -->
+            <h1 class="text-lg font-bold text-white hidden sm:block">SIAC</h1>
+        </div>
+
+        <!-- Menú de navegación -->
+        <div class="relative inline-block text-left">
+            <div>
+                <button id="dropdownUserAvatarButton" onclick="toggleDropdown()" class="flex text-sm bg-gray-800 rounded-full md:me-0" type="button">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-9 h-9 rounded-full hover:w-10 hover:h-10 ease-in duration-200" src="imagenes/Perfil_sin_foto.png" alt="user photo">
+                </button>
+            </div>
+
+            <!-- Dropdown menu -->
+            <div id="dropdownAvatar" class="hidden origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownUserAvatarButton">
+                    {{#if name}}
+                <p class=" text-center block px-4 py-2 text-sm text-gray-900 font-semibold">{{name}}</p>
+                    {{#isEqual tipoUsuario 1}}
+                        <a href="/renderAdm" class="tracking-tighter inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-dark-3 transition duration-150 ease-in-out hover:bg-neutral-700 hover:shadow-dark-2 focus:bg-neutral-700 focus:shadow-dark-2 focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-dark-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong" role="menuitem">Administradores</a>
+                    {{/isEqual}}
+
+                    {{#isEqual tipoUsuario 2}}
+                        <a href="/renderManCondomino" class="block px-4 py-2 text-sm text-gray-700 hover:px-5 hover:py-3 hover:text-md hover:bg-gray-300 ease-in duration-200" role="menuitem">Condominos</a>
+                        <a href="/renderManPropiedad" class="block px-4 py-2 text-sm text-gray-700 hover:px-5 hover:py-3 hover:text-md hover:bg-gray-300 ease-in duration-200" role="menuitem">Propiedades</a>
+                    {{/isEqual}}
+
+                    {{#isEqual tipoUsuario 3}}
+                        <a href='/manIncidencia-{{id}}' class="block px-4 py-2 text-sm text-gray-700 hover:px-5 hover:py-3 hover:text-md hover:bg-gray-300 ease-in duration-200" role="menuitem">Incidencia</a>
+                        <a href='/recuperarPropiedadPago-{{id}}' class="block px-4 py-2 text-sm text-gray-700 hover:px-5 hover:py-3 hover:text-md hover:bg-gray-300 ease-in duration-200" role="menuitem">Pagos</a>
+                    {{/isEqual}}
+
+                    
+                    <a href="/desconectarse" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white hover:px-5 hover:py-3 hover:text-md ease-in duration-200" role="menuitem">Salir</a>
+
+                    
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <a href="/ingreso" class="block px-5 py-3 text-md text-gray-700 hover:bg-gray-400 hover:text-white ease-in duration-200" role="menuitem">Ingresar</a>
+        <a href="/registro" class="block px-5 py-3 text-md text-gray-700 hover:bg-gray-400 hover:text-white ease-in duration-200" role="menuitem">Registrarse</a>
+        {{/if}}
+    </nav>
+
+    <!-- Contenido dinámico generado por la aplicación -->
+    {{{body}}}
+</div>
+
+<script>
+    function toggleDropdown() {
+        document.getElementById('dropdownAvatar').classList.toggle('hidden');
+    }
+</script>
+</body>
+</html>
