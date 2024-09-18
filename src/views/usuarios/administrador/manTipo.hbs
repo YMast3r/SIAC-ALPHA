@@ -1,0 +1,224 @@
+{{#if name}}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script><!--sirve para usar tailwind-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body class="bg-indigo-200">
+    <div>
+        <a href="/renderManTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Tipo
+            Pagos</a>
+
+        <!-- Campo de búsqueda para la segunda tabla -->
+        <div class="flex justify-center pt-2 mb-0 ">
+            <div class="relative w-2/5">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
+                </span>
+                <input type="text" id="searchTipoPagos" placeholder="Buscar descripción en Tipo pagos..."
+                    class=" bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
+            </div>
+        </div>
+
+        <!-- Segunda tabla -->
+        <div class="flex justify-center ">
+            <div class="overflow-x-auto relative w-2/5 border-2 border-gray-300 rounded-lg shadow-lg">
+                <table class="w-full rounded-lg overflow-hidden">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID</th>
+                            <th class="px-6 py-2 bg-white border-b-2 border-gray-400 font-medium">DESCRIPCIÓN</th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">PRECIO
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tipoPagosTable">
+                        {{#each tipoPagos}}
+                        <tr>
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-center">
+                                {{this.id_tipo_pago}}</td>
+                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.descripcion}}
+                            </td>
+                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center">${{this.precio}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    <tbody id="noResultTipoPagos" style="display: none;">
+                        <tr>
+                            <td colspan="3" class="text-center p-4 bg-gray-200">No se encontró ninguna descripción</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {{#if errorT}}
+        <!-- Popup nuevo agregado -->
+        <div id="info-popup" tabindex="-1"
+            class=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+            <div class="relative p-4  w-full max-w-lg h-full md:h-auto">
+                <div class="relative p-4 bg-white rounded-lg shadow dark:bg-red-500 md:p-8">
+                    <div class="mb-4 text-lg font-medium text-white-500 dark:text-white">
+                        <h3 class="mb-3 text-2xl font-bold text-white-900 dark:text-white">Error</h3>
+                        <p>
+                            {{errorT}}
+                        </p>
+                    </div>
+                    <div class="justify-between items-center pt-0 space-y-4 sm:flex sm:space-y-0">
+
+                        <div class="items-center space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
+                            <button id="close-modal" type="button"
+                                class="py-2 px-4 w-full text-sm font-medium text-white-500 bg-white rounded-lg border border-white-200 sm:w-auto hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-red-900 focus:z-10 dark:bg-white dark:text-red-500 dark:border-white dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-500">intentalo
+                                de nuevo</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+
+        <!-- Continuación del código existente -->
+        <div class="max-w-lg mx-auto pt-5 ">
+            <h2 class="font-semibold text-2xl mb-4 text-center">Registrar tipo pago</h2>
+
+            <div class="bg-white p-4 border rounded-lg shadow-lg relative">
+                <form action="/altaTipoPago" method="POST">
+                    <table class="w-full">
+                        <tbody>
+                            <tr>
+                                <td class="p-2">
+                                    <label for="descripcionTipoPago" class="block text-sm">Descripción</label>
+                                    <input type="text" name="descripcionTipoPago"
+                                        class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
+                                        placeholder="Descripción" id="descripcionTipoPago" required
+                                        value="{{data.descripcionTipoPago}}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">
+                                    <label for="precio" class="block text-sm">Precio</label>
+                                    <div class="relative">
+                                       <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" 
+                                            width="16" height="16"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                                            <path d="M12 3v3m0 12v3" />
+                                        </svg>
+                                        <input type="tel" name="precio"
+                                            class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
+                                            placeholder="Precio" id="precio" required value="{{data.precio}}">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">
+                                    <button type="submit"
+                                        class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-sm px-6 py-2 block text-center">
+                                        Registrar tipo Pago
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                <script>
+                    // Mostrar mensaje de error personalizado si hay un mensaje de error
+                    const errorMessage = '{{errorT}}';
+                    if (errorMessage) {
+                        const errorContainer = document.createElement('div');
+                        errorContainer.setAttribute('role', 'alert');
+                        errorContainer.innerHTML = `
+                            <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                                Algo ha salido mal, intentalo de nuevo
+                            </div>
+                            <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                                <p>${errorMessage}</p>
+                            </div>
+                        `;
+                        document.querySelector('form').prepend(errorContainer);
+
+                        // Mostrar el popup solo si hay error
+                        const popup = document.getElementById('info-popup');
+                        popup.classList.remove('hidden'); // Mostrar el popup
+                    }
+
+                    // Cerrar el popup
+                    document.getElementById('close-modal').addEventListener('click', function () {
+                        const popup = document.getElementById('info-popup');
+                        popup.classList.add('hidden'); // Cierra el popup al cancelar
+                    });
+
+                    document.getElementById('confirm-button').addEventListener('click', function () {
+                        const popup = document.getElementById('info-popup');
+                        popup.classList.add('hidden'); // Cierra el popup al confirmar
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        // Esto es el bucador
+        document.getElementById('searchTipoPagos').addEventListener('keyup', function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#tipoPagosTable tr');
+            let noResult = true;
+
+            rows.forEach(row => {
+                let description = row.cells[1].innerText.toLowerCase();
+                if (description.includes(filter)) {
+                    row.style.display = '';
+                    noResult = false;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            document.getElementById('noResult').style.display = noResult ? '' : 'none';
+        });
+
+        // Obtener los elementos de entrada por su ID
+        const precio = document.getElementById('precio');
+        // Función para validar que el input sea un número con hasta dos decimales
+        function validarInputF(input) {
+            input.value = '0.00';
+            input.addEventListener('input', function () {
+
+                let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
+                let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
+
+                // Si no hay valor, establece el valor inicial
+                if (value === '') {
+                    input.value = '0.00';
+                    return;
+                }
+
+                // Aplicar formato de número con comas
+                let formattedValue = floatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                input.value = formattedValue;
+            });
+
+        }
+        // Llamar a la función validarInput para cada input
+        validarInputF(precio);
+    </script>
+</body>
+
+</html>
+
+{{else}}
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
+</div>
+{{/if}}

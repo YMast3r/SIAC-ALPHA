@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Codificación del documento y ajuste de la escala para dispositivos móviles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la página -->
+    <title>SIAC</title>
+    <!-- Enlace a la hoja de estilos de Tailwind CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css">
+    <!-- Enlace a Font Awesome -->
+    <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200"> <!-- Fondo de la página -->
+<div class="">
+    <!-- Barra de navegación -->
+    <nav class="bg-gray-500 flex items-center justify-between px-4 sm:px-10 py-2">
+        <!-- Logotipo y título -->
+        <div class="flex items-center">
+            <!-- Ajuste del tamaño del logotipo para dispositivos móviles -->
+            <a href="/">
+                <img style="height: 60px;" src="imagenes/logo.png" class="object-cover 2xl:h-40 2xl:w-auto 2xl:mr-10 md:h-20 md:w-auto  sm:h-20 sm:w-auto sm:mr-1 mr-4mr-2" alt="Logo">
+            </a>
+
+            <!-- Ajuste del tamaño del título para dispositivos móviles -->
+            <h1 class="text-lg font-bold text-white hidden sm:block">SIAC</h1>
+        </div>
+
+        <!-- Menú de navegación -->
+        <ul class="text-white flex justify-end items-center">
+            <!-- Comprobación si hay un usuario logueado -->
+            <li class="px-2 sm:px-4">
+                    {{#isEqual tipoUsuario 1}}
+                            <a href="/renderAdm" class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 " role="menuitem">Administradores</a>
+                        {{/isEqual}}
+                </li>
+                <li class="px-2 sm:px-4">
+                    {{#isEqual tipoUsuario 2}}
+                        <a href="/renderManCondomino" class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Condóminos</a>
+                </li>
+                <li class="px-2 sm:px-4">
+                        <a href="/renderManPropiedad" class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Propiedades</a>
+                </li>
+                <li class="px-2 sm:px-2"></li>
+                        <a href='/renderManTipo' class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Tipos</a>
+                    {{/isEqual}}
+                </li>
+                <li class="px-2 sm:px-4">
+                    {{#isEqual tipoUsuario 3}}
+                        <a href='/manIncidencia-{{id}}' class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Incidencia</a>
+                </li>
+                <li class="px-2 sm:px-4">
+                        <a href='/recuperarPropiedadPago-{{id}}' class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Pagos</a>
+                    {{/isEqual}}
+                </li>
+        {{#if name}}
+        <div class="relative inline-block text-left px-2 sm:px-4">
+            <div>
+                <button id="dropdownUserAvatarButton" onclick="toggleDropdown()" class="flex text-sm bg-gray-800 rounded-full md:me-0" type="button">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-9 h-9 rounded-full hover:w-10 hover:h-10 ease-in duration-200" src="imagenes/Perfil_sin_foto.png" alt="user photo">
+                </button>
+            </div>
+                
+            <!-- Dropdown menu -->
+            <div id="dropdownAvatar" class="hidden origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="dropdownUserAvatarButton">
+                    <p class="italic text-center block px-4 py-2 text-sm text-gray-900 font-semibold">{{name}}</p>
+                    
+
+                    <a href="/desconectarse" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white hover:px-5 hover:py-3 hover:text-md ease-in duration-200" role="menuitem">Salir</a>
+
+            <!-- Opciones de inicio de sesión y registro para usuarios no logueados -->
+            {{else}}
+            <li class="px-2 sm:px-4">
+                <!-- Ajuste del tamaño del botón de acceso para dispositivos móviles -->
+                <a href="/ingreso"
+                    class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs sm:text-sm mb-2 sm:mb-0">Ingresar</a>
+        </li>
+
+        <li class="px-2 sm:px-4">
+            <!-- Ajuste del tamaño del botón de registro para dispositivos móviles -->
+            <a href="/registro"
+              class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Registrarse</a>
+        </li>
+            {{/if}}
+        </ul>
+    </nav>
+
+    <!-- Contenido dinámico generado por la aplicación -->
+    {{{body}}}
+</div>
+    <script>
+        function toggleDropdown() {
+            document.getElementById('dropdownAvatar').classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
