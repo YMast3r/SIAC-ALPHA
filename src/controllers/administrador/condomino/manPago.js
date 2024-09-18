@@ -7,7 +7,7 @@ const multer = require('multer');
 // Configuración de Multer para almacenamiento temporal
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../../../public/imagenes/temp')); // Almacenamiento temporal
+        cb(null, path.join(__dirname, '../../../public/imagenes')); // Almacenamiento temporal
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Nombre único basado en la fecha actual
