@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 18-09-2024 a las 03:01:27
+-- Servidor: localhost:3306
+-- Tiempo de generación: 19-09-2024 a las 10:50:12
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,19 +31,19 @@ CREATE TABLE `incidencia` (
   `folio` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_tipo_incidencia` int(11) NOT NULL,
-  `descripción` text NOT NULL,
+  `descripcion` text NOT NULL,
   `fecha` date NOT NULL,
   `id_status_incidencia` int(11) NOT NULL,
   `id_administardor` int(11) DEFAULT NULL,
   `asunto` varchar(255) DEFAULT NULL,
   `evidencia` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `incidencia`
 --
 
-INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `descripción`, `fecha`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
+INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `descripcion`, `fecha`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
 (1, 3, 2, 'Se metió Mauricio a mi casa a comer', '2024-05-07', 1, 2, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg');
 
 -- --------------------------------------------------------
@@ -54,14 +54,14 @@ INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `descripc
 
 CREATE TABLE `mes` (
   `mes` int(11) NOT NULL,
-  `descripción` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  `descripcion` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `mes`
 --
 
-INSERT INTO `mes` (`mes`, `descripción`) VALUES
+INSERT INTO `mes` (`mes`, `descripcion`) VALUES
 (1, 'Enero'),
 (2, 'Febrero'),
 (3, 'marzo'),
@@ -90,21 +90,23 @@ CREATE TABLE `pago` (
   `mes` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `tipo_pago` int(20) NOT NULL,
+  `No.recibo` int(11) DEFAULT NULL,
+  `referencia` varchar(255) DEFAULT NULL,
   `evidencia` text NOT NULL,
   `id_administrador` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pago`
 --
 
-INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `evidencia`, `id_administrador`) VALUES
-(1, 1, 800, 100, 2024, 1, '2024-09-11', 1, '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(2, 1, 800, 100, 2024, 2, '2024-09-11', 1, '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(3, 1, 800, 100, 2024, 3, '2024-09-11', 1, '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(4, 1, 800, 100, 2024, 4, '2024-09-11', 1, '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(5, 1, 800, 100, 2024, 5, '2024-09-11', 1, '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(6, 1, 800, 100, 2024, 6, '2024-09-11', 1, '/imagenes/imagenesPago/1717619209683.jpg', 2);
+INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `No.recibo`, `referencia`, `evidencia`, `id_administrador`) VALUES
+(1, 1, 800, 100, 2024, 1, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(2, 1, 800, 100, 2024, 2, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(3, 1, 800, 100, 2024, 3, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(4, 1, 800, 100, 2024, 4, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(5, 1, 800, 100, 2024, 5, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(6, 1, 800, 100, 2024, 6, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2);
 
 -- --------------------------------------------------------
 
@@ -122,17 +124,19 @@ CREATE TABLE `pago_plazos` (
   `id_tipo_pago` int(11) NOT NULL,
   `importe` float NOT NULL,
   `recargo` float NOT NULL,
+  `No.recibo` varchar(255) DEFAULT NULL,
+  `referencia` varchar(255) DEFAULT NULL,
   `fecha` date NOT NULL,
   `id_administrador` int(11) DEFAULT NULL,
   `comprobante` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pago_plazos`
 --
 
-INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `fecha`, `id_administrador`, `comprobante`) VALUES
-(1, 1, 2024, 6, 2024, 1, 1, 4800, 600, '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
+INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `No.recibo`, `referencia`, `fecha`, `id_administrador`, `comprobante`) VALUES
+(1, 1, 2024, 6, 2024, 1, 1, 4800, 600, '', '', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
 
 -- --------------------------------------------------------
 
@@ -143,15 +147,15 @@ INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `a
 CREATE TABLE `propiedad` (
   `id_propiedad` int(11) NOT NULL,
   `id_usuario` int(20) DEFAULT NULL,
-  `descripción` varchar(100) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
   `id_tipo_propiedad` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `propiedad`
 --
 
-INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripción`, `id_tipo_propiedad`) VALUES
+INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`) VALUES
 (1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1),
 (2, NULL, '230 Ana María Díaz de León Escobedo', 2);
 
@@ -169,7 +173,7 @@ CREATE TABLE `seguimiento` (
   `id_status_seguimiento` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `evidencia` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `seguimiento`
@@ -187,14 +191,14 @@ INSERT INTO `seguimiento` (`folio`, `movimiento`, `id_empleado`, `comentario`, `
 
 CREATE TABLE `status` (
   `id_status` int(20) NOT NULL,
-  `descripción` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `status`
 --
 
-INSERT INTO `status` (`id_status`, `descripción`) VALUES
+INSERT INTO `status` (`id_status`, `descripcion`) VALUES
 (1, 'Pendiente'),
 (2, 'Inactivo'),
 (3, 'Suspendido'),
@@ -209,14 +213,14 @@ INSERT INTO `status` (`id_status`, `descripción`) VALUES
 
 CREATE TABLE `status_incidencia` (
   `id_status_incidencia` int(11) NOT NULL,
-  `descripción` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `status_incidencia`
 --
 
-INSERT INTO `status_incidencia` (`id_status_incidencia`, `descripción`) VALUES
+INSERT INTO `status_incidencia` (`id_status_incidencia`, `descripcion`) VALUES
 (1, 'Pendiente'),
 (2, 'En proceso'),
 (3, 'Resuelto');
@@ -229,14 +233,14 @@ INSERT INTO `status_incidencia` (`id_status_incidencia`, `descripción`) VALUES
 
 CREATE TABLE `status_seguimiento` (
   `id_status_seguimiento` int(11) NOT NULL,
-  `descripción` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `status_seguimiento`
 --
 
-INSERT INTO `status_seguimiento` (`id_status_seguimiento`, `descripción`) VALUES
+INSERT INTO `status_seguimiento` (`id_status_seguimiento`, `descripcion`) VALUES
 (1, 'Pendiente'),
 (2, 'En proceso'),
 (3, 'Resuelto');
@@ -249,14 +253,14 @@ INSERT INTO `status_seguimiento` (`id_status_seguimiento`, `descripción`) VALUE
 
 CREATE TABLE `tipo_incidencia` (
   `id_tipo_incidencia` int(11) NOT NULL,
-  `descripción` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `tipo_incidencia`
 --
 
-INSERT INTO `tipo_incidencia` (`id_tipo_incidencia`, `descripción`) VALUES
+INSERT INTO `tipo_incidencia` (`id_tipo_incidencia`, `descripcion`) VALUES
 (1, 'mantenimiento'),
 (2, 'seguridad');
 
@@ -268,15 +272,15 @@ INSERT INTO `tipo_incidencia` (`id_tipo_incidencia`, `descripción`) VALUES
 
 CREATE TABLE `tipo_pago` (
   `id_tipo_pago` int(20) NOT NULL,
-  `descripción` varchar(100) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
   `precio` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `tipo_pago`
 --
 
-INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripción`, `precio`) VALUES
+INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripcion`, `precio`) VALUES
 (1, 'Cuota', NULL),
 (2, 'Recargo', NULL),
 (3, 'Cuota extraordinaria', 800);
@@ -289,15 +293,15 @@ INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripción`, `precio`) VALUES
 
 CREATE TABLE `tipo_propiedad` (
   `id_tipo_propiedad` int(20) NOT NULL,
-  `descripción` varchar(100) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
   `pago` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `tipo_propiedad`
 --
 
-INSERT INTO `tipo_propiedad` (`id_tipo_propiedad`, `descripción`, `pago`) VALUES
+INSERT INTO `tipo_propiedad` (`id_tipo_propiedad`, `descripcion`, `pago`) VALUES
 (1, 'casa', 800),
 (2, 'terreno', 500),
 (3, 'departamento', 750);
@@ -310,14 +314,14 @@ INSERT INTO `tipo_propiedad` (`id_tipo_propiedad`, `descripción`, `pago`) VALUE
 
 CREATE TABLE `tipo_usuario` (
   `id_tipo_usuario` int(20) NOT NULL,
-  `descripción` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  `descripcion` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `tipo_usuario`
 --
 
-INSERT INTO `tipo_usuario` (`id_tipo_usuario`, `descripción`) VALUES
+INSERT INTO `tipo_usuario` (`id_tipo_usuario`, `descripcion`) VALUES
 (1, 'Super Administrador'),
 (2, 'Administrador'),
 (3, 'Condomino '),
@@ -336,14 +340,14 @@ CREATE TABLE `usuario` (
   `password` varchar(255) NOT NULL,
   `tipo_usuario` int(20) NOT NULL,
   `status` int(20) NOT NULL,
-  `teléfono` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  `telefono` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`, `tipo_usuario`, `status`, `teléfono`) VALUES
+INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`, `tipo_usuario`, `status`, `telefono`) VALUES
 (1, 'Super Administrador', 'superAdm@gmail.com', '$2b$12$aXt.urKj5OgRLGnATTloj.siVIgmasf7uCVdWndWHyK/raktqif3a', 1, 4, '449 429 6282'),
 (2, 'Ivan', 'IvanSebastian@gmail.com', '$2b$12$1SGgp4REQ8oF178B55IgfeEzFvx4gD2L1wAH6lQTW5dANqBN8X8SK', 2, 4, '449 223 9955'),
 (3, 'Gael', 'GaelGabriel@gmail.com', '$2b$12$cZp3DQIUwFj8rKttO3lxC.CdFzpCvQeSE7TsMgup6iYb2osX/GMZ.', 3, 4, '449 107 7654'),
