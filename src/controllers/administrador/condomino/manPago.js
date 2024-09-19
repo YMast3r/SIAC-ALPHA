@@ -125,7 +125,6 @@ function manPago(req, res) {
     req.session.idPropiedad = id;
     // guardamos el id del condomino
     req.session.idCon = idCon;
-    console.log("id: ", id)
 
     let tipo;
     if (req.session.tipoUsuario == 3) {
@@ -166,7 +165,7 @@ function manPago(req, res) {
                             }
                             if (rows.length > 0) {
                                 const tipoPago = rows;
-                                conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio ASC', [id], (err, rows) => {
+                                conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio ASC', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                     }
@@ -175,7 +174,7 @@ function manPago(req, res) {
                                             ...row,
                                             fecha: formatDate(row.fecha), // Formatea la fecha
                                         }));
-                                        conn.query('SELECT a.folio, b1.descripcion AS mes_inicio, a.año_inicio, b2.descripcion AS mes_final, a.año_final, t.descripcion AS tipo_pago, a.fecha, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.comprobante AS evidencia FROM pago_plazos a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b1 ON a.mes_inicio = b1.mes JOIN mes b2 ON a.mes_final = b2.mes JOIN tipo_pago t ON a.id_tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio', [id], (err, rows) => {
+                                        conn.query('SELECT a.folio, b1.descripcion AS mes_inicio, a.año_inicio, b2.descripcion AS mes_final, a.año_final, t.descripcion AS tipo_pago, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.comprobante AS evidencia FROM pago_plazos a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b1 ON a.mes_inicio = b1.mes JOIN mes b2 ON a.mes_final = b2.mes JOIN tipo_pago t ON a.id_tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio', [id], (err, rows) => {
                                             if (err) {
                                                 console.log(err);
                                             }
@@ -200,7 +199,7 @@ function manPago(req, res) {
                                                     tipoUsuario: tipo
                                                 });
                                             } else {
-                                                console.log("datos: ",datos);
+                                                console.log("datos: ", datos);
                                                 console.log('No se encontraron pagos a plazos');
                                                 return res.render('usuarios/administrador/condomino/manPago', {
                                                     datos: datos,
@@ -291,7 +290,13 @@ function altaPago(req, res) {
                     const tipo = rows[0].tipo_usuario;
                     let consulta;
                     let parametros;
-                    let imagenRuta = req.file ? `/imagenes/imagenesPago/${req.file.filename}` : null;
+                    let imagenRuta;
+                    try {
+                        imagenRuta = req.file ? `/imagenes/imagenesPago/${req.file.filename}` : null;
+                    } catch {
+                        imagenRuta = null;
+                        console.log('No hay imagen');
+                    }
 
                     conn.query('SELECT id_tipo_propiedad FROM propiedad WHERE id_propiedad = ?', [idPro], (err, rows) => {
                         if (err) {
@@ -326,18 +331,23 @@ function altaPago(req, res) {
                                                 data.recargo = data.recargo.replace(/,/g, ''); // Remueve todas las comas del precio
                                             }
                                             if (tipo == 3) {
-                                                consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, tipo_pago, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?)';
-                                                parametros = [idPro, importe, data.recargo, year, mes, data.tipoPago, imagenRuta];
+                                                consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?, ?, ?)';
+                                                parametros = [idPro, importe, data.recargo, year, mes, data.reciboFolio, data.referencia, data.tipoPago, imagenRuta];
                                             } else {
-                                                consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, tipo_pago, id_administrador, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?, ?)';
-                                                parametros = [idPro, importe, data.recargo, year, mes, data.tipoPago, idAdm, imagenRuta];
+                                                consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?, ?, ?, ?)';
+                                                parametros = [idPro, importe, data.recargo, year, mes, data.reciboFolio, data.referencia, data.tipoPago, idAdm, imagenRuta];
                                             }
 
                                             conn.query('SELECT COUNT(*) AS pago FROM pago WHERE mes = ? AND año = ? AND id_propiedad = ?', [mes, year, idPro], (err, rows) => {
                                                 if (err) {
                                                     console.log(err);
                                                 }
-                                                const tempPath = req.file.path;
+                                                let tempPath;
+                                                try {
+                                                    tempPath = req.file.path
+                                                } catch {
+                                                    console.log('No hay imagen');
+                                                }
                                                 if (rows[0].pago == 0) {
                                                     conn.query(consulta, parametros, (err, rows) => {
                                                         if (err) {
@@ -403,7 +413,13 @@ function altaPagoPlazo(req, res) {
         req.session.idPropiedad = idPro;
         // guardamos el id del condomino
         req.session.idCon = idCon;
-        const imagenRuta = req.file ? `/imagenes/imagenesPago/${req.file.filename}` : null;
+        let imagenRuta;
+        try {
+            imagenRuta = req.file ? `/imagenes/imagenesPago/${req.file.filename}` : null;
+        } catch {
+            imagenRuta = null;
+            console.log('No hay imagen');
+        }
 
         // Verificar que la fecha final sea mayor a la fecha de inicio
         if (añoFin < añoInicio || (añoFin == añoInicio && mesFin < mesInicio)) {
@@ -524,16 +540,16 @@ function altaPagoPlazo(req, res) {
                                                 // Iterar sobre los meses del año actual
                                                 for (let mes = mesIni; mes <= mesFinLoop; mes++) {
                                                     if (tipo == 3) {
-                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.tipoPagoPlazo, imagenRuta]);
+                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioFolio, data.referenciaFolio, data.tipoPagoPlazo, imagenRuta]);
                                                     } else {
-                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.tipoPagoPlazo, idAdm, imagenRuta]);
+                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioFolio, data.referenciaFolio, data.tipoPagoPlazo, idAdm, imagenRuta]);
                                                     }
                                                 }
                                             }
 
                                             const queryPagos = tipo == 3 ?
-                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, tipo_pago, evidencia) VALUES ?' :
-                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, tipo_pago, id_administrador, evidencia) VALUES ?';
+                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia) VALUES ?' :
+                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia) VALUES ?';
 
                                             conn.query(queryPagos, [pagos], (err) => {
                                                 if (err) {
@@ -544,8 +560,8 @@ function altaPagoPlazo(req, res) {
 
                                                 // Ingresar el pago en la tabla "pagoPlazos"
                                                 const queryPagoPlazo = tipo == 3 ?
-                                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
-                                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
+                                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
                                                 let pagoPlazo;
                                                 const importePlazo = importe * totalMeses;
                                                 if (data.recargoPlazo) {
@@ -555,9 +571,9 @@ function altaPagoPlazo(req, res) {
                                                     data.recargoPlazo = 0;
                                                 }
                                                 if (tipo == 3) {
-                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, importePlazo, data.recargoPlazo, imagenRuta];
+                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolio, data.referencia, importePlazo, data.recargoPlazo, imagenRuta];
                                                 } else {
-                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
+                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolio, data.referencia, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
                                                 }
 
                                                 conn.query(queryPagoPlazo, pagoPlazo, (err) => {
