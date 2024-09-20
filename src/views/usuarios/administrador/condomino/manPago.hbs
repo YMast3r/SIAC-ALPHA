@@ -198,7 +198,7 @@
     <!-- Tabla de pagos -->
     {{!-- --}}
     <div class="flex justify-center mx-auto space-y-0">
-        <div class="w-9/12">
+        <div class="w-full">
             <table class="w-full" id="tablaPagosCabezera">
                 <thead>
                     <tr>
@@ -225,8 +225,8 @@
     {{!-- ---------------------------------------------------------- --}}
 
     <!-- Tabla de pagos -->
-    <div class="flex justify-center mx-auto space-y-0 pb-16">
-        <div class="overflow-x-auto max-h-60 w-9/12 ">
+    <div class="{{!-- flex justify-center mx-auto space-y-0 pb-16 --}} w-full">
+        <div class="overflow-x-auto max-h-60{{!--  w-9/12 --}} ">
             <table class="w-full " id="tablaPagos">
                 <thead class="hidden">
                     <tr>
@@ -245,24 +245,24 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody id="tablaPagosBody">
+                <tbody id="tablaPagosBody" class="">
                     {{#each datos}}
-                    <tr>
-                        <td class="px-8 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md">{{this.folio}}
-                        </td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.año}}</td>
-                        <td class="px-1 py-2 bg-white border-b-2 border-gray-200 text-rigth">{{this.mes}}</td>
-                        <td class="px-0 py-2 bg-white border-b-2 border-gray-200">{{this.fecha}}</td>
-                        <td class="px-0 py-2 bg-white border-b-2 border-gray-200">{{this.referencia}}</td>
-                        <td class="px-7 py-2 bg-white border-b-2 border-gray-200 ">{{this.tipo}}</td>
-                        <td class="pr-8 pl-8 py-2 bg-white border-b-2 border-gray-200">${{this.importe}}</td>
-                        <td class="pl-4 py-2 bg-white border-b-2 border-gray-200">${{this.recargo}}</td>
-                        <td class="pl-9 py-2 bg-white border-b-2 border-gray-200 text-rigth">${{this.total}}</td>
-                        <td class="px-0 py-2 bg-white border-b-2 border-gray-200">{{this.numero_recibo}}</td>
-                        <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-left">{{this.registro}}</td>
-                        <td class="px-1 py-2 bg-white border-b-2 border-gray-200 text-center rounded-md">
+                    <tr class="w-full">
+                        <td class="px-2 bg-white border-b-2 border-gray-200 text-right rounded-md">{{this.folio}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-right">{{this.año}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">{{this.mes}}</td>
+
+                        <td class="px-0 bg-white border-b-2 border-gray-200 text-left">{{this.fecha}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-left">{{this.referencia}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-left">{{this.tipo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-left">${{this.importe}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-left">${{this.recargo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-left">${{this.total}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-left">{{this.numero_recibo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-left"> <span class="flex justify-end ">{{this.registro}}</span></td>
+                        <td class=" bg-white border-b-2 border-gray-200  text-left rounded-md flex justify-end">    
                             {{#if this.evidencia}}
-                            <img src="{{this.evidencia}}" alt="Evidencia" class="h-36 w-32"
+                            <img src="{{this.evidencia}}" alt="Evidencia" class="h-32 w-24 mx-auto "
                                 onclick="mostrarImagen(this.src)">
                             {{else}}
                             No hay evidencia
@@ -321,7 +321,7 @@
 
                 <label for="fecha"><i class="fas fa-calendar"></i> Fecha (Mes y Año)</label>
                 <input type="month" id="fecha" name="fecha"
-                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-2"
                     required>
 
                 {{#isEqual tipoUsuario 2}}
@@ -335,7 +335,7 @@
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
 
                 <!-- Campo para subir una imagen -->
-                <label for="imagen"><i class="fas fa-image"></i>Sube un comprobante de pago</label>
+                <label for="imagen"><i class="fas fa-image pr-2"></i>Sube un comprobante de pago</label>
                 <input type="file" id="imagen" name="imagen" accept=".png, .jpg, .jpeg, .pdf"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
                     {{#isEqual tipoUsuario 3}} required {{/isEqual}}>
