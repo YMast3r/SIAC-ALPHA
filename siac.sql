@@ -90,9 +90,9 @@ CREATE TABLE `pago` (
   `mes` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `tipo_pago` int(20) NOT NULL,
-  `no_recibo` int(11) DEFAULT NULL,
+  `numero_recibo` int(11) DEFAULT NULL,
   `referencia` varchar(255) DEFAULT NULL,
-  `evidencia` text NOT NULL,
+  `evidencia` text DEFAULT NULL,
   `id_administrador` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -100,13 +100,13 @@ CREATE TABLE `pago` (
 -- Volcado de datos para la tabla `pago`
 --
 
-INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `no_recibo`, `referencia`, `evidencia`, `id_administrador`) VALUES
-(1, 1, 800, 100, 2024, 1, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(2, 1, 800, 100, 2024, 2, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(3, 1, 800, 100, 2024, 3, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(4, 1, 800, 100, 2024, 4, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(5, 1, 800, 100, 2024, 5, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(6, 1, 800, 100, 2024, 6, '2024-09-11', 1, 0, '', '/imagenes/imagenesPago/1717619209683.jpg', 2);
+INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`) VALUES
+(1, 1, 800, 100, 2024, 1, '2024-09-11', 1, 01, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(2, 1, 800, 100, 2024, 2, '2024-09-11', 1, 02, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(3, 1, 800, 100, 2024, 3, '2024-09-11', 1, 03, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(4, 1, 800, 100, 2024, 4, '2024-09-11', 1, 04, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(5, 1, 800, 100, 2024, 5, '2024-09-11', 1, 05, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
+(6, 1, 800, 100, 2024, 6, '2024-09-11', 1, 06, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2);
 
 -- --------------------------------------------------------
 
@@ -124,19 +124,19 @@ CREATE TABLE `pago_plazos` (
   `id_tipo_pago` int(11) NOT NULL,
   `importe` float NOT NULL,
   `recargo` float NOT NULL,
-  `no_recibo` varchar(255) DEFAULT NULL,
+  `numero_recibo` varchar(255) DEFAULT NULL,
   `referencia` varchar(255) DEFAULT NULL,
   `fecha` date NOT NULL,
   `id_administrador` int(11) DEFAULT NULL,
-  `comprobante` text NOT NULL
+  `comprobante` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `pago_plazos`
 --
 
-INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `no_recibo`, `referencia`, `fecha`, `id_administrador`, `comprobante`) VALUES
-(1, 1, 2024, 6, 2024, 1, 1, 4800, 600, '', '', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
+INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `numero_recibo`, `referencia`, `fecha`, `id_administrador`, `comprobante`) VALUES
+(1, 1, 2024, 6, 2024, 1, 1, 4800, 600, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
 
 -- --------------------------------------------------------
 
