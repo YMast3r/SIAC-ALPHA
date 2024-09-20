@@ -15,42 +15,42 @@ function renderManPropiedad(req, res) {
 
 function altaTipoPropiedad(req, res) {
     const data = req.body;
-    req.session.errorMPro = "";
 
-    if (data.precio == 0.00) {
-        req.session.errorMT = 'No puedes ingresar un precio de 0';
+    if (data.pago == 0.00) {
+        req.session.errorMT = 'No puedes ingresar un precio de 0.00';
         req.session.dataCampos = data;
         renManPropiedad(req, res);
-    }
-
-    req.getConnection((err, conn) => {
-        if (err) {
-            console.error("Error de conexión:", err);
-            return res.status(500).send("Error de conexión a la base de datos");
-        }
-        conn.query('SELECT COUNT(*) AS cont FROM tipo_propiedad WHERE descripcion = ?', [data.descripcionTipoPro], (err, rows) => {
+        return;
+    } else {
+        req.getConnection((err, conn) => {
             if (err) {
-                console.log(err);
-                return;
+                console.error("Error de conexión:", err);
+                return res.status(500).send("Error de conexión a la base de datos");
             }
-            if (rows[0].cont == 0) {
-                if (data.pago) {
-                    data.pago = data.pago.replace(/,/g, ''); // Remueve todas las comas del precio
+            conn.query('SELECT COUNT(*) AS cont FROM tipo_propiedad WHERE descripcion = ?', [data.descripcionTipoPro], (err, rows) => {
+                if (err) {
+                    console.log(err);
+                    return;
                 }
-                conn.query('INSERT INTO tipo_propiedad (descripcion, pago) VALUES (?, ?)', [data.descripcionTipoPro, data.pago], (error, rows) => {
-                    if (error) {
-                        console.error("Error al insertar el tipo de propiedad:", error);
-                        return res.status(500).send("Error al agregar el tipo de propiedad");
+                if (rows[0].cont == 0) {
+                    if (data.pago) {
+                        data.pago = data.pago.replace(/,/g, ''); // Remueve todas las comas del precio
                     }
-                    renderManPropiedad(req, res);
-                });
-            } else {
-                req.session.errorMT = 'Ya existe esa descripción';
-                req.session.dataCampos = data;
-                renManPropiedad(req, res);
-            }
+                    conn.query('INSERT INTO tipo_propiedad (descripcion, pago) VALUES (?, ?)', [data.descripcionTipoPro, data.pago], (error, rows) => {
+                        if (error) {
+                            console.error("Error al insertar el tipo de propiedad:", error);
+                            return res.status(500).send("Error al agregar el tipo de propiedad");
+                        }
+                        renderManPropiedad(req, res);
+                    });
+                } else {
+                    req.session.errorMT = 'Ya existe esa descripción';
+                    req.session.dataCampos = data;
+                    renManPropiedad(req, res);
+                }
+            });
         });
-    });
+    }
 }
 
 function altaPropiedad(req, res) {

@@ -16,39 +16,40 @@ function altaTipoPago(req, res) {
     const data = req.body;
 
     if (data.precio == 0.00) {
-        req.session.errorMT = 'No puedes ingresar un precio de 0';
+        req.session.errorMT = 'No puedes ingresar un precio de 0.00';
         req.session.dataCampos = data;
         renTipo(req, res);
-    }
-
-    req.getConnection((err, conn) => {
-        if (err) {
-            console.error("Error de conexión:", err);
-            return res.status(500).send("Error de conexión a la base de datos");
-        }
-        conn.query('SELECT COUNT(*) AS cont FROM tipo_pago WHERE descripcion = ?', [data.descripcionTipoPago], (err, rows) => {
+        return;
+    } else {
+        req.getConnection((err, conn) => {
             if (err) {
-                console.log(err);
-                return;
+                console.error("Error de conexión:", err);
+                return res.status(500).send("Error de conexión a la base de datos");
             }
-            if (rows[0].cont == 0) {
-                if (data.precio) {
-                    data.precio = data.precio.replace(/,/g, ''); // Remueve todas las comas del precio
+            conn.query('SELECT COUNT(*) AS cont FROM tipo_pago WHERE descripcion = ?', [data.descripcionTipoPago], (err, rows) => {
+                if (err) {
+                    console.log(err);
+                    return;
                 }
-                conn.query('INSERT INTO tipo_pago (descripcion, precio) VALUES (?, ?)', [data.descripcionTipoPago, data.precio], (error, rows) => {
-                    if (error) {
-                        console.error("Error al insertar el tipo de propiedad:", error);
-                        return res.status(500).send("Error al agregar el tipo de propiedad");
+                if (rows[0].cont == 0) {
+                    if (data.precio) {
+                        data.precio = data.precio.replace(/,/g, ''); // Remueve todas las comas del precio
                     }
-                    renderManTipo(req, res);
-                });
-            } else {
-                req.session.errorMT = 'Ya existe esa descripción';
-                req.session.dataCampos = data;
-                renTipo(req, res);
-            }
+                    conn.query('INSERT INTO tipo_pago (descripcion, precio) VALUES (?, ?)', [data.descripcionTipoPago, data.precio], (error, rows) => {
+                        if (error) {
+                            console.error("Error al insertar el tipo de propiedad:", error);
+                            return res.status(500).send("Error al agregar el tipo de propiedad");
+                        }
+                        renderManTipo(req, res);
+                    });
+                } else {
+                    req.session.errorMT = 'Ya existe esa descripción';
+                    req.session.dataCampos = data;
+                    renTipo(req, res);
+                }
+            });
         });
-    });
+    }
 }
 
 function manTipo(req, res) {
