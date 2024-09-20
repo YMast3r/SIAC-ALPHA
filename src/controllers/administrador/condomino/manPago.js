@@ -267,6 +267,14 @@ function altaPago(req, res) {
         // Extraer año y mes del campo fecha
         const [year, mes] = data.fecha.split('-');
 
+        if (data.reciboFolio == ""){
+            data.reciboFolio = null;
+        }
+
+        if (data.referencia == ""){
+            data.referencia = null;
+        }
+
         req.session.idPropiedad = idPro;
         req.session.idCon = idCon;
 
@@ -405,6 +413,14 @@ function altaPagoPlazo(req, res) {
         const [añoInicio, mesInicio] = data.fechaInicio.split('-');
         // Extraer año y mes del campo fecha Inicio
         const [añoFin, mesFin] = data.fechaFin.split('-');
+        
+        if (data.reciboFolioPlazo == ""){
+            data.reciboFolioPlazo = null;
+        }
+
+        if (data.referenciaPlazo == ""){
+            data.referenciaPlazo = null;
+        }
 
         const nombre = req.session.name;
         const idCon = req.session.idCon;
@@ -540,9 +556,9 @@ function altaPagoPlazo(req, res) {
                                                 // Iterar sobre los meses del año actual
                                                 for (let mes = mesIni; mes <= mesFinLoop; mes++) {
                                                     if (tipo == 3) {
-                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioFolio, data.referenciaFolio, data.tipoPagoPlazo, imagenRuta]);
+                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta]);
                                                     } else {
-                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioFolio, data.referenciaFolio, data.tipoPagoPlazo, idAdm, imagenRuta]);
+                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta]);
                                                     }
                                                 }
                                             }
@@ -571,9 +587,9 @@ function altaPagoPlazo(req, res) {
                                                     data.recargoPlazo = 0;
                                                 }
                                                 if (tipo == 3) {
-                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolio, data.referencia, importePlazo, data.recargoPlazo, imagenRuta];
+                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, importePlazo, data.recargoPlazo, imagenRuta];
                                                 } else {
-                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolio, data.referencia, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
+                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
                                                 }
 
                                                 conn.query(queryPagoPlazo, pagoPlazo, (err) => {
