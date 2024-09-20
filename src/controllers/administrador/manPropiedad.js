@@ -17,6 +17,12 @@ function altaTipoPropiedad(req, res) {
     const data = req.body;
     req.session.errorMPro = "";
 
+    if (data.precio == 0.00) {
+        req.session.errorMT = 'No puedes ingresar un precio de 0';
+        req.session.dataCampos = data;
+        renManPropiedad(req, res);
+    }
+
     req.getConnection((err, conn) => {
         if (err) {
             console.error("Error de conexión:", err);

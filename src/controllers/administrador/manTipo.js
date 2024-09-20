@@ -15,6 +15,12 @@ function renderManTipo(req, res) {
 function altaTipoPago(req, res) {
     const data = req.body;
 
+    if (data.precio == 0.00) {
+        req.session.errorMT = 'No puedes ingresar un precio de 0';
+        req.session.dataCampos = data;
+        renTipo(req, res);
+    }
+
     req.getConnection((err, conn) => {
         if (err) {
             console.error("Error de conexión:", err);

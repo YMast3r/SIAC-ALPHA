@@ -324,9 +324,11 @@
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
                     required>
 
+                {{#isEqual tipoUsuario 2}}
                 <label for="reciboFolio"><i class="fas fa-user"></i> Recibo Folio</label>
-                <input type="num" id="reciboFolio" name="reciboFolio" placeholder="Recibo Folio"
+                <input type="number" id="reciboFolio" name="reciboFolio" placeholder="Recibo Folio"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                {{/isEqual}}
 
                 <label for="referencia"><i class="fas fa-user"></i> Referencia</label>
                 <input type="text" id="referencia" name="referencia" placeholder="Referencia"
@@ -492,9 +494,11 @@
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
                     required>
 
+                {{#isEqual tipoUsuario 2}}
                 <label for="reciboFolioPlazo"><i class="fas fa-user"></i> Recibo Folio</label>
-                <input type="num" id="reciboFolioPlazo" name="reciboFolioPlazo" placeholder="Recibo Folio"
+                <input type="number" id="reciboFolioPlazo" name="reciboFolioPlazo" placeholder="Recibo Folio"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                {{/isEqual}}
 
                 <label for="referenciaPlazo"><i class="fas fa-user"></i> Referencia</label>
                 <input type="text" id="referenciaPlazo" name="referenciaPlazo" placeholder="Referencia"
@@ -556,6 +560,16 @@
         const recargoInputPlazo = document.getElementById('recargoPlazo');
         // Obtener los elementos de entrada por su ID
         const filtroAño = document.getElementById('filtroAño');
+
+        function validarEntrada(event) {
+            const regex = /^[a-zA-Z0-9\s]*$/;
+            if (!regex.test(event.target.value)) {
+                event.target.value = event.target.value.replace(/[^a-zA-Z0-9\s]/g, '');
+            }
+        }
+
+        document.getElementById('referencia').addEventListener('input', validarEntrada);
+        document.getElementById('referenciaPlazo').addEventListener('input', validarEntrada);
 
         // Función para validar que el input sea un número entero positivo
         function validarInput(input) {
