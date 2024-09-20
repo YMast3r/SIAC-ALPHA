@@ -2,25 +2,34 @@
 
 ## Registro de Cambios
 
+### Versión 3.6 - 3.7 (24/09/2024): Back-end
+- Se solucionaron problemas de Fron-end y Back-end.
+- Se agregó icono de moneda.
+
+### Versión 3.5.3 - 3.5.8 (23/09/2024): Back-end y Fron-end
+- Se solucionaron problemas de Fron-end y Back-end.
+- Se agregó la división de pagos en pestañas.
+- Se agregó un pop en tipos.
+
 ### Versión 3.5.3 (14/09/2024): Back-end
 - Formato de moneda en el precio.
-- En las evidencias de pago que solo pidan Imagenes.
+- En las evidencias de pago que solo pidan Imágenes.
 
 ### Versión 3.5.2 (13/09/2024): Back-end
 - Cambiar todos los errores, envés de mensaje rojo que sea una ventana.
 - Usar un calendario en vez de combo box en plazo.
 
 ### Versión 3.5.1 (13/09/2024): Back-end
-- Se cambio anio por años y en el backend a year.
+- Se cambió anio por años y en el backend a year.
 
 ### Versión 3.5 (12/09/2024): Back-end
-- Se solucionaron errores del desarrllo de pago a plazos.
+- Se solucionaron errores del desarrolló de pago a plazos.
 
 ### Versión 3.4.5 (11/09/2024): Back-end
 - Verificar que la fecha final sea mayor a la fecha de inicio,
   dado el caso que no lo sea mandar su mensaje de error correspondiente.
 - Verificar que no se ha registrado ningún pago individual que esté en el plazo
-  ejemplo: Se registra septiembre, y el usuario selecciona agosto a octubre,
+  ejemplo: Se registra septiembre, y el usuario selecciona agosto a octubre,
   debe de mostrar el mensaje de error correspondiente.
 - Debe de dar de alta los pagos de manisera individual en la tabla "pagos".
 - Debe de ingresar un pago específico desde que mesI, añoI, hasata MesF y AñoF en la tabla "pagoPlazos". 
@@ -173,9 +182,9 @@
 ### Versión 1.1 (12/04/2024): Backend
 - Inicio del desarrollo de una funcionalidad para evitar la repetición de pagos, permitiendo solo un pago por mes cada año.
 - Actualización de la base de datos:
-  - Modificación de los meses de los pagos para que no se repitan.
-  - Los pagos ahora comienzan desde enero hasta abril.
-  - Se detectó una repetición del mes de junio, que fue reemplazado por julio.
+  - Modificación de los meses de los pagos para que no se repitan.
+  - Los pagos ahora comienzan desde enero hasta abril.
+  - Se detectó una repetición del mes de junio, que fue reemplazado por julio.
 
 ### Versión 1.0 (12/04/2024): Backend
 - Lanzamiento inicial del proyecto al Product Owner, quien realizó algunas observaciones y aplazó la fecha de entrega al 2 de mayo.
@@ -211,3 +220,4 @@
 - Iván: 3.5.1
 - Iván: 3.5.2
 - Iván: 3.5.3
+- Iván, Ángel, Regina, Odette, Leonel, Ivon, Gabriel: 3.5.4 - 3.7
