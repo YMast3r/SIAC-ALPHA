@@ -61,6 +61,9 @@ function renderPago(req, res) {
 function recuperarPropiedadPago(req, res) {
     // recuperamos el id del condomino
     const idCon = req.session.idCon;
+    req.session.errorMPago = "";
+    req.session.errorMPagoP = "";
+    req.session.dataCampos = "";
     let id;
     if (req.params.id) {
         // recupera el id de la ruta inicial
