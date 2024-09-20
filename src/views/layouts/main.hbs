@@ -20,19 +20,19 @@
         <div class="flex items-center">
             <!-- Ajuste del tamaño del logotipo para dispositivos móviles -->
             <a href="/">
-                <img style="height: 60px;" src="imagenes/logo.png" class="object-cover 2xl:h-40 2xl:w-auto 2xl:mr-10 md:h-20 md:w-auto  sm:h-20 sm:w-auto sm:mr-1 mr-4mr-2" alt="Logo">
+                <img style="height: 60px;" src="imagenes/logo.png" class="object-cover 2xl:h-40 2xl:w-auto 2xl:mr-10 md:h-20 md:w-auto  sm:h-20 sm:w-auto sm:mr-1 mr-4 mr-2" alt="Logo">
             </a>
 
             <!-- Ajuste del tamaño del título para dispositivos móviles -->
-            <h1 class="text-lg font-bold text-white hidden sm:block">SIAC</h1>
+            <h1 class="text-lg font-bold text-white sm:block">SIAC</h1>
         </div>
 
         <!-- Menú de navegación -->
-        <ul class="text-white flex justify-end items-center">
+        <ul class="text-white flex items-center ml-8">
             <!-- Comprobación si hay un usuario logueado -->
-            <li class="px-2 sm:px-4">
+            <li class=" px-2 sm:px-4">
                     {{#isEqual tipoUsuario 1}}
-                            <a href="/renderAdm" class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 " role="menuitem">Administradores</a>
+                            <a href="/renderAdm" class=" font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 " role="menuitem">Administradores</a>
                         {{/isEqual}}
                 </li>
                 <li class="px-2 sm:px-4">
@@ -55,7 +55,7 @@
                     {{/isEqual}}
                 </li>
         {{#if name}}
-        <div class="relative inline-block text-left px-2 sm:px-4">
+        <div class="relative inline-block text-left ">
             <div>
                 <button id="dropdownUserAvatarButton" onclick="toggleDropdown()" class="flex text-sm bg-gray-800 rounded-full md:me-0" type="button">
                     <span class="sr-only">Open user menu</span>
