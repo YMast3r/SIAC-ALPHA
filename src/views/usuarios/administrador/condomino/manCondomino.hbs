@@ -46,12 +46,12 @@
                     <tbody>
                         {{#each datos}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.id}}</td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200">{{this.nombre}}</td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200">{{this.correo_electronico}}</td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200">{{this.telefono}}</td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200">{{this.status}}</td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center"><a
+                            <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.id}}</td>
+                            <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.nombre}}</td>
+                            <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.correo_electronico}}</td>
+                            <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.telefono}}</td>
+                            <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.status}}</td>
+                            <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200 text-lg text-center"><a
                                     href="/ediCondomino{{id}}"><svg class="  mx-auto h-8 w-10 text-gray-600" width="24"
                                         height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -60,7 +60,7 @@
                                         <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
                                     </svg></a></td>
 
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 "><a
+                            <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 "><a
                                     href="/recuperarPropiedad-{{id}}"><svg class="w-12 h-9 text-gray-600 mx-auto"
                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="none" viewBox="0 0 24 24">
@@ -199,7 +199,7 @@
 
                         {{else}}
                         <div
-                            class="mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/2 border rounded-lg ">
+                            class="text-lg mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/2 border rounded-lg ">
                             <div class="card-body">
                                 <form action="/manipulaCondomino" method="POST"
                                     onsubmit="return telefonoValid() && correoValid()">

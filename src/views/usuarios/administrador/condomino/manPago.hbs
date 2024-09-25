@@ -173,7 +173,7 @@
             <!-- Selector de mes -->
             <div class="w-full max-w-xs">
                 <div class="flex items-center space-x-2">
-                    <span class="text-lg font-medium text-gray-700 whitespace-nowrap">Buscar por Mes</span>
+                    <span class="text-xl font-medium text-gray-700 whitespace-nowrap">Buscar por Mes</span>
                     <select id="mesFiltro"
                         class="border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 rounded-lg bg-white w-full">
                         <option value="">Todos</option>
@@ -202,40 +202,28 @@
             <table class="w-full table-fixed" id="tablaPagos">
                 <thead>
                     <tr>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">FOLIO</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">AÑO</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">MES</th>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">FECHA</th>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">REFERENCIA</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">TIPO PAGO</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">IMPORTE</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">RECARGO</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">TOTAL</th>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">NO. RECIBO</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0">REGISTRO</th>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-center sticky top-0 rounded-tr-lg">EVIDENCIA</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">FOLIO</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">AÑO</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">MES</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">TIPO PAGO</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">IMPORTE</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">RECARGO</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">TOTAL</th>
+                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">NO. RECIBO</th>
+
                     </tr>
                 </thead>
                 <tbody id="tablaPagosBody">
                     {{#each datos}}
                     <tr class="w-full">
-                        <td class="px-2 bg-white border-b-2 border-gray-200 text-center">{{this.folio}}</td>
-                        <td class="px-1 bg-white border-b-2 border-gray-200 text-center">{{this.año}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">{{this.mes}}</td>
-                        <td class="px-0 bg-white border-b-2 border-gray-200 text-center">{{this.fecha}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">{{this.referencia}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">{{this.tipo}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">${{this.importe}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">${{this.recargo}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">${{this.total}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">{{this.numero_recibo}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-center">{{this.registro}}</td>
-                        <td class="bg-white border-b-2 border-gray-200 text-center">
-                            {{#if this.evidencia}}
-                            <img src="{{this.evidencia}}" alt="Evidencia" class="h-32 w-24 mx-auto" onclick="mostrarImagen(this.src)">
-                            {{else}}
-                            <span class="block">No hay evidencia</span>
-                            {{/if}}
+                        <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.folio}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.año}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.mes}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.tipo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.importe}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
                         </td>
                     </tr>
                     {{/each}}
@@ -352,73 +340,51 @@
         <table class="min-w-full table-auto" id="tablaPagosPlazo">
             <thead>
                 <tr>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         FOLIO
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         MES INICIO
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         AÑO INICIO
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         MES FINAL
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         AÑO FINAL
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         TIPO PAGO
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
-                        FECHA
-                    </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
-                        REFERENCIA
-                    </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         IMPORTE
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         RECARGO
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         TOTAL
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         NÚMERO RECIBO
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
-                        REGISTRO
-                    </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center w-auto">
-                        EVIDENCIA
-                    </th>
-                </tr>
             </thead>
             <tbody id="tablaPagosPlazoBody">
                 {{#each datosPlazo}}
                 <tr>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.folio}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.mes_inicio}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.año_inicio}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.mes_final}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.año_final}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.tipo_pago}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.fecha}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.referencia}}</td>
-                    <td class="px-4 py-2 bg-white text-left border-b-2 border-gray-200 w-auto">${{this.importe}}</td>
-                    <td class="px-4 py-2 bg-white text-left border-b-2 border-gray-200 w-auto">${{this.recargo}}</td>
-                    <td class="px-4 py-2 bg-white text-left border-b-2 border-gray-200 w-auto">${{this.total}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.numero_recibo}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">{{this.registro}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 w-auto">
-                        {{#if this.evidencia}}
-                        <img src="{{this.evidencia}}" alt="Evidencia" class="h-28 max-w-20 mx-auto" onclick="mostrarImagen(this.src)">
-                        {{else}}
-                        No hay evidencia
-                        {{/if}}
-                    </td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.folio}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.mes_inicio}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.año_inicio}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.mes_final}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.año_final}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.tipo_pago}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-left border-b-2 border-gray-200 w-auto">${{this.importe}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-left border-b-2 border-gray-200 w-auto">${{this.recargo}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-left border-b-2 border-gray-200 w-auto">${{this.total}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.numero_recibo}}</td>
+                   
                 </tr>
                 {{/each}}
             </tbody>
