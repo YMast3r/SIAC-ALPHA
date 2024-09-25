@@ -18,22 +18,21 @@
                 <table class="w-full rounded-lg overflow-hidden">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">Id</th>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Nombre</th>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Correo</th>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">telefono</th>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">Estado
-                            </th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-center text-2xl font-medium rounded-tl-lg">Id</th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-center text-2xl font-medium">Nombre</th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-center text-2xl font-medium">Correo</th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-center text-2xl font-medium">Teléfono</th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-center text-2xl font-medium rounded-tr-lg">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each usuario}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.id}}</td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.nombre}}</td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.correo_electronico}}</td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.telefono}}</td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.status}}</td>
+                            <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">{{this.id}}</td>
+                            <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">{{this.nombre}}</td>
+                            <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">{{this.correo_electronico}}</td>
+                            <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">{{this.telefono}}</td>
+                            <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">{{this.status}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -61,13 +60,13 @@
             <table id="tablaIncidencias" class="w-full rounded-lg overflow-hidden">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">Folio</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Asunto</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Tipo</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Status</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Fecha</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Evidencia</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg"> </th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium rounded-tl-lg">Folio</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Asunto</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Tipo</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Status</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Fecha</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Evidencia</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium rounded-tr-lg"> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,15 +74,15 @@
                     <tr>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.folio}}
                         </td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center">
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl text-center">
                             {{this.asunto}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.tipo}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.status}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.fecha}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-r-xl border-br-lg">
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">{{this.tipo}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">{{this.status}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">{{this.fecha}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-r-xl border-br-lg">
                             {{#if this.evidencia}}
                             <img src="{{this.evidencia}}" alt="Evidencia"
-                                class="w-20 h-20 object-cover rounded-sm shadow-l-lg" onclick="mostrarImagen(this.src)">
+                                class="w-20 h-20 object-cover rounded-sm text-lg text-center shadow-l-lg" onclick="mostrarImagen(this.src)">
                             {{else}}
                             Sin evidencia
                             {{/if}}
@@ -100,7 +99,7 @@
     </div>
     {{/if}}
 
-    <div class="flex justify-center m-5">
+    <div class="text-2xl flex justify-center m-5">
         <h1 class="font-semibold text-4xl flex justify-center m-5">Alta</h1>
     </div>
     <!-- Formulario para agregar incidencia -->

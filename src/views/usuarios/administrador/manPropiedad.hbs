@@ -38,12 +38,12 @@
                 <table class="w-full rounded-lg overflow-hidden">
                     <thead>
                         <tr>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-sm rounded-tl-lg">
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg text-center rounded-tl-lg">
                                 ID PROPIEDAD</th>
-                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-sm">DESCRIPCIÓN
+                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
                             </th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-sm">CONDÓMINO</th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-sm rounded-tr-lg">
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">CONDÓMINO</th>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg  text-center rounded-tr-lg">
                                 TIPO PROPIEDAD</th>
 
                         </tr>
@@ -51,7 +51,7 @@
                     <tbody id="propiedadTable">
                         {{#each propiedad}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.id_propiedad}}
+                            <td class="px-4 py-2 bg-white text-center  border-b-2 border-gray-200">{{this.id_propiedad}}
                             </td>
                             <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.descripcion}}
                             </td>
@@ -91,11 +91,11 @@
                 <table class="w-full rounded-lg overflow-hidden ">
                     <thead>
                         <tr>
-                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-sm rounded-tl-lg">
+                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center rounded-tl-lg">
                                 TIPO PROPIEDAD</th>
-                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-sm">DESCRIPCIÓN
+                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
                             </th>
-                            <th class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium text-sm rounded-tr-lg">
+                            <th class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center rounded-tr-lg">
                                 PAGO</th>
                         </tr>
                     </thead>
@@ -122,15 +122,15 @@
         <div class="flex justify-center mt-25 space-x-48">
             <div {{!-- class="w-1/2" --}}>
                 <h2 class="font-semibold text-2xl  pt-10  py-2">Registrar Propiedad</h2>
-                <div class="bg-white p-4 border rounded-lg shadow-lg">
+                <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
                     <form action="/altaPropiedad" method="POST">
                         <table class="w-full  pt-10">
                             <tbody>
                                 <tr>
                                     <td class="p-2 ">
-                                        <label for="descripcionPropiedad" class="block text-sm">Descripción</label>
+                                        <label for="descripcionPropiedad" class="block text-lg">Descripción</label>
                                         <input type="text" name="descripcionPropiedad"
-                                            class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
+                                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
                                             placeholder="Descripción" id="descripcionPropiedad" required
                                             value="{{data.descripcionPropiedad}}">
                                     </td>
@@ -166,7 +166,7 @@
                                 <tr>
                                     <td class="p-2">
                                         <button type="submit"
-                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-sm px-6 py-2 block text-center">Registrar
+                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-lg px-6 py-2 block text-center">Registrar
                                             Propiedad</button>
                                     </td>
                                 </tr>
@@ -189,22 +189,22 @@
 
             <div {{!-- class="w-1/2" --}}>
                 <h2 class="font-semibold text-2xl  pt-10">Registrar tipo propiedad</h2>
-                <div class="bg-white p-4 border rounded-lg shadow-lg">
+                <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
                     <form action="/altaTipoPropiedad" method="POST">
                         <table class="w-full">
                             <tbody>
                                 <tr>
                                     <td class="p-2">
-                                        <label for="descripcionTipoPro" class="block text-sm">Descripción</label>
+                                        <label for="descripcionTipoPro" class="block text-lg">Descripción</label>
                                         <input type="text" name="descripcionTipoPro"
-                                            class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
+                                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
                                             placeholder="Descripción" id="descripcionTipoPro" required
                                             value="{{data.descripcionTipoPro}}">
                                     </td>
                                 </tr>
                                                             <tr>
                                 <td class="p-2">
-                                    <label for="pago" class="block text-sm">Pago</label>
+                                    <label for="pago" class="block text-lg">Pago</label>
                                     <div class="relative">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" 
@@ -216,7 +216,7 @@
                                             <path d="M12 3v3m0 12v3" />
                                         </svg>
                                         <input type="tel" name="pago"
-                                            class="border border-gray-200 w-full text-sm placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
+                                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
                                             placeholder="Pago" id="pago" required value="{{data.pago}}">
                                     </div>
                                 </td>
@@ -224,7 +224,7 @@
                                 <tr>
                                     <td class="p-2">
                                         <button type="submit"
-                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-sm px-6 py-2 block text-center">Registrar
+                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-lg px-6 py-2 block text-center">Registrar
                                             Pago</button>
                                     </td>
                                 </tr>
