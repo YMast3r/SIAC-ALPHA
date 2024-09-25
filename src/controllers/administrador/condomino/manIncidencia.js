@@ -84,7 +84,7 @@ function manIncidencia(req, res) {
                             if (statusRows && statusRows.length > 0) {
                                 const status = statusRows;
 
-                                conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, c.descripcion AS status, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario  WHERE a.id_usuario = ? ORDER BY folio ', [id], (err, rows) => {
+                                conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, c.descripcion AS status, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario  WHERE a.id_usuario = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                         return;
@@ -111,6 +111,7 @@ function manIncidencia(req, res) {
                                             name: req.session.name,
                                             id: req.session.idUser,
                                             tipoUsuario: tipo,
+                                            errorDatos: 1,
                                             usuario: usuario,
                                             tipos: tipos,
                                             status: status,

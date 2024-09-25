@@ -216,8 +216,5 @@
 - Iván, Leonel, Ivon y Regina: 3.4.3
 - Iván, Angel: 3.4.4
 - Iván y Regina: 3.4.5
-- Iván: 3.5
-- Iván: 3.5.1
-- Iván: 3.5.2
-- Iván: 3.5.3
+- Iván: 3.5 - 3.5.3
 - Iván, Ángel, Regina, Odette, Leonel, Ivon, Gabriel: 3.5.4 - 3.7
