@@ -49,7 +49,7 @@
     {{else}}
 
     <div>
-        <nav class="flex justify-center space-x-4 bg-gray-200 p-4">
+        <nav class="flex justify-center space-x-4 bg-gray-200 py-4 ">
             <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-10 rounded-md hover: gray-500 "
                 onclick="mostrarSeccion('info')">Información del
                 condómino</button>
@@ -62,7 +62,7 @@
 
     <div class="flex justify-around bg-gray-200 p-4">
         <a href="/renderRecuperarPropiedadPago">
-            <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Propiedad</h1>
+            <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-2">Propiedad</h1>
         </a>
     </div>
 
@@ -72,7 +72,7 @@
             <div class="w-full max-w-4xl">
                 {{!-- Tabla del condómino --}}
                 <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Condómino</h1>
-                <div class="overflow-x-auto max-h-60 mb-8">
+                <div class="overflow-x-auto max-h-60 mb-8 ">
                     <table class="w-full">
                         <thead>
                             <tr>
@@ -114,7 +114,7 @@
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID
+                                <th class="px-2 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID
                                     PROPIEDAD</th>
                                 <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium ">DESCRIPCIÓN</th>
                                 <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">TIPO
@@ -151,7 +151,7 @@
     {{else}}
 
     <a href="/renderPago">
-        <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Pagos</h1>
+        <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center">Pagos</h1>
     </a>
     <div class="text-center mb-5">
 
@@ -198,11 +198,11 @@
     <!-- Tabla de pagos -->
     {{!-- --}}
     <div class="w-full">
-        <div class="overflow-x-auto max-h-60">
+        <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
             <table class="w-full table-fixed" id="tablaPagos">
                 <thead>
                     <tr>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">FOLIO</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">FOLIO</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">AÑO</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">MES</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">TIPO PAGO</th>
@@ -210,13 +210,14 @@
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">RECARGO</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">TOTAL</th>
                         <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">NO. RECIBO</th>
+                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg">PLAZO</th>
 
                     </tr>
                 </thead>
                 <tbody id="tablaPagosBody">
                     {{#each datos}}
                     <tr class="w-full">
-                        <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.folio}}</td>
+                        <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-tl-lg">{{this.folio}}</td>
                         <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.año}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.mes}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.tipo}}</td>
@@ -224,7 +225,7 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
-                        </td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{!-- plazo --}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -335,12 +336,12 @@
 
 <!-- Tabla de pagos a plazos -->
     <!-- Tabla de pagos a plazos -->
-<div class="flex justify-center w-full mx-auto">
+<div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
     <div class="overflow-x-auto w-full">
         <table class="min-w-full table-auto" id="tablaPagosPlazo">
             <thead>
                 <tr>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto rounded-tl-lg">
                         FOLIO
                     </th>
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
@@ -367,23 +368,23 @@
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         TOTAL
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto rounded-r-lg">
                         NÚMERO RECIBO
                     </th>
             </thead>
             <tbody id="tablaPagosPlazoBody">
                 {{#each datosPlazo}}
                 <tr>
-                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.folio}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto rounded-l-lg">{{this.folio}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.mes_inicio}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.año_inicio}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.mes_final}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.año_final}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.tipo_pago}}</td>
-                    <td class="px-4 py-2 bg-white text-lg text-left border-b-2 border-gray-200 w-auto">${{this.importe}}</td>
-                    <td class="px-4 py-2 bg-white text-lg text-left border-b-2 border-gray-200 w-auto">${{this.recargo}}</td>
-                    <td class="px-4 py-2 bg-white text-lg text-left border-b-2 border-gray-200 w-auto">${{this.total}}</td>
-                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.numero_recibo}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">${{this.importe}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">${{this.recargo}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">${{this.total}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto rounded-r-lg">{{this.numero_recibo}}</td>
                    
                 </tr>
                 {{/each}}
