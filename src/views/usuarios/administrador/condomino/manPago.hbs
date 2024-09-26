@@ -49,20 +49,20 @@
     {{else}}
 
     <div>
-        <nav class="flex justify-center space-x-4 bg-gray-200 py-4 ">
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-10 rounded-md hover: gray-500 "
-                onclick="mostrarSeccion('info')">Información del
-                condómino</button>
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-20 rounded-md hover: gray-500"
-                onclick="mostrarSeccion('pagos')">Pagos</button>
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-20 rounded-md hover: gray-500"
-                onclick="mostrarSeccion('pagos_plazos')">Pago a plazos </button>
-        </nav>
+            <nav class="flex justify-end {{!-- space-x-4 --}} bg-gray-200 pr-5 ">
+                <button class=" w-16 border-l-2 border-solid border-white overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-4"
+                    onclick="mostrarSeccion('info')">Información del
+                    condómino</button>
+                <button class=" w-16 border-r-2 border-l-2 border-solid border-white-100 overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-28 rounded-b-lg  hover: gray-500 -mr-4"
+                    onclick="mostrarSeccion('pagos')">Pagos</button>
+                <button class=" w-16 border-l-2 border-solid border-white-100 overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4"
+                    onclick="mostrarSeccion('pagos_plazos')">Pago a plazos </button>
+            </nav>
     </div>
 
-    <div class="flex justify-around bg-gray-200 p-4">
+    <div class="flex justify-around bg-gray-200">
         <a href="/renderRecuperarPropiedadPago">
-            <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-2">Propiedad</h1>
+            <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pb-4">Propiedad</h1>
         </a>
     </div>
 
