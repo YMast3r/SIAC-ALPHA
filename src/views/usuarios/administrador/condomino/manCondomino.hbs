@@ -15,8 +15,8 @@
             class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-10">Condóminos</a>
 
         <!-- Campo de busqueda -->
-        <div class="flex justify-center pt-10 mb-0">
-            <div class="relative w-4/6 w-full max-w-7xl">
+        <div class="flex justify-center pt-10">
+            <div class="relative w-full max-w-7xl">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                 </span>
@@ -25,11 +25,11 @@
             </div>
         </div>
         <div class="flex justify-center">
-            <div class="overflow-x-auto max-h-60 w-full max-w-7xl">
+            <div class="overflow-x-auto max-h-96 rounded-lg w-full max-w-7xl">
                 <table class="w-full" id="condominosTable">
                     <thead>
                         <tr>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-l-lg">ID</th>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">NOMBRE</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">CORREO</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">TELÉFONO</th>
@@ -39,19 +39,19 @@
                             </th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">PAGO</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">INCIDENCIA</th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-br-lg">SANCIÓN
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">SANCIÓN
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each datos}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 rounded-md ">{{this.id}}</td>
+                            <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.id}}</td>
                             <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.nombre}}</td>
                             <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.correo_electronico}}</td>
                             <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.telefono}}</td>
                             <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.status}}</td>
-                            <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200 text-lg text-center rounded-lg "><a
+                            <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200 text-lg text-center"><a
                                     href="/ediCondomino{{id}}"><svg class="  mx-auto h-8 w-10 text-gray-600" width="24"
                                         height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -122,7 +122,7 @@
                             condómino</h2>
                         <div class="overflow-x-auto max-h-60 rounded-lg">
                             <div class="p-4">
-                                <table class="w-full max-w-4xl mx-auto rounded-lg overflow-hidden">
+                                <table class="w-7/12 mx-auto rounded-lg overflow-hidden">
                                     <thead>
                                         <tr>
                                             <th
@@ -140,9 +140,9 @@
                                         <tr>
                                             <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
                                                 {{this.id_propiedad}}</td>
-                                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200">
+                                            <td class="px-6 py-2 bg-white text-center border-b-2 border-gray-200">
                                                 {{this.descripcion}}</td>
-                                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200">
+                                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
                                                 {{this.tipo_propiedad}}</td>
                                         </tr>
                                         {{/each}}
@@ -158,8 +158,8 @@
                         <!-- Segunda tabla -->
                         {{#if propiedades}}
                         <h2 class="text-center font-bold text-xl mb-4">Propiedades disponibles</h2>
-                        <div class="overflow-x-auto max-h-60 mb-8"> <!-- Añadido margen inferior para separación -->
-                            <table class="w-full max-w-7xl mx-auto rounded-lg overflow-hidden">
+                        <div class="overflow-x-auto max-h-60 mb-20"> <!-- Añadido margen inferior para separación -->
+                            <table class="w-7/12 mx-auto rounded-lg overflow-hidden">
                                 <thead>
                                     <tr>
                                         <th
@@ -178,9 +178,9 @@
                                     <tr>
                                         <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">
                                             {{this.id_propiedad}}</td>
-                                        <td class="px-6 py-2 bg-white border-b border-gray-200">{{this.descripcion}}
+                                        <td class="px-6 py-2 bg-white border-b border-gray-200 text-center">{{this.descripcion}}
                                         </td>
-                                        <td class="px-4 py-2 bg-white border-b border-gray-200">{{this.tipo_propiedad}}
+                                        <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">{{this.tipo_propiedad}}
                                         </td>
                                         <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">
                                             <a href="/anexarPropiedad-{{id_propiedad}}"
