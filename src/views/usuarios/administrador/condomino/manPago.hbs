@@ -48,31 +48,45 @@
 
     {{else}}
 
-    <div>
+<div>
             <nav class="flex justify-end {{!-- space-x-4 --}} bg-gray-200 pr-2">
                 
-                <button class=" w-20 {{!-- border-l-2 border-solid border-white --}} overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  formaParaPestañas"
+                <button id="formaClipPath3" class=" w-20 {{!-- border-l-2 border-solid border-white --}} overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  clip-path-Forma-Triangular"
                     onclick="mostrarSeccion('info')">Información del condómino
                 </button>
 
-                <button class=" w-20 {{!-- border-r-2 border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-28 rounded-b-lg  hover:gray-500 -mr-4 formaParaPestañas   "
-                    onclick="mostrarSeccion('pagos')">Pagos
+                <button id="formaClipPath2" class=" w-20 {{!-- border-r-2 border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-28 rounded-b-lg  hover:gray-500 -mr-4    "
+                    onclick="mostrarSeccion('pagos')">Pagos 
                 </button>
 
-                <button class=" w-16 {{!-- border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4   formaParaPestañas"
-                    onclick="mostrarSeccion('pagos_plazos')">Plazos de pagos 
+                <button id="formaClipPath" class=" w-16 {{!-- border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4 clip-path-Pestañas " onclick="mostrarSeccion('pagos_plazos')-"  >  Plazos de pagos 
                 </button>
 
             </nav>
-    </div>
-    <style>
-        
-        .formaParaPestañas{
-            clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%);
-            
-        }
-        
-    </style>
+        </div>
+        <script>
+            // Selecciona el botón
+            const formaClipPath = document.getElementById('formaClipPath');
+            // Aplica el clip-path directamente usando JavaScript
+            formaClipPath.style.clipPath = 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)';
+            formaClipPath.style.position = 'relative';
+            formaClipPath.style.top = '-1px';
+
+            const formaClipPath2 = document.getElementById('formaClipPath2');
+            formaClipPath2.style.clipPath = 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)';
+            formaClipPath2.style.position = 'relative';
+            formaClipPath2.style.top = '-2px';
+
+            const formaClipPath3 = document.getElementById('formaClipPath3');
+            formaClipPath3.style.clipPath = 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)';
+            formaClipPath3.style.position = 'relative';
+            formaClipPath3.style.top = '-1px';
+        </script>
+
+
+
+
+
 
     <div class="flex justify-around bg-gray-200">
         <a href="/renderRecuperarPropiedadPago">
