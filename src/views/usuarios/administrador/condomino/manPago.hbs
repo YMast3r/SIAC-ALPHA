@@ -48,6 +48,53 @@
 
     {{else}}
 
+<div>
+            <nav class="flex justify-end {{!-- space-x-4 --}} bg-gray-200 pr-2">
+                
+                <button id="formaClipPath3" class=" w-20 {{!-- border-l-2 border-solid border-white --}} overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  clip-path-Forma-Triangular"
+                    onclick="mostrarSeccion('info')">Información del condómino
+                </button>
+
+                <button id="formaClipPath2" class=" w-20 {{!-- border-r-2 border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-28 rounded-b-lg  hover:gray-500 -mr-4    "
+                    onclick="mostrarSeccion('pagos')">Pagos 
+                </button>
+
+                <button id="formaClipPath" class=" w-16 {{!-- border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4 clip-path-Pestañas " onclick="mostrarSeccion('pagos_plazos')"  >  Plazos de pagos 
+                </button>
+
+            </nav>
+        </div>
+        <script>
+            // Selecciona los elementos y sus configuraciones
+            const elementos = [
+                { id: 'formaClipPath', top: '-1px', textoInicial: 'Plazos', textoHover: 'Pago a plazos', widthInicial: '5rem', widthHover: '9rem' },
+                { id: 'formaClipPath2', top: '-2px', widthInicial: '6rem' },
+                { id: 'formaClipPath3', top: '-1px', textoInicial: 'Info.', textoHover: 'Información del condómino', widthInicial: '5.5rem', widthHover: '18rem' }
+            ];
+
+            // Función para aplicar el clip-path y estilos
+            elementos.forEach(elemento => {
+                const el = document.getElementById(elemento.id);
+                el.style.clipPath = 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)';
+                el.style.position = 'relative';
+                el.style.top = elemento.top;
+
+                if (elemento.textoInicial) {
+                    el.textContent = elemento.textoInicial;
+                    el.style.width = elemento.widthInicial;
+
+                    el.addEventListener('mouseover', () => {
+                        el.style.width = elemento.widthHover;
+                        el.textContent = elemento.textoHover;
+                    });
+
+                    el.addEventListener('mouseout', () => {
+                        el.style.width = elemento.widthInicial;
+                        el.textContent = elemento.textoInicial;
+                    });
+                }
+            });
+        </script>
     <div>
         <nav class="flex justify-center space-x-4 bg-gray-200 py-4 ">
             <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-10 rounded-md hover: gray-500 "
@@ -250,9 +297,8 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.importe}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}
-                        </td>
-                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{!-- plazo --}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">0{{!-- plazo --}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
