@@ -48,14 +48,16 @@
 
     {{else}}
 
-<div>
-            <nav class="flex justify-end {{!-- space-x-4 --}} bg-gray-200 pr-2">
+    {{!-- ---PESTAÑAS--- --}}
+
+        <div>
+            <nav class="flex justify-end bg-gray-200 pr-2 ">
                 
-                <button id="formaClipPath3" class=" w-20 {{!-- border-l-2 border-solid border-white --}} overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  clip-path-Forma-Triangular"
+                <button id="formaClipPath3" class=" w-20  {{!-- border-l-2 border-solid border-white --}} overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  clip-path-Forma-Triangular"
                     onclick="mostrarSeccion('info')">Información del condómino
                 </button>
 
-                <button id="formaClipPath2" class=" w-20 {{!-- border-r-2 border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-28 rounded-b-lg  hover:gray-500 -mr-4    "
+                <button id="formaClipPath2" class=" w-24 {{!-- border-r-2 border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-28 rounded-b-lg  hover:gray-500 -mr-4  "
                     onclick="mostrarSeccion('pagos')">Pagos 
                 </button>
 
@@ -69,7 +71,7 @@
             const elementos = [
                 { id: 'formaClipPath', top: '-1px', textoInicial: 'Plazos', textoHover: 'Pago a plazos', widthInicial: '5rem', widthHover: '9rem' },
                 { id: 'formaClipPath2', top: '-2px', widthInicial: '6rem' },
-                { id: 'formaClipPath3', top: '-1px', textoInicial: 'Info.', textoHover: 'Información del condómino', widthInicial: '5.5rem', widthHover: '18rem' }
+                { id: 'formaClipPath3', top: '-2px', textoInicial: 'Info.', textoHover: 'Información del condómino', widthInicial: '5.5rem', widthHover: '18rem' }
             ];
 
             // Función para aplicar el clip-path y estilos
@@ -95,6 +97,9 @@
                 }
             });
         </script>
+
+
+
 
     <div class="flex justify-around bg-gray-200 p-4">
         <a href="/renderRecuperarPropiedadPago">
