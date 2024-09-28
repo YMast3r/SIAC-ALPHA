@@ -202,7 +202,14 @@
             <table class="w-full table-fixed" id="tablaPagos">
                 <thead>
                     <tr>
-                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">FOLIO</th>
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
+                            
+                            <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
+                                FOLIO
+                                <a href="?order=desc" id="flechaDesc" onclick="ordenarTabla()" data-order="desc">&darr;</a>
+                                <a href="?order=asc" id="flechaAsc" onclick="ordenarTabla()" data-order="asc">&uarr;</a>
+                            </div>
+                            </th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">AÑO</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">MES</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">TIPO PAGO</th>
@@ -656,6 +663,35 @@
             document.getElementById('filtroAño').addEventListener('input', verificarPagos);
             document.getElementById('mesFiltro').addEventListener('change', verificarPagos);
         });
+
+        document.getElementById('contenedorFlecha').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // flechas
+        let abajo = document.getElementById('flechaDesc');
+        let arriba = document.getElementById('flechaAsc');
+
+        // Verificar si está en descendente
+        if (abajo.getAttribute('data-order') === 'desc') {
+            // Cambio a orden ascendente
+            abajo.innerHTML = '&uarr;';
+            abajo.setAttribute('data-order', 'asc');
+
+            // Cambiar arriba a descendente
+            arriba.innerHTML = '&darr;';
+            arriba.setAttribute('data-order', 'desc');
+        } else {
+            // Cambio a orden descendente
+            abajo.innerHTML = '&darr;';
+            abajo.setAttribute('data-order', 'desc');
+
+            // Cambiar arriba a ascendente
+            arriba.innerHTML = '&uarr;';
+            arriba.setAttribute('data-order', 'asc');
+        }
+    });
+
+
     </script>
 </body>
 

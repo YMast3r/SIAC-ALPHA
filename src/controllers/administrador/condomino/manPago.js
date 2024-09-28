@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('imagen');
 
+
 function renPago(req, res) {
     // Recuperamos el id guardado
     const id = req.session.idPropiedad;
@@ -168,6 +169,7 @@ function manPago(req, res) {
                             }
                             if (rows.length > 0) {
                                 const tipoPago = rows;
+                                
                                 conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
@@ -646,5 +648,5 @@ module.exports = {
     manPago,
     recuperarPropiedadPago,
     renderRecuperarPropiedadPago,
-    altaPagoPlazo,
-};
+    altaPagoPlazo
+}
