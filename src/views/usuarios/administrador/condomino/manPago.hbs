@@ -206,8 +206,8 @@
                             
                             <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
                                 FOLIO
-                                <a href="?order=desc" id="flechaDesc" onclick="ordenarTabla()" data-order="desc">&darr;</a>
-                                <a href="?order=asc" id="flechaAsc" onclick="ordenarTabla()" data-order="asc">&uarr;</a>
+                                <a href="javascript:void(0);" id="flechaDesc" onclick="ordenarTabla()" data-order="desc">&darr;</a>
+                                <a href="javascript:void(0);" id="flechaAsc" onclick="ordenarTabla()" data-order="asc">&uarr;</a>
                             </div>
                             </th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">AÑO</th>
@@ -667,6 +667,45 @@
         document.getElementById('contenedorFlecha').addEventListener('click', function(event) {
         event.preventDefault();
 
+            function ordenarTabla() {
+        let abajo = document.getElementById('flechaDesc');
+        let arriba = document.getElementById('flechaAsc');
+        let order = abajo.getAttribute('data-order');
+        let tableBody = document.getElementById('tablaPagosBody');
+        let rows = Array.from(tableBody.querySelectorAll('tr'));
+
+        // Toggle the arrow icons and order
+        if (order === 'desc') {
+            abajo.innerHTML = '&uarr;';
+            abajo.setAttribute('data-order', 'asc');
+            arriba.innerHTML = '&darr;';
+            arriba.setAttribute('data-order', 'desc');
+
+            // Sort rows in ascending order (can be customized based on column)
+            rows.sort((a, b) => {
+                let valA = a.cells[0].innerText;  // Assuming sorting by first column (FOLIO)
+                let valB = b.cells[0].innerText;
+                return valA.localeCompare(valB, undefined, { numeric: true });
+            });
+        } else {
+            abajo.innerHTML = '&darr;';
+            abajo.setAttribute('data-order', 'desc');
+            arriba.innerHTML = '&uarr;';
+            arriba.setAttribute('data-order', 'asc');
+
+            // Sort rows in descending order
+            rows.sort((a, b) => {
+                let valA = a.cells[0].innerText;
+                let valB = b.cells[0].innerText;
+                return valB.localeCompare(valA, undefined, { numeric: true });
+            });
+        }
+
+        // Clear the table body and append the sorted rows
+        tableBody.innerHTML = '';
+        rows.forEach(row => tableBody.appendChild(row));
+    }
+
         // flechas
         let abajo = document.getElementById('flechaDesc');
         let arriba = document.getElementById('flechaAsc');
@@ -676,7 +715,7 @@
             // Cambio a orden ascendente
             abajo.innerHTML = '&uarr;';
             abajo.setAttribute('data-order', 'asc');
-
+            ordenarTabla()
             // Cambiar arriba a descendente
             arriba.innerHTML = '&darr;';
             arriba.setAttribute('data-order', 'desc');
@@ -684,12 +723,15 @@
             // Cambio a orden descendente
             abajo.innerHTML = '&darr;';
             abajo.setAttribute('data-order', 'desc');
-
+            ordenarTabla()
             // Cambiar arriba a ascendente
             arriba.innerHTML = '&uarr;';
             arriba.setAttribute('data-order', 'asc');
         }
     });
+
+
+
 
 
     </script>
