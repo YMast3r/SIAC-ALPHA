@@ -287,7 +287,7 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
-                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">0{{!-- plazo --}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -457,7 +457,6 @@
                             <td
                                 class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto rounded-r-lg">
                                 {{this.numero_recibo}}</td>
-
                         </tr>
                         {{/each}}
                     </tbody>

@@ -93,20 +93,21 @@ CREATE TABLE `pago` (
   `numero_recibo` int(11) DEFAULT NULL,
   `referencia` varchar(255) DEFAULT NULL,
   `evidencia` text DEFAULT NULL,
-  `id_administrador` int(11) DEFAULT NULL
+  `id_administrador` int(11) DEFAULT NULL,
+  `id_plazo` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `pago`
 --
 
-INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`) VALUES
-(1, 1, 800, 100, 2024, 1, '2024-09-11', 1, 01, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(2, 1, 800, 100, 2024, 2, '2024-09-11', 1, 02, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(3, 1, 800, 100, 2024, 3, '2024-09-11', 1, 03, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(4, 1, 800, 100, 2024, 4, '2024-09-11', 1, 04, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(5, 1, 800, 100, 2024, 5, '2024-09-11', 1, 05, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2),
-(6, 1, 800, 100, 2024, 6, '2024-09-11', 1, 06, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2);
+INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`) VALUES
+(1, 1, 800, 100, 2024, 1, '2024-09-11', 1, 01, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(2, 1, 800, 100, 2024, 2, '2024-09-11', 1, 02, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(3, 1, 800, 100, 2024, 3, '2024-09-11', 1, 03, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(4, 1, 800, 100, 2024, 4, '2024-09-11', 1, 04, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(5, 1, 800, 100, 2024, 5, '2024-09-11', 1, 05, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(6, 1, 800, 100, 2024, 6, '2024-09-11', 1, 06, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -384,6 +385,7 @@ ALTER TABLE `pago`
   ADD KEY `FK_propiedad_pago` (`id_propiedad`),
   ADD KEY `FK_usuarios_mes` (`mes`),
   ADD KEY `FK_usuarios_administrador` (`id_administrador`),
+  ADD KEY `FK_id_plazo` (`id_plazo`),
   ADD KEY `FK_pago_tipo_pago` (`tipo_pago`);
 
 --
@@ -537,6 +539,7 @@ ALTER TABLE `pago`
   ADD CONSTRAINT `FK_pago_tipo_pago` FOREIGN KEY (`tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`),
   ADD CONSTRAINT `FK_propiedad_pago` FOREIGN KEY (`id_propiedad`) REFERENCES `propiedad` (`id_propiedad`),
   ADD CONSTRAINT `FK_usuarios_administrador` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `FK_id_plazo` FOREIGN KEY (`id_plazo`) REFERENCES `pago_plazos` (`folio`),
   ADD CONSTRAINT `FK_usuarios_mes` FOREIGN KEY (`mes`) REFERENCES `mes` (`mes`);
 
 --

@@ -169,8 +169,8 @@ function manPago(req, res) {
                             }
                             if (rows.length > 0) {
                                 const tipoPago = rows;
-                                
-                                conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+
+                                conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                     }
@@ -272,11 +272,11 @@ function altaPago(req, res) {
         // Extraer año y mes del campo fecha
         const [year, mes] = data.fecha.split('-');
 
-        if (data.reciboFolio == ""){
+        if (data.reciboFolio == "") {
             data.reciboFolio = null;
         }
 
-        if (data.referencia == ""){
+        if (data.referencia == "") {
             data.referencia = null;
         }
 
@@ -418,12 +418,12 @@ function altaPagoPlazo(req, res) {
         const [añoInicio, mesInicio] = data.fechaInicio.split('-');
         // Extraer año y mes del campo fecha Inicio
         const [añoFin, mesFin] = data.fechaFin.split('-');
-        
-        if (data.reciboFolioPlazo == ""){
+
+        if (data.reciboFolioPlazo == "") {
             data.reciboFolioPlazo = null;
         }
 
-        if (data.referenciaPlazo == ""){
+        if (data.referenciaPlazo == "") {
             data.referenciaPlazo = null;
         }
 
@@ -553,70 +553,80 @@ function altaPagoPlazo(req, res) {
                                                 recargoOperacion = 0; // O algún valor por defecto apropiado
                                             }
 
-                                            for (let año = añoInicio; año <= añoFin; año++) {
-                                                // Definir el mes de inicio y fin para cada año
-                                                let mesIni = (año === añoInicio) ? mesInicio : 1;
-                                                let mesFinLoop = (año === añoFin) ? mesFin : 12;
+                                            // Ingresar el pago en la tabla "pagoPlazos"
+                                            const queryPagoPlazo = tipo == 3 ?
+                                                'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
+                                                'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                            let pagoPlazo;
 
-                                                // Iterar sobre los meses del año actual
-                                                for (let mes = mesIni; mes <= mesFinLoop; mes++) {
-                                                    if (tipo == 3) {
-                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta]);
-                                                    } else {
-                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta]);
-                                                    }
-                                                }
+                                            const importePlazo = importe * totalMeses;
+                                            if (data.recargoPlazo) {
+                                                data.recargoPlazo = data.recargoPlazo.replace(/,/g, ''); // Remueve todas las comas del precio
+                                            }
+                                            if (data.recargoPlazo === null) {
+                                                data.recargoPlazo = 0;
+                                            }
+                                            if (tipo == 3) {
+                                                pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, importePlazo, data.recargoPlazo, imagenRuta];
+                                            } else {
+                                                pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
                                             }
 
-                                            const queryPagos = tipo == 3 ?
-                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia) VALUES ?' :
-                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia) VALUES ?';
-
-                                            conn.query(queryPagos, [pagos], (err) => {
+                                            conn.query(queryPagoPlazo, pagoPlazo, (err) => {
                                                 if (err) {
                                                     console.log(err);
-                                                    req.session.errorMPagoP = 'Error al insertar los pagos';
+                                                    req.session.errorMPagoP = 'Error al insertar el pago en pagoPlazos';
                                                     renPago(req, res);
                                                 }
 
-                                                // Ingresar el pago en la tabla "pagoPlazos"
-                                                const queryPagoPlazo = tipo == 3 ?
-                                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
-                                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                                let pagoPlazo;
-                                                const importePlazo = importe * totalMeses;
-                                                if (data.recargoPlazo) {
-                                                    data.recargoPlazo = data.recargoPlazo.replace(/,/g, ''); // Remueve todas las comas del precio
-                                                }
-                                                if (data.recargoPlazo === null) {
-                                                    data.recargoPlazo = 0;
-                                                }
-                                                if (tipo == 3) {
-                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, importePlazo, data.recargoPlazo, imagenRuta];
-                                                } else {
-                                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
-                                                }
-
-                                                conn.query(queryPagoPlazo, pagoPlazo, (err) => {
+                                                conn.query('SELECT MAX(folio) as folio FROM pago_plazos', (err, rows) => {
                                                     if (err) {
                                                         console.log(err);
-                                                        req.session.errorMPagoP = 'Error al insertar el pago en pagoPlazos';
+                                                        req.session.errorMPagoP = 'Error al insertar los pagos';
                                                         renPago(req, res);
                                                     }
+                                                    const id_plazo = rows[0].folio;
 
-                                                    if (imagenRuta) {
-                                                        const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
-                                                        fs.rename(req.file.path, targetPath, function (err) {
-                                                            if (err) {
-                                                                console.log(err);
-                                                                req.session.errorMPagoP = 'Error al mover la imagen';
-                                                                renPago(req, res);
+                                                    for (let año = añoInicio; año <= añoFin; año++) {
+                                                        // Definir el mes de inicio y fin para cada año
+                                                        let mesIni = (año === añoInicio) ? mesInicio : 1;
+                                                        let mesFinLoop = (año === añoFin) ? mesFin : 12;
+
+                                                        // Iterar sobre los meses del año actual
+                                                        for (let mes = mesIni; mes <= mesFinLoop; mes++) {
+                                                            if (tipo == 3) {
+                                                                pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta, id_plazo]);
+                                                            } else {
+                                                                pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta, id_plazo]);
                                                             }
-                                                            return renderPago(req, res);
-                                                        });
-                                                    } else {
-                                                        return renderPago(req, res);
+                                                        }
                                                     }
+
+                                                    const queryPagos = tipo == 3 ?
+                                                        'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia, id_plazo) VALUES ?' :
+                                                        'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia, id_plazo) VALUES ?';
+
+                                                    conn.query(queryPagos, [pagos], (err) => {
+                                                        if (err) {
+                                                            console.log(err);
+                                                            req.session.errorMPagoP = 'Error al insertar los pagos';
+                                                            renPago(req, res);
+                                                        }
+
+                                                        if (imagenRuta) {
+                                                            const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
+                                                            fs.rename(req.file.path, targetPath, function (err) {
+                                                                if (err) {
+                                                                    console.log(err);
+                                                                    req.session.errorMPagoP = 'Error al mover la imagen';
+                                                                    renPago(req, res);
+                                                                }
+                                                                return renderPago(req, res);
+                                                            });
+                                                        } else {
+                                                            return renderPago(req, res);
+                                                        }
+                                                    });
                                                 });
                                             });
                                         }
