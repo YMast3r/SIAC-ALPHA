@@ -17,7 +17,7 @@
     {{!-- Tabla de las propiedades del condomino--}}
     <div class="text-center">
         <h1 class="font-semibold text-4xl flex justify-center m-5 pt-5 ">Propiedades del condómino</h1>
-        <div class="overflow-x-auto max-h-60  rounded-lg  pt-5 ">
+        <div class="overflow-x-auto max-h-60 rounded-lg pt-5 ">
             <table class="w-full max-w-5xl mx-auto rounded-lg overflow-hidden">
                 <thead>
                     <tr>
@@ -49,20 +49,34 @@
     {{else}}
 
     <div>
-        <nav class="flex justify-center space-x-4 bg-gray-200 py-4 ">
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-10 rounded-md hover: gray-500 "
-                onclick="mostrarSeccion('info')">Información del
-                condómino</button>
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-20 rounded-md hover: gray-500"
-                onclick="mostrarSeccion('pagos')">Pagos</button>
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-20 rounded-md hover: gray-500"
-                onclick="mostrarSeccion('pagos_plazos')">Pago a plazos </button>
-        </nav>
-    </div>
+            <nav class="flex justify-end {{!-- space-x-4 --}} bg-gray-200 pr-2">
+                
+                <button class=" w-20 {{!-- border-l-2 border-solid border-white --}} overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  formaParaPestañas"
+                    onclick="mostrarSeccion('info')">Información del condómino
+                </button>
 
-    <div class="flex justify-around bg-gray-200 p-4">
+                <button class=" w-20 {{!-- border-r-2 border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-28 rounded-b-lg  hover:gray-500 -mr-4 formaParaPestañas   "
+                    onclick="mostrarSeccion('pagos')">Pagos
+                </button>
+
+                <button class=" w-16 {{!-- border-l-2 border-solid border-white-100 --}} overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4   formaParaPestañas"
+                    onclick="mostrarSeccion('pagos_plazos')">Plazos de pagos 
+                </button>
+
+            </nav>
+    </div>
+    <style>
+        
+        .formaParaPestañas{
+            clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%);
+            
+        }
+        
+    </style>
+
+    <div class="flex justify-around bg-gray-200">
         <a href="/renderRecuperarPropiedadPago">
-            <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-2">Propiedad</h1>
+            <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pb-4">Propiedad</h1>
         </a>
     </div>
 
@@ -72,16 +86,16 @@
             <div class="w-full max-w-4xl">
                 {{!-- Tabla del condómino --}}
                 <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Condómino</h1>
-                <div class="overflow-x-auto max-h-60 mb-8 ">
+                <div class="overflow-x-auto max-h-60 mb-8 rounded-lg">
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">ID
                                 </th>
                                 <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">NOMBRE</th>
                                 <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">CORREO</th>
                                 <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">TELÉFONO</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">
                                     ESTADO
                                 </th>
                             </tr>
@@ -90,7 +104,7 @@
                             {{#each usuario}}
                             <tr>
                                 <td
-                                    class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md text-center">
+                                    class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-center">
                                     {{this.id}}
                                 </td>
                                 <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.nombre}}
@@ -100,7 +114,7 @@
                                 <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.telefono}}
                                 </td>
                                 <td
-                                    class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center rounded-md text-center">
+                                    class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center text-center">
                                     {{this.status}}</td>
                             </tr>
                             {{/each}}
@@ -110,26 +124,26 @@
 
                 {{!-- Tabla de la propiedad del usuario --}}
                 <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedades del condómino</h1>
-                <div class="overflow-x-auto max-h-60">
+                <div class="overflow-x-auto max-h-60 rounded-lg">
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="px-2 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID
+                                <th class="px-2 py-2 bg-white border-b-2 border-gray-400 font-medium">ID
                                     PROPIEDAD</th>
                                 <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium ">DESCRIPCIÓN</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">TIPO
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium ">TIPO
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each usuarioPro}}
                             <tr>
-                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md">
+                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
                                     {{this.id_propiedad}}</td>
                                 <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
                                     {{this.descripcion}}
                                 </td>
-                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md">
+                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
                                     {{this.tipo_propiedad}}</td>
                             </tr>
 
@@ -198,10 +212,11 @@
     <!-- Tabla de pagos -->
     {{!-- --}}
     <div class="w-full">
-        <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
+        <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto rounded-lg">
             <table class="w-full table-fixed" id="tablaPagos">
                 <thead>
                     <tr>
+
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
                             
                             <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
@@ -210,6 +225,9 @@
                                 <a href="javascript:void(0);" id="flechaAsc" onclick="ordenarTabla()" data-order="asc">&uarr;</a>
                             </div>
                             </th>
+
+                        <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-tl-lg">FOLIO</th>
+
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">AÑO</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">MES</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">TIPO PAGO</th>
@@ -217,14 +235,14 @@
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">RECARGO</th>
                         <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">TOTAL</th>
                         <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">NO. RECIBO</th>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg">PLAZO</th>
+                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">PLAZO</th>
 
                     </tr>
                 </thead>
                 <tbody id="tablaPagosBody">
                     {{#each datos}}
                     <tr class="w-full">
-                        <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-tl-lg">{{this.folio}}</td>
+                        <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.folio}}</td>
                         <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.año}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.mes}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.tipo}}</td>
@@ -344,11 +362,11 @@
 <!-- Tabla de pagos a plazos -->
     <!-- Tabla de pagos a plazos -->
 <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
-    <div class="overflow-x-auto w-full">
+    <div class="overflow-x-auto w-full rounded-lg">
         <table class="min-w-full table-auto" id="tablaPagosPlazo">
             <thead>
                 <tr>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto rounded-tl-lg">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         FOLIO
                     </th>
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
@@ -375,14 +393,14 @@
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         TOTAL
                     </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto rounded-r-lg">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
                         NÚMERO RECIBO
                     </th>
             </thead>
             <tbody id="tablaPagosPlazoBody">
                 {{#each datosPlazo}}
                 <tr>
-                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto rounded-l-lg">{{this.folio}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.folio}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.mes_inicio}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.año_inicio}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.mes_final}}</td>
@@ -391,7 +409,7 @@
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">${{this.importe}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">${{this.recargo}}</td>
                     <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">${{this.total}}</td>
-                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto rounded-r-lg">{{this.numero_recibo}}</td>
+                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200 w-auto">{{this.numero_recibo}}</td>
                    
                 </tr>
                 {{/each}}
