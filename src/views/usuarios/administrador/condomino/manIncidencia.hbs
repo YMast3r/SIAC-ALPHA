@@ -60,7 +60,13 @@
             <table id="tablaIncidencias" class="w-full rounded-lg overflow-hidden">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium rounded-tl-lg">Folio</th>
+                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
+                            <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
+                                Folio
+                                <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
+                                <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                            </div>
+                        </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Asunto</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Tipo</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Status</th>
@@ -69,7 +75,7 @@
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium rounded-tr-lg"> </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tablaIncidenciaBody">
                     {{#each datos}}
                     <tr>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.folio}}
@@ -197,6 +203,59 @@
                 tabla.getElementsByTagName("tbody")[0].appendChild(filaNoEncontrado);
             }
         }
+
+        //flechita para el folio
+        document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // flechas
+            let abajo = document.getElementById('flechaDesc');
+            let arriba = document.getElementById('flechaAsc');
+
+            let orden; // Definir la variable "orden"
+
+            // Verificar si está en descendente
+            if (abajo.getAttribute('data-order') === 'desc') {
+                // Cambio a orden ascendente
+                abajo.innerHTML = '&uarr;';
+                abajo.setAttribute('data-order', 'asc');
+                orden = 'asc'; // Cambiar el valor de "orden"
+
+                // Cambiar arriba a descendente
+                arriba.innerHTML = '&darr;';
+                arriba.setAttribute('data-order', 'desc');
+            } else {
+                // Cambio a orden descendente
+                abajo.innerHTML = '&darr;';
+                abajo.setAttribute('data-order', 'desc');
+                orden = 'desc'; // Cambiar el valor de "orden"
+
+                // Cambiar arriba a ascendente
+                arriba.innerHTML = '&uarr;';
+                arriba.setAttribute('data-order', 'asc');
+            }
+
+            let tbody = document.getElementById('tablaIncidenciaBody');
+            let filas = Array.from(tbody.getElementsByTagName('tr'));
+
+            // Ordenar las filas en base a la primera columna (FOLIO)
+            filas.sort(function (a, b) {
+                let valorA = a.getElementsByTagName('td')[0].innerText;
+                let valorB = b.getElementsByTagName('td')[0].innerText;
+
+                if (orden === 'asc') {
+                    return valorA.localeCompare(valorB, undefined, { numeric: true });
+                } else {
+                    return valorB.localeCompare(valorA, undefined, { numeric: true });
+                }
+            });
+
+            // Limpiar el tbody y agregar las filas ordenadas
+            tbody.innerHTML = '';
+            filas.forEach(function (fila) {
+                tbody.appendChild(fila);
+            });
+        });
     </script>
 </body>
 <script src="imagen.js"></script>

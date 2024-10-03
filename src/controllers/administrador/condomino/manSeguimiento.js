@@ -218,7 +218,8 @@ function altaSeguimiento(req, res) {
                             } catch {
                                 console.log('No hay imagen')
                             }
-                            req.session.errorMSeg = 'Ya existe ese estado';
+                            //lo de abajo hace que cada vez que actualize la pagina me de ese mensaje
+                            //req.session.errorMSeg = 'Ya existe ese estado';
                             req.session.dataCampos = data;
                             renSeguimiento(req, res);
                         }
