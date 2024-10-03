@@ -284,7 +284,7 @@ CREATE TABLE `tipo_pago` (
 INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripcion`, `precio`) VALUES
 (1, 'Cuota', NULL),
 (2, 'Recargo', NULL),
-(3, 'Cuota extraordinaria', 800);
+(3, 'Cuota extraordinaria', 1100);
 
 -- --------------------------------------------------------
 
@@ -353,8 +353,8 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`,
 (2, 'Ivan', 'IvanSebastian@gmail.com', '$2b$12$1SGgp4REQ8oF178B55IgfeEzFvx4gD2L1wAH6lQTW5dANqBN8X8SK', 2, 4, '449 223 9955'),
 (3, 'Gael', 'GaelGabriel@gmail.com', '$2b$12$cZp3DQIUwFj8rKttO3lxC.CdFzpCvQeSE7TsMgup6iYb2osX/GMZ.', 3, 4, '449 107 7654'),
 (4, 'Isaac', 'IsaacGallegos@gmail.com', '$2b$12$x12.RpNjleTnslNzHs7S3eKPGbzjuVxnyj72rWrrXR12T5zTEzCIK', 4, 4, '449 568 6105'),
-(5, 'Regina', 'ReginaOdette@gmail.com', '$2b$12$AYcZPArJZHlyAXpvOltE8.0kdEEz4jZwYSK9d/us4EnWHDZWyxMtu', 2, 4, '351 304 6049'),
-(6, 'Mar', 'marlne@gmail.com', '$2b$12$7Fff2WKw7GEtESTEPVkvh.kmIgyCynpqYFoz7ciVWhhW0tUXuWcFC', 3, 4, '449 539 6287'),
+(5, 'Odette', 'ReginaOdette@gmail.com', '$2b$12$NW7UbFZy20tqgoZ5xztNhO.2.OzItFkLe9W.I2iN5/0KQAEUtoOVm', 2, 4, '351 304 6049'),
+(6, 'Angel', 'AngelUriel@gmail.com', '$2b$12$7Fff2WKw7GEtESTEPVkvh.kmIgyCynpqYFoz7ciVWhhW0tUXuWcFC', 3, 4, '449 539 6287'),
 (7, 'Ian', 'ianYeshua@gmail.com', '$2b$12$mNtF3BfNJpMah78Dyw93i.CQYrF/tD6h7jscGgBuxtb/R4mImlqpy', 2, 4, '444 444 4444');
 
 --
