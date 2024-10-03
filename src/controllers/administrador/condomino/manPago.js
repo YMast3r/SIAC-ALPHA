@@ -169,45 +169,71 @@ function manPago(req, res) {
                             }
                             if (rows.length > 0) {
                                 const tipoPago = rows;
-
-                                conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                conn.query('SELECT pago FROM tipo_propiedad WHERE id_tipo_propiedad = (SELECT id_tipo_propiedad FROM propiedad WHERE id_propiedad = ?)', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
+                                        return;
                                     }
+
                                     if (rows.length > 0) {
-                                        const datos = rows.map(row => ({
-                                            ...row,
-                                            fecha: formatDate(row.fecha), // Formatea la fecha
-                                        }));
-                                        conn.query('SELECT a.folio, b1.descripcion AS mes_inicio, a.año_inicio, b2.descripcion AS mes_final, a.año_final, t.descripcion AS tipo_pago, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.comprobante AS evidencia FROM pago_plazos a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b1 ON a.mes_inicio = b1.mes JOIN mes b2 ON a.mes_final = b2.mes JOIN tipo_pago t ON a.id_tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                        const cuota = rows[0].pago;
+
+                                        conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                             if (err) {
                                                 console.log(err);
                                             }
-
                                             if (rows.length > 0) {
-                                                const datosPlazo = rows.map(row => ({
+                                                const datos = rows.map(row => ({
                                                     ...row,
                                                     fecha: formatDate(row.fecha), // Formatea la fecha
                                                 }));
-                                                return res.render('usuarios/administrador/condomino/manPago', {
-                                                    datosPlazo: datosPlazo,
-                                                    datos: datos,
-                                                    usuario: usuario,
-                                                    usuarioPro: usuarioPro,
-                                                    tipoPago: tipoPago,
-                                                    error: error,
-                                                    errorP: errorP,
-                                                    data: data,
-                                                    propia: 1,
-                                                    name: req.session.name,
-                                                    id: req.session.idUser,
-                                                    tipoUsuario: tipo
-                                                });
+                                                conn.query('SELECT a.folio, b1.descripcion AS mes_inicio, a.año_inicio, b2.descripcion AS mes_final, a.año_final, t.descripcion AS tipo_pago, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.comprobante AS evidencia FROM pago_plazos a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b1 ON a.mes_inicio = b1.mes JOIN mes b2 ON a.mes_final = b2.mes JOIN tipo_pago t ON a.id_tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                    }
+
+                                                    if (rows.length > 0) {
+                                                        const datosPlazo = rows.map(row => ({
+                                                            ...row,
+                                                            fecha: formatDate(row.fecha), // Formatea la fecha
+                                                        }));
+                                                        return res.render('usuarios/administrador/condomino/manPago', {
+                                                            datosPlazo: datosPlazo,
+                                                            datos: datos,
+                                                            usuario: usuario,
+                                                            usuarioPro: usuarioPro,
+                                                            tipoPago: tipoPago,
+                                                            cuota: cuota,
+                                                            error: error,
+                                                            errorP: errorP,
+                                                            data: data,
+                                                            propia: 1,
+                                                            name: req.session.name,
+                                                            id: req.session.idUser,
+                                                            tipoUsuario: tipo
+                                                        });
+                                                    } else {
+                                                        console.log('No se encontraron pagos a plazos');
+                                                        return res.render('usuarios/administrador/condomino/manPago', {
+                                                            datos: datos,
+                                                            errorDatosP: 1,
+                                                            name: req.session.name,
+                                                            id: req.session.idUser,
+                                                            tipoUsuario: tipo,
+                                                            propia: 1,
+                                                            usuario: usuario,
+                                                            usuarioPro: usuarioPro,
+                                                            tipoPago: tipoPago,
+                                                            cuota: cuota,
+                                                            error: error,
+                                                            errorP: errorP,
+                                                        });
+                                                    }
+                                                });//
                                             } else {
-                                                console.log("datos: ", datos);
-                                                console.log('No se encontraron pagos a plazos');
+                                                console.log('No se encontraron pagos');
                                                 return res.render('usuarios/administrador/condomino/manPago', {
-                                                    datos: datos,
+                                                    errorDatos: 1,
                                                     errorDatosP: 1,
                                                     name: req.session.name,
                                                     id: req.session.idUser,
@@ -221,23 +247,8 @@ function manPago(req, res) {
                                                 });
                                             }
                                         });//
-                                    } else {
-                                        console.log('No se encontraron pagos');
-                                        return res.render('usuarios/administrador/condomino/manPago', {
-                                            errorDatos: 1,
-                                            errorDatosP: 1,
-                                            name: req.session.name,
-                                            id: req.session.idUser,
-                                            tipoUsuario: tipo,
-                                            propia: 1,
-                                            usuario: usuario,
-                                            usuarioPro: usuarioPro,
-                                            tipoPago: tipoPago,
-                                            error: error,
-                                            errorP: errorP,
-                                        });
                                     }
-                                });//
+                                });
                             }
                         });
                     } else {
