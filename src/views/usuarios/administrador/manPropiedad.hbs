@@ -41,6 +41,7 @@
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
                             <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
                                 ID Propiedad
+                                <br>
                                 <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
                                 <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
                             </div>
@@ -97,10 +98,10 @@
                     <thead>
                         <tr>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                            <div id="contenedorFlechatipo" style="display: inline; cursor: pointer;">
+                            <div id="contenedorFlechaTipo" style="display: inline; cursor: pointer;">
                                 Tipo Propiedad
-                                <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
-                                <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                                <a href="#" id="flechaDescTipo" data-order="desc">&darr;</a>
+                                <a href="#" id="flechaAscTipo" data-order="asc">&uarr;</a>
                             </div>
                             </th> 
                             <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
@@ -389,12 +390,12 @@
         });
 
         //segunda funcion
-        document.getElementById('contenedorFlechatipo').addEventListener('click', function (event) {
+        document.getElementById('contenedorFlechaTipo').addEventListener('click', function (event) {
             event.preventDefault();
 
             // flechas
-            let abajo = document.getElementById('flechaDesc');
-            let arriba = document.getElementById('flechaAsc');
+            let abajo = document.getElementById('flechaDescTipo');
+            let arriba = document.getElementById('flechaAscTipo');
 
             let orden; // Definir la variable "orden"
 
