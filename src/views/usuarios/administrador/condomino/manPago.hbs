@@ -25,6 +25,7 @@
                         </th>
                         <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">DESCRIPCIÓN</th>
                         <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">TIPO</th>
+                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">PRECIO</th>
                         <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg"> </th>
                     </tr>
                 </thead>
@@ -34,6 +35,7 @@
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.id_propiedad}}</td>
                         <td class="px-6 py-2 bg-white border-b-2 border-gray-200">{{this.descripcion}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.tipo_propiedad}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.pago}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center">
                             <a href="/manPago-{{this.id_propiedad}}"
                                 class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
@@ -97,10 +99,7 @@
             }
         });
     </script>
-
-
-
-
+    
     <div class="flex justify-around bg-gray-200 p-4">
         <a href="/renderRecuperarPropiedadPago">
             <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-2">Propiedad</h1>
@@ -158,8 +157,8 @@
                                 <th class="px-2 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID
                                     PROPIEDAD</th>
                                 <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium ">DESCRIPCIÓN</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">TIPO
-                                </th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">TIPO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">PRECIO</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -172,6 +171,8 @@
                                 </td>
                                 <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md">
                                     {{this.tipo_propiedad}}</td>
+                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md">
+                                    {{this.pago}}</td>
                             </tr>
 
                             {{/each}}
@@ -569,87 +570,22 @@
         </div> <!-- Cierre del contenedor principal -->
     </div>
 
-    {{!-- Condicon de propiedad --}}
+    {{!-- Condición de propiedad --}}
     {{/if}}
-    {{!-- Condicon en caso de que no haya una propiedad --}}
+    {{!-- Condición en caso de que no haya una propiedad --}}
     {{else}}
     <h1 class="text-center font-bold text-lg my-10">No hay propiedades con ese condomino</h1>
-    {{!-- Condicon para ver si hay propiedad --}}
+    {{!-- Condición para ver si hay propiedad --}}
     {{/if}}
-    {{!-- Condicon de sesión --}}
+    {{!-- Condición de sesión --}}
     {{else}}
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
         <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
     </div>
-    {{!-- Condicon de sesión --}}
+    {{!-- Condición de sesión --}}
     {{/if}}
     <script defer src="imagen.js"></script>
-
     <script defer>
-        // Abre una nueva ventana con la imagen en tamaño completo
-        function mostrarImagen(src) {
-            window.open(src, "_blank");
-        }
-        // Obtener los elementos de entrada por su ID
-        const recargoInput = document.getElementById('recargo');
-        // Obtener los elementos de entrada por su ID
-        const recargoInputPlazo = document.getElementById('recargoPlazo');
-        // Obtener los elementos de entrada por su ID
-        const filtroAño = document.getElementById('filtroAño');
-        // Obtener los elementos de entrada por su ID
-        const reciboFolio = document.getElementById('reciboFolio');
-        // Obtener los elementos de entrada por su ID
-        const reciboFolioPlazo = document.getElementById('reciboFolioPlazo');
-
-        function validarEntrada(event) {
-            const regex = /^[a-zA-Z0-9\s]*$/;
-            if (!regex.test(event.target.value)) {
-                event.target.value = event.target.value.replace(/[^a-zA-Z0-9\s]/g, '');
-            }
-        }
-
-        document.getElementById('referencia').addEventListener('input', validarEntrada);
-        document.getElementById('referenciaPlazo').addEventListener('input', validarEntrada);
-
-        // Función para validar que el input sea un número entero positivo
-        function validarInput(input) {
-            input.addEventListener('input', function () {
-                // Remover caracteres no numéricos utilizando una expresión regular
-                let valor = input.value.replace(/\D/g, '');
-                // Asignar el valor limpio al campo de entrada
-                input.value = valor;
-            });
-        }
-
-        // Función para validar que el input sea un número con hasta dos decimales
-        function validarInputF(input) {
-            input.value = '0.00';
-            input.addEventListener('input', function () {
-
-                let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
-                let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
-
-                // Si no hay valor, establece el valor inicial
-                if (value === '') {
-                    input.value = '0.00';
-                    return;
-                }
-
-                // Aplicar formato de número con comas
-                let formattedValue = floatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-                input.value = formattedValue;
-            });
-
-        }
-
-        // Llamar a la función validarInput para cada input
-        validarInputF(recargoInput);
-        validarInputF(recargoInputPlazo);
-        validarInput(filtroAño);
-        validarInput(reciboFolio);
-        validarInput(reciboFolioPlazo);
-
         function handleTipoPagoChange(selectElement, precioInputId, recargoLabelId, recargoContainerId) {
             var recargoLabel = document.getElementById(recargoLabelId);
             var recargoInput = document.getElementById(recargoContainerId);
@@ -682,7 +618,76 @@
         document.getElementById('tipoPagoPlazo').addEventListener('change', function () {
             handleTipoPagoChange(this, 'precio', 'recargoPlazoLabel', 'recargoPlazoContainer');
         });
+    </script>
 
+    <script defer>
+        // Obtener los elementos de entrada por su ID
+        const reciboFolio = document.getElementById('reciboFolio');
+        // Obtener los elementos de entrada por su ID
+        const reciboFolioPlazo = document.getElementById('reciboFolioPlazo');
+        // Obtener los elementos de entrada por su ID
+        const filtroAño = document.getElementById('filtroAño');
+
+        // Función para validar que el input sea un número entero positivo
+        function validarInput(input) {
+            input.addEventListener('input', function () {
+                // Remover caracteres no numéricos utilizando una expresión regular
+                let valor = input.value.replace(/\D/g, '');
+                // Asignar el valor limpio al campo de entrada
+                input.value = valor;
+            });
+        }
+
+        validarInput(filtroAño);
+        validarInput(reciboFolio);
+        validarInput(reciboFolioPlazo);
+    </script>
+
+    <script defer>
+        // Abre una nueva ventana con la imagen en tamaño completo
+        function mostrarImagen(src) {
+            window.open(src, "_blank");
+        }
+        // Obtener los elementos de entrada por su ID
+        const recargoInput = document.getElementById('recargo');
+        // Obtener los elementos de entrada por su ID
+        const recargoInputPlazo = document.getElementById('recargoPlazo');
+
+        function validarEntrada(event) {
+            const regex = /^[a-zA-Z0-9\s]*$/;
+            if (!regex.test(event.target.value)) {
+                event.target.value = event.target.value.replace(/[^a-zA-Z0-9\s]/g, '');
+            }
+        }
+
+        document.getElementById('referencia').addEventListener('input', validarEntrada);
+        document.getElementById('referenciaPlazo').addEventListener('input', validarEntrada);
+
+        // Función para validar que el input sea un número con hasta dos decimales
+        function validarInputF(input) {
+            input.value = '0.00';
+            input.addEventListener('input', function () {
+
+                let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
+                let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
+
+                // Si no hay valor, establece el valor inicial
+                if (value === '') {
+                    input.value = '0.00';
+                    return;
+                }
+
+                // Aplicar formato de número con comas
+                let formattedValue = floatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                input.value = formattedValue;
+            });
+
+        }
+
+        // Llamar a la función validarInput para cada input
+        validarInputF(recargoInput);
+        validarInputF(recargoInputPlazo);
 
         // Función para mostrar una sección y ocultar las demás
         function mostrarSeccion(seccion) {

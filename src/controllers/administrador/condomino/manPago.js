@@ -83,7 +83,7 @@ function recuperarPropiedadPago(req, res) {
     }
 
     req.getConnection((err, conn) => {
-        conn.query('SELECT a.id_propiedad, a.descripcion, b.descripcion AS tipo_propiedad FROM propiedad a LEFT JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad WHERE a.id_usuario = ?', [id], (err, rowsPropia) => {
+        conn.query('SELECT a.id_propiedad, a.descripcion, b.descripcion AS tipo_propiedad, b.pago FROM propiedad a LEFT JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad WHERE a.id_usuario = ?', [id], (err, rowsPropia) => {
             if (err) {
                 console.log(err);
             }
@@ -149,7 +149,7 @@ function manPago(req, res) {
             }
             if (rows.length > 0) {
                 const usuario = rows;
-                conn.query('SELECT a.id_propiedad, a.descripcion, b.descripcion AS tipo_propiedad FROM propiedad a LEFT JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad WHERE a.id_propiedad = ?', [id], (err, rows) => {
+                conn.query('SELECT a.id_propiedad, a.descripcion, b.descripcion AS tipo_propiedad, b.pago FROM propiedad a LEFT JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad WHERE a.id_propiedad = ?', [id], (err, rows) => {
                     if (err) {
                         console.log(err);
                         return;
@@ -242,6 +242,7 @@ function manPago(req, res) {
                                                     usuario: usuario,
                                                     usuarioPro: usuarioPro,
                                                     tipoPago: tipoPago,
+                                                    cuota: cuota,
                                                     error: error,
                                                     errorP: errorP,
                                                 });
