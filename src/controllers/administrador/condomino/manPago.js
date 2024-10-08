@@ -363,7 +363,7 @@ function altaPago(req, res) {
                                                 parametros = [idPro, importe, data.recargo, year, mes, data.reciboFolio, data.referencia, data.tipoPago, idAdm, imagenRuta];
                                             }
 
-                                            conn.query('SELECT COUNT(*) AS pago FROM pago WHERE mes = ? AND año = ? AND id_propiedad = ?', [mes, year, idPro], (err, rows) => {
+                                            conn.query('SELECT COUNT(*) AS pago FROM pago WHERE mes = ? AND año = ? AND id_propiedad = ? AND tipo_pago = ?', [mes, year, idPro, data.tipoPago], (err, rows) => {
                                                 if (err) {
                                                     console.log(err);
                                                 }
@@ -498,8 +498,8 @@ function altaPagoPlazo(req, res) {
                     const tipo = rows[0].tipo_usuario;
 
                     // Verificar si existe algún pago en el rango de fechas seleccionado
-                    conn.query('SELECT COUNT(*) AS count FROM pago WHERE id_propiedad = ? AND ((año > ? OR (año = ? AND mes >= ?)) AND (año < ? OR (año = ? AND mes <= ?)))',
-                        [idPro, añoInicio, añoInicio, mesInicio, añoFin, añoFin, mesFin], (err, rows) => {
+                    conn.query('SELECT COUNT(*) AS count FROM pago WHERE id_propiedad = ? AND tipo_pago = ? AND ((año > ? OR (año = ? AND mes >= ?)) AND (año < ? OR (año = ? AND mes <= ?)))',
+                        [idPro, añoInicio, añoInicio, mesInicio, añoFin, añoFin, mesFin, data.tipoPagoPlazo], (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 req.session.errorMPagoP = 'Error en la consulta de pagos';

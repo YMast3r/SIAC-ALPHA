@@ -102,12 +102,12 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`) VALUES
-(1, 1, 800, 100, 2024, 1, '2024-09-11', 1, 01, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(2, 1, 800, 100, 2024, 2, '2024-09-11', 1, 02, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(3, 1, 800, 100, 2024, 3, '2024-09-11', 1, 03, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(4, 1, 800, 100, 2024, 4, '2024-09-11', 1, 04, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(5, 1, 800, 100, 2024, 5, '2024-09-11', 1, 05, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(6, 1, 800, 100, 2024, 6, '2024-09-11', 1, 06, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1);
+(1, 1, 800, 100, 2024, 1, '2024-09-11', 2, 01, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(2, 1, 800, 100, 2024, 2, '2024-09-11', 2, 02, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(3, 1, 800, 100, 2024, 3, '2024-09-11', 2, 03, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(4, 1, 800, 100, 2024, 4, '2024-09-11', 2, 04, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(5, 1, 800, 100, 2024, 5, '2024-09-11', 2, 05, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(6, 1, 800, 100, 2024, 6, '2024-09-11', 2, 06, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -137,7 +137,7 @@ CREATE TABLE `pago_plazos` (
 --
 
 INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `numero_recibo`, `referencia`, `fecha`, `id_administrador`, `comprobante`) VALUES
-(1, 1, 2024, 6, 2024, 1, 1, 4800, 600, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
+(1, 1, 2024, 6, 2024, 1, 2, 4800, 600, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
 
 -- --------------------------------------------------------
 
