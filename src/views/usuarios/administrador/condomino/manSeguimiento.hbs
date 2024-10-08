@@ -39,10 +39,10 @@
                     <tr>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.id}}
                         </td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.nombre}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.nombre}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">
                             {{this.correo_electronico}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.telefono}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.telefono}}</td>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">
                             {{this.status}}</td>
                     </tr>
@@ -62,7 +62,7 @@
                 <thead>
                     <tr>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">Folio</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Asunto</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium ">Asunto</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Tipo</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">Status</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg text-center">
@@ -74,10 +74,10 @@
                     <tr>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.folio}}
                         </td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.asunto}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.tipo}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl">{{this.status}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl items-center">
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.asunto}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.tipo}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.status}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center">
                             {{this.descripcion}}</td>
                     </tr>
                     {{/each}}
@@ -103,7 +103,7 @@
                 <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
             </span>
             <input type="text" id="searchInput" onkeyup="searchComments()" placeholder="Buscar comentario"
-                class="border border-gray-200 text-lg placeholder-gray-500 p-2 pl-10 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg">
+                class="border border-gray-200 text-lg placeholder-gray-500 p-2 pl-10 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg bg-white">
         </div>
     </div>
 
