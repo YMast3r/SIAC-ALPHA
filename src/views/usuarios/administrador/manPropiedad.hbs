@@ -24,7 +24,7 @@
 
         <!-- Campo de busqueda -->
         <div class="flex justify-center pt-2 mb-0">
-            <div class="relative w-full max-w-4xl">
+            <div class="relative w-full max-w-6xl">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                 </span>
@@ -34,14 +34,14 @@
         </div>
         <!-- Primera tabla -->
         <div class="flex justify-center">
-            <div class="overflow-x-auto max-h-60 border-2 border-gray-300 rounded-lg shadow-lg w-full max-w-4xl">
+            <div class="overflow-x-auto max-h-60 border-2 border-gray-300 rounded-lg shadow-lg w-full max-w-6xl">
                 <table class="w-full rounded-lg overflow-hidden">
                     <thead>
                         <tr>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
                             <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
                                 ID Propiedad
-                                <br>
+                                {{!-- <br> --}}
                                 <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
                                 <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
                             </div>
