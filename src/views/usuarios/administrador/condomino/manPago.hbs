@@ -605,6 +605,8 @@
                 recargoInput.style.display = 'block';
             } else if (selectElement.value == '1') {
                 precioInput.value = "$" + cuota;
+                recargoLabel.style.display = 'none';
+                recargoInput.style.display = 'none';
             } else {
                 recargoLabel.style.display = 'none';
                 recargoInput.style.display = 'none';
@@ -638,9 +640,9 @@
             });
         }
 
-        validarInput(filtroAño);
         validarInput(reciboFolio);
         validarInput(reciboFolioPlazo);
+        validarInput(filtroAño);
     </script>
 
     <script defer>
