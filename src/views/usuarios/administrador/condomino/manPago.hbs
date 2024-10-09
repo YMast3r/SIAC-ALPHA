@@ -559,6 +559,12 @@
                 {{#if errorP}}
                 <p class="text-red-500 font-bold text-lg my-3">*{{{errorP}}}</p>
                 {{/if}}
+                <script>
+                    document.getElementById('pagoForm').addEventListener('submit', function(event) {
+                        event.preventDefault(); // Evita el envío del formulario para mostrar la sección primero
+                        mostrarSeccion('pagos_plazos');
+                    });
+                </script>
             </form><!-- Cierre del formulario -->
             <script>
                 // Mostrar alerta si hay un mensaje de error
