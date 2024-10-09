@@ -16,35 +16,37 @@
 
     {{!-- Tabla de las propiedades del condomino--}}
     <div class="text-center">
-        <h1 class="font-semibold text-4xl flex justify-center m-5 pt-5 ">Propiedades del condómino</h1>
-        <div class="overflow-x-auto max-h-60  rounded-lg  pt-5 ">
-            <table class="w-full max-w-5xl mx-auto rounded-lg overflow-hidden">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID PROPIEDAD
-                        </th>
-                        <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">DESCRIPCIÓN</th>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">TIPO</th>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">PRECIO</th>
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg"> </th>
-                    </tr>
-                </thead>    
-                <tbody>
-                    {{#each propiedades}}
-                    <tr>
-                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.id_propiedad}}</td>
-                        <td class="px-6 py-2 bg-white border-b-2 border-gray-200">{{this.descripcion}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200">{{this.tipo_propiedad}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200">${{this.pago}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center">
-                            <a href="/manPago-{{this.id_propiedad}}"
-                                class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+        <h1 class="font-semibold text-4xl flex justify-center m-5 pt-5">Propiedades del condómino</h1>
 
+
+        <div class="w-full">
+            <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
+                <table class="w-full {{!-- table-fixed --}}">
+                    <thead class="sticky top-0">
+                        <tr>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg">ID PROPIEDAD</th>
+                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">DESCRIPCIÓN</th>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">TIPO</th>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">PRECIO</th>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each propiedades}}
+                        <tr>
+                            <td class="px-4 py-2 text-lg bg-white text-center border-b-2 border-gray-200">{{this.id_propiedad}}</td>
+                            <td class="px-6 py-2 text-lg bg-white border-b-2 border-gray-200">{{this.descripcion}}</td>
+                            <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200">{{this.tipo_propiedad}}</td>
+                            <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200">${{this.pago}}</td>
+                            <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200 text-center">
+                                <a href="/manPago-{{this.id_propiedad}}"
+                                    class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -116,12 +118,12 @@
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400  text-xl font-medium rounded-tl-lg">ID
                                 </th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">NOMBRE</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">CORREO</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">TELÉFONO</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">NOMBRE</th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">CORREO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">TELÉFONO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">
                                     ESTADO
                                 </th>
                             </tr>
@@ -130,17 +132,17 @@
                             {{#each usuario}}
                             <tr>
                                 <td
-                                    class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md text-center">
+                                    class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded-md text-center">
                                     {{this.id}}
                                 </td>
-                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.nombre}}
+                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.nombre}}
                                 </td>
-                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">
+                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">
                                     {{this.correo_electronico}}</td>
-                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.telefono}}
+                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.telefono}}
                                 </td>
                                 <td
-                                    class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center rounded-br-lg text-center">
+                                    class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-br-lg text-center">
                                     {{this.status}}</td>
                             </tr>
                             {{/each}}
@@ -149,29 +151,29 @@
                 </div>
 
                 {{!-- Tabla de la propiedad del usuario --}}
-                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedades del condómino</h1>
+                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedad del condómino</h1>
                 <div class="overflow-x-auto max-h-60">
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="px-2 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">ID
+                                <th class="px-2 py-2 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tl-lg">ID
                                     PROPIEDAD</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium ">DESCRIPCIÓN</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium">TIPO</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">PRECIO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium ">DESCRIPCIÓN</th>
+                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium">TIPO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tr-lg">PRECIO</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each usuarioPro}}
                             <tr>
-                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-md">
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-md">
                                     {{this.id_propiedad}}</td>
-                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">
                                     {{this.descripcion}}
                                 </td>
-                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">
                                     {{this.tipo_propiedad}}</td>
-                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 rounded-br-lg">
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-br-lg">
                                     ${{this.pago}}</td>
                             </tr>
 
@@ -415,14 +417,18 @@
 
         <!-- Tabla de pagos a plazos -->
         <!-- Tabla de pagos a plazos -->
-        <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
-            <div class="overflow-x-auto w-full">
-                <table class="min-w-full table-auto" id="tablaPagosPlazo">
-                    <thead>
+        <div class="w-full">
+            <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
+                <table class="w-full"  id="tablaPagosPlazo">
+                    <thead  class="sticky top-0" >
                         <tr>
-                            <th
-                                class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto rounded-tl-lg">
+                            <th id="contenedorFlecha2" style="cursor: pointer;"
+                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
                                 FOLIO
+                                <span class="inline-flex items-center space-x-1">
+                                    <a href="#" id="flechaDesc2" data-order="desc">&darr;</a>
+                                    <a href="#" id="flechaAsc2" data-order="asc">&uarr;</a>
+                                </span>
                             </th>
                             <th
                                 class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center w-auto">
@@ -584,7 +590,7 @@
     {{/if}}
     {{!-- Condición en caso de que no haya una propiedad --}}
     {{else}}
-    <h1 class="text-center font-bold text-lg my-10">No hay propiedades con ese condómino</h1>
+    <h1 class="text-center font-bold text-4xl my-10">No hay propiedades con ese condómino</h1>
     {{!-- Condición para ver si hay propiedad --}}
     {{/if}}
     {{!-- Condición de sesión --}}
@@ -773,6 +779,63 @@
             document.getElementById('filtroAño').addEventListener('input', verificarPagos);
             document.getElementById('mesFiltro').addEventListener('change', verificarPagos);
         });
+    </script>
+    <script defer>
+        //funcion para voltear los folios
+        document.getElementById('contenedorFlecha2').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // flechas
+            let abajo = document.getElementById('flechaDesc2');
+            let arriba = document.getElementById('flechaAsc2');
+
+            let orden; // Definir la variable "orden"
+
+            // Verificar si está en descendente
+            if (abajo.getAttribute('data-order') === 'desc') {
+                // Cambio a orden ascendente
+                abajo.innerHTML = '&uarr;';
+                abajo.setAttribute('data-order', 'asc');
+                orden = 'asc'; // Cambiar el valor de "orden"
+
+                // Cambiar arriba a descendente
+                arriba.innerHTML = '&darr;';
+                arriba.setAttribute('data-order', 'desc');
+            } else {
+                // Cambio a orden descendente
+                abajo.innerHTML = '&darr;';
+                abajo.setAttribute('data-order', 'desc');
+                orden = 'desc'; // Cambiar el valor de "orden"
+
+                // Cambiar arriba a ascendente
+                arriba.innerHTML = '&uarr;';
+                arriba.setAttribute('data-order', 'asc');
+            }
+
+            let tbody = document.getElementById('tablaPagosPlazoBody');
+            let filas = Array.from(tbody.getElementsByTagName('tr'));
+
+            // Ordenar las filas en base a la primera columna (FOLIO)
+            filas.sort(function (a, b) {
+                let valorA = a.getElementsByTagName('td')[0].innerText;
+                let valorB = b.getElementsByTagName('td')[0].innerText;
+
+                if (orden === 'asc') {
+                    return valorA.localeCompare(valorB, undefined, { numeric: true });
+                } else {
+                    return valorB.localeCompare(valorA, undefined, { numeric: true });
+                }
+            });
+
+            // Limpiar el tbody y agregar las filas ordenadas
+            tbody.innerHTML = '';
+            filas.forEach(function (fila) {
+                tbody.appendChild(fila);
+            });
+        });
+
+    </script>
+    <script defer>
         //funcion para voltear los folios
         document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
             event.preventDefault();

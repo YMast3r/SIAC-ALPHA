@@ -23,7 +23,7 @@
         <h2 class="font-medium text-2xl mb-4 text-center text-gray-700">Propiedad</h2>
 
         <!-- Campo de busqueda -->
-        <div class="flex justify-center pt-2 mb-0">
+        <div class="flex justify-center pt-2 mb-0 w-9/12 mx-auto">
             <div class="relative w-full max-w-6xl">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
@@ -32,24 +32,24 @@
                     class=" bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
             </div>
         </div>
+
         <!-- Primera tabla -->
-        <div class="flex justify-center">
-            <div class="overflow-x-auto max-h-60 border-2 border-gray-300 rounded-lg shadow-lg w-full max-w-6xl">
-                <table class="w-full rounded-lg overflow-hidden">
-                    <thead>
+        <div class="w-full">
+            <div class="overflow-x-auto max-h-60 mb-10 w-9/12 mx-auto shadow-lg ">
+                <table class="w-full">
+                    <thead class=" sticky top-0">
                         <tr>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                            <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
-                                ID Propiedad
-                                {{!-- <br> --}}
-                                <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
-                                <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
-                            </div>
+                            <th id="contenedorFlecha" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
+                                ID PROPIEDAD
+                                <span class="inline-flex items-center space-x-1">
+                                    <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
+                                    <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                                </span>
                             </th>
-                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
+                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DESCRIPCIÓN
                             </th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">CONDÓMINO</th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg  text-center rounded-tr-lg">
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">CONDÓMINO</th>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium  text-center rounded-tr-lg text-xl">
                                 TIPO PROPIEDAD</th>
 
                         </tr>
@@ -57,13 +57,13 @@
                     <tbody id="propiedadTable">
                         {{#each propiedad}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center  border-b-2 border-gray-200">{{this.id_propiedad}}
+                            <td class="px-4 py-2 bg-white text-center  border-b-2 border-gray-200 text-xl">{{this.id_propiedad}}
                             </td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.descripcion}}
+                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center text-xl">{{this.descripcion}}
                             </td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.condomino}}
+                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center  text-xl">{{this.condomino}}
                             </td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center">
+                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center  text-xl">
                                 {{this.tipo_propiedad}}</td>
                         </tr>
                         {{/each}}
@@ -92,30 +92,30 @@
             </div>
         </div>
 
-        <div class="flex justify-center">
-            <div class="overflow-x-auto max-h-60 rounded-lg shadow-lg w-full  max-w-4xl ">
-                <table class="w-full rounded-lg overflow-hidden ">
-                    <thead>
+        <div class="w-full">
+            <div class="overflow-x-auto max-h-60 mb-10 w-3/5 mx-auto">
+                <table class="w-full">
+                    <thead  class="sticky top-0">
                         <tr>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                            <div id="contenedorFlechaTipo" style="display: inline; cursor: pointer;">
-                                Tipo Propiedad
-                                <a href="#" id="flechaDescTipo" data-order="desc">&darr;</a>
-                                <a href="#" id="flechaAscTipo" data-order="asc">&uarr;</a>
-                            </div>
-                            </th> 
-                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
+                            <th id="contenedorFlechaTipo" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg  text-xl">
+                                TIPO PROPIEDAD
+                                <span class="inline-flex items-center space-x-1">
+                                    <a href="#" id="flechaDescTipo" data-order="desc">&darr;</a>
+                                    <a href="#" id="flechaAscTipo" data-order="asc">&uarr;</a>
+                                </span>
                             </th>
-                            <th class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center rounded-tr-lg">
+                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-xl text-center">DESCRIPCIÓN
+                            </th>
+                            <th class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium  text-xl text-center rounded-tr-lg">
                                 PAGO</th>
                         </tr>
                     </thead>
                     <tbody id="tipoPropiedadTable">
                         {{#each tipoPropiedad}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.id_tipo_propiedad}}</td>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.descripcion}}</td>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">${{this.pago}}</td>
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl">{{this.id_tipo_propiedad}}</td>
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl">{{this.descripcion}}</td>
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl">${{this.pago}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -139,7 +139,7 @@
                             <tbody>
                                 <tr>
                                     <td class="p-2 ">
-                                        <label for="descripcionPropiedad" class="block text-lg">Descripción</label>
+                                        <label for="descripcionPropiedad" class="block  text-xl">Descripción</label>
                                         <input type="text" name="descripcionPropiedad"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
                                             placeholder="Descripción" id="descripcionPropiedad" required
@@ -147,7 +147,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="p-2">
+                                    <td class="p-2  text-xl">
                                         <label for="condomino">Condómino</label>
                                         <select id="condomino" name="condomino"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
@@ -159,7 +159,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="p-2">
+                                    <td class="p-2  text-xl">
                                         <label for="tipoPropiedad">Tipo Propiedad</label>
                                         <select id="tipoPropiedad" name="tipoPropiedad"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
@@ -177,7 +177,7 @@
                                 <tr>
                                     <td class="p-2">
                                         <button type="submit"
-                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-lg px-6 py-2 block text-center">Registrar
+                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-2 block text-center">Registrar
                                             Propiedad</button>
                                     </td>
                                 </tr>
@@ -205,8 +205,8 @@
                         <table class="w-full">
                             <tbody>
                                 <tr>
-                                    <td class="p-2">
-                                        <label for="descripcionTipoPro" class="block text-lg">Descripción</label>
+                                    <td class="p-2  text-xl">
+                                        <label for="descripcionTipoPro" class="block text-xl">Descripción</label>
                                         <input type="text" name="descripcionTipoPro"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
                                             placeholder="Descripción" id="descripcionTipoPro" required
@@ -214,8 +214,8 @@
                                     </td>
                                 </tr>
                                                             <tr>
-                                <td class="p-2">
-                                    <label for="pago" class="block text-lg">Pago</label>
+                                <td class="p-2 ">
+                                    <label for="pago" class="block text-xl">Pago</label>
                                     <div class="relative">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" 
@@ -235,7 +235,7 @@
                                 <tr>
                                     <td class="p-2">
                                         <button type="submit"
-                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-lg px-6 py-2 block text-center">Registrar
+                                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-2 block text-center">Registrar
                                             Pago</button>
                                     </td>
                                 </tr>

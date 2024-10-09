@@ -1,30 +1,30 @@
 <a href="/renderManCondomino"
-    class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-10">Condóminos</a>
+    class="font-semibold text-5xl hover:text-gray-400 flex justify-center pt-10">Condóminos</a>
 
 <div class="flex justify-center">
-    <div class="overflow-x-auto max-h-96 rounded-lg w-full max-w-7xl">
+    <div class="overflow-x-auto max-h-96 rounded-lg w-full max-w-7xl pt-10">
         <table class="w-full" id="condominosTable">
             <thead>
                 <tr>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg">
                         ID
                     </th>
-                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">NOMBRE</th>
-                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">CORREO</th>
-                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">TELÉFONO</th>
-                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">ESTADO</th>
+                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">NOMBRE</th>
+                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">CORREO</th>
+                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">TELÉFONO</th>
+                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">ESTADO</th>
                     </th>
                 </tr>
             </thead>
             <tbody id="tablaCondominos">
                 {{#each datos}}
                 <tr>
-                    <td class="px-4 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.id}}</td>
-                    <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.nombre}}</td>
-                    <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">
+                    <td class="px-4 py-2 bg-white text-xl text-center border-b-2 border-gray-200">{{this.id}}</td>
+                    <td class="px-6 py-2 bg-white text-xl text-center border-b-2 border-gray-200">{{this.nombre}}</td>
+                    <td class="px-6 py-2 bg-white text-xl text-center border-b-2 border-gray-200">
                         {{this.correo_electronico}}</td>
-                    <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.telefono}}</td>
-                    <td class="px-6 py-2 bg-white text-lg text-center border-b-2 border-gray-200">{{this.status}}</td>
+                    <td class="px-6 py-2 bg-white text-xl text-center border-b-2 border-gray-200">{{this.telefono}}</td>
+                    <td class="px-6 py-2 bg-white text-xl text-center border-b-2 border-gray-200">{{this.status}}</td>
                 </tr>
                 {{/each}}
                 <tr id="noResultsRow" style="display: none;">
@@ -37,50 +37,119 @@
 
 <!-- Primera tabla -->
 {{#if propia}}
-<h2 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedades del
+<h2 class="font-semibold text-4xl flex justify-center m-5 text-gray-700 pt-5">Propiedades del
     condómino</h2>
 <!-- Campo de busqueda -->
-<div class="p-4">
-    <div class="flex justify-center pt-10">
+<div class="pt-5">
+    <div class="flex justify-center w-7/12 mx-auto">
         <div class="relative w-full max-w-7xl">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
             </span>
             <input type="text" id="search" placeholder="Buscar por descripción..."
-                class="bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
+                class="bg-white border border-gray-200 text-xl placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
         </div>
     </div>
-    <div class="overflow-x-auto max-h-60 rounded-lg">
-        <table class="w-7/12 mx-auto rounded-lg overflow-hidden">
-            <thead>
+
+    <div class="w-full">
+        <div class="overflow-x-auto max-h-60 mb-10 w-7/12 mx-auto rounded-lg">
+            <table class="w-full table-fixed">
+                <thead class="sticky top-0 bg-white">
+                    <tr>
+                        <th id="contenedorFlecha" style="cursor: pointer;"
+                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
+                            ID PROPIEDAD
+                            <span class="inline-flex items-center space-x-1">
+                                <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
+                                <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                            </span>
+                        </th>
+                        <th
+                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                            DESCRIPCIÓN</th>
+                        <th
+                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                            TIPO</th>
+                    </tr>
+                </thead>
+                <tbody id="pripia">
+                    {{#each propia}}
+                    <tr class="w-full">
+                        <td class="px-2 bg-white border-b-2 border-gray-200 text-xl text-center rounded-tl-lg">
+                            {{this.id_propiedad}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-xl text-center">{{this.descripcion}}
+                        </td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-xl text-center">{{this.tipo_propiedad}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+                <!-- Mensaje para cuando no se encuentran resultados -->
+                <tbody id="noResultPropia" style="display: none;">
+                    <tr>
+                        <td colspan="3" class="px-4 py-2 bg-gray-100 border border-gray-600 text-center text-xl">No se
+                            encontró ninguna descripción</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{{else}}
+<h2 class="font-semibold text-center text-gray-700 text-3xl pt-10 pb-5">No hay propiedades que le pertenezcan al condómino
+</h2>
+{{/if}}
+<!-- Segunda tabla -->
+{{#if propiedades}}
+<h2 class="font-semibold text-4xl flex justify-center m-5 text-gray-700">Propiedades disponibles</h2>
+<div class="flex justify-center pt-5 mx-auto  w-7/12">
+    <div class="relative w-full max-w-7xl">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
+        </span>
+        <input type="text" id="searchPropiedad" placeholder="Buscar por descripción..."
+            class="bg-white border border-gray-200 text-xl placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
+    </div>
+</div>
+<div class="w-full">
+    <div class="overflow-x-auto max-h-60 mb-20 w-7/12 mx-auto rounded-lg">
+        <table class="w-full table-fixed">
+            <thead class="sticky top-0 bg-white">
                 <tr>
-                    <th id="contenedorFlecha" style="cursor: pointer;"
-                        class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
+                    <th id="contenedorFlecha2" style="cursor: pointer;"
+                        class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
                         ID PROPIEDAD
                         <span class="inline-flex items-center space-x-1">
-                            <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
-                            <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                            <a href="#" id="flechaDesc2" data-order="desc">↓</a>
+                            <a href="#" id="flechaAsc2" data-order="asc">↑</a>
                         </span>
                     </th>
-                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">
+                    <th
+                        class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
                         DESCRIPCIÓN</th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">
-                        TIPO</th>
+                    <th
+                        class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        TIPO PROPIEDAD</th>
+                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 shadow-r-xl rounded-tr-lg"></th>
                 </tr>
             </thead>
-            <tbody id="pripia">
-                {{#each propia}}
-                <tr>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
+            <tbody id="propiedad">
+                {{#each propiedades}}
+                <tr class="w-full">
+                    <td class="px-2 bg-white border-b-2 border-gray-200 text-xl text-center rounded-tl-lg">
                         {{this.id_propiedad}}</td>
-                    <td class="px-6 py-2 bg-white text-center border-b-2 border-gray-200">
-                        {{this.descripcion}}</td>
-                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
-                        {{this.tipo_propiedad}}</td>
+                    <td class="px-1 bg-white border-b-2 border-gray-200 text-xl text-center">{{this.descripcion}}
+                    </td>
+                    <td class="py-2 bg-white border-b-2 border-gray-200 text-xl text-center">{{this.tipo_propiedad}}
+                    </td>
+                    <td class="px-2 bg-white border-b-2 border-gray-200 text-xl text-center">
+                        <a href="/anexarPropiedad-{{id_propiedad}}"
+                            class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
-            <tbody id="noResultPropia" style="display: none;">
+            <tbody id="noResultPropiedad" style="display: none;">
                 <tr>
                     <td colspan="4" class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">No se
                         encontró ninguna descripción</td>
@@ -88,71 +157,10 @@
             </tbody>
         </table>
     </div>
+</div>
 
-</div>
 {{else}}
-<h2 class="text-center text-gray-500 text-xl">No hay propiedades que le pertenezcan al condómino
-</h2>
-{{/if}}
-<!-- Segunda tabla -->
-{{#if propiedades}}
-<h2 class="text-center font-bold text-xl mb-4">Propiedades disponibles</h2>
-<div class="flex justify-center pt-10">
-    <div class="relative w-full max-w-7xl">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
-        </span>
-        <input type="text" id="searchPropiedad" placeholder="Buscar por descripción..."
-            class="bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
-    </div>
-</div>
-<div class="overflow-x-auto max-h-60 mb-20"> <!-- Añadido margen inferior para separación -->
-    <table class="w-7/12 mx-auto rounded-lg overflow-hidden">
-        <thead>
-            <tr>
-                <th id="contenedorFlecha" style="cursor: pointer;"
-                    class="px-4 py-2 bg-white border-b-2 border-gray-400 text-sm font-medium rounded-tl-lg">
-                    ID PROPIEDAD
-                    <span class="inline-flex items-center space-x-1">
-                        <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
-                        <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
-                    </span>
-                </th>
-                <th class="px-6 py-2 bg-white border-b-2 border-gray-400 text-sm font-medium">
-                    DESCRIPCIÓN</th>
-                <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-sm font-medium">
-                    TIPO PROPIEDAD</th>
-                <td class="px-4 py-2 bg-white border-b-2 border-gray-400 shadow-r-xl x  rounded-tr-lg"></td>
-            </tr>
-        </thead>
-        <tbody id="propiedad">
-            {{#each propiedades}}
-            <tr>
-                <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">
-                    {{this.id_propiedad}}</td>
-                <td class="px-6 py-2 bg-white border-b border-gray-200 text-center">{{this.descripcion}}
-                </td>
-                <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">{{this.tipo_propiedad}}
-                </td>
-                <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">
-                    <a href="/anexarPropiedad-{{id_propiedad}}"
-                        class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
-                </td>
-            </tr>
-            {{/each}}
-
-        </tbody>
-        <tbody id="noResultPropiedad" style="display: none;">
-            <tr>
-                <td colspan="4" class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">No se
-                    encontró ninguna descripción</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-{{else}}
-<h2 class="font-semibold text-lg flex justify-center m-5 text-gray-700">No hay propiedades
-    disponibles</h2>
+<h2 class="font-semibold text-3xl flex justify-center m-5 text-gray-700">No hay propiedades disponibles</h2>
 {{/if}}
 
 <script defer>
@@ -197,67 +205,14 @@
         document.getElementById('noResultPropiedad').style.display = noResult ? '' : 'none';
     });
 </script>
-<script>
+<script defer>
     //funcion para voltear los folios
-        document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
-            event.preventDefault();
-
-            // flechas
-            let abajo = document.getElementById('flechaDesc');
-            let arriba = document.getElementById('flechaAsc');
-
-            let orden; // Definir la variable "orden"
-
-            // Verificar si está en descendente
-            if (abajo.getAttribute('data-order') === 'desc') {
-                // Cambio a orden ascendente
-                abajo.innerHTML = '&uarr;';
-                abajo.setAttribute('data-order', 'asc');
-                orden = 'asc'; // Cambiar el valor de "orden"
-
-                // Cambiar arriba a descendente
-                arriba.innerHTML = '&darr;';
-                arriba.setAttribute('data-order', 'desc');
-            } else {
-                // Cambio a orden descendente
-                abajo.innerHTML = '&darr;';
-                abajo.setAttribute('data-order', 'desc');
-                orden = 'desc'; // Cambiar el valor de "orden"
-
-                // Cambiar arriba a ascendente
-                arriba.innerHTML = '&uarr;';
-                arriba.setAttribute('data-order', 'asc');
-            }
-
-            let tbody = document.getElementById('pripia');
-            let filas = Array.from(tbody.getElementsByTagName('tr'));
-
-            // Ordenar las filas en base a la primera columna (FOLIO)
-            filas.sort(function (a, b) {
-                let valorA = a.getElementsByTagName('td')[0].innerText;
-                let valorB = b.getElementsByTagName('td')[0].innerText;
-
-                if (orden === 'asc') {
-                    return valorA.localeCompare(valorB, undefined, { numeric: true });
-                } else {
-                    return valorB.localeCompare(valorA, undefined, { numeric: true });
-                }
-            });
-
-            // Limpiar el tbody y agregar las filas ordenadas
-            tbody.innerHTML = '';
-            filas.forEach(function (fila) {
-                tbody.appendChild(fila);
-            });
-        });
-</script>
-<script>
-    document.getElementById('contenedorFlecha2').addEventListener('click', function (event) {
+    document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
         event.preventDefault();
 
         // flechas
-        let abajo = document.getElementById('flechaDesc2');
-        let arriba = document.getElementById('flechaAsc2');
+        let abajo = document.getElementById('flechaDesc');
+        let arriba = document.getElementById('flechaAsc');
 
         let orden; // Definir la variable "orden"
 
@@ -282,7 +237,7 @@
             arriba.setAttribute('data-order', 'asc');
         }
 
-        let tbody = document.getElementById('propiedad');
+        let tbody = document.getElementById('pripia');
         let filas = Array.from(tbody.getElementsByTagName('tr'));
 
         // Ordenar las filas en base a la primera columna (FOLIO)
@@ -291,6 +246,59 @@
             let valorB = b.getElementsByTagName('td')[0].innerText;
 
             if (orden === 'asc') {
+                return valorA.localeCompare(valorB, undefined, { numeric: true });
+            } else {
+                return valorB.localeCompare(valorA, undefined, { numeric: true });
+            }
+        });
+
+        // Limpiar el tbody y agregar las filas ordenadas
+        tbody.innerHTML = '';
+        filas.forEach(function (fila) {
+            tbody.appendChild(fila);
+        });
+    });
+</script>
+<script defer>
+    document.getElementById('contenedorFlecha2').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        // flechas
+        let abajo = document.getElementById('flechaDesc2');
+        let arriba = document.getElementById('flechaAsc2');
+
+        let orden2; // Definir la variable "orden2"
+
+        // Verificar si está en descendente
+        if (abajo.getAttribute('data-order') === 'desc') {
+            // Cambio a orden2 ascendente
+            abajo.innerHTML = '&uarr;';
+            abajo.setAttribute('data-order', 'asc');
+            orden2 = 'asc'; // Cambiar el valor de "orden2"
+
+            // Cambiar arriba a descendente
+            arriba.innerHTML = '&darr;';
+            arriba.setAttribute('data-order', 'desc');
+        } else {
+            // Cambio a orden2 descendente
+            abajo.innerHTML = '&darr;';
+            abajo.setAttribute('data-order', 'desc');
+            orden2 = 'desc'; // Cambiar el valor de "orden2"
+
+            // Cambiar arriba a ascendente
+            arriba.innerHTML = '&uarr;';
+            arriba.setAttribute('data-order', 'asc');
+        }
+
+        let tbody = document.getElementById('propiedad');
+        let filas = Array.from(tbody.getElementsByTagName('tr'));
+
+        // Ordenar las filas en base a la primera columna (FOLIO)
+        filas.sort(function (a, b) {
+            let valorA = a.getElementsByTagName('td')[0].innerText;
+            let valorB = b.getElementsByTagName('td')[0].innerText;
+
+            if (orden2 === 'asc') {
                 return valorA.localeCompare(valorB, undefined, { numeric: true });
             } else {
                 return valorB.localeCompare(valorA, undefined, { numeric: true });
