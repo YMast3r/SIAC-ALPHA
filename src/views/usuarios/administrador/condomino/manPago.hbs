@@ -332,10 +332,11 @@
                             {{this.descripcion}}
                         </option>
                         {{/each}}
-                        <input type="text" id="precioPago" name="precio" value="${{cuota}}" readonly
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" />
+                    </select>
+                    <h3 id="mensajePago">Monto</h3>
+                    <input type="text" id="precioPago" name="precio" value="${{cuota}}" readonly
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" />
                 </div>
-                </select>
 
                 <!-- Campo para ingresar el Recargo -->
                 <label for="recargo" id="recargoLabel" class="block text-sm" style="display: none;">Recargo</label>
@@ -488,7 +489,7 @@
                 <!-- Campos para los datos del pago-->
 
 
-                <!-- Campo de tipo pago -->
+                <!-- Campo de tipo pago plazo -->
                 <label for="tipoPagoPlazo"><i class="fas fa-money-bill-alt"></i> Tipo pago</label>
                 <div id="precioContainer" class="mt-4">
                     <select id="tipoPagoPlazo" name="tipoPagoPlazo"
@@ -499,10 +500,12 @@
                             {{this.descripcion}}
                         </option>
                         {{/each}}
-                        <input type="text" id="precio" name="precio" value="${{cuota}}" readonly
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" />
+                    </select>
+                    <h3 id="mensajePagoPlazo">Monto</h3>
+                    <input type="text" id="precio" name="precio" value="${{cuota}}" readonly
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" />
                 </div>
-                </select>
+
 
                 <label for="recargoPlazo" id="recargoPlazoLabel" class="block text-sm"
                     style="display: none;">Recargo</label>
@@ -586,9 +589,10 @@
     {{/if}}
     <script defer src="imagen.js"></script>
     <script defer>
-        function handleTipoPagoChange(selectElement, precioInputId, recargoLabelId, recargoContainerId) {
+        function handleTipoPagoChange(selectElement, precioInputId, recargoLabelId, recargoContainerId, mensajeId) {
             var recargoLabel = document.getElementById(recargoLabelId);
             var recargoInput = document.getElementById(recargoContainerId);
+            var mensaje = document.getElementById(mensajeId);
 
             var selectedOption = selectElement.options[selectElement.selectedIndex];
             var precio = selectedOption.getAttribute('data-precio') || selectedOption.getAttribute('data-precioPago');
@@ -603,23 +607,27 @@
                 precioInput.value = "$" + cuota;
                 recargoLabel.style.display = 'block';
                 recargoInput.style.display = 'block';
+                mensaje.innerText = 'Monto con cuota inicial ';
             } else if (selectElement.value == '1') {
                 precioInput.value = "$" + cuota;
                 recargoLabel.style.display = 'none';
                 recargoInput.style.display = 'none';
+                mensaje.innerText = 'Monto';
             } else {
                 recargoLabel.style.display = 'none';
                 recargoInput.style.display = 'none';
+                mensaje.innerText = 'Monto';
             }
         }
 
         document.getElementById('tipoPago').addEventListener('change', function () {
-            handleTipoPagoChange(this, 'precioPago', 'recargoLabel', 'recargoContainer');
+            handleTipoPagoChange(this, 'precioPago', 'recargoLabel', 'recargoContainer', 'mensajePago');
         });
 
         document.getElementById('tipoPagoPlazo').addEventListener('change', function () {
-            handleTipoPagoChange(this, 'precio', 'recargoPlazoLabel', 'recargoPlazoContainer');
+            handleTipoPagoChange(this, 'precio', 'recargoPlazoLabel', 'recargoPlazoContainer', 'mensajePagoPlazo');
         });
+
     </script>
 
     <script defer>
