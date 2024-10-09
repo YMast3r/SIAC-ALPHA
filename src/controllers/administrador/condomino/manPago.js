@@ -648,7 +648,7 @@ function altaPagoPlazo(req, res) {
                                                                 return renderPago(req, res);
                                                             });
                                                         } else {
-                                                            req.session.mensajeAltaPago = "Se registró el pago a plazos correctamente";
+                                                            req.session.mensajeAltaPagoPlazo = "Se registró el pago a plazos correctamente";
                                                             return renderPago(req, res);
                                                         }
                                                     });
