@@ -20,6 +20,8 @@ const upload = multer({ storage: storage }).single('imagen');
 function renPago(req, res) {
     // Recuperamos el id guardado
     const id = req.session.idPropiedad;
+    req.session.mensajeAltaPago = req.session.mensajeAltaPago;
+    req.session.mensajeAltaPagoPlazo = req.session.mensajeAltaPagoPlazo;
     try {
         res.redirect(`/manPago-${id}`);
         return;
@@ -44,18 +46,19 @@ function renderRecuperarPropiedadPago(req, res) {
 }
 
 function renderPago(req, res) {
-    // recuperamos el id del condomino
-    const idCon = req.session.idCon;
-    // recuperamos el id de la propiedad
-    const idPro = req.session.idPropiedad;
-    // guardamos el id de la propiedad
-    req.session.idPropiedad = idPro;
-    // guardamos el id del condomino
-    req.session.idCon = idCon;
+    // Recuperamos y guardamos el id del condomino y de la propiedad
+    req.session.idCon = req.session.idCon;
+    req.session.idPropiedad = req.session.idPropiedad;
 
+    // Asignamos los mensajes de error
+    req.session.mensajeAltaPago = req.session.mensajeAltaPago;
+    req.session.mensajeAltaPagoPlazo = req.session.mensajeAltaPagoPlazo;
+
+    // Limpiamos otros campos de error y datos
     req.session.errorMPago = "";
     req.session.errorMPagoP = "";
     req.session.dataCampos = "";
+
     renPago(req, res);
 }
 
@@ -111,6 +114,8 @@ function recuperarPropiedadPago(req, res) {
 
 function manPago(req, res) {
     const error = req.session.errorMPago;
+    const mensajeAlta = req.session.mensajeAltaPago;
+    const mensajeAltaP = req.session.mensajeAltaPagoPlazo;
     const errorP = req.session.errorMPagoP;
     const data = req.session.dataCampos;
     // recuperamos el id del condomino
@@ -206,6 +211,8 @@ function manPago(req, res) {
                                                             cuota: cuota,
                                                             error: error,
                                                             errorP: errorP,
+                                                            mensajeAlta: mensajeAlta,
+                                                            mensajeAltaP: mensajeAltaP,
                                                             data: data,
                                                             propia: 1,
                                                             name: req.session.name,
@@ -227,6 +234,8 @@ function manPago(req, res) {
                                                             cuota: cuota,
                                                             error: error,
                                                             errorP: errorP,
+                                                            mensajeAlta: mensajeAlta,
+                                                            mensajeAltaP: mensajeAltaP,
                                                         });
                                                     }
                                                 });//
@@ -245,6 +254,8 @@ function manPago(req, res) {
                                                     cuota: cuota,
                                                     error: error,
                                                     errorP: errorP,
+                                                    mensajeAlta: mensajeAlta,
+                                                    mensajeAltaP: mensajeAltaP,
                                                 });
                                             }
                                         });//
@@ -391,6 +402,7 @@ function altaPago(req, res) {
                                                                     renderPago(req, res);
                                                                 });
                                                             } else {
+                                                                req.session.mensajeAltaPago = "Se registró el pago correctamente";
                                                                 renderPago(req, res);
                                                             }
                                                         }
@@ -636,6 +648,7 @@ function altaPagoPlazo(req, res) {
                                                                 return renderPago(req, res);
                                                             });
                                                         } else {
+                                                            req.session.mensajeAltaPago = "Se registró el pago a plazos correctamente";
                                                             return renderPago(req, res);
                                                         }
                                                     });

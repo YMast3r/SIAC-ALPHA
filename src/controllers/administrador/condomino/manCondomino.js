@@ -58,6 +58,7 @@ function ediCondomino(req, res) {
                                             name: req.session.name, 
                                             tipoUsuario: 2, 
                                             usuario: usuario, 
+                                            mensaje: "Página para modificar condómino", 
                                             error: "", 
                                             modificar: 1});
                                             return;     
@@ -83,6 +84,7 @@ function ediCondomino(req, res) {
                                 tipoUsuario: 2, 
                                 usuario: usuario, 
                                 error: error, 
+                                mensaje: "Página para modificar condómino", 
                                 modificar: 1});
                                 return;
                         }
@@ -127,7 +129,7 @@ function recuperarPropiedad(req, res) {
                                 console.log(err);
                                 }
                                 if (rowsPropiedad && rowsPropiedad.length > 0) {
-                                    res.render('usuarios/administrador/condomino/manCondomino', { 
+                                    res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
                                     propiedades: propiedades, 
                                     datos: datos, 
                                     error: error,
@@ -137,7 +139,7 @@ function recuperarPropiedad(req, res) {
                                     anexarPropiedad: 1});
                                     return;     
                             }else if(rowsPropiedad.length <= 0){
-                                res.render('usuarios/administrador/condomino/manCondomino', { 
+                                res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
                                 propia: propia,
                                 datos: datos, 
                                 name: req.session.name, 
@@ -145,7 +147,7 @@ function recuperarPropiedad(req, res) {
                                 anexarPropiedad: 1});
                                 return;
                                 }else if (rowsPropiedad.length > 0 && rowsPropia.length <= 0){
-                                    res.render('usuarios/administrador/condomino/manCondomino', { 
+                                    res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
                                         error: error,
                                         propiedades: propiedades,
                                         datos: datos, 
@@ -156,7 +158,7 @@ function recuperarPropiedad(req, res) {
                                 }
                             });//
                         }else if(rowsPropia.length <= 0){
-                            res.render('usuarios/administrador/condomino/manCondomino', { 
+                            res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
                             error: error,
                             datos: datos, 
                             name: req.session.name, 
