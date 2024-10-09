@@ -37,11 +37,11 @@
 
 <!-- Primera tabla -->
 {{#if propia}}
-<h2 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedades del
+<h2 class="font-semibold text-2xl flex justify-center m-5 text-gray-700 pt-10">Propiedades del
     condómino</h2>
 <!-- Campo de busqueda -->
 <div class="p-4">
-    <div class="flex justify-center pt-10">
+    <div class="flex justify-center pt-10 w-7/12 mx-auto">
         <div class="relative w-full max-w-7xl">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
@@ -96,8 +96,8 @@
 {{/if}}
 <!-- Segunda tabla -->
 {{#if propiedades}}
-<h2 class="text-center font-bold text-xl mb-4">Propiedades disponibles</h2>
-<div class="flex justify-center pt-10">
+<h2 class="text-center font-bold text-xl mb-4 pt-10">Propiedades disponibles</h2>
+<div class="flex justify-center pt-10 mx-auto  w-7/12">
     <div class="relative w-full max-w-7xl">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
@@ -110,8 +110,7 @@
     <table class="w-7/12 mx-auto rounded-lg overflow-hidden">
         <thead>
             <tr>
-                <th id="contenedorFlecha" style="cursor: pointer;"
-                    class="px-4 py-2 bg-white border-b-2 border-gray-400 text-sm font-medium rounded-tl-lg">
+                <th id="contenedorFlecha" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
                     ID PROPIEDAD
                     <span class="inline-flex items-center space-x-1">
                         <a href="#" id="flechaDesc" data-order="desc">&darr;</a>

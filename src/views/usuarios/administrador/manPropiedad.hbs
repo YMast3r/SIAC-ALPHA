@@ -39,13 +39,12 @@
                 <table class="w-full">
                     <thead class=" sticky top-0">
                         <tr>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                            <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
+                            <th id="contenedorFlecha" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
                                 ID PROPIEDAD
-                                {{!-- <br> --}}
-                                <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
-                                <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
-                            </div>
+                                <span class="inline-flex items-center space-x-1">
+                                    <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
+                                    <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                                </span>
                             </th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
                             </th>
@@ -98,13 +97,13 @@
                 <table class="w-full">
                     <thead  class="sticky top-0">
                         <tr>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                            <div id="contenedorFlechaTipo" style="display: inline; cursor: pointer;">
-                                Tipo Propiedad
-                                <a href="#" id="flechaDescTipo" data-order="desc">&darr;</a>
-                                <a href="#" id="flechaAscTipo" data-order="asc">&uarr;</a>
-                            </div>
-                            </th> 
+                            <th id="contenedorFlechaTipo" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
+                                TIPO PROPIEDAD
+                                <span class="inline-flex items-center space-x-1">
+                                    <a href="#" id="flechaDescTipo" data-order="desc">&darr;</a>
+                                    <a href="#" id="flechaAscTipo" data-order="asc">&uarr;</a>
+                                </span>
+                            </th>
                             <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
                             </th>
                             <th class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center rounded-tr-lg">
