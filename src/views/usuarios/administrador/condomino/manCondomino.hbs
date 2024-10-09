@@ -15,8 +15,8 @@
             class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-10">Condóminos</a>
 
         <!-- Campo de busqueda -->
-        <div class="flex justify-center pt-10">
-            <div class="relative w-full max-w-7xl">
+        <div class="flex justify-center pt-10 mx-auto w-11/12 ">
+            <div class="relative w-full ">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                 </span>
@@ -24,8 +24,8 @@
                     class="bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
             </div>
         </div>
-        <div class="flex justify-center">
-            <div class=" max-h-96 rounded-lg mb-10 max-w-7xl">
+        <div class=" justify-center flex w-11/12 mx-auto">
+            <div class=" max-h-96 rounded-lg mb-10 w-full">
                 <table class="w-full" id="condominosTable">
                     <thead class="sticky top-0">
                         <tr>
@@ -44,9 +44,9 @@
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl">EDITAR</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl">ANEXAR <br> PROPIEDAD</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl">PAGO</th>
-                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl">INCIDENCIA</th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl rounded-tr-lg">SANCIÓN
-                            </th>
+                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl rounded-tr-lg">INCIDENCIA</th>
+                            {{!-- <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl rounded-tr-lg">SANCIÓN
+                            </th> --}}
                         </tr>
                     </thead>
                     <tbody id="tablaCondominos">
@@ -90,7 +90,7 @@
                                         <polyline points="17 6 23 6 23 12" />
                                     </svg></a></td>
 
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200"><a href="#"><svg
+                            {{!-- <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200"><a href="#"><svg
                                         class="mx-auto h-8 w-8 text-gray-600" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -98,7 +98,7 @@
                                             d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
                                         <line x1="12" y1="9" x2="12" y2="13" />
                                         <line x1="12" y1="17" x2="12.01" y2="17" />
-                                    </svg></a></td>
+                                    </svg></a></td> --}}
                         </tr>
                         {{/each}}
                         <tr id="noResultsRow" style="display: none;">
@@ -118,7 +118,7 @@
             {{#if modificar}}
             <h2 class="font-semibold font-mono text-4xl flex justify-center m-5">Modifica condómino</h2>
                     {{else}}
-                    <h2 class="font-semibold text-4xl flex justify-center m-5">Alta de condómino</h2>
+                    <h2 class="font-semibold text-4xl flex justify-center m-5 pt-10">Alta de condómino</h2>
                         {{/if}}
                         <div
                             class="text-lg mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/2 border rounded-lg ">
