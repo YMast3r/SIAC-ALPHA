@@ -244,15 +244,13 @@
             <table class="w-full table-fixed" id="tablaPagos">
                 <thead>
                     <tr>
-                        <th
+                        <th id="contenedorFlecha" style="cursor: pointer;"
                             class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
-
-                            <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
                                 FOLIO
-                                <a href="?order=desc" id="flechaDesc" onclick="ordenarTabla()"
-                                    data-order="desc">&darr;</a>
-                                <a href="?order=asc" id="flechaAsc" onclick="ordenarTabla()" data-order="asc">&uarr;</a>
-                            </div>
+                                <span class="inline-flex items-center space-x-1">
+                                    <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
+                                    <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                                </span>
                         </th>
                         <th
                             class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
@@ -388,8 +386,13 @@
             <script>
                 // Mostrar alerta si hay un mensaje de error
                 const errorMessage = '{{error}}'; // Aquí se pasa el mensaje de error desde el backend
+                const mensajeAlta = '{{mensajeAlta}}'; // Aquí se pasa el mensaje de error desde el backend
                 if (errorMessage) {
                     alert(errorMessage);
+                    // Mostrar solo la sección seleccionada
+                    document.getElementById('pagos').classList.remove('hidden');
+                }else if(mensajeAlta){
+                    alert(mensajeAlta);
                     // Mostrar solo la sección seleccionada
                     document.getElementById('pagos').classList.remove('hidden');
                 }
@@ -559,21 +562,19 @@
                 {{#if errorP}}
                 <p class="text-red-500 font-bold text-lg my-3">*{{{errorP}}}</p>
                 {{/if}}
-                <script>
-                    document.getElementById('pagoForm').addEventListener('submit', function(event) {
-                        event.preventDefault(); // Evita el envío del formulario para mostrar la sección primero
-                        mostrarSeccion('pagos_plazos');
-                    });
-                </script>
             </form><!-- Cierre del formulario -->
             <script>
                 // Mostrar alerta si hay un mensaje de error
                 const errorMessageP = '{{errorP}}'; // Aquí se pasa el mensaje de error desde el backend
+                const mensajeAltaP = '{{mensajeAltaP}}'; // Aquí se pasa el mensaje de error desde el backend
                 if (errorMessageP) {
                     alert(errorMessageP);
                     // Mostrar solo la sección seleccionada
                     document.getElementById('pagos_plazos').classList.remove('hidden');
-
+                }else if(mensajeAltaP){
+                    alert(mensajeAltaP);
+                    // Mostrar solo la sección seleccionada
+                    document.getElementById('pagos_plazos').classList.remove('hidden');
                 }
             </script>
         </div> <!-- Cierre del contenedor principal -->
