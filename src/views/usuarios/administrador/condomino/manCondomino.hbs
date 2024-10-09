@@ -41,8 +41,7 @@
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">TELÉFONO</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">ESTADO</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">EDITAR</th>
-                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">ANEXAR <br>PROPIEDAD
-                            </th>
+                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">ANEXAR <br> PROPIEDAD</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">PAGO</th>
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">INCIDENCIA</th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">SANCIÓN
@@ -108,102 +107,18 @@
                 </table>
             </div>
         </div>
+        <script>
+            const MessageM = '{{mensaje}}'; // Aquí se pasa el mensaje de error desde el backend
+            if(MessageM){
+                    alert(MessageM);
+                }
+        </script>
         <div class="card">
             {{#if modificar}}
-            <h2 class="font-semibold font-mono text-4xl flex justify-center m-5">Modifica condómino
-                <h2 />
-                {{else if anexarPropiedad}}
-                <h2 class="font-semibold text-4xl flex justify-center m-5">Anexar propiedad
-                    <h2 />
+            <h2 class="font-semibold font-mono text-4xl flex justify-center m-5">Modifica condómino</h2>
                     {{else}}
-                    <h2 class="font-semibold text-4xl flex justify-center m-5">Alta de condómino
-                        <h2 />
+                    <h2 class="font-semibold text-4xl flex justify-center m-5">Alta de condómino</h2>
                         {{/if}}
-
-                        {{#if anexarPropiedad}}
-
-                        <!-- Primera tabla -->
-                        {{#if propia}}
-                        <h2 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedades del
-                            condómino</h2>
-                        <div class="overflow-x-auto max-h-60 rounded-lg">
-                            <div class="p-4">
-                                <table class="w-7/12 mx-auto rounded-lg overflow-hidden">
-                                    <thead>
-                                        <tr>
-                                            <th
-                                                class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                                                ID PROPIEDAD</th>
-                                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium">
-                                                DESCRIPCIÓN</th>
-                                            <th
-                                                class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">
-                                                TIPO</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{#each propia}}
-                                        <tr>
-                                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
-                                                {{this.id_propiedad}}</td>
-                                            <td class="px-6 py-2 bg-white text-center border-b-2 border-gray-200">
-                                                {{this.descripcion}}</td>
-                                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
-                                                {{this.tipo_propiedad}}</td>
-                                        </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                        {{else}}
-                        <h2 class="text-center text-gray-500 text-xl">No hay propiedades que le pertenezcan al condómino
-                        </h2>
-                        {{/if}}
-                        <!-- Segunda tabla -->
-                        {{#if propiedades}}
-                        <h2 class="text-center font-bold text-xl mb-4">Propiedades disponibles</h2>
-                        <div class="overflow-x-auto max-h-60 mb-20"> <!-- Añadido margen inferior para separación -->
-                            <table class="w-7/12 mx-auto rounded-lg overflow-hidden">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            class="px-4 py-2 bg-white border-b-2 border-gray-400 text-sm font-medium rounded-tl-lg">
-                                            ID PROPIEDAD</th>
-                                        <th class="px-6 py-2 bg-white border-b-2 border-gray-400 text-sm font-medium">
-                                            DESCRIPCIÓN</th>
-                                        <th
-                                            class="px-4 py-2 bg-white border-b-2 border-gray-400 text-sm font-medium">
-                                            TIPO PROPIEDAD</th>
-                                        <td class="px-4 py-2 bg-white border-b-2 border-gray-400 shadow-r-xl x  rounded-tr-lg"></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#each propiedades}}
-                                    <tr>
-                                        <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">
-                                            {{this.id_propiedad}}</td>
-                                        <td class="px-6 py-2 bg-white border-b border-gray-200 text-center">{{this.descripcion}}
-                                        </td>
-                                        <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">{{this.tipo_propiedad}}
-                                        </td>
-                                        <td class="px-4 py-2 bg-white border-b border-gray-200 text-center">
-                                            <a href="/anexarPropiedad-{{id_propiedad}}"
-                                                class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-
-                                </tbody>
-                            </table>
-                        </div>
-                        {{else}}
-                        <h2 class="font-semibold text-lg flex justify-center m-5 text-gray-700">No hay propiedades
-                            disponibles</h2>
-                        {{/if}}
-
-                        {{else}}
                         <div
                             class="text-lg mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/2 border rounded-lg ">
                             <div class="card-body">
@@ -363,8 +278,6 @@
                                 </script>
                             </div>
                         </div>
-                        {{/if}}
-
         </div>
     </div>
     <script src="telefono.js"></script>
@@ -398,7 +311,8 @@
                 noResultsRow.style.display = 'none';
             }
         });
-
+    </script>
+    <script>
         document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
             event.preventDefault();
 
