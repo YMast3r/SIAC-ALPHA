@@ -54,6 +54,23 @@ function identificacion(req, res) {
     });
 }
 
+function ingresoA(req, res){
+    req.session.loggedin = true;
+    req.session.name = "ivan";
+    req.session.idUser = 2;
+    req.session.tipoUsuario = 2;
+    res.redirect('/');
+}
+
+function ingresoAP(req, res){
+    req.session.loggedin = true;
+    req.session.name = "ivan";
+    req.session.idUser = 2;
+    req.session.tipoUsuario = 2;
+    req.session.idCon = 3;
+    res.redirect('/manPago-1');
+}
+
 //funcion para resistrar a un usuario
 function registro(req, res) {
     return res.render('admiciones/registro');
@@ -169,6 +186,8 @@ function pendiente(req, res){
 //para llamar a las funciones
 module.exports = {
     ingreso,
+    ingresoA,
+    ingresoAP,
     identificacion,
     registro,
     alta,

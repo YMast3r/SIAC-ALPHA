@@ -5,6 +5,8 @@ const router = express.Router();
 
 //rutas de cada parte del loginController
 router.get('/ingreso', loginController.ingreso);
+router.get('/ingresoA', loginController.ingresoA);
+router.get('/ingresoAP', loginController.ingresoAP);
 router.post('/identificacion', loginController.identificacion);
 router.get('/registro', loginController.registro);
 router.post('/alta', loginController.alta);

@@ -29,6 +29,7 @@
 
         <!-- Menú de navegación -->
         <ul class="text-white flex items-center ml-8">
+        {{#if name}}
             <!-- Comprobación si hay un usuario logueado -->
             <li class=" px-2 sm:px-4">
                     {{#isEqual tipoUsuario 1}}
@@ -54,7 +55,6 @@
                         <a href='/recuperarPropiedadPago-{{id}}' class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Pagos</a>
                     {{/isEqual}}
                 </li>
-        {{#if name}}
         <div class="relative inline-block text-left z-20 ">
             <div>
                 <button id="dropdownUserAvatarButton" onclick="toggleDropdown()" class="flex text-sm bg-gray-800 rounded-full md:me-0" type="button">
@@ -84,6 +84,19 @@
             <a href="/registro"
               class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Registrarse</a>
         </li>
+        <div class="hidden">
+            <li class="px-2 sm:px-4">
+                <!-- Ajuste del tamaño del botón de registro para dispositivos móviles -->
+                <a href="/ingresoA"
+                class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automatico</a>
+            </li>
+            <br>
+            <li class="px-2 sm:px-4">
+                <!-- Ajuste del tamaño del botón de registro para dispositivos móviles -->
+                <a href="/ingresoAP"
+                class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automatico pagos</a>
+            </li>
+        </div>
             {{/if}}
         </ul>
     </nav>
