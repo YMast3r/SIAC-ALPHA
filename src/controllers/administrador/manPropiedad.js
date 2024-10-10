@@ -121,14 +121,14 @@ function manPropiedad(req, res) {
             }
             if (rows.length > 0) {
                 const condomino = rows;
-                conn.query('SELECT id_tipo_propiedad, descripcion, FORMAT(pago, 2) AS pago FROM tipo_propiedad', (err, rows) => {
+                conn.query('SELECT id_tipo_propiedad, descripcion, FORMAT(pago, 2) AS pago FROM tipo_propiedad ORDER BY id_tipo_propiedad DESC', (err, rows) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     if (rows.length > 0) {
                         const tipo = rows;
-                        conn.query('SELECT a.id_propiedad, a.descripcion, COALESCE(u.nombre, "Indefinido") AS condomino, b.descripcion AS tipo_propiedad FROM propiedad a JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad LEFT JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_propiedad', (err, rows) => {
+                        conn.query('SELECT a.id_propiedad, a.descripcion, COALESCE(u.nombre, "Indefinido") AS condomino, b.descripcion AS tipo_propiedad FROM propiedad a JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad LEFT JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_propiedad DESC', (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 return;

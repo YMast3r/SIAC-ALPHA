@@ -59,7 +59,6 @@ function ediCondomino(req, res) {
                                             tipoUsuario: 2, 
                                             usuario: usuario, 
                                             mensaje: "Página para modificar condómino", 
-                                            error: "", 
                                             modificar: 1});
                                             return;     
                                     }
@@ -205,7 +204,7 @@ function manCondomino(req, res) {
             }
             if (rows.length > 0) {
                 const estados = rows;
-                conn.query('SELECT a.id_usuario as id, a.nombre, a.correo_electronico, a.password,a.telefono, a.tipo_usuario, a.status, b.descripcion as tipo, c.descripcion as status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.tipo_usuario = 3 ORDER BY id_usuario ASC', (err, rows) => {
+                conn.query('SELECT a.id_usuario as id, a.nombre, a.correo_electronico, a.password,a.telefono, a.tipo_usuario, a.status, b.descripcion as tipo, c.descripcion as status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.tipo_usuario = 3 ORDER BY id_usuario DESC', (err, rows) => {
                     if (rows.length > 0) {
                         const datos = rows; 
                         res.render('usuarios/administrador/condomino/manCondomino', { datos: datos, 

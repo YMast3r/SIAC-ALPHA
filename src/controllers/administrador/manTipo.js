@@ -60,7 +60,7 @@ function manTipo(req, res) {
             console.log(err);
             return;
         }
-        conn.query('SELECT id_tipo_pago, descripcion, COALESCE(FORMAT(precio, 2), "Indefinido") AS precio FROM tipo_pago', (err, rows) => {
+        conn.query('SELECT id_tipo_pago, descripcion, COALESCE(FORMAT(precio, 2), "Indefinido") AS precio FROM tipo_pago ORDER BY id_tipo_pago DESC', (err, rows) => {
             if (err) {
                 console.log(err);
                 return;
