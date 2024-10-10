@@ -295,7 +295,7 @@ INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripcion`, `precio`) VALUES
 CREATE TABLE `tipo_propiedad` (
   `id_tipo_propiedad` int(20) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `pago` int(11) NOT NULL
+  `pago` float(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --

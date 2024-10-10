@@ -20,8 +20,6 @@ const upload = multer({ storage: storage }).single('imagen');
 function renPago(req, res) {
     // Recuperamos el id guardado
     const id = req.session.idPropiedad;
-    req.session.mensajeAltaPago = req.session.mensajeAltaPago;
-    req.session.mensajeAltaPagoPlazo = req.session.mensajeAltaPagoPlazo;
     try {
         res.redirect(`/manPago-${id}`);
         return;
@@ -45,14 +43,29 @@ function renderRecuperarPropiedadPago(req, res) {
     }
 }
 
+function renPagoAlta(req, res) {
+    // Recuperamos el id guardado
+    const id = req.session.idPropiedad;
+    // Limpiamos otros campos de error y datos
+    req.session.errorMPago = "";
+    req.session.errorMPagoP = "";
+    req.session.dataCampos = "";
+    try {
+        res.redirect(`/manPago-${id}`);
+        return;
+    } catch {
+        manPago(req, res);
+    }
+}
+
 function renderPago(req, res) {
     // Recuperamos y guardamos el id del condomino y de la propiedad
     req.session.idCon = req.session.idCon;
     req.session.idPropiedad = req.session.idPropiedad;
 
-    // Asignamos los mensajes de error
-    req.session.mensajeAltaPago = req.session.mensajeAltaPago;
-    req.session.mensajeAltaPagoPlazo = req.session.mensajeAltaPagoPlazo;
+    // Limpiamos los mensajes de alta
+    req.session.mensajeAltaPago = "";
+    req.session.mensajeAltaPagoPlazo = "";
 
     // Limpiamos otros campos de error y datos
     req.session.errorMPago = "";
@@ -68,6 +81,10 @@ function recuperarPropiedadPago(req, res) {
     req.session.errorMPago = "";
     req.session.errorMPagoP = "";
     req.session.dataCampos = "";
+    // Limpiamos los mensajes de alta
+    req.session.mensajeAltaPago = "";
+    req.session.mensajeAltaPagoPlazo = "";
+
     let id;
     if (req.params.id) {
         // recupera el id de la ruta inicial
@@ -292,6 +309,20 @@ function altaPago(req, res) {
         const idCon = req.session.idCon;
         const idPro = req.session.idPropiedad;
 
+        // Verificar el formato la fecha final o fecha de inicio
+        const regex = /^\d{4}-(0[1-9]|1[0-2])$/;
+
+        if (!regex.test(data.fecha)) {
+            req.session.errorMPago = 'La fecha no tienen el formato (YYYY-MM)';
+            req.session.dataCampos = data;
+            try {
+                borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
+            } catch {
+                console.log('No hay imagen');
+            }
+            renPago(req, res);
+            return;
+        }
         // Extraer año y mes del campo fecha
         const [year, mes] = data.fecha.split('-');
 
@@ -403,7 +434,7 @@ function altaPago(req, res) {
                                                                 });
                                                             } else {
                                                                 req.session.mensajeAltaPago = "Se registró el pago correctamente";
-                                                                renderPago(req, res);
+                                                                renPagoAlta(req, res);
                                                             }
                                                         }
                                                     });
@@ -438,6 +469,24 @@ function altaPagoPlazo(req, res) {
         }
 
         const data = req.body;
+
+        // Verificar el formato la fecha final o fecha de inicio
+        const regex = /^\d{4}-(0[1-9]|1[0-2])$/;
+
+        if (!regex.test(data.fechaInicio) || !regex.test(data.fechaFin)) {
+            req.session.errorMPagoP = 'La fecha inicio o fecha final no tienen el formato (YYYY-MM)';
+            req.session.dataCampos = data;
+            try {
+                borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
+            } catch {
+                console.log('No hay imagen');
+            }
+            renPago(req, res);
+            return;
+        }
+
+        // Continúa con el procesamiento si las fechas son válidas
+
         // Extraer año y mes del campo fecha Inicio
         const [añoInicio, mesInicio] = data.fechaInicio.split('-');
         // Extraer año y mes del campo fecha Inicio
@@ -649,7 +698,7 @@ function altaPagoPlazo(req, res) {
                                                             });
                                                         } else {
                                                             req.session.mensajeAltaPagoPlazo = "Se registró el pago a plazos correctamente";
-                                                            return renderPago(req, res);
+                                                            return renPagoAlta(req, res);
                                                         }
                                                     });
                                                 });

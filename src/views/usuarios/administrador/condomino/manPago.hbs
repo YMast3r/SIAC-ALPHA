@@ -359,19 +359,19 @@
                         value="{{data.recargo}}">
                 </div>
 
-                <label for="fecha"><i class="fas fa-calendar"></i> Fecha (Mes y Año)</label>
-                <input type="month" id="fecha" name="fecha"
+                <label for="fecha"><i class="fas fa-calendar"></i> Fecha</label>
+                <input type="month" id="fecha" name="fecha" placeholder="YYYY-MM" value="{{data.fecha}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-2"
                     required>
 
                 {{#isEqual tipoUsuario 2}}
                 <label for="reciboFolio"><i class="fas fa-user"></i> Recibo Folio</label>
-                <input type="tel" id="reciboFolio" name="reciboFolio" placeholder="Recibo Folio"
+                <input type="tel" id="reciboFolio" name="reciboFolio" placeholder="Recibo Folio" value="{{data.reciboFolio}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                 {{/isEqual}}
 
                 <label for="referencia"><i class="fas fa-user"></i> Referencia</label>
-                <input type="text" id="referencia" name="referencia" placeholder="Referencia"
+                <input type="text" id="referencia" name="referencia" placeholder="Referencia" value="{{data.referencia}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
 
                 <!-- Campo para subir una imagen -->
@@ -538,30 +538,30 @@
                         <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
                         <path d="M12 3v3m0 12v3" />
                     </svg>
-                    <input type="tel" id="recargoPlazo" name="recargoPlazo" placeholder="recargoPlazo"
+                    <input type="tel" id="recargoPlazo" name="recargoPlazo" placeholder="recargoPlazo" value="{{data.recargoPlazo}}"
                         class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-10 my-2 focus:bg-white hover:bg-gray-300"
                         value="{{data.recargoPlazo}}">
                 </div>
 
-                <label for="fechaInicio"><i class="fas fa-calendar"></i> Fecha Inicial (Mes y Año)</label>
-                <input type="month" id="fechaInicio" name="fechaInicio"
+                <label for="fechaInicio"><i class="fas fa-calendar"></i> Fecha Inicial</label>
+                <input type="month" id="fechaInicio" name="fechaInicio" placeholder="YYYY-MM" value="{{data.fechaInicio}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
                     required>
 
                 <!-- Campo para seleccionar el Mes y Año Final -->
-                <label for="fechaFin"><i class="fas fa-calendar"></i> Fecha Final (Mes y Año)</label>
-                <input type="month" id="fechaFin" name="fechaFin"
+                <label for="fechaFin"><i class="fas fa-calendar"></i> Fecha Final</label>
+                <input type="month" id="fechaFin" name="fechaFin" placeholder="YYYY-MM" value="{{data.fechaFin}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
                     required>
 
                 {{#isEqual tipoUsuario 2}}
                 <label for="reciboFolioPlazo"><i class="fas fa-user"></i> Recibo Folio</label>
-                <input type="tel" id="reciboFolioPlazo" name="reciboFolioPlazo" placeholder="Recibo Folio"
+                <input type="tel" id="reciboFolioPlazo" name="reciboFolioPlazo" placeholder="Recibo Folio" value="{{data.reciboFolioPlazo}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                 {{/isEqual}}
 
                 <label for="referenciaPlazo"><i class="fas fa-user"></i> Referencia</label>
-                <input type="text" id="referenciaPlazo" name="referenciaPlazo" placeholder="Referencia"
+                <input type="text" id="referenciaPlazo" name="referenciaPlazo" placeholder="Referencia" value="{{data.referenciaPlazo}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
 
                 <!-- Campo para subir una imagen -->
