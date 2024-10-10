@@ -47,11 +47,11 @@
                     <tbody id="tipoPagosTable">
                         {{#each tipoPagos}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-center">
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-center rounded">
                                 {{this.id_tipo_pago}}</td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center">{{this.descripcion}}
+                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center rounded">{{this.descripcion}}
                             </td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center">${{this.precio}}</td>
+                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center rounded">${{this.precio}}</td>
                         </tr>
                         {{/each}}
                     </tbody>

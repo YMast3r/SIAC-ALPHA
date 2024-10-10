@@ -23,7 +23,7 @@
         <h2 class="font-medium text-2xl mb-4 text-center text-gray-700">Propiedad</h2>
 
         <!-- Campo de busqueda -->
-        <div class="flex justify-center pt-2 mb-0 w-8/12 mx-auto">
+        <div class="flex justify-center pt-2 mb-0 w-9/12 mx-auto">
             <div class="relative w-full ">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
@@ -35,7 +35,7 @@
 
         <!-- Primera tabla -->
         <div class="w-full">
-            <div class="overflow-x-auto max-h-60 mb-10 w-8/12 mx-auto shadow-lg ">
+            <div class="overflow-x-auto  max-h-[40rem] h-80 mb-10 w-9/12 mx-auto shadow-lg ">
                 <table class="w-full">
                     <thead class=" sticky top-0">
                         <tr>
@@ -46,7 +46,7 @@
                                     <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
                                 </span>
                             </th>
-                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DESCRIPCIÓN
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DESCRIPCIÓN
                             </th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">CONDÓMINO</th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center rounded-tr-lg text-xl">
@@ -57,13 +57,13 @@
                     <tbody id="propiedadTable">
                         {{#each propiedad}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center  border-b-2 border-gray-200 text-xl">{{this.id_propiedad}}
+                            <td class="px-4 py-2 bg-white text-center  border-b-2 border-gray-200 text-xl rounded-bl-lg">{{this.id_propiedad}}
                             </td>
                             <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center text-xl">{{this.descripcion}}
                             </td>
                             <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center  text-xl">{{this.condomino}}
                             </td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center  text-xl">
+                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center  text-xl rounded-br-lg">
                                 {{this.tipo_propiedad}}</td>
                         </tr>
                         {{/each}}
@@ -80,8 +80,8 @@
 
         <!-- Segunda tabla -->
         <!-- Campo de búsqueda para la segunda tabla -->
-        <div class="flex justify-center pt-2 mb-0 w-4/12 mx-auto">
-            <div class="relative w-full max-w-3/5"> <!-- max-w-3/5 igual al ancho de la tabla -->
+        <div class="flex justify-center pt-2 mb-0 w-9/12 mx-auto">
+            <div class="relative w-full {{!-- max-w-3/5 --}}"> 
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                 </span>
@@ -91,30 +91,30 @@
         </div>
 
         <!-- Tabla -->
-        <div class="flex justify-center w-4/12 mx-auto">
-            <div class="overflow-x-auto max-h-60 mb-10 w-full max-w-3/5"> <!-- max-w-3/5 igual al campo de búsqueda -->
+        <div class="flex justify-center w-9/12 mx-auto">
+            <div class="overflow-x-auto max-h-60 mb-10 w-full {{!-- max-w-3/5 --}}"> 
                 <table class="w-full">
                     <thead class="sticky top-0">
                         <tr>
-                            <th id="contenedorFlechaTipo" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg  text-xl">
+                            <th id="contenedorFlechaTipo" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg  text-lg">
                                 TIPO PROPIEDAD
                                 <span class="inline-flex items-center space-x-1">
                                     <a href="#" id="flechaDescTipo" data-order="desc">&darr;</a>
                                     <a href="#" id="flechaAscTipo" data-order="asc">&uarr;</a>
                                 </span>
                             </th>
-                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-xl text-center">DESCRIPCIÓN
+                            <th class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">DESCRIPCIÓN
                             </th>
-                            <th class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium  text-xl text-center rounded-tr-lg">
+                            <th class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium  text-lg text-center rounded-tr-lg">
                                 PAGO</th>
                         </tr>
                     </thead>
                     <tbody id="tipoPropiedadTable">
                         {{#each tipoPropiedad}}
                         <tr>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl">{{this.id_tipo_propiedad}}</td>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl">{{this.descripcion}}</td>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl">${{this.pago}}</td>
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded">{{this.id_tipo_propiedad}}</td>
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded">{{this.descripcion}}</td>
+                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded">${{this.pago}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -129,7 +129,7 @@
         </div>
 
         <!-- Formularios encerrados en tablas -->
-        <div class="flex justify-center mt-25 space-x-48">
+        <div class="flex justify-center  space-x-56">
             <div {{!-- class="w-1/2" --}}>
                 <h2 class="font-semibold text-2xl  pt-10  py-2">Registrar Propiedad</h2>
                 <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
@@ -138,7 +138,7 @@
                             <tbody>
                                 <tr>
                                     <td class="p-2 ">
-                                        <label for="descripcionPropiedad" class="block  text-xl">Descripción</label>
+                                        <label for="descripcionPropiedad" class="block  text-lg">Descripción</label>
                                         <input type="text" name="descripcionPropiedad"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
                                             placeholder="Descripción" id="descripcionPropiedad" required
@@ -146,7 +146,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="p-2  text-xl">
+                                    <td class="p-2  text-lg">
                                         <label for="condomino">Condómino</label>
                                         <select id="condomino" name="condomino"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
@@ -158,7 +158,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="p-2  text-xl">
+                                    <td class="p-2  text-lg">
                                         <label for="tipoPropiedad">Tipo Propiedad</label>
                                         <select id="tipoPropiedad" name="tipoPropiedad"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
@@ -204,8 +204,8 @@
                         <table class="w-full">
                             <tbody>
                                 <tr>
-                                    <td class="p-2  text-xl">
-                                        <label for="descripcionTipoPro" class="block text-xl">Descripción</label>
+                                    <td class="p-2  text-lg">
+                                        <label for="descripcionTipoPro" class="block text-lg">Descripción</label>
                                         <input type="text" name="descripcionTipoPro"
                                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
                                             placeholder="Descripción" id="descripcionTipoPro" required
@@ -214,7 +214,7 @@
                                 </tr>
                                                             <tr>
                                 <td class="p-2 ">
-                                    <label for="pago" class="block text-xl">Pago</label>
+                                    <label for="pago" class="block text-lg">Pago</label>
                                     <div class="relative">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" 
