@@ -108,7 +108,7 @@
         </a>
     </div>
 
-    <div id="info" class="p-4 hidden">
+    <div id="info" class="p-4">
 
         <div class="flex flex-col items-center">
             <div class="w-full max-w-4xl">
@@ -239,71 +239,70 @@
         </div>
     </div>
 
-    <!-- Tabla de pagos -->
-    {{!-- --}}
-    <div class="w-full">
-        <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
-            <table class="w-full table-fixed" id="tablaPagos">
-                <thead>
-                    <tr>
-                        <th id="contenedorFlecha" style="cursor: pointer;"
-                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
-                                FOLIO
-                                <span class="inline-flex items-center space-x-1">
-                                    <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
-                                    <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
-                                </span>
-                        </th>
-                        <th
-                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            AÑO</th>
-                        <th
-                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            MES</th>
-                        <th
-                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            TIPO PAGO</th>
-                        <th
-                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            IMPORTE</th>
-                        <th
-                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            RECARGO</th>
-                        <th
-                            class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            TOTAL</th>
-                        <th
-                            class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            NO. RECIBO</th>
-                        <th
-                            class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg">
-                            PLAZO
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="tablaPagosBody">
-                    {{#each datos}}
-                    <tr class="w-full">
-                        <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-tl-lg">
-                            {{this.folio}}</td>
-                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.año}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.mes}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.tipo}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.importe}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
-                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
-                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-            <!-- Mensaje para cuando no se encuentran resultados -->
-            <div id="mensajeNoResultados" class="text-center font-bold text-lg my-10" style="display: none;">
-                No se encontró ningún pago
-            </div>
-        </div>
+<!-- Tabla de pagos -->
+<div class="w-full">
+    <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
+        <table class="w-full table-fixed" id="tablaPagos">
+            <thead>
+                <tr>
+                    <th id="contenedorFlecha" style="cursor: pointer;" class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
+                        FOLIO
+                        <span class="inline-flex items-center space-x-1">
+                            <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
+                            <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                        </span>
+                    </th>
+                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        AÑO
+                    </th>
+                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        MES
+                    </th>
+                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        TIPO PAGO
+                    </th>
+                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        IMPORTE
+                    </th>
+                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        RECARGO
+                    </th>
+                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        TOTAL
+                    </th>
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                        NO. RECIBO
+                    </th>
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg">
+                        PLAZO
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tablaPagosBody">
+                {{#each datos}}
+                <tr class="w-full">
+                    <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-tl-lg">{{this.folio}}</td>
+                    <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.año}}</td>
+                    <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.mes}}</td>
+                    <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.tipo}}</td>
+                    <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.importe}}</td>
+                    <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
+                    <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
+                    <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
+                    <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tbody id="mensajeNoResultados" style="display: block;">
+                <tr>
+                    <td colspan="9" class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">
+                        No se encontró ningún pago
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+</div>
 
 
 
@@ -769,7 +768,7 @@
                 }
 
                 if (!hayResultados) {
-                    mensajeNoResultados.style.display = 'block';
+                    mensajeNoResultados.style.display = '';
                 } else {
                     mensajeNoResultados.style.display = 'none';
                 }

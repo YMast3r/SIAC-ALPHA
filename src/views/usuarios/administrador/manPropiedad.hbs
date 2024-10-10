@@ -23,7 +23,7 @@
         <h2 class="font-medium text-2xl mb-4 text-center text-gray-700">Propiedad</h2>
 
         <!-- Campo de busqueda -->
-        <div class="flex justify-center pt-2 mb-0 w-11/12 mx-auto">
+        <div class="flex justify-center pt-2 mb-0 w-8/12 mx-auto">
             <div class="relative w-full ">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
@@ -35,7 +35,7 @@
 
         <!-- Primera tabla -->
         <div class="w-full">
-            <div class="overflow-x-auto max-h-60 mb-10 w-11/12 mx-auto shadow-lg ">
+            <div class="overflow-x-auto max-h-60 mb-10 w-8/12 mx-auto shadow-lg ">
                 <table class="w-full">
                     <thead class=" sticky top-0">
                         <tr>
@@ -49,7 +49,7 @@
                             <th class="px-6 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DESCRIPCIÓN
                             </th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">CONDÓMINO</th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium  text-center rounded-tr-lg text-xl">
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center rounded-tr-lg text-xl">
                                 TIPO PROPIEDAD</th>
 
                         </tr>
@@ -79,23 +79,22 @@
         </div>
 
         <!-- Segunda tabla -->
-        <h2 class="font-semibold text-2xl mb-4 text-center text-gray-700 pt-10">Tipo Propiedad</h2>
-
         <!-- Campo de búsqueda para la segunda tabla -->
-        <div class="flex justify-center pt-2 mb-0">
-            <div class="relative w-full max-w-4xl">
+        <div class="flex justify-center pt-2 mb-0 w-4/12 mx-auto">
+            <div class="relative w-full max-w-3/5"> <!-- max-w-3/5 igual al ancho de la tabla -->
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                 </span>
                 <input type="text" id="searchTipoPropiedad" placeholder="Buscar descripción en Tipo Propiedad..."
-                    class=" bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
+                    class="bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
             </div>
         </div>
 
-        <div class="w-full">
-            <div class="overflow-x-auto max-h-60 mb-10 w-3/5 mx-auto">
+        <!-- Tabla -->
+        <div class="flex justify-center w-4/12 mx-auto">
+            <div class="overflow-x-auto max-h-60 mb-10 w-full max-w-3/5"> <!-- max-w-3/5 igual al campo de búsqueda -->
                 <table class="w-full">
-                    <thead  class="sticky top-0">
+                    <thead class="sticky top-0">
                         <tr>
                             <th id="contenedorFlechaTipo" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg  text-xl">
                                 TIPO PROPIEDAD
