@@ -84,7 +84,7 @@
             <a href="/registro"
               class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Registrarse</a>
         </li>
-        <div class="hidden">
+        {{#if acceder}}
             <li class="px-2 sm:px-4">
                 <!-- Ajuste del tamaño del botón de registro para dispositivos móviles -->
                 <a href="/ingresoA"
@@ -96,8 +96,9 @@
                 <a href="/ingresoAP"
                 class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automatico pagos</a>
             </li>
-        </div>
-            {{/if}}
+        {{/if}}
+        {{!-- Condición para el nombre --}}
+        {{/if}}
         </ul>
     </nav>
 

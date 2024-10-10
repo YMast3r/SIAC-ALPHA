@@ -107,6 +107,6 @@ app.get('/', (req, res) => {
         */
  		res.render('principal', { name, tipoUsuario, id});
 	} else {
-		res.redirect('/principal');
+		res.render('principal', { acceder: false });
 	}
 });
