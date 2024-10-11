@@ -6,10 +6,23 @@ function renManPropiedad(req, res) {
     }
 }
 
+function renManPropiedadAlta(req, res) {
+    req.session.errorMPro = "";
+    req.session.errorMT = "";
+    req.session.dataCampos = "";
+    console.log("altaT: ", req.session.altaT);
+    try {
+        res.redirect('/manPropiedad');
+    } catch {
+        manPropiedad(req, res);
+    }
+}
+
 function renderManPropiedad(req, res) {
     req.session.errorMPro = "";
     req.session.errorMT = "";
     req.session.dataCampos = "";
+    req.session.altaT = "";
     renManPropiedad(req, res)
 }
 
@@ -41,7 +54,8 @@ function altaTipoPropiedad(req, res) {
                             console.error("Error al insertar el tipo de propiedad:", error);
                             return res.status(500).send("Error al agregar el tipo de propiedad");
                         }
-                        renderManPropiedad(req, res);
+                        req.session.altaT = 'Se registró tipo propiedad correctamente';
+                        renManPropiedadAlta(req, res);
                     });
                 } else {
                     req.session.errorMT = 'Ya existe esa descripción';
@@ -72,7 +86,6 @@ function altaPropiedad(req, res) {
             }
             if (rows[0].cont == 0) {
                 if (data.condomino != "") {
-                    const idUsuario = rows[0].id_usuario;
                     consulta = 'INSERT INTO propiedad (id_usuario, descripcion, id_tipo_propiedad) VALUES (?, ?, ?)';
                     parametros = [data.condomino, data.descripcionPropiedad, data.tipoPropiedad];
                     conn.query(consulta, parametros, (err, rows) => {
@@ -109,6 +122,8 @@ function manPropiedad(req, res) {
     const error = req.session.errorMPro;
     const errorT = req.session.errorMT;
     const data = req.session.dataCampos;
+    const altaT = req.session.altaT;
+    console.log("altaT: ", altaT);
     req.getConnection((err, conn) => {
         if (err) {
             console.log(err);
@@ -142,6 +157,7 @@ function manPropiedad(req, res) {
                                     propiedad: propiedad,
                                     condomino: condomino,
                                     data: data,
+                                    altaT: altaT,
                                     error: error,
                                     errorT: errorT
                                 });
@@ -152,6 +168,7 @@ function manPropiedad(req, res) {
                             name: req.session.name,
                             tipoUsuario: 2,
                             data: data,
+                            altaT: altaT,
                             condomino: condomino,
                             error: error,
                             errorT: errorT
