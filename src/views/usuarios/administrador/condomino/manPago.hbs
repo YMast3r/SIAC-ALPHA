@@ -313,22 +313,6 @@
                 <p class="text-red-500 font-bold text-lg my-3">*{{{error}}}</p>
                 {{/if}}
             </form><!-- Cierre del formulario -->
-            <script>
-                // Mostrar alerta si hay un mensaje de error
-                const errorMessage = '{{error}}'; // Aquí se pasa el mensaje de error desde el backend
-                const mensajeAlta = '{{mensajeAlta}}'; // Aquí se pasa el mensaje de error desde el backend
-                if (errorMessage) {
-                    alert(errorMessage);
-                    // Mostrar solo la sección seleccionada
-                    document.getElementById('pagos').classList.remove('hidden');
-                    document.getElementById('info').classList.add('hidden');
-                } else if (mensajeAlta) {
-                    alert(mensajeAlta);
-                    // Mostrar solo la sección seleccionada
-                    document.getElementById('info').classList.add('hidden');
-                    document.getElementById('pagos').classList.remove('hidden');
-                }
-            </script>
         </div> <!-- Cierre del contenedor principal -->
     </div>
 
@@ -503,22 +487,6 @@
                 <p class="text-red-500 font-bold text-lg my-3">*{{{errorP}}}</p>
                 {{/if}}
             </form><!-- Cierre del formulario -->
-            <script>
-                // Mostrar alerta si hay un mensaje de error
-                const errorMessageP = '{{errorP}}'; // Aquí se pasa el mensaje de error desde el backend
-                const mensajeAltaP = '{{mensajeAltaP}}'; // Aquí se pasa el mensaje de error desde el backend
-                if (errorMessageP) {
-                    alert(errorMessageP);
-                    // Mostrar solo la sección seleccionada
-                    document.getElementById('pagos_plazos').classList.remove('hidden');
-                    document.getElementById('info').classList.add('hidden');
-                } else if (mensajeAltaP) {
-                    alert(mensajeAltaP);
-                    // Mostrar solo la sección seleccionada
-                    document.getElementById('info').classList.add('hidden');
-                    document.getElementById('pagos_plazos').classList.remove('hidden');
-                }
-            </script>
         </div> <!-- Cierre del contenedor principal -->
     </div>
 
@@ -899,6 +867,38 @@
             });
         });
 
+    </script>
+    <script defer>
+        // Mostrar alerta si hay un mensaje de error
+        const errorMessage = '{{error}}'; // Aquí se pasa el mensaje de error desde el backend
+        const mensajeAlta = '{{mensajeAlta}}'; // Aquí se pasa el mensaje de error desde el backend
+        if (errorMessage) {
+            alert(errorMessage);
+            // Mostrar solo la sección seleccionada
+            document.getElementById('pagos').classList.remove('hidden');
+            document.getElementById('info').classList.add('hidden');
+        } else if (mensajeAlta) {
+            alert(mensajeAlta);
+            // Mostrar solo la sección seleccionada
+            document.getElementById('info').classList.add('hidden');
+            document.getElementById('pagos').classList.remove('hidden');
+        }
+    </script>
+    <script defer>
+        // Mostrar alerta si hay un mensaje de error
+        const errorMessageP = '{{errorP}}'; // Aquí se pasa el mensaje de error desde el backend
+        const mensajeAltaP = '{{mensajeAltaP}}'; // Aquí se pasa el mensaje de error desde el backend
+        if (errorMessageP) {
+            alert(errorMessageP);
+            // Mostrar solo la sección seleccionada
+            document.getElementById('pagos_plazos').classList.remove('hidden');
+            document.getElementById('info').classList.add('hidden');
+        } else if (mensajeAltaP) {
+            alert(mensajeAltaP);
+            // Mostrar solo la sección seleccionada
+            document.getElementById('info').classList.add('hidden');
+            document.getElementById('pagos_plazos').classList.remove('hidden');
+        }
     </script>
 </body>
 

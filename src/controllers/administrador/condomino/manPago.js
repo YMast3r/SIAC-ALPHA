@@ -434,6 +434,7 @@ function altaPago(req, res) {
                                                                 });
                                                             } else {
                                                                 req.session.mensajeAltaPago = "Se registró el pago correctamente";
+                                                                req.session.mensajeAltaPagoPlazo = "";
                                                                 renPagoAlta(req, res);
                                                             }
                                                         }
@@ -698,6 +699,7 @@ function altaPagoPlazo(req, res) {
                                                             });
                                                         } else {
                                                             req.session.mensajeAltaPagoPlazo = "Se registró el pago a plazos correctamente";
+                                                            req.session.mensajeAltaPago = "";
                                                             return renPagoAlta(req, res);
                                                         }
                                                     });
