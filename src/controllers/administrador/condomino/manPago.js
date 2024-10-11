@@ -561,7 +561,7 @@ function altaPagoPlazo(req, res) {
 
                     // Verificar si existe algún pago en el rango de fechas seleccionado
                     conn.query('SELECT COUNT(*) AS count FROM pago WHERE id_propiedad = ? AND tipo_pago = ? AND ((año > ? OR (año = ? AND mes >= ?)) AND (año < ? OR (año = ? AND mes <= ?)))',
-                        [idPro, añoInicio, añoInicio, mesInicio, añoFin, añoFin, mesFin, data.tipoPagoPlazo], (err, rows) => {
+                        [idPro, data.tipoPagoPlazo, añoInicio, añoInicio, mesInicio, añoFin, añoFin, mesFin], (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 req.session.errorMPagoP = 'Error en la consulta de pagos';
