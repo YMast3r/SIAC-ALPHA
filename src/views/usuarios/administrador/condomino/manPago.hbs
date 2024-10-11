@@ -398,9 +398,11 @@
                     alert(errorMessage);
                     // Mostrar solo la sección seleccionada
                     document.getElementById('pagos').classList.remove('hidden');
+                    document.getElementById('info').classList.add('hidden');
                 } else if (mensajeAlta) {
                     alert(mensajeAlta);
                     // Mostrar solo la sección seleccionada
+                    document.getElementById('info').classList.add('hidden');
                     document.getElementById('pagos').classList.remove('hidden');
                 }
             </script>
@@ -493,12 +495,11 @@
 
         {{/if}}
         {{!-- Formulario para los pagos en plazos --}}
-        <!-- Encabezado-->
-        <!-- Título del formulario-->
         <div class="mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/3 border rounded-lg shadow-lg">
+        <!-- Título del formulario-->
             <h1 class="text-2x1 m-5 font-bold text-center  text-xl">Registra pago a plazo aquí</h1>
 
-            <form action="/altaPago" method="POST" class="mt-4" enctype="multipart/form-data">
+            <form action="/altaPagoPlazo" method="POST" class="mt-4" enctype="multipart/form-data">
                 <!-- Campos para los datos del pago-->
 
                 <!-- Contenedor con flex para alinear los campos horizontalmente -->
@@ -587,9 +588,11 @@
                     alert(errorMessageP);
                     // Mostrar solo la sección seleccionada
                     document.getElementById('pagos_plazos').classList.remove('hidden');
+                    document.getElementById('info').classList.add('hidden');
                 } else if (mensajeAltaP) {
                     alert(mensajeAltaP);
                     // Mostrar solo la sección seleccionada
+                    document.getElementById('info').classList.add('hidden');
                     document.getElementById('pagos_plazos').classList.remove('hidden');
                 }
             </script>

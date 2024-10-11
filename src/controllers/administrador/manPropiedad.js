@@ -10,7 +10,6 @@ function renManPropiedadAlta(req, res) {
     req.session.errorMPro = "";
     req.session.errorMT = "";
     req.session.dataCampos = "";
-    console.log("altaT: ", req.session.altaT);
     try {
         res.redirect('/manPropiedad');
     } catch {
@@ -123,7 +122,6 @@ function manPropiedad(req, res) {
     const errorT = req.session.errorMT;
     const data = req.session.dataCampos;
     const altaT = req.session.altaT;
-    console.log("altaT: ", altaT);
     req.getConnection((err, conn) => {
         if (err) {
             console.log(err);
