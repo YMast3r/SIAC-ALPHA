@@ -108,83 +108,6 @@
         </a>
     </div>
 
-    <div id="info" class="p-4">
-
-        <div class="flex flex-col items-center">
-            <div class="w-full max-w-4xl">
-                {{!-- Tabla del condómino --}}
-                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Condómino</h1>
-                <div class="overflow-x-auto max-h-60 mb-8 ">
-                    <table class="w-full">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400  text-xl font-medium rounded-tl-lg">ID
-                                </th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">NOMBRE</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">CORREO</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">TELÉFONO</th>
-                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">
-                                    ESTADO
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each usuario}}
-                            <tr>
-                                <td
-                                    class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded-md text-center">
-                                    {{this.id}}
-                                </td>
-                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.nombre}}
-                                </td>
-                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">
-                                    {{this.correo_electronico}}</td>
-                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.telefono}}
-                                </td>
-                                <td
-                                    class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-br-lg text-center">
-                                    {{this.status}}</td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-
-                {{!-- Tabla de la propiedad del usuario --}}
-                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedad del condómino</h1>
-                <div class="overflow-x-auto max-h-60">
-                    <table class="w-full">
-                        <thead>
-                            <tr>
-                                <th class="px-2 py-2 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tl-lg">ID
-                                    PROPIEDAD</th>
-                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium ">DESCRIPCIÓN</th>
-                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium">TIPO</th>
-                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tr-lg">PRECIO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each usuarioPro}}
-                            <tr>
-                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-md">
-                                    {{this.id_propiedad}}</td>
-                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">
-                                    {{this.descripcion}}
-                                </td>
-                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">
-                                    {{this.tipo_propiedad}}</td>
-                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-br-lg">
-                                    ${{this.pago}}</td>
-                            </tr>
-
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{!-- Condición para ver si hay pagos --}}
     {{#if errorDatos}}
     <center>
@@ -599,6 +522,81 @@
         </div> <!-- Cierre del contenedor principal -->
     </div>
 
+    <div id="info">
+        <div class="flex flex-col items-center">
+            <div class="w-full max-w-4xl">
+                {{!-- Tabla del condómino --}}
+                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Condómino</h1>
+                <div class="overflow-x-auto max-h-60 mb-8 ">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400  text-xl font-medium rounded-tl-lg">ID
+                                </th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">NOMBRE</th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">CORREO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">TELÉFONO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">
+                                    ESTADO
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each usuario}}
+                            <tr>
+                                <td
+                                    class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded-md text-center">
+                                    {{this.id}}
+                                </td>
+                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.nombre}}
+                                </td>
+                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">
+                                    {{this.correo_electronico}}</td>
+                                <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.telefono}}
+                                </td>
+                                <td
+                                    class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-br-lg text-center">
+                                    {{this.status}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+
+                {{!-- Tabla de la propiedad del usuario --}}
+                <h1 class="font-semibold text-2xl flex justify-center m-5 text-gray-700">Propiedad del condómino</h1>
+                <div class="overflow-x-auto max-h-60">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-2 py-2 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tl-lg">ID
+                                    PROPIEDAD</th>
+                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium ">DESCRIPCIÓN</th>
+                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium">TIPO</th>
+                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tr-lg">PRECIO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each usuarioPro}}
+                            <tr>
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-md">
+                                    {{this.id_propiedad}}</td>
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">
+                                    {{this.descripcion}}
+                                </td>
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200">
+                                    {{this.tipo_propiedad}}</td>
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-br-lg">
+                                    ${{this.pago}}</td>
+                            </tr>
+
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     {{!-- Condición de propiedad --}}
     {{/if}}
     {{!-- Condición en caso de que no haya una propiedad --}}
