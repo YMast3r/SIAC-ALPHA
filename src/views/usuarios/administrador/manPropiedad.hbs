@@ -33,8 +33,8 @@
 <script>
     // Selecciona los elementos y sus configuraciones
     const elementos = [
-        { id: 'formaClipPathP', top: '-2px', textoInicial: 'Propiedad', textoHover: 'Propiedad', widthInicial: '9rem', widthHover: '14rem' }, // Propiedad
-        { id: 'formaClipPathT', top: '-2px', textoInicial: 'Tipo', textoHover: 'Tipo Propiedad', widthInicial: '7rem', widthHover: '12rem' } // Tipo Propiedad
+        { id: 'formaClipPathP', textoInicial: 'Propiedad', textoHover: 'Propiedad', widthInicial: '9rem', widthHover: '14rem' }, // Propiedad
+        { id: 'formaClipPathT', textoInicial: 'Tipo', textoHover: 'Tipo Propiedad', widthInicial: '7rem', widthHover: '12rem' } // Tipo Propiedad
     ];
 
     // Función para aplicar el clip-path y estilos
@@ -129,9 +129,9 @@
             </div>
 
             {{!-- Formulario de propiedad --}}
-            <div class="flex justify-center space-x-56">
+            <div class="flex justify-center  pb-8">
                 <div class="w-4/12">
-                    <h2 class="font-semibold text-2xl pt-10  py-2">Registrar Propiedad</h2>
+                    <h2 class="font-semibold text-2xl pt-1  text-center py-2">Registrar Propiedad</h2>
                     <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
                         <form action="/altaPropiedad" method="POST">
                             <table class="w-full  pt-10">
