@@ -314,6 +314,7 @@ function altaPago(req, res) {
 
         if (!regex.test(data.fecha)) {
             req.session.errorMPago = 'La fecha no tienen el formato (YYYY-MM)';
+            req.session.mensajeAltaPagoPlazo = "";
             req.session.dataCampos = data;
             try {
                 borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
@@ -427,6 +428,7 @@ function altaPago(req, res) {
                                                                     if (err) {
                                                                         console.log(err);
                                                                         req.session.errorMPago = 'Error al mover la imagen';
+                                                                        req.session.mensajeAltaPagoPlazo = "";
                                                                         renPago(req, res);
                                                                         return;
                                                                     }
@@ -441,6 +443,7 @@ function altaPago(req, res) {
                                                     });
                                                 } else {
                                                     req.session.errorMPago = 'Ya existe un pago registrado';
+                                                    req.session.mensajeAltaPagoPlazo = "";
                                                     req.session.dataCampos = data;
                                                     try {
                                                         borrarImagenTemporal(tempPath);
@@ -476,6 +479,7 @@ function altaPagoPlazo(req, res) {
 
         if (!regex.test(data.fechaInicio) || !regex.test(data.fechaFin)) {
             req.session.errorMPagoP = 'La fecha inicio o fecha final no tienen el formato (YYYY-MM)';
+            req.session.mensajeAltaPago = "";
             req.session.dataCampos = data;
             try {
                 borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
@@ -519,6 +523,7 @@ function altaPagoPlazo(req, res) {
         // Verificar que la fecha final sea mayor a la fecha de inicio
         if (añoFin < añoInicio || (añoFin == añoInicio && mesFin < mesInicio)) {
             req.session.errorMPagoP = 'La fecha final debe ser mayor a la fecha de inicio';
+            req.session.mensajeAltaPago = "";
             req.session.dataCampos = data;
             try {
                 borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
@@ -532,6 +537,7 @@ function altaPagoPlazo(req, res) {
         // Verificar si se seleccionó más de un mes
         if (añoFin == añoInicio && mesFin == mesInicio) {
             req.session.errorMPagoP = 'Seleccione más de un mes';
+            req.session.mensajeAltaPago = "";
             req.session.dataCampos = data;
             try {
                 borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
@@ -552,6 +558,7 @@ function altaPagoPlazo(req, res) {
                 if (err) {
                     console.log(err);
                     req.session.errorMPagoP = 'Error en la consulta del administrador';
+                    req.session.mensajeAltaPago = "";
                     renPago(req, res);
                 }
 
@@ -565,11 +572,13 @@ function altaPagoPlazo(req, res) {
                             if (err) {
                                 console.log(err);
                                 req.session.errorMPagoP = 'Error en la consulta de pagos';
+                                req.session.mensajeAltaPago = "";
                                 renPago(req, res);
                             }
 
                             if (rows[0].count > 0) {
                                 req.session.errorMPagoP = 'Ya existe un pago registrado en el rango de fechas seleccionado';
+                                req.session.mensajeAltaPago = "";
                                 req.session.dataCampos = data;
                                 try {
                                     borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
@@ -650,6 +659,7 @@ function altaPagoPlazo(req, res) {
                                                 if (err) {
                                                     console.log(err);
                                                     req.session.errorMPagoP = 'Error al insertar el pago en pagoPlazos';
+                                                    req.session.mensajeAltaPago = "";
                                                     renPago(req, res);
                                                 }
 
@@ -657,6 +667,7 @@ function altaPagoPlazo(req, res) {
                                                     if (err) {
                                                         console.log(err);
                                                         req.session.errorMPagoP = 'Error al insertar los pagos';
+                                                        req.session.mensajeAltaPago = "";
                                                         renPago(req, res);
                                                     }
                                                     const id_plazo = rows[0].folio;
@@ -684,6 +695,7 @@ function altaPagoPlazo(req, res) {
                                                         if (err) {
                                                             console.log(err);
                                                             req.session.errorMPagoP = 'Error al insertar los pagos';
+                                                            req.session.mensajeAltaPago = "";
                                                             renPago(req, res);
                                                         }
 
@@ -693,6 +705,7 @@ function altaPagoPlazo(req, res) {
                                                                 if (err) {
                                                                     console.log(err);
                                                                     req.session.errorMPagoP = 'Error al mover la imagen';
+                                                                    req.session.mensajeAltaPago = "";
                                                                     renPago(req, res);
                                                                 }
                                                                 return renderPago(req, res);
