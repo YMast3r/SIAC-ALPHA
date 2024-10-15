@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 19-09-2024 a las 10:50:12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 16-10-2024 a las 01:55:54
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -102,12 +102,12 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`) VALUES
-(1, 1, 800, 100, 2024, 1, '2024-09-11', 2, 01, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(2, 1, 800, 100, 2024, 2, '2024-09-11', 2, 02, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(3, 1, 800, 100, 2024, 3, '2024-09-11', 2, 03, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(4, 1, 800, 100, 2024, 4, '2024-09-11', 2, 04, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(5, 1, 800, 100, 2024, 5, '2024-09-11', 2, 05, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(6, 1, 800, 100, 2024, 6, '2024-09-11', 2, 06, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1);
+(1, 1, 800, 100, 2024, 1, '2024-09-11', 2, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(2, 1, 800, 100, 2024, 2, '2024-09-11', 2, 2, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(3, 1, 800, 100, 2024, 3, '2024-09-11', 2, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(4, 1, 800, 100, 2024, 4, '2024-09-11', 2, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(5, 1, 800, 100, 2024, 5, '2024-09-11', 2, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(6, 1, 800, 100, 2024, 6, '2024-09-11', 2, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -295,7 +295,7 @@ INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripcion`, `precio`) VALUES
 CREATE TABLE `tipo_propiedad` (
   `id_tipo_propiedad` int(20) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `pago` float(11) NOT NULL
+  `pago` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
@@ -421,18 +421,21 @@ ALTER TABLE `status`
 -- Indices de la tabla `status_incidencia`
 --
 ALTER TABLE `status_incidencia`
+  ADD PRIMARY KEY (`id_status_incidencia`),
   ADD KEY `idx_id_status_incidencia` (`id_status_incidencia`);
 
 --
 -- Indices de la tabla `status_seguimiento`
 --
 ALTER TABLE `status_seguimiento`
+  ADD PRIMARY KEY (`id_status_seguimiento`),
   ADD KEY `idx_id_status_seguimiento` (`id_status_seguimiento`);
 
 --
 -- Indices de la tabla `tipo_incidencia`
 --
 ALTER TABLE `tipo_incidencia`
+  ADD PRIMARY KEY (`id_tipo_incidencia`),
   ADD KEY `idx_id_tipo_incidencia` (`id_tipo_incidencia`);
 
 --
@@ -496,6 +499,24 @@ ALTER TABLE `status`
   MODIFY `id_status` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT de la tabla `status_incidencia`
+--
+ALTER TABLE `status_incidencia`
+  MODIFY `id_status_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `status_seguimiento`
+--
+ALTER TABLE `status_seguimiento`
+  MODIFY `id_status_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_incidencia`
+--
+ALTER TABLE `tipo_incidencia`
+  MODIFY `id_tipo_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `tipo_pago`
 --
 ALTER TABLE `tipo_pago`
@@ -536,10 +557,10 @@ ALTER TABLE `incidencia`
 -- Filtros para la tabla `pago`
 --
 ALTER TABLE `pago`
+  ADD CONSTRAINT `FK_id_plazo` FOREIGN KEY (`id_plazo`) REFERENCES `pago_plazos` (`folio`),
   ADD CONSTRAINT `FK_pago_tipo_pago` FOREIGN KEY (`tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`),
   ADD CONSTRAINT `FK_propiedad_pago` FOREIGN KEY (`id_propiedad`) REFERENCES `propiedad` (`id_propiedad`),
   ADD CONSTRAINT `FK_usuarios_administrador` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `FK_id_plazo` FOREIGN KEY (`id_plazo`) REFERENCES `pago_plazos` (`folio`),
   ADD CONSTRAINT `FK_usuarios_mes` FOREIGN KEY (`mes`) REFERENCES `mes` (`mes`);
 
 --
