@@ -57,8 +57,7 @@
 
 
     <div>
-        <a href="/renderManTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Tipo
-            Pagos</a>
+        <a href="/renderManTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Página tipos</a>
 
         <h1 class="font-medium text-2xl mb-4 text-center text-gray-700">{{titulo}}</h1>
 
@@ -79,7 +78,7 @@
             <thead class="bg-white sticky top-0">
                 <tr>
                     {{#each tableHeaders}}
-                    <th class="px-4 py-2 border-b-2 text-center text-xl">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
                         {{#if this.sortable}}
                         <a href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}" class="flex items-center justify-center text-center">
                             {{this.name}}
@@ -138,7 +137,7 @@
 
 <div class="text-lg mx-auto my-2 p-2 bg-white   w-2/6 border rounded-lg ">
         <form action="/altaTipo" method="POST">
-            <input type="hidden" name="tipo" value="{{tipo}}" /> <!-- Añade este campo oculto -->
+            <input type="hidden" name="tipo" value="{{tipo}}" /> 
             {{#each formFields}}
             <div class="p-2">
                 <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
@@ -156,7 +155,7 @@
                         class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300" required="{{this.required}}">
                 </div>
                 {{else}}
-                <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
+                <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}" placeholder="{{this.label}}"
                     class="border border-gray-200 w-full text-lg p-2" required="{{this.required}}">
                 {{/isEqual}}
             </div>
