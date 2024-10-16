@@ -16,7 +16,7 @@
 
         <!-- Campo de búsqueda -->
         <div class="flex justify-center pt-2 mb-0 "></div>
-            <div class="relative w-2/4 mx-auto">
+            <div class="relative w-3/4 mx-auto">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                 </span>
@@ -25,21 +25,23 @@
         </div>
 
         <div class="flex justify-center">
-            <div class="overflow-x-auto relative w-2/4 rounded-lg shadow-lg">
-                <table class="w-full rounded-lg overflow-hidden" id="adminTable">
-                    <thead>
+            <div class="overflow-x-auto relative w-3/4 rounded-lg shadow-lg max-h-80">
+                <table class="w-full rounded-lg" id="adminTable">
+                    <thead  class="sticky top-0">
                         <tr>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                            <div id="contenedorFlecha" style="display: inline; cursor: pointer;">
-                                ID
+                            <th id="contenedorFlecha" style="cursor: pointer;" class="px-4 {{!-- py-4 --}} bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg ">
+                            <span class="inline-flex items-center space-x-1">
+                                <p> ID </p>
+                                {{!-- &nbsp; --}}
                                 <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
                                 <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
-                            </div>
-                            </th>                             <th class="px-6 py-2 bg-white border-b-2 border-gray-400 font-medium">NOMBRE</th>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">CORREO</th>
-                            <th class="px-8 py-2 bg-white border-b-2 border-gray-400 font-medium">TELÉFONO</th>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium">ESTADO</th>
-                            <th class="px-2 py-2 bg-white border-b-2 border-gray-400 font-medium  rounded-tr-lg">EDITAR</th>
+                            </span>
+                            </th>                             
+                            <th class="px-6 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">NOMBRE</th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">CORREO</th>
+                            <th class="px-8 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">TELÉFONO</th>
+                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">ESTADO</th>
+                            <th class="px-2 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium  rounded-tr-lg">EDITAR</th>
                         </tr>
                     </thead>
                     <tbody id="AdminTabla">
@@ -50,7 +52,7 @@
                             <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.correo_electronico}}</td>
                             <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-2000">{{this.telefono}}</td>
                             <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.status}}</td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center"><a href="/ediAdm{{id}}"><svg class="h-8 w-10 text-black text-gray-600" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />  <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" /></svg></a></td>
+                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center"><a href="/ediAdm{{id}}"><svg class="h-8 w-10 text-black text-gray-600 mx-auto" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />  <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" /></svg></a></td>
                         </tr>
                         {{/each}}
                         <tr id="noResultsRow" class="hidden">
