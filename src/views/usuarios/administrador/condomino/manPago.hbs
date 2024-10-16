@@ -160,6 +160,19 @@
                 </div>
             </div>
         </div>
+        <div class="flex items-center space-x-2"></div>
+            <span class="text-xl font-medium text-gray-700 whitespace-nowrap">Buscar por Tipo</span>
+            <select id="tipoFiltro"
+                    class="border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 rounded-lg bg-white w-1/8">
+                <option value="">Todos</option>
+                {{#each tipoPago}}
+                <option value="{{this.descripcion}}">{{this.descripcion}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+
+   
     </div>
 
     <!-- Tabla de pagos -->
@@ -899,6 +912,21 @@
             document.getElementById('info').classList.add('hidden');
             document.getElementById('pagos_plazos').classList.remove('hidden');
         }
+    </script>
+    <script>
+        document.getElementById('tipoFiltro').addEventListener('change', function () {
+            const tipoSeleccionado = this.value.toLowerCase();
+            const filas = document.querySelectorAll('#tablaPagosBody tr');
+
+            filas.forEach(fila => {
+                const tipo = fila.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                if (tipoSeleccionado === "" || tipo.includes(tipoSeleccionado)) {
+                    fila.style.display = "";
+                } else {
+                    fila.style.display = "none";
+                }
+            });
+        });
     </script>
 </body>
 
