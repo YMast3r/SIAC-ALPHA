@@ -11,178 +11,154 @@
 </head>
 
 <body class="bg-indigo-200">
+    {{!-- ---PESTAÑAS--- --}}
+
+    <div>
+        <nav class="flex justify-end bg-gray-200">
+            <a href="/manTipoPago" id="formaClipPathP"
+                class="overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 whitespace-nowrap transition-all duration-300 ease-in-out rounded-b-lg -mr-4"
+                onclick="mostrarSeccion('tipoPagos')">Tipo pagos</a>
+            <a href="/manTipoIncidencia" id="formaClipPathI"
+                class="overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 whitespace-nowrap transition-all duration-300 ease-in-out rounded-b-lg -mr-4"
+                onclick="mostrarSeccion('tipoIncidecia')">Tipo Incidencias</a>
+        </nav>
+    </div>
+
+    <script>
+        // Selecciona los elementos y sus configuraciones
+        const elementos = [
+            { id: 'formaClipPathP', textoInicial: 'T. pagos', textoHover: 'Tipo pagos', widthInicial: '9rem', widthHover: '14rem' },
+            { id: 'formaClipPathI', textoInicial: 'T. Incidencias', textoHover: 'Tipo Incidencias', widthInicial: '7rem', widthHover: '12rem' }
+        ];
+
+        // Función para aplicar el clip-path y estilos
+        elementos.forEach(elemento => {
+            const el = document.getElementById(elemento.id);
+            el.style.clipPath = 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)';
+            el.style.position = 'relative';
+            el.style.top = elemento.top;
+            el.style.width = elemento.widthInicial; // Establece el ancho inicial
+
+            if (elemento.textoInicial) {
+                el.textContent = elemento.textoInicial;
+
+                el.addEventListener('mouseover', () => {
+                    el.style.width = elemento.widthHover;
+                    el.textContent = elemento.textoHover || elemento.textoInicial;
+                });
+
+                el.addEventListener('mouseout', () => {
+                    el.style.width = elemento.widthInicial;
+                    el.textContent = elemento.textoInicial;
+                });
+            }
+        });
+    </script>
+
+
     <div>
         <a href="/renderManTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Tipo
             Pagos</a>
 
-        <!-- Campo de búsqueda para la segunda tabla -->
-        <div class="flex justify-center pt-2 mb-0 mx-auto">
-            <div class="relative w-2/5">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                    <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
-                </span>
-                <input type="text" id="searchTipoPagos" placeholder="Buscar descripción en Tipo pagos..."
-                    class=" bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
-            </div>
+        <h1 class="font-medium text-2xl mb-4 text-center text-gray-700">{{titulo}}</h1>
+
+        <div class="mb-4">
+            <input type="text" id="searchTipo" placeholder="Buscar por descripción"
+                class="px-4 py-2 border rounded w-full">
         </div>
 
-        <!-- Segunda tabla -->
-        <div class="w-full ">
-            <div class="overflow-x-auto max-h-60 mb-10 w-2/5 mx-auto">
-                <table class="w-full rounded-lg">
-                    <thead  class="sticky top-0">
-                        <tr>
-                        <th id="contenedorFlecha" style="cursor: pointer;" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg">
-                                ID
-                                <span class="inline-flex items-center space-x-1">
-                                    <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
-                                    <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
-                                </span>
-                        </th> 
-                        <th class="px-6 py-2 bg-white border-b-2 border-gray-400 font-medium">DESCRIPCIÓN</th>
-                            <th class="px-4 py-2 bg-white border-b-2 border-gray-400 font-medium rounded-tr-lg">PRECIO
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="tipoPagosTable">
-                        {{#each tipoPagos}}
-                        <tr>
-                            <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-center rounded">
-                                {{this.id_tipo_pago}}</td>
-                            <td class="px-6 py-2 bg-white border-b-2 border-gray-200 text-center rounded">{{this.descripcion}}
-                            </td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center rounded">${{this.precio}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                     <tbody id="noResult" style="display: none;">
-                        <tr>
-                            <td colspan="3" class="px-4 py-2 bg-gray-100 border border-gray-600 text-center text-xl">No se
-                                encontró ninguna descripción</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <table id="tipoTable" class="w-full">
+            <thead>
+                <tr>
+                    {{#each tableHeaders}}
+                    <th class="px-4 py-2 bg-white border-b-2">
+                        {{#if this.sortable}}
+                        <a href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
+                            class="flex items-center">
+                            {{this.name}}
+                            {{#if this.orderDirection}}
+                            <span>
+                                {{#isEqual this.orderDirection 'ASC'}}
+                                ↑↓
+                                {{else}}
+                                ↓↑
+                                {{/isEqual}}
+                            </span>
+                            {{/if}}
+                        </a>
+                        {{else}}
+                        {{this.name}}
+                        {{/if}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each tableData}}
+                <tr>
+                    {{#each ../tableHeaders}}
+                    <td class="px-4 py-2 bg-white border-b-2">{{lookup ../this this.field}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
 
-        {{#if errorT}}
-        <!-- Popup nuevo agregado -->
-        <div id="info-popup" tabindex="-1"
-            class=" fixed inset-0 flex items-center justify-center overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
-            <div class="relative p-4  w-full max-w-lg h-full md:h-auto">
-                <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-700 md:p-8">
-                    <div class="mb-4 text-lg font-medium text-white-500 dark:text-white">
-                        <h3 class="mb-3 text-2xl font-bold text-white-900 dark:text-white">Error</h3>
-                        <p>
-                            {{errorT}}
-                        </p>
-                    </div>
-                    <div class="justify-between items-rigth pt-0 space-y-4 sm:flex sm:space-y-0">
+        <p id="noResult" class="text-red-500 text-center hidden">No se encontró ninguna descripción</p>
 
-                        <div class="ml-auto items-center space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
-                            <button id="close-modal" type="button"
-                                class="py-2 px-4 w-full text-sm font-medium text-white-500 bg-gray-700 rounded-lg border border-white-200 sm:w-auto hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-white dark:border-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-500">inténtalo de nuevo
-                            </button>
-    
-                        </div>
-                    </div>
+
+        <!-- Popup de error -->
+        <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-6 shadow-lg">
+                <div class="mb-4">
+                    <p>¿Estás seguro que deseas continuar?</p>
+                </div>
+                <div class="flex justify-end">
+                    <button id="confirm-button"
+                        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-2">Confirmar</button>
+                    <button id="close-modal"
+                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cancelar</button>
                 </div>
             </div>
         </div>
-        {{/if}}
 
-        <!-- Continuación del código existente -->
-        <div class="max-w-lg mx-auto pt-5 ">
-            <h2 class="font-semibold text-2xl mb-4 text-center">Registrar tipo pago</h2>
-
-            <div class="bg-white p-4 border rounded-lg shadow-lg relative">
-                <form action="/altaTipoPago" method="POST">
-                    <table class="w-full">
-                        <tbody>
-                            <tr>
-                                <td class="p-2">
-                                    <label for="descripcionTipoPago" class="block text-lg">Descripción</label>
-                                    <input type="text" name="descripcionTipoPago"
-                                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
-                                        placeholder="Descripción" id="descripcionTipoPago" required
-                                        value="{{data.descripcionTipoPago}}">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-2">
-                                    <label for="precio" class="block text-lg">Precio</label>
-                                    <div class="relative">
-                                       <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" 
-                                            width="16" height="16"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                                            <path d="M12 3v3m0 12v3" />
-                                        </svg>
-                                        <input type="tel" name="precio"
-                                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
-                                            placeholder="Precio" id="precio" required value="{{data.precio}}">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-2">
-                                    <button type="submit"
-                                        class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-lg px-6 py-2 block text-center">
-                                        Registrar tipo Pago
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-                <script>
-                    // Mostrar mensaje de error personalizado si hay un mensaje de error
-                    const errorMessage = '{{errorT}}';
-                    if (errorMessage) {
-                        const errorContainer = document.createElement('div');
-                        errorContainer.setAttribute('role', 'alert');
-                        errorContainer.innerHTML = `
-                            <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-                                Algo ha salido mal, intentalo de nuevo
-                            </div>
-                            <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-                                <p>${errorMessage}</p>
-                            </div>
-                        `;
-                        document.querySelector('form').prepend(errorContainer);
-
-                        // Mostrar el popup solo si hay error
-                        const popup = document.getElementById('info-popup');
-                        popup.classList.remove('hidden'); // Mostrar el popup
-                    }
-
-                    // Cerrar el popup
-                    document.getElementById('close-modal').addEventListener('click', function () {
-                        const popup = document.getElementById('info-popup');
-                        popup.classList.add('hidden'); // Cierra el popup al cancelar
-                    });
-
-                    document.getElementById('confirm-button').addEventListener('click', function () {
-                        const popup = document.getElementById('info-popup');
-                        popup.classList.add('hidden'); // Cierra el popup al confirmar
-                    });
-                </script>
+        <form action="/altaTipo" method="POST">
+            <input type="hidden" name="tipo" value="{{tipo}}" /> <!-- Añade este campo oculto -->
+            {{#each formFields}}
+            <div class="p-2">
+                <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                {{#isEqual this.label "Precio"}}
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16" height="16"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                        <path d="M12 3v3m0 12v3" />
+                    </svg>
+                    <input id="precio" type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300" required="{{this.required}}">
+                </div>
+                {{else}}
+                <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
+                    class="border border-gray-200 w-full text-lg p-2" required="{{this.required}}">
+                {{/isEqual}}
             </div>
-        </div>
+            {{/each}}
+            <button type="submit" class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600">Registrar</button>
+        </form>
+
     </div>
     <script>
-
-        // Esto es el bucador
-        document.getElementById('searchTipoPagos').addEventListener('keyup', function () {
+        // Esto es el buscador
+        document.getElementById('searchTipo').addEventListener('keyup', function () {
             let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#tipoPagosTable tr');
+            let rows = document.querySelectorAll('#tipoTable tbody tr');
             let noResult = true;
 
             rows.forEach(row => {
-                let description = row.cells[1].innerText.toLowerCase();
+                let description = row.cells[1].innerText.toLowerCase(); // Usamos la columna de descripción (celda 1)
                 if (description.includes(filter)) {
                     row.style.display = '';
                     noResult = false;
@@ -191,16 +167,21 @@
                 }
             });
 
-            document.getElementById('noResult').style.display = noResult ? '' : 'none';
+            document.getElementById('noResult').style.display = noResult ? '' : 'none'; // Mostrar mensaje si no hay resultados
         });
-
+    </script>
+    <script>
         // Obtener los elementos de entrada por su ID
         const precio = document.getElementById('precio');
+
+        // Verificar si el campo ya tiene un valor
+        if (precio.value === '') {
+            precio.value = '0.00'; // Solo establece a '0.00' si está vacío
+        }
+
         // Función para validar que el input sea un número con hasta dos decimales
         function validarInputF(input) {
-            input.value = '0.00';
             input.addEventListener('input', function () {
-
                 let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
                 let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
 
@@ -215,62 +196,44 @@
 
                 input.value = formattedValue;
             });
-
         }
-        // Llamar a la función validarInput para cada input
+
+        // Llamar a la función validarInput para cada input de precio
         validarInputF(precio);
+    </script>
+    <script>
+        // Mostrar mensaje de error personalizado si hay un mensaje de error
+        const errorMessage = '{{errorT}}'; // Asumiendo que 'errorT' contiene el mensaje de error desde el backend
+        if (errorMessage) {
+            const errorContainer = document.createElement('div');
+            errorContainer.setAttribute('role', 'alert');
+            errorContainer.innerHTML = `
+        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+            Algo ha salido mal, intentalo de nuevo
+        </div>
+        <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+            <p>${errorMessage}</p>
+        </div>
+    `;
+            document.querySelector('form').prepend(errorContainer); // Agregar el mensaje de error al formulario
 
-        document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
-            event.preventDefault();
+            // Mostrar el popup solo si hay error
+            const popup = document.getElementById('info-popup');
+            popup.classList.remove('hidden'); // Mostrar el popup si hay error
+        }
 
-            // flechas
-            let abajo = document.getElementById('flechaDesc');
-            let arriba = document.getElementById('flechaAsc');
-
-            let orden; // Definir la variable "orden"
-
-            // Verificar si está en descendente
-            if (abajo.getAttribute('data-order') === 'desc') {
-                // Cambio a orden ascendente
-                abajo.innerHTML = '&uarr;';
-                abajo.setAttribute('data-order', 'asc');
-                orden = 'asc'; // Cambiar el valor de "orden"
-
-                // Cambiar arriba a descendente
-                arriba.innerHTML = '&darr;';
-                arriba.setAttribute('data-order', 'desc');
-            } else {
-                // Cambio a orden descendente
-                abajo.innerHTML = '&darr;';
-                abajo.setAttribute('data-order', 'desc');
-                orden = 'desc'; // Cambiar el valor de "orden"
-
-                // Cambiar arriba a ascendente
-                arriba.innerHTML = '&uarr;';
-                arriba.setAttribute('data-order', 'asc');
-            }
-
-            let tbody = document.getElementById('tipoPagosTable');
-            let filas = Array.from(tbody.getElementsByTagName('tr'));
-
-            // Ordenar las filas en base a la primera columna (FOLIO)
-            filas.sort(function (a, b) {
-                let valorA = a.getElementsByTagName('td')[0].innerText;
-                let valorB = b.getElementsByTagName('td')[0].innerText;
-
-                if (orden === 'asc') {
-                    return valorA.localeCompare(valorB, undefined, { numeric: true });
-                } else {
-                    return valorB.localeCompare(valorA, undefined, { numeric: true });
-                }
-            });
-
-            // Limpiar el tbody y agregar las filas ordenadas
-            tbody.innerHTML = '';
-            filas.forEach(function (fila) {
-                tbody.appendChild(fila);
-            });
+        // Cerrar el popup cuando se haga clic en "Cancelar"
+        document.getElementById('close-modal').addEventListener('click', function () {
+            const popup = document.getElementById('info-popup');
+            popup.classList.add('hidden'); // Ocultar el popup
         });
+
+        // Cerrar el popup cuando se haga clic en "Confirmar"
+        document.getElementById('confirm-button').addEventListener('click', function () {
+            const popup = document.getElementById('info-popup');
+            popup.classList.add('hidden'); // Ocultar el popup
+        });
+
     </script>
 </body>
 
