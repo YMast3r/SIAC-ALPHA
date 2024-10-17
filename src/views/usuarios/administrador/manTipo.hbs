@@ -16,8 +16,11 @@
     <div>
         <nav class="flex justify-end bg-gray-200">
             <a href="/manTipoPago" id="formaClipPathP"
-                class="text-center w-24 overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-32 rounded-b-lg  hover:gray-500 -mr-4  "
+                class="text-center w-24 overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-32 rounded-b-lg  hover:gray-500 -mr-4  "
                 onclick="mostrarSeccion('tipoPagos')">Tipo pagos</a>
+            <a href="/manTipoUsuario" id="formaClipPathU"
+                class="text-center w-24 overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-32 rounded-b-lg  hover:gray-500 -mr-4  "
+                onclick="mostrarSeccion('tipoPagos')">Tipo usuario</a>
             <a href="/manTipoIncidencia" id="formaClipPathI"
                 class="text-center w-24 overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-32 rounded-b-lg  hover:gray-500 -mr-4 "
                 onclick="mostrarSeccion('tipoIncidecia')">Tipo Incidencias</a>
@@ -27,8 +30,9 @@
     <script>
         // Selecciona los elementos y sus configuraciones
         const elementos = [
-            { id: 'formaClipPathP', textoInicial: 'T. pagos', textoHover: 'Tipo pagos', widthInicial: '7rem', widthHover: '12rem' },
-            { id: 'formaClipPathI', textoInicial: 'T. Incidencias', textoHover: 'Tipo Incidencias', widthInicial: '9rem', widthHover: '12rem' }
+            { id: 'formaClipPathU', textoInicial: 'T. usuario', textoHover: 'Tipo usuario', widthInicial: '8rem', widthHover: '12rem' },
+            { id: 'formaClipPathP', textoInicial: 'T. pagos', textoHover: 'Tipo pagos', widthInicial: '8rem', widthHover: '12rem' },
+            { id: 'formaClipPathI', textoInicial: 'T. Incidencias', textoHover: 'Tipo Incidencias', widthInicial: '10rem', widthHover: '12rem' }
         ];
 
         // Función para aplicar el clip-path y estilos
@@ -55,200 +59,205 @@
         });
     </script>
 
-
     <div>
-        <a href="/renderManTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Página tipos</a>
+        <a href="/renderManTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Página
+            tipos</a>
 
         <h1 class="font-medium text-2xl mb-4 text-center text-gray-700">{{titulo}}</h1>
 
-                <!-- Campo de búsqueda -->
-                <div class="flex justify-center pt-10 mx-auto w-8/12 max-w-7xl">
-                    <div class="relative w-full">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
-                        </span>
-                        <input type="text" id="searchTipo" placeholder="Buscar por descripción..."
-                            class="bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
-                    </div>
-                </div>
+        <!-- Campo de búsqueda -->
+        <div class="flex justify-center pt-10 mx-auto w-8/12 max-w-7xl">
+            <div class="relative w-full">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
+                </span>
+                <input type="text" id="searchTipo" placeholder="Buscar por descripción..."
+                    class="bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
+            </div>
+        </div>
 
 
-    <div class="w-8/12 mx-auto max-h-60 overflow-y-auto">
-        <table id="tipoTable" class="w-full table-auto border-collapse">
-            <thead class="bg-white sticky top-0">
-                <tr>
-                    {{#each tableHeaders}}
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
-                        {{#if this.sortable}}
-                        <a href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}" class="flex items-center justify-center text-center">
-                            {{this.name}}
-                            {{#if this.orderDirection}}
-                            <span class="ml-2">
-                                {{#isEqual this.orderDirection 'ASC'}}
-                                ↑↓
-                                {{else}}
-                                ↓↑
-                                {{/isEqual}}
-                            </span>
+        <div class="w-8/12 mx-auto max-h-60 overflow-y-auto">
+            <table id="tipoTable" class="w-full table-auto border-collapse">
+                <thead class="bg-white sticky top-0">
+                    <tr>
+                        {{#each tableHeaders}}
+                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
+                            {{#if this.sortable}}
+                            <a href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
+                                class="flex items-center justify-center text-center">
+                                {{this.name}}
+                                {{#if this.orderDirection}}
+                                <span class="ml-2">
+                                    {{#isEqual this.orderDirection 'ASC'}}
+                                    ↑↓
+                                    {{else}}
+                                    ↓↑
+                                    {{/isEqual}}
+                                </span>
+                                {{/if}}
+                            </a>
+                            {{else}}
+                            <span class="text-center">{{this.name}}</span>
                             {{/if}}
-                        </a>
-                        {{else}}
-                        <span class="text-center">{{this.name}}</span>
-                        {{/if}}
-                    </th>
+                        </th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200 text-lg">
+                    {{#each tableData}}
+                    <tr class="hover:bg-gray-100">
+                        {{#each ../tableHeaders}}
+                        <td class="px-4 py-2 text-center whitespace-nowrap">
+                            {{lookup ../this this.field}}
+                        </td>
+                        {{/each}}
+                    </tr>
                     {{/each}}
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200 text-lg">
-                {{#each tableData}}
-                <tr class="hover:bg-gray-100">
-                    {{#each ../tableHeaders}}
-                    <td class="px-4 py-2 text-center whitespace-nowrap">
-                        {{lookup ../this this.field}}
-                    </td>
-                    {{/each}}
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-    </div>
-
-        <p id="noResult" class="text-red-500 text-center hidden">No se encontró ninguna descripción</p>
-
+                    <!-- Fila para "No se encontró ninguna descripción" -->
+                    <tr id="noResult" style="display: none;">
+                        <td colspan="{{tableHeaders.length}}"
+                            class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">
+                            No se encontró ninguna descripción
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Popup de error -->
         <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-white rounded-lg p-6 shadow-lg">
                 <div class="mb-4">
-                    <p>¿Estás seguro que deseas continuar?</p>
+                    <p>Algo ha salido mal, intentalo de nuevo</p>
                 </div>
                 <div class="flex justify-end">
-                    <button id="confirm-button"
-                        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-2">Confirmar</button>
                     <button id="close-modal"
-                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cancelar</button>
+                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cerrar</button>
                 </div>
             </div>
         </div>
 
-{{!-- Tabla de la Alta de tipo pago --}}
+        {{!-- Tabla de la Alta de tipo pago --}}
 
-<h1 class="font-medium text-2xl  text-center text-gray-700 p-6">Alta</h1>
+        <h1 class="font-medium text-2xl  text-center text-gray-700 p-6">Alta</h1>
 
-<div class="text-lg mx-auto my-2 p-2 bg-white   w-2/6 border rounded-lg ">
-        <form action="/altaTipo" method="POST">
-            <input type="hidden" name="tipo" value="{{tipo}}" /> 
-            {{#each formFields}}
-            <div class="p-2">
-                <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
-                {{#isEqual this.label "Precio"}}
-                <div class="relative">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16" height="16"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                        <path d="M12 3v3m0 12v3" />
-                    </svg>
-                    <input id="precio" type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
-                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300" required="{{this.required}}">
+        <div class="text-lg mx-auto my-2 p-2 bg-white   w-2/6 border rounded-lg ">
+            <form action="/altaTipo" method="POST">
+                <input type="hidden" name="tipo" value="{{tipo}}" />
+                {{#each formFields}}
+                <div class="p-2">
+                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                    {{#isEqual this.label "Precio"}}
+                    <div class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16"
+                            height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                            <path d="M12 3v3m0 12v3" />
+                        </svg>
+                        <input id="precio" type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
+                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
+                            required="{{this.required}}">
+                    </div>
+                    {{else}}
+                    <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}" placeholder="{{this.label}}"
+                        class="border border-gray-200 w-full text-lg p-2" required="{{this.required}}">
+                    {{/isEqual}}
                 </div>
-                {{else}}
-                <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}" placeholder="{{this.label}}"
-                    class="border border-gray-200 w-full text-lg p-2" required="{{this.required}}">
-                {{/isEqual}}
-            </div>
-            {{/each}}
-            <button type="submit" class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-3 block mt-4 mb-2 text-center">Registrar</button>
-        </form>
+                {{/each}}
+                <button type="submit"
+                    class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-3 block mt-4 mb-2 text-center">Registrar</button>
+            </form>
 
-    </div>
-    <script>
-        // Esto es el buscador
-        document.getElementById('searchTipo').addEventListener('keyup', function () {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#tipoTable tbody tr');
-            let noResult = true;
-
-            rows.forEach(row => {
-                let description = row.cells[1].innerText.toLowerCase(); // Usamos la columna de descripción (celda 1)
-                if (description.includes(filter)) {
-                    row.style.display = '';
-                    noResult = false;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            document.getElementById('noResult').style.display = noResult ? '' : 'none'; // Mostrar mensaje si no hay resultados
-        });
-    </script>
-    <script>
-        // Obtener los elementos de entrada por su ID
-        const precio = document.getElementById('precio');
-
-        // Verificar si el campo ya tiene un valor
-        if (precio.value === '') {
-            precio.value = '0.00'; // Solo establece a '0.00' si está vacío
-        }
-
-        // Función para validar que el input sea un número con hasta dos decimales
-        function validarInputF(input) {
-            input.addEventListener('input', function () {
-                let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
-                let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
-
-                // Si no hay valor, establece el valor inicial
-                if (value === '') {
-                    input.value = '0.00';
-                    return;
-                }
-
-                // Aplicar formato de número con comas
-                let formattedValue = floatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-                input.value = formattedValue;
-            });
-        }
-
-        // Llamar a la función validarInput para cada input de precio
-        validarInputF(precio);
-    </script>
-    <script>
-        // Mostrar mensaje de error personalizado si hay un mensaje de error
-        const errorMessage = '{{errorT}}'; // Asumiendo que 'errorT' contiene el mensaje de error desde el backend
-        if (errorMessage) {
-            const errorContainer = document.createElement('div');
-            errorContainer.setAttribute('role', 'alert');
-            errorContainer.innerHTML = `
-        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-            Algo ha salido mal, intentalo de nuevo
         </div>
+        <script>
+            document.getElementById('searchTipo').addEventListener('keyup', function () {
+                let filter = this.value.toLowerCase();
+                let rows = document.querySelectorAll('#tipoTable tbody tr');
+                let noResult = true;
+
+                rows.forEach(row => {
+                    // Solo ocultar las filas que no son el mensaje de "noResult"
+                    if (row.id !== 'noResult') {
+                        let description = row.cells[1].innerText.toLowerCase(); // Ajusta el índice de la celda si es necesario
+                        if (description.includes(filter)) {
+                            row.style.display = '';
+                            noResult = false;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+
+                // Mostrar o ocultar el mensaje de "No se encontró ninguna descripción"
+                document.getElementById('noResult').style.display = noResult ? '' : 'none';
+            });
+        </script>
+        <script>
+            // Obtener los elementos de entrada por su ID
+            const precio = document.getElementById('precio');
+
+            // Verificar si el campo ya tiene un valor
+            if (precio.value === '') {
+                precio.value = '0.00'; // Solo establece a '0.00' si está vacío
+            }
+
+            // Función para validar que el input sea un número con hasta dos decimales
+            function validarInputF(input) {
+                input.addEventListener('input', function () {
+                    let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
+                    let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
+
+                    // Si no hay valor, establece el valor inicial
+                    if (value === '') {
+                        input.value = '0.00';
+                        return;
+                    }
+
+                    // Aplicar formato de número con comas
+                    let formattedValue = floatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                    input.value = formattedValue;
+                });
+            }
+
+            // Llamar a la función validarInput para cada input de precio
+            validarInputF(precio);
+        </script>
+        <script>
+            // Mostrar mensaje de error personalizado si hay un mensaje de error
+            const errorMessage = '{{errorT}}'; // Asumiendo que 'errorT' contiene el mensaje de error desde el backend
+            if (errorMessage) {
+                const errorContainer = document.createElement('div');
+                errorContainer.setAttribute('role', 'alert');
+                errorContainer.innerHTML = `
         <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
             <p>${errorMessage}</p>
         </div>
     `;
-            document.querySelector('form').prepend(errorContainer); // Agregar el mensaje de error al formulario
+                document.querySelector('form').prepend(errorContainer); // Agregar el mensaje de error al formulario
 
-            // Mostrar el popup solo si hay error
-            const popup = document.getElementById('info-popup');
-            popup.classList.remove('hidden'); // Mostrar el popup si hay error
-        }
+                // Mostrar el popup solo si hay error
+                const popup = document.getElementById('info-popup');
+                popup.classList.remove('hidden'); // Mostrar el popup si hay error
+            }
 
-        // Cerrar el popup cuando se haga clic en "Cancelar"
-        document.getElementById('close-modal').addEventListener('click', function () {
-            const popup = document.getElementById('info-popup');
-            popup.classList.add('hidden'); // Ocultar el popup
-        });
+            // Cerrar el popup cuando se haga clic en "Cancelar"
+            document.getElementById('close-modal').addEventListener('click', function () {
+                const popup = document.getElementById('info-popup');
+                popup.classList.add('hidden'); // Ocultar el popup
+            });
 
-        // Cerrar el popup cuando se haga clic en "Confirmar"
-        document.getElementById('confirm-button').addEventListener('click', function () {
-            const popup = document.getElementById('info-popup');
-            popup.classList.add('hidden'); // Ocultar el popup
-        });
+            // Cerrar el popup cuando se haga clic en "Confirmar"
+            document.getElementById('confirm-button').addEventListener('click', function () {
+                const popup = document.getElementById('info-popup');
+                popup.classList.add('hidden'); // Ocultar el popup
+            });
 
-    </script>
+        </script>
 </body>
 
 </html>
