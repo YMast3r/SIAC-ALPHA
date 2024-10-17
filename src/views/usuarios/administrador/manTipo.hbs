@@ -173,6 +173,28 @@
 
         </div>
         <script>
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Selecciona todas las filas del tbody de la tabla
+                let rows = document.querySelectorAll('#tipoTable tbody tr');
+
+                // Itera sobre cada fila
+                rows.forEach(row => {
+                    // Asegúrate de que no es la fila de "noResult"
+                    if (row.id !== 'noResult') {
+                        // Suponiendo que la columna de precios es la tercera (índice 2), ajusta según sea necesario
+                        let priceCell = row.cells[2]; 
+
+                        // Verifica si la celda ya tiene un valor y agrega el símbolo $
+                        if (priceCell && !priceCell.textContent.includes('$')) {
+                            priceCell.textContent = `$${priceCell.textContent}`;
+                        }
+                    }
+                });
+            });
+
+
             document.getElementById('searchTipo').addEventListener('keyup', function () {
                 let filter = this.value.toLowerCase();
                 let rows = document.querySelectorAll('#tipoTable tbody tr');
