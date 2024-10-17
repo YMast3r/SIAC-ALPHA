@@ -77,14 +77,10 @@ function renderManTipoAlta(req, res) {
 
 function manTipo(req, res, tableName, idField, descriptionField, formFields, orderBy = idField, orderDirection = 'DESC') {
 
-    console.log(`errorBorrar: ${req.session.errorBorrar} y errorBorrarR; ${req.session.errorBorrarR}`);
     if (req.session.errorBorrar != req.session.errorBorrarR) {
         req.session.errorMT = "";
         req.session.dataCampos = "";
         req.session.altaTDM = "";
-        console.log("Son diferentes");
-    } else {
-        console.log("Son iguales");
     }
     const errorT = req.session.errorMT;
     const data = req.session.dataCampos;
