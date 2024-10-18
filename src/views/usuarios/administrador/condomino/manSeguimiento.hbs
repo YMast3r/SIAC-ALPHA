@@ -172,10 +172,10 @@
             <label for="tipoUsuario">Filtro de persona seleccionada:</label>
             <br>
             <select id="tipoUsuario" name="tipoUsuario" >
-                <option value="">Seleccionar</option>
-                <option value="2">Administrador</option>
-                <option value="3">Condomino</option>
-                <option value="4">Vigilante</option>
+                <option value="" selected>Selecionar</option>
+                {{#each tipos}}
+                <option name="{{this.descripcion}}" value="{{this.id_tipo_usuario}}">{{this.descripcion}}</option>
+                {{/each}}
             </select>
             <br>
 
@@ -261,7 +261,7 @@
 
         $(document).ready(function () {
             $('#empleado').select2({
-                placeholder: "Seleccione un empleado",
+                placeholder: "Seleccione una persona",
                 allowClear: true,
                 language: {
                     noResults: function () {

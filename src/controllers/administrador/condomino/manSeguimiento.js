@@ -55,87 +55,98 @@ function manSeguimiento(req, res) {
             console.log(err);
             return;
         }
-        conn.query('SELECT nombre, id_usuario, tipo_usuario FROM usuario WHERE tipo_usuario !=3 AND tipo_usuario !=1', (err, rows) => {
+        conn.query('SELECT * FROM tipo_usuario WHERE id_tipo_usuario !=1', (err, rows) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (rows && rows.length > 0) {
-                const empleado = rows;
-                conn.query('SELECT id_usuario FROM incidencia WHERE folio=?', [id], (err, rows) => {
+                const tipos = rows;
+                conn.query('SELECT nombre, id_usuario, tipo_usuario FROM usuario WHERE tipo_usuario !=1', (err, rows) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     if (rows && rows.length > 0) {
-                        const idCon = rows[0].id_usuario;
-                        conn.query('SELECT a.id_usuario AS id, a.nombre, a.correo_electronico, a.telefono, a.tipo_usuario, a.status, a.status AS estado, b.descripcion AS tipo, c.descripcion AS status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.id_usuario = ?', [idCon], (err, UsuarioRows) => {
+                        const empleado = rows;
+                        conn.query('SELECT id_usuario FROM incidencia WHERE folio=?', [id], (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 return;
                             }
-                            if (UsuarioRows && UsuarioRows.length > 0) {
-                                const usuario = UsuarioRows;
-                                // Consulta para obtener los status
-                                conn.query('SELECT * FROM status_seguimiento', (err, statusRows) => {
+                            if (rows && rows.length > 0) {
+                                const idCon = rows[0].id_usuario;
+                                conn.query('SELECT a.id_usuario AS id, a.nombre, a.correo_electronico, a.telefono, a.tipo_usuario, a.status, a.status AS estado, b.descripcion AS tipo, c.descripcion AS status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.id_usuario = ?', [idCon], (err, UsuarioRows) => {
                                     if (err) {
                                         console.log(err);
                                         return;
                                     }
-                                    if (statusRows && statusRows.length > 0) {
-                                        const status = statusRows;
-                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.descripcion, b.descripcion AS tipo, c.descripcion AS status, d.nombre AS usuario, COALESCE(e.nombre, "Indefinido") AS administrador FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario LEFT JOIN usuario e ON a.id_administardor = e.id_usuario WHERE a.folio = ?', [id], (err, inciRows) => {
+                                    if (UsuarioRows && UsuarioRows.length > 0) {
+                                        const usuario = UsuarioRows;
+                                        // Consulta para obtener los status
+                                        conn.query('SELECT * FROM status_seguimiento', (err, statusRows) => {
                                             if (err) {
                                                 console.log(err);
                                                 return;
                                             }
-                                            if (inciRows && inciRows.length > 0) {
-                                                const incidencia = inciRows;
-
-                                                conn.query('SELECT s.folio, s.movimiento, u.nombre AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.evidencia FROM seguimiento s JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = ? ORDER BY s.movimiento DESC', [id], (err, rows) => {
+                                            if (statusRows && statusRows.length > 0) {
+                                                const status = statusRows;
+                                                conn.query('SELECT a.folio, a.asunto, a.fecha, a.descripcion, b.descripcion AS tipo, c.descripcion AS status, d.nombre AS usuario, COALESCE(e.nombre, "Indefinido") AS administrador FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario LEFT JOIN usuario e ON a.id_administardor = e.id_usuario WHERE a.folio = ?', [id], (err, inciRows) => {
                                                     if (err) {
                                                         console.log(err);
                                                         return;
                                                     }
-                                                    if (rows && rows.length > 0) {
-                                                        const datos = rows.map(row => ({
-                                                            ...row,
-                                                            fecha: formatDate(row.fecha), // Formatea la fecha
-                                                        }));
-                                                        return res.render('usuarios/administrador/condomino/manSeguimiento', {
-                                                            datos: datos,
-                                                            usuario: usuario,
-                                                            incidencia: incidencia,
-                                                            empleado: empleado,
-                                                            status: status,
-                                                            error: error,
-                                                            data: data,
-                                                            name: req.session.name,
-                                                            tipoUsuario: 2
+                                                    if (inciRows && inciRows.length > 0) {
+                                                        const incidencia = inciRows;
+
+                                                        conn.query('SELECT s.folio, s.movimiento, u.nombre AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.evidencia FROM seguimiento s JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = ? ORDER BY s.movimiento DESC', [id], (err, rows) => {
+                                                            if (err) {
+                                                                console.log(err);
+                                                                return;
+                                                            }
+                                                            if (rows && rows.length > 0) {
+                                                                const datos = rows.map(row => ({
+                                                                    ...row,
+                                                                    fecha: formatDate(row.fecha), // Formatea la fecha
+                                                                }));
+                                                                return res.render('usuarios/administrador/condomino/manSeguimiento', {
+                                                                    datos: datos,
+                                                                    usuario: usuario,
+                                                                    incidencia: incidencia,
+                                                                    empleado: empleado,
+                                                                    tipos: tipos,
+                                                                    status: status,
+                                                                    error: error,
+                                                                    data: data,
+                                                                    name: req.session.name,
+                                                                    tipoUsuario: 2
+                                                                });
+                                                            } else {
+                                                                console.log('No se encontraron Seguimientos');
+                                                                return res.render('usuarios/administrador/condomino/manSeguimiento', {
+                                                                    errorDatos: 1,
+                                                                    name: req.session.name,
+                                                                    tipoUsuario: 2,
+                                                                    segui: 1,
+                                                                    usuario: usuario,
+                                                                    incidencia: incidencia,
+                                                                    status: status,
+                                                                    empleado: empleado,
+                                                                    tipos: tipos,
+                                                                });
+                                                            }
                                                         });
-                                                    } else {
-                                                        console.log('No se encontraron Seguimientos');
-                                                        return res.render('usuarios/administrador/condomino/manSeguimiento', {
-                                                            errorDatos: 1,
-                                                            name: req.session.name,
-                                                            tipoUsuario: 2,
-                                                            segui: 1,
-                                                            usuario: usuario,
-                                                            incidencia: incidencia,
-                                                            status: status,
-                                                            empleado: empleado,
-                                                        });
+                                                        // seguimiento
                                                     }
-                                                });
-                                                // seguimiento
+                                                }); // incidencia
                                             }
-                                        }); // incidencia
+                                        }); // status
                                     }
-                                }); // status
+                                }); // usuario
                             }
-                        }); // usuario
+                        }); // id_usuario
                     }
-                }); // id_usuario
+                }); // empleado
             }
         }); // empleado
     });
