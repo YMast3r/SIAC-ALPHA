@@ -16,7 +16,8 @@ const manPago = require('./router/administrador/condomino/manPagoR');
 const manIncidencia = require('./router/administrador/condomino/manIncidenciaR');
 const manSeguimiento = require('./router/administrador/condomino/manSeguimientoR');
 const manPropiedad = require('./router/administrador/manPropiedadR');
-const manTipo = require('./router/administrador/manTipoR')
+const manTipo = require('./router/administrador/manTipoR');
+const manHistorial = require('./router/administrador/manHistorialR');
 
 const app = express();
 
@@ -92,7 +93,10 @@ app.use('/', manSeguimiento);
 app.use('/', manPropiedad);
 
 //rutas de tipo pago
-app.use('/', manTipo)
+app.use('/', manTipo);
+
+//ruta de historial
+app.use('/', manHistorial);
 
 app.get('/', (req, res) => {
 	if (req.session.loggedin) {
