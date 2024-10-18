@@ -85,7 +85,7 @@ function altaPropiedad(req, res) {
             }
             if (rows[0].cont == 0) {
                 if (data.condomino != "") {
-                    consulta = 'INSERT INTO propiedad (id_usuario, descripcion, id_tipo_propiedad) VALUES (?, ?, ?)';
+                    consulta = 'INSERT INTO propiedad (id_usuario, descripcion, id_tipo_propiedad, fecha_anexo) VALUES (?, ?, ?, CURDATE())';
                     parametros = [data.condomino, data.descripcionPropiedad, data.tipoPropiedad];
                     conn.query(consulta, parametros, (err, rows) => {
                         if (err) {

@@ -182,7 +182,7 @@ function anexarPropiedad(req, res){
             console.log(err);
             return res.status(500).send("Error de conexión a la base de datos");
         }
-            conn.query('UPDATE propiedad SET id_usuario=? WHERE id_propiedad = ?', [idMod, id_propiedad], (err, rows) => {
+            conn.query('UPDATE propiedad SET id_usuario=?, fecha_anexo=CURDATE() WHERE id_propiedad = ?', [idMod, id_propiedad], (err, rows) => {
             if (err) {
             console.log(err);
             return res.status(500).send("Error al agregar la propiedad");

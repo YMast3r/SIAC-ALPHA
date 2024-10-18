@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-10-2024 a las 01:50:42
+-- Tiempo de generación: 17-10-2024 a las 01:48:55
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -149,16 +149,17 @@ CREATE TABLE `propiedad` (
   `id_propiedad` int(11) NOT NULL,
   `id_usuario` int(20) DEFAULT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `id_tipo_propiedad` int(20) NOT NULL
+  `id_tipo_propiedad` int(20) NOT NULL,
+  `fecha_anexo` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `propiedad`
 --
 
-INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`) VALUES
-(1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1),
-(2, NULL, '230 Ana María Díaz de León Escobedo', 2);
+INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`, `fecha_anexo`) VALUES
+(1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-01-01'),
+(2, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
 
 -- --------------------------------------------------------
 

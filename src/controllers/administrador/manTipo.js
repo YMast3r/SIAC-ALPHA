@@ -1,26 +1,60 @@
+// Diccionario para formularios
+const formularios = {
+    pagos: {
+        id: 'pagos',
+        campos: [
+            { label: 'Descripción', type: 'text', name: 'descripcion', required: true },
+            { label: 'Precio', type: 'tel', name: 'precio', required: true }
+        ]
+    },
+    incidencia: {
+        id: 'simple',
+        campos: [
+            { label: 'Descripción', type: 'text', name: 'descripcion', required: true }
+        ]
+    }
+};
+
+// Diccionario para datos de tablas
+const tablas = {
+    pagos: {
+        id: 'pagos',
+        columnas: ['tipo_pago', 'id_tipo_pago', 'descripcion']
+    },
+    incidencia: {
+        id: 'incidencia',
+        columnas: ['tipo_incidencia', 'id_tipo_incidencia', 'descripcion']
+    },
+    usuario: {
+        id: 'usuario',
+        columnas: ['tipo_usuario', 'id_tipo_usuario', 'descripcion']
+    }
+};
+
 function renTipo(req, res) {
     const formFields = req.session.formF;
     const tablaCampos = req.session.tablaC;
     try {
-        if (tablaCampos[0] == 'tipo_pago') {
+        if (tablaCampos['id'] == 'pagos') {
             res.redirect('/manTipoPago');
-        } else if (tablaCampos[0] == 'tipo_incidencia') {
+        } else if (tablaCampos['id'] == 'incidencia') {
             res.redirect('/manTipoIncidencia');
+        } else {
+            res.redirect('/manTipoUsuario');
         }
-    } catch {
-        manTipo(req, res, tablaCampos[0], tablaCampos[1], tablaCampos[2], formFields);
+    } catch (error) {
+        console.error('Error:', error);
+        manTipo(req, res, tablaCampos['columnas'][0], tablaCampos['columnas'][1], tablaCampos['columnas'][2], formFields);
     }
 }
+
 
 function renderManTipo(req, res) {
     req.session.errorMT = "";
     req.session.dataCampos = "";
     req.session.altaTDM = "";
-    req.session.formF = [
-        { label: 'Descripción', type: 'text', name: 'descripcion', required: true },
-        { label: 'Precio', type: 'tel', name: 'precio', required: true }
-    ];
-    req.session.tablaC = ['tipo_pago', 'id_tipo_pago', 'descripcion']
+    req.session.formF = formularios['pagos'];
+    req.session.tablaC = tablas['pagos'];
     renTipo(req, res)
 }
 
@@ -28,22 +62,26 @@ function renderManTipoAlta(req, res) {
     req.session.errorMT = "";
     req.session.dataCampos = "";
     const altaTD = req.session.altaTDM;
-    if (altaTD) {
-        req.session.formF = [
-            { label: 'Descripción', type: 'text', name: 'descripcion', required: true }
-        ];
-        req.session.tablaC = ['tipo_incidencia', 'id_tipo_incidencia', 'descripcion']
+    if (altaTD == "Se registró tipo incidencia correctamente") {
+        req.session.formF = formularios['simple']
+        req.session.tablaC = tablas['incidencia']
+    } else if (altaTD == "Se registró tipo usuario correctamente") {
+        req.session.formF = formularios['simple']
+        req.session.tablaC = tablas['usuario']
     } else {
-        req.session.formF = [
-            { label: 'Descripción', type: 'text', name: 'descripcion', required: true },
-            { label: 'Precio', type: 'tel', name: 'precio', required: true }
-        ];
-        req.session.tablaC = ['tipo_pago', 'id_tipo_pago', 'descripcion']
+        req.session.formF = formularios['pagos']
+        req.session.tablaC = tablas['pagos']
     }
     renTipo(req, res)
 }
 
 function manTipo(req, res, tableName, idField, descriptionField, formFields, orderBy = idField, orderDirection = 'DESC') {
+
+    if (req.session.errorBorrar != req.session.errorBorrarR) {
+        req.session.errorMT = "";
+        req.session.dataCampos = "";
+        req.session.altaTDM = "";
+    }
     const errorT = req.session.errorMT;
     const data = req.session.dataCampos;
 
@@ -62,8 +100,8 @@ function manTipo(req, res, tableName, idField, descriptionField, formFields, ord
 
         if (tableName == "tipo_pago") {
             query = `SELECT ${idField}, descripcion, COALESCE(FORMAT(precio, 2), 'Indefinido') AS precio 
-                      FROM ${tableName} 
-                      ORDER BY ${orderByParam} ${orderDirectionParam}`;
+            FROM ${tableName} 
+            ORDER BY ${orderByParam} ${orderDirectionParam}`;
             tableHeaders = [
                 { name: 'ID', field: idField, sortable: true, orderDirection: orderByParam === idField ? orderDirectionParam : null },
                 { name: 'Descripción', field: descriptionField, sortable: false, orderDirection: orderByParam === descriptionField ? orderDirectionParam : null },
@@ -95,9 +133,11 @@ function manTipo(req, res, tableName, idField, descriptionField, formFields, ord
             });
 
             let titulo;
-            if (tableName == "tipo_pago"){
+            if (tableName == "tipo_pago") {
                 titulo = "Tipo pago"
-            }else {
+            } else if (tableName == "tipo_usuario") {
+                titulo = "Tipo usuario"
+            } else {
                 titulo = "Tipo incidencia"
             }
 
@@ -127,6 +167,7 @@ function altaTipo(req, res) {
     if (data.precio == 0.00) {
         req.session.errorMT = 'No puedes ingresar un precio de 0.00';
         req.session.dataCampos = data;
+        req.session.errorBorrar = tipo;
         renTipo(req, res);
         return;
     } else {
@@ -146,9 +187,13 @@ function altaTipo(req, res) {
                         data.precio = data.precio.replace(/,/g, ''); // Remueve todas las comas del precio
                     }
                     // Ajusta la consulta de inserción según el tipo
-                    const insertQuery = tipo === "tipo_pago"
-                        ? 'INSERT INTO tipo_pago (descripcion, precio) VALUES (?, ?)'
-                        : 'INSERT INTO tipo_incidencia (descripcion) VALUES (?)'; // Cambia a la tabla de incidencias
+                    let insertQuery;
+                    if (tipo === "tipo_incidencia" || tipo === "tipo_usuario") {
+                        insertQuery = `INSERT INTO ${tipo}  (descripcion) VALUES (?)`;
+                    } else {
+                        insertQuery = 'INSERT INTO tipo_pago (descripcion, precio) VALUES (?, ?)';
+
+                    }
 
                     const insertParams = tipo === "tipo_pago" ? [data.descripcion, data.precio] : [data.descripcion];
 
@@ -159,6 +204,8 @@ function altaTipo(req, res) {
                         }
                         if (tipo === "tipo_incidencia") {
                             req.session.altaTDM = "Se registró tipo incidencia correctamente";
+                        } else if (tipo === "tipo_usuario") {
+                            req.session.altaTDM = "Se registró tipo usuario correctamente";
                         }
                         renderManTipoAlta(req, res);
                     });
@@ -166,16 +213,14 @@ function altaTipo(req, res) {
                     req.session.errorMT = 'Ya existe esa descripción';
                     req.session.dataCampos = data;
                     if (tipo === "tipo_incidencia") {
-                        req.session.formF = [
-                            { label: 'Descripción', type: 'text', name: 'descripcion', required: true }
-                        ];
-                        req.session.tablaC = ['tipo_incidencia', 'id_tipo_incidencia', 'descripcion']
-                        console.log("tipo incidencia")
+                        req.session.formF = formularios['simple']
+                        req.session.tablaC = tablas['incidencia']
+                    } else if (tipo === "tipo_usuario") {
+                        req.session.formF = formularios['simple']
+                        req.session.tablaC = tablas['usuario']
                     } else {
                         console.log("tipo pago")
                     }
-                    console.log("formFields A ", req.session.formF)
-                    console.log("tablaCampos A", req.session.tablaC)
                     renTipo(req, res);
                 }
             });
