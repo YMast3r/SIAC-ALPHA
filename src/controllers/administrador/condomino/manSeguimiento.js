@@ -55,7 +55,7 @@ function manSeguimiento(req, res) {
             console.log(err);
             return;
         }
-        conn.query('SELECT nombre, id_usuario FROM usuario WHERE tipo_usuario !=3 AND tipo_usuario !=1', (err, rows) => {
+        conn.query('SELECT nombre, id_usuario, tipo_usuario FROM usuario WHERE tipo_usuario !=3 AND tipo_usuario !=1', (err, rows) => {
             if (err) {
                 console.log(err);
                 return;

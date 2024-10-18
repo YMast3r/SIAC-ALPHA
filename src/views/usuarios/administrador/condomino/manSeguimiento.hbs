@@ -169,13 +169,23 @@
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">{{data.comentario}}</textarea>
             <br>
 
-            <label for="empleado">Empleado</label>
+            <label for="tipoUsuario">Filtro de persona seleccionada:</label>
+            <br>
+            <select id="tipoUsuario" name="tipoUsuario" >
+                <option value="">Seleccionar</option>
+                <option value="2">Administrador</option>
+                <option value="3">Condomino</option>
+                <option value="4">Vigilante</option>
+            </select>
+            <br>
+
+            <label for="empleado">Persona seleccionada</label>
             <br>
             <select id="empleado" name="empleado"
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                 <option value="" selected></option>
                 {{#each empleado}}
-                <option value="{{this.id_usuario}}">{{this.nombre}}</option>
+                <option name="{{this.tipo_usuario}}" value="{{this.id_usuario}}">{{this.nombre}}</option>
                 {{/each}}
             </select>
 
@@ -313,6 +323,37 @@
             });
         });
 
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tipoUsuarioSelect = document.getElementById('tipoUsuario');
+            const empleadoSelect = document.getElementById('empleado');
+            const empleados = [
+                {{#each empleado}}
+                    { id: "{{this.id_usuario}}", nombre: "{{this.nombre}}", tipo: "{{this.tipo_usuario}}" },
+                {{/each}}
+            ];  
+
+            tipoUsuarioSelect.addEventListener('change', (event) => {
+                const selectedTipo = event.target.value;
+
+                // Limpiar el select de empleados
+                empleadoSelect.innerHTML = '<option value="" selected></option>'; // Opciones vacías por defecto
+
+                // Filtrar empleados según el tipo seleccionado
+                const filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipo || selectedTipo === "");
+
+                // Agregar opciones al select de empleados
+                filteredEmpleados.forEach(emp => {
+                    const option = document.createElement('option');
+                    option.value = emp.id;
+                    option.textContent = emp.nombre;
+                    empleadoSelect.appendChild(option);
+                });
+            });
+        });
     </script>
     <script src="imagen.js"></script>
 </body>
