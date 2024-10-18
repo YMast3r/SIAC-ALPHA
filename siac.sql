@@ -158,8 +158,8 @@ CREATE TABLE `propiedad` (
 --
 
 INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`, `fecha_anexo`) VALUES
-(1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-10-09'),
-(2, NULL, '230 Ana María Díaz de León Escobedo', 2, '2024-07-11');
+(1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-01-01'),
+(2, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
 
 -- --------------------------------------------------------
 
