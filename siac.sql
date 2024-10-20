@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-10-2024 a las 01:48:55
+-- Tiempo de generación: 20-10-2024 a las 06:22:15
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,71 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `siac`
+-- Base de datos: `siac2`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clasificacion_incidencia`
+--
+
+CREATE TABLE `clasificacion_incidencia` (
+  `id_clasificacion_incidencia` int(11) NOT NULL,
+  `tipo_incidencia` int(20) NOT NULL,
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `clasificacion_incidencia`
+--
+
+INSERT INTO `clasificacion_incidencia` (`id_clasificacion_incidencia`, `tipo_incidencia`, `descripcion`) VALUES
+(1, 1, 'Apagón total o parcial'),
+(2, 1, 'Cortocircuito'),
+(4, 1, 'Falla en interruptores'),
+(5, 2, 'Fuga de agua'),
+(6, 2, 'Problemas de drenaje'),
+(7, 2, 'Presión baja del agua');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empleado`
+--
+
+CREATE TABLE `empleado` (
+  `id_empleado` int(20) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `apellidos` varchar(50) NOT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `tipo_empleado` int(11) DEFAULT NULL,
+  `salario` decimal(10,2) DEFAULT NULL,
+  `fecha_contratacion` date DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `correo_electronico` varchar(50) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `ciudad` varchar(50) DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `codigo_postal` varchar(10) DEFAULT NULL,
+  `numero_seguridad_social` varchar(20) DEFAULT NULL,
+  `nacionalidad` varchar(50) DEFAULT NULL,
+  `genero` enum('M','F','Otro') DEFAULT NULL,
+  `estado_civil` enum('Soltero','Casado','Divorciado','Viudo') DEFAULT NULL,
+  `fecha_baja` date DEFAULT NULL,
+  `motivo_baja` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `empleado`
+--
+
+INSERT INTO `empleado` (`id_empleado`, `id_usuario`, `nombre`, `apellidos`, `fecha_nacimiento`, `tipo_empleado`, `salario`, `fecha_contratacion`, `telefono`, `correo_electronico`, `direccion`, `ciudad`, `estado`, `codigo_postal`, `numero_seguridad_social`, `nacionalidad`, `genero`, `estado_civil`, `fecha_baja`, `motivo_baja`) VALUES
+(1, 2, 'Ivan Sebastián', 'Guerrero Basurto', '0000-00-00', 1, 30000.00, '2020-01-15', '555-1234', 'IsaacGallegos@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'M', 'Casado', NULL, NULL),
+(2, 5, 'Regina Odette', 'Hernández Buenrostro', '0000-00-00', 1, 20000.00, '2020-01-15', '555-1234', 'ReginaOdette@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'F', 'Casado', NULL, NULL),
+(3, 4, 'Isaac', 'Gallegos Mena', '0000-00-00', 2, 10000.00, '2020-01-15', '555-1234', 'IsaacGallegos@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'M', 'Casado', NULL, NULL),
+(4, 7, 'Ian Yeshua', 'López Garcia', '0000-00-00', 3, 15000.00, '2019-05-20', '555-5678', 'ianYeshua@condominio.com', 'Avenida Siempre Viva 456', 'Aguascalientes', 'Aguascalientes', '12345', '987-65-4321', 'Mexicana', 'M', 'Soltero', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -250,6 +313,26 @@ INSERT INTO `status_seguimiento` (`id_status_seguimiento`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipo_empleado`
+--
+
+CREATE TABLE `tipo_empleado` (
+  `id_tipo_empleado` int(20) NOT NULL,
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_empleado`
+--
+
+INSERT INTO `tipo_empleado` (`id_tipo_empleado`, `descripcion`) VALUES
+(1, 'Administrador'),
+(2, 'Vigilante'),
+(3, 'Plomero');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipo_incidencia`
 --
 
@@ -327,7 +410,7 @@ INSERT INTO `tipo_usuario` (`id_tipo_usuario`, `descripcion`) VALUES
 (1, 'Super Administrador'),
 (2, 'Administrador'),
 (3, 'Condomino '),
-(4, 'Vigilante');
+(4, 'Empleado');
 
 -- --------------------------------------------------------
 
@@ -355,12 +438,27 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`,
 (3, 'Gael', 'GaelGabriel@gmail.com', '$2b$12$cZp3DQIUwFj8rKttO3lxC.CdFzpCvQeSE7TsMgup6iYb2osX/GMZ.', 3, 4, '449 107 7654'),
 (4, 'Isaac', 'IsaacGallegos@gmail.com', '$2b$12$x12.RpNjleTnslNzHs7S3eKPGbzjuVxnyj72rWrrXR12T5zTEzCIK', 4, 4, '449 568 6105'),
 (5, 'Odette', 'ReginaOdette@gmail.com', '$2b$12$NW7UbFZy20tqgoZ5xztNhO.2.OzItFkLe9W.I2iN5/0KQAEUtoOVm', 2, 4, '351 304 6049'),
-(6, 'Martin Contreras', 'martin.contreras.romo@cetis155.edu.mx', '$2b$12$FiY7dY.GKsNP5nF9xq1JweJp57FwkBJ09fgxiS5pjz5AGfDWopgLG', 3, 4, '449 539 6287'),
-(7, 'Ian', 'ianYeshua@gmail.com', '$2b$12$mNtF3BfNJpMah78Dyw93i.CQYrF/tD6h7jscGgBuxtb/R4mImlqpy', 2, 4, '444 444 4444');
+(6, 'Martin Contreras', 'martin.contreras.romo@cetis155.edu.mx', '$2b$12$FiY7dY.GKsNP5nF9xq1JweJp57FwkBJ09fgxiS5pjz5AGfDWopgLG', 3, 4, '449 555 8755'),
+(7, 'Ian', 'ianYeshua@gmail.com', '$2b$12$mNtF3BfNJpMah78Dyw93i.CQYrF/tD6h7jscGgBuxtb/R4mImlqpy', 4, 4, '449 429 6282');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `clasificacion_incidencia`
+--
+ALTER TABLE `clasificacion_incidencia`
+  ADD PRIMARY KEY (`id_clasificacion_incidencia`),
+  ADD KEY `FK_tipo_incidencia_clasificacion` (`tipo_incidencia`);
+
+--
+-- Indices de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  ADD PRIMARY KEY (`id_empleado`),
+  ADD KEY `FK_usuario` (`id_usuario`),
+  ADD KEY `FK_tipo_empleado` (`tipo_empleado`);
 
 --
 -- Indices de la tabla `incidencia`
@@ -386,7 +484,7 @@ ALTER TABLE `pago`
   ADD KEY `FK_propiedad_pago` (`id_propiedad`),
   ADD KEY `FK_usuarios_mes` (`mes`),
   ADD KEY `FK_usuarios_administrador` (`id_administrador`),
-  ADD KEY `FK_id_plazo` (`id_plazo`),
+  ADD KEY `FK_plazo` (`id_plazo`),
   ADD KEY `FK_pago_tipo_pago` (`tipo_pago`);
 
 --
@@ -403,14 +501,14 @@ ALTER TABLE `pago_plazos`
 --
 ALTER TABLE `propiedad`
   ADD PRIMARY KEY (`id_propiedad`),
-  ADD KEY `FK_id_uasuario` (`id_usuario`),
+  ADD KEY `FK_uasuario` (`id_usuario`),
   ADD KEY `FK_propiedad_tipo` (`id_tipo_propiedad`);
 
 --
 -- Indices de la tabla `seguimiento`
 --
 ALTER TABLE `seguimiento`
-  ADD KEY `fk_status_seguimiento` (`id_status_seguimiento`);
+  ADD KEY `FK_status_seguimiento` (`id_status_seguimiento`);
 
 --
 -- Indices de la tabla `status`
@@ -422,22 +520,25 @@ ALTER TABLE `status`
 -- Indices de la tabla `status_incidencia`
 --
 ALTER TABLE `status_incidencia`
-  ADD PRIMARY KEY (`id_status_incidencia`),
-  ADD KEY `idx_id_status_incidencia` (`id_status_incidencia`);
+  ADD PRIMARY KEY (`id_status_incidencia`);
 
 --
 -- Indices de la tabla `status_seguimiento`
 --
 ALTER TABLE `status_seguimiento`
-  ADD PRIMARY KEY (`id_status_seguimiento`),
-  ADD KEY `idx_id_status_seguimiento` (`id_status_seguimiento`);
+  ADD PRIMARY KEY (`id_status_seguimiento`);
+
+--
+-- Indices de la tabla `tipo_empleado`
+--
+ALTER TABLE `tipo_empleado`
+  ADD PRIMARY KEY (`id_tipo_empleado`);
 
 --
 -- Indices de la tabla `tipo_incidencia`
 --
 ALTER TABLE `tipo_incidencia`
-  ADD PRIMARY KEY (`id_tipo_incidencia`),
-  ADD KEY `idx_id_tipo_incidencia` (`id_tipo_incidencia`);
+  ADD PRIMARY KEY (`id_tipo_incidencia`);
 
 --
 -- Indices de la tabla `tipo_pago`
@@ -468,6 +569,18 @@ ALTER TABLE `usuario`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `clasificacion_incidencia`
+--
+ALTER TABLE `clasificacion_incidencia`
+  MODIFY `id_clasificacion_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  MODIFY `id_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `incidencia`
@@ -512,6 +625,12 @@ ALTER TABLE `status_seguimiento`
   MODIFY `id_status_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `tipo_empleado`
+--
+ALTER TABLE `tipo_empleado`
+  MODIFY `id_tipo_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `tipo_incidencia`
 --
 ALTER TABLE `tipo_incidencia`
@@ -533,7 +652,7 @@ ALTER TABLE `tipo_propiedad`
 -- AUTO_INCREMENT de la tabla `tipo_usuario`
 --
 ALTER TABLE `tipo_usuario`
-  MODIFY `id_tipo_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_tipo_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -544,6 +663,19 @@ ALTER TABLE `usuario`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `clasificacion_incidencia`
+--
+ALTER TABLE `clasificacion_incidencia`
+  ADD CONSTRAINT `FK_tipo_incidencia_clasificacion` FOREIGN KEY (`tipo_incidencia`) REFERENCES `tipo_incidencia` (`id_tipo_incidencia`);
+
+--
+-- Filtros para la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  ADD CONSTRAINT `FK_tipo_empleado` FOREIGN KEY (`tipo_empleado`) REFERENCES `tipo_empleado` (`id_tipo_empleado`),
+  ADD CONSTRAINT `FK_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `incidencia`
@@ -558,8 +690,8 @@ ALTER TABLE `incidencia`
 -- Filtros para la tabla `pago`
 --
 ALTER TABLE `pago`
-  ADD CONSTRAINT `FK_id_plazo` FOREIGN KEY (`id_plazo`) REFERENCES `pago_plazos` (`folio`),
   ADD CONSTRAINT `FK_pago_tipo_pago` FOREIGN KEY (`tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`),
+  ADD CONSTRAINT `FK_plazo` FOREIGN KEY (`id_plazo`) REFERENCES `pago_plazos` (`folio`),
   ADD CONSTRAINT `FK_propiedad_pago` FOREIGN KEY (`id_propiedad`) REFERENCES `propiedad` (`id_propiedad`),
   ADD CONSTRAINT `FK_usuarios_administrador` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`),
   ADD CONSTRAINT `FK_usuarios_mes` FOREIGN KEY (`mes`) REFERENCES `mes` (`mes`);
@@ -576,14 +708,14 @@ ALTER TABLE `pago_plazos`
 -- Filtros para la tabla `propiedad`
 --
 ALTER TABLE `propiedad`
-  ADD CONSTRAINT `FK_id_uasuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `FK_propiedad_tipo` FOREIGN KEY (`id_tipo_propiedad`) REFERENCES `tipo_propiedad` (`id_tipo_propiedad`);
+  ADD CONSTRAINT `FK_propiedad_tipo` FOREIGN KEY (`id_tipo_propiedad`) REFERENCES `tipo_propiedad` (`id_tipo_propiedad`),
+  ADD CONSTRAINT `FK_uasuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `seguimiento`
 --
 ALTER TABLE `seguimiento`
-  ADD CONSTRAINT `fk_status_seguimiento` FOREIGN KEY (`id_status_seguimiento`) REFERENCES `status_seguimiento` (`id_status_seguimiento`);
+  ADD CONSTRAINT `FK_status_seguimiento` FOREIGN KEY (`id_status_seguimiento`) REFERENCES `status_seguimiento` (`id_status_seguimiento`);
 
 --
 -- Filtros para la tabla `usuario`
