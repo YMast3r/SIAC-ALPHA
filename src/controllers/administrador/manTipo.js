@@ -25,9 +25,9 @@ const tablas = {
         id: 'incidencia',
         columnas: ['tipo_incidencia', 'id_tipo_incidencia', 'descripcion']
     },
-    usuario: {
-        id: 'usuario',
-        columnas: ['tipo_usuario', 'id_tipo_usuario', 'descripcion']
+    empleado: {
+        id: 'empleado',
+        columnas: ['tipo_empleado', 'id_tipo_empleado', 'descripcion']
     }
 };
 
@@ -40,7 +40,7 @@ function renTipo(req, res) {
         } else if (tablaCampos['id'] == 'incidencia') {
             res.redirect('/manTipoIncidencia');
         } else {
-            res.redirect('/manTipoUsuario');
+            res.redirect('/manTipoEmpleado');
         }
     } catch (error) {
         console.error('Error:', error);
@@ -65,9 +65,9 @@ function renderManTipoAlta(req, res) {
     if (altaTD == "Se registró tipo incidencia correctamente") {
         req.session.formF = formularios['simple']
         req.session.tablaC = tablas['incidencia']
-    } else if (altaTD == "Se registró tipo usuario correctamente") {
+    } else if (altaTD == "Se registró tipo empleado correctamente") {
         req.session.formF = formularios['simple']
-        req.session.tablaC = tablas['usuario']
+        req.session.tablaC = tablas['empleado']
     } else {
         req.session.formF = formularios['pagos']
         req.session.tablaC = tablas['pagos']
@@ -135,8 +135,8 @@ function manTipo(req, res, tableName, idField, descriptionField, formFields, ord
             let titulo;
             if (tableName == "tipo_pago") {
                 titulo = "Tipo pago"
-            } else if (tableName == "tipo_usuario") {
-                titulo = "Tipo usuario"
+            } else if (tableName == "tipo_empleado") {
+                titulo = "Tipo empleado"
             } else {
                 titulo = "Tipo incidencia"
             }
@@ -176,7 +176,7 @@ function altaTipo(req, res) {
                 console.error("Error de conexión:", err);
                 return res.status(500).send("Error de conexión a la base de datos");
             }
-
+            
             conn.query('SELECT COUNT(*) AS cont FROM ?? WHERE descripcion = ?', [tipo, data.descripcion], (err, rows) => {
                 if (err) {
                     console.log(err);
@@ -188,15 +188,15 @@ function altaTipo(req, res) {
                     }
                     // Ajusta la consulta de inserción según el tipo
                     let insertQuery;
-                    if (tipo === "tipo_incidencia" || tipo === "tipo_usuario") {
+                    if (tipo === "tipo_incidencia" || tipo === "tipo_empleado") {
                         insertQuery = `INSERT INTO ${tipo}  (descripcion) VALUES (?)`;
                     } else {
                         insertQuery = 'INSERT INTO tipo_pago (descripcion, precio) VALUES (?, ?)';
-
+                        
                     }
-
+                    
                     const insertParams = tipo === "tipo_pago" ? [data.descripcion, data.precio] : [data.descripcion];
-
+                    
                     conn.query(insertQuery, insertParams, (error, rows) => {
                         if (error) {
                             console.error("Error al insertar el tipo:", error);
@@ -204,20 +204,21 @@ function altaTipo(req, res) {
                         }
                         if (tipo === "tipo_incidencia") {
                             req.session.altaTDM = "Se registró tipo incidencia correctamente";
-                        } else if (tipo === "tipo_usuario") {
-                            req.session.altaTDM = "Se registró tipo usuario correctamente";
+                        } else if (tipo === "tipo_empleado") {
+                            req.session.altaTDM = "Se registró tipo empleado correctamente";
                         }
                         renderManTipoAlta(req, res);
                     });
                 } else {
                     req.session.errorMT = 'Ya existe esa descripción';
                     req.session.dataCampos = data;
+                    req.session.errorBorrar = tipo;
                     if (tipo === "tipo_incidencia") {
                         req.session.formF = formularios['simple']
                         req.session.tablaC = tablas['incidencia']
-                    } else if (tipo === "tipo_usuario") {
+                    } else if (tipo === "tipo_empleado") {
                         req.session.formF = formularios['simple']
-                        req.session.tablaC = tablas['usuario']
+                        req.session.tablaC = tablas['empleado']
                     } else {
                         console.log("tipo pago")
                     }

@@ -71,6 +71,16 @@ function ingresoAP(req, res){
     res.redirect('/manPago-1');
 }
 
+function ingresoAS(req, res){
+    req.session.loggedin = true;
+    req.session.name = "ivan";
+    req.session.idUser = 2;
+    req.session.tipoUsuario = 2;
+    req.session.idFolio = 1;
+    req.session.idCon = 3;
+    res.redirect('/manSeguimiento-1');
+}
+
 //funcion para resistrar a un usuario
 function registro(req, res) {
     return res.render('admiciones/registro');
@@ -188,6 +198,7 @@ module.exports = {
     ingreso,
     ingresoA,
     ingresoAP,
+    ingresoAS,
     identificacion,
     registro,
     alta,

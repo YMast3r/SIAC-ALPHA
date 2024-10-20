@@ -16,7 +16,7 @@
     <div class="flex flex-col items-center mt-4">
         <!-- Enlace al seguimiento -->
         <a href="/renderSeguimiento" class="mb-4">
-            <h1 class="font-semibold text-4xl flex justify-center m-5">Seguimiento</h1>
+            <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Seguimiento</h1>
         </a>
 
         <!-- Subtítulo del Condomino -->
@@ -53,7 +53,7 @@
     </div>
 
     <br>
-    <h2 class="font-semibold text-2xl flex justify-center m-1 text-gray-700">Incidencia</h2>
+    <a href="/renderIncidencia"><h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center m-1 text-gray-700">Incidencia</h2></a>
 
     <!-- Sección de Incidencias -->
     <div class="flex justify-center mt-4">
@@ -170,26 +170,33 @@
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">{{data.comentario}}</textarea>
             <br>
 
-            <div class="pb-3">
-                <label for="tipoUsuario"><i class="fas fa-user">&nbsp;</i>Filtro por Usuario:</label> <br>  
-                <select id="tipoUsuario" name="tipoUsuario" class="w-full ">
-                    <option value="" selected>Todos</option>
-                    {{#each tipos}}
-                    <option name="{{this.descripcion}}" value="{{this.id_tipo_usuario}}">{{this.descripcion}}</option>
-                    {{/each}}
-                </select>
-            </div>
-
-            <div class="pb-3">
-                <label for="empleado"><i class="fas fa-user">&nbsp;</i>Usuarios disponibles:</label> <br>
-                <select id="empleado" name="empleado" class="w-full">
-                    <option value="" selected></option>
-                    {{#each empleado}}
-                    <option name="{{this.tipo_usuario}}" value="{{this.id_usuario}}">{{this.nombre}}</option>
-                    {{/each}}
-                </select>
-            </div>
-            
+        <div class="pb-3">
+            <label for="tipoUsuario"><i class="fas fa-user">&nbsp;</i>Filtro por Usuario:</label> <br>
+            <select id="tipoUsuario" name="tipoUsuario" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                <option value="" selected>Todos</option>
+                {{#each tipos}}
+                <option value="{{this.id_tipo_usuario}}">{{this.descripcion}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="pb-3" id="empleadoContainer" style="display: none;">
+            <label for="tipoEmpleado"><i class="fas fa-user">&nbsp;</i>Filtro por Empleado:</label> <br>
+            <select id="tipoEmpleado" name="tipoEmpleado" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                <option value="" selected>Todos</option>
+                {{#each tipoEmpleado}}
+                <option value="{{this.id_tipo_empleado}}">{{this.descripcion}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="pb-3">
+            <label for="empleado"><i class="fas fa-user">&nbsp;</i>Usuarios disponibles:</label> <br>
+            <select id="empleado" name="empleado" class="w-full">
+                <option value="" selected></option>
+                {{#each empleado}}
+                <option value="{{this.id_usuario}}" data-tipo="{{this.tipo_usuario}}">{{this.nombre_y_tipo}}</option>
+                {{/each}}
+            </select>
+        </div>
 
             <label for="fecha"> <i class="fas fa-calendar">&nbsp;</i>Fecha</label>
             <input type="date" id="fecha" name="fecha" required
@@ -264,7 +271,7 @@
 
         $(document).ready(function () {
             $('#empleado').select2({
-                placeholder: "Seleccione un usuario",
+                placeholder: "Seleccione una persona",
                 allowClear: true,
                 language: {
                     noResults: function () {
@@ -330,25 +337,51 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tipoUsuarioSelect = document.getElementById('tipoUsuario');
-            const empleadoSelect = document.getElementById('empleado');
-            const empleados = [
-                {{#each empleado}}
-                    { id: "{{this.id_usuario}}", nombre: "{{this.nombre}}", tipo: "{{this.tipo_usuario}}" },
-                {{/each}}
-            ];  
+document.addEventListener('DOMContentLoaded', () => {
+    const tipoUsuarioSelect = document.getElementById('tipoUsuario');
+    const tipoEmpleadoSelect = document.getElementById('tipoEmpleado');
+    const empleadoSelect = document.getElementById('empleado');
+    const empleados = [
+        {{#each empleado}}
+            { id: "{{this.id_usuario}}", nombre: "{{this.nombre}}", tipo: "{{this.tipo_usuario}}", tipo_empleado: "{{this.tipo_empleado}}", nombre_y_tipo: "{{this.nombre_y_tipo}}" },
+        {{/each}}
+    ];
 
-            tipoUsuarioSelect.addEventListener('change', (event) => {
-                const selectedTipo = event.target.value;
+    tipoUsuarioSelect.addEventListener('change', (event) => {
+        const selectedTipoUsuario = event.target.value;
 
-                // Limpiar el select de empleados
-                empleadoSelect.innerHTML = '<option value="" selected></option>'; // Opciones vacías por defecto
+        // Limpiar el select de empleados
+        empleadoSelect.innerHTML = '<option value="" selected></option>'; // Opción vacía por defecto
 
-                // Filtrar empleados según el tipo seleccionado
-                const filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipo || selectedTipo === "");
+        // Mostrar/ocultar el contenedor de tipoEmpleado
+        if (selectedTipoUsuario === '4') { // Suponiendo que '4' es el valor para 'Empleado'
+            document.getElementById('empleadoContainer').style.display = 'block';
+            
+            // Filtrar empleados según el tipo de usuario seleccionado
+            let filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipoUsuario || selectedTipoUsuario === "");
 
-                // Agregar opciones al select de empleados
+            // Limpiar el select de empleados antes de agregar opciones
+            empleadoSelect.innerHTML = '<option value="" selected></option>';
+
+            // Agregar opciones al select de empleados
+            filteredEmpleados.forEach(emp => {
+                const option = document.createElement('option');
+                option.value = emp.id;
+                option.textContent = emp.nombre_y_tipo;
+                empleadoSelect.appendChild(option);
+            });
+
+            // Filtrar por tipo de empleado
+            tipoEmpleadoSelect.addEventListener('change', (event) => {
+                const selectedTipoEmpleado = event.target.value;
+
+                // Limpiar el select de empleados antes de aplicar el nuevo filtro
+                empleadoSelect.innerHTML = '<option value="" selected></option>'; // Limpiar empleados
+
+                // Filtrar empleados según el tipo de empleado seleccionado
+                filteredEmpleados = empleados.filter(emp => emp.tipo_empleado === selectedTipoEmpleado || selectedTipoEmpleado === "");
+
+                // Agregar las opciones filtradas al select de empleados
                 filteredEmpleados.forEach(emp => {
                     const option = document.createElement('option');
                     option.value = emp.id;
@@ -356,7 +389,30 @@
                     empleadoSelect.appendChild(option);
                 });
             });
-        });
+
+        } else {
+            // Si no se selecciona "Empleado", ocultar el select de tipoEmpleado y mostrar empleados según el tipo de usuario
+            document.getElementById('empleadoContainer').style.display = 'none';
+            tipoEmpleadoSelect.value = ''; // Restablecer el select de tipoEmpleado
+
+            // Filtrar empleados según el tipo de usuario seleccionado
+            const filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipoUsuario || selectedTipoUsuario === "");
+
+            // Limpiar el select de empleados antes de agregar opciones
+            empleadoSelect.innerHTML = '<option value="" selected></option>';
+
+            // Agregar opciones al select de empleados
+            filteredEmpleados.forEach(emp => {
+                const option = document.createElement('option');
+                option.value = emp.id;
+                option.textContent = emp.nombre_y_tipo;
+                empleadoSelect.appendChild(option);
+            });
+        }
+    });
+});
+
+
     </script>
     <script src="imagen.js"></script>
 </body>

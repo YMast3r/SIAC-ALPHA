@@ -7,6 +7,7 @@ const router = express.Router();
 router.get('/ingreso', loginController.ingreso);
 router.get('/ingresoA', loginController.ingresoA);
 router.get('/ingresoAP', loginController.ingresoAP);
+router.get('/ingresoAS', loginController.ingresoAS);
 router.post('/identificacion', loginController.identificacion);
 router.get('/registro', loginController.registro);
 router.post('/alta', loginController.alta);

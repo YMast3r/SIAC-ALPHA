@@ -42,6 +42,7 @@ function formatDate(dateString) {
 function manIncidencia(req, res) {
     const id = req.params.id;
     req.session.idCon = id;
+    req.session.errorMSeg = "";
     const error = req.session.errorMI;
     const data = req.session.dataCampos;
 

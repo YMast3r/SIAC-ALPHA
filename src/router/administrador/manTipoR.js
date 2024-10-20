@@ -23,12 +23,12 @@ router.get('/manTipoIncidencia', (req, res) => {
 });
 
 // Ruta para renderizar manTipoUsuario general (ejemplo con 'altaTipo')
-router.get('/manTipoUsuario', (req, res) => {
+router.get('/manTipoEmpleado', (req, res) => {
     const formFields = [
         { label: 'Descripción', type: 'text', name: 'descripcion', required: true }
     ];
-    req.session.errorBorrarR = 'tipo_usuario';
-    manTipo.manTipo(req, res, 'tipo_usuario', 'id_tipo_usuario', 'descripcion', formFields);
+    req.session.errorBorrarR = 'tipo_empleado';
+    manTipo.manTipo(req, res, 'tipo_empleado', 'id_tipo_empleado', 'descripcion', formFields);
 });
 
 // Ruta para manejar el alta de un tipo de pago
