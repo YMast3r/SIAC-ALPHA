@@ -1,5 +1,3 @@
-const { manCondomino } = require("./condomino/manCondomino");
-
 function renHistorial(req, res) {
     res.render('usuarios/administrador/manHistorial', {
         name: req.session.name,
@@ -8,15 +6,13 @@ function renHistorial(req, res) {
 }
 
 function manPagos(req, res) {
-    // Recuperamos el id de la propiedad (puede venir de la sesión o la ruta)
-    const idPropiedad = req.session.idPropiedad || req.params.idPropiedad;
 
     req.getConnection((err, conn) => {
         if (err) {
             console.log(err);
             return;
         }
-        conn.query(`SELECT a.folio, a.id_propiedad AS propiedad, FORMAT(a.importe, 2) AS importe, t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, a.año, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo,  COALESCE(a.referencia, 'Indefinido') AS referencia FROM pago a JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ?ORDER BY a.folio DESC`, [idPropiedad], (err, rows) => {
+        conn.query(`SELECT a.folio, a.id_propiedad AS propiedad, FORMAT(a.importe, 2) AS importe, t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, a.año, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo,  COALESCE(a.referencia, 'Indefinido') AS referencia FROM pago a JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago ORDER BY a.folio DESC`, (err, rows) => {
             if (err) {
                 console.log(err);
                 return;
@@ -30,7 +26,7 @@ function manPagos(req, res) {
                 }));
 
                 // Renderizamos la vista con los pagos
-                return res.render('usuarios/administrador/pagos', {
+                return res.render('usuarios/administrador/manHistorial', {
                     pagos: pagos,
                     name: req.session.name,
                     id: req.session.idUser,
@@ -49,21 +45,20 @@ function manPagos(req, res) {
     });
 }
 
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
 function manIncidencias(req, res) {
     // Obtén el ID del usuario desde la sesión o la ruta
     const idUsuario = req.session.idUser || req.params.id;
 
     // Determina el tipo y la ruta dependiendo del tipo de usuario
-    let tipo;
-    let ruta;
-    if (req.session.tipoUsuario == 3) {
-        tipo = 3; // Condómino
-        ruta = 'usuarios/condomino/manIncidencias';
-    } else {
-        tipo = 2; // Administrador
-        ruta = 'usuarios/administrador/manIncidencias';
-    }
-
     req.getConnection((err, conn) => {
         if (err) {
             console.log(err);
@@ -71,7 +66,7 @@ function manIncidencias(req, res) {
         }
 
         // Consulta para recuperar las incidencias
-        conn.query(`SELECT a.folio, d.nombre AS usuario, b.descripcion AS tipo_incidencia, a.fecha, a.descripcion FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario WHERE a.id_usuario = ? ORDER BY a.folio DESC`, [idUsuario], (err, rows) => {
+        conn.query(`SELECT a.folio, d.nombre AS usuario, b.descripcion AS tipo_incidencia, a.fecha, a.descripcion FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario ORDER BY a.folio DESC`, (err, rows) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -84,18 +79,18 @@ function manIncidencias(req, res) {
                     }));
 
                     // Renderiza la vista con las incidencias
-                    return res.render(ruta, {
+                    return res.render('usuarios/administrador/manHistorial', {
                         incidencias: incidencias,
                         name: req.session.name,
                         id: req.session.idUser,
-                        tipoUsuario: tipo
+                        tipoUsuario: 2
                     });
                 } else {
                     console.log('No se encontraron incidencias');
-                    return res.render(ruta, {
+                    return res.render('usuarios/administrador/manHistorial', {
                         name: req.session.name,
                         id: req.session.idUser,
-                        tipoUsuario: tipo,
+                        tipoUsuario: 2,
                         errorDatos: 1, // O un mensaje que desees mostrar
                     });
                 }
@@ -123,7 +118,7 @@ function manCondominos(req, res) {
             
             if (rows.length > 0) {
                 const datos = rows;
-                res.render('usuarios/administrador/condomino/manCondominos', { 
+                res.render('usuarios/administrador/manHistorial', { 
                     datos: datos, 
                     name: req.session.name, 
                     tipoUsuario: 2, 
@@ -132,7 +127,7 @@ function manCondominos(req, res) {
                 });
                 return;
             } else {
-                res.render('usuarios/administrador/condomino/manCondominos', { 
+                res.render('usuarios/administrador/manHistorial', { 
                     name: req.session.name, 
                     tipoUsuario: 2, 
                     usuario: usuario, 
@@ -183,7 +178,7 @@ function manPropiedad(req, res) {
                             }
                             if (rows.length > 0) {
                                 const propiedad = rows;
-                                return res.render('usuarios/administrador/manPropiedad', {
+                                return res.render('usuarios/administrador/manHistorial', {
                                     name: req.session.name,
                                     tipoUsuario: 2,
                                     tipoPropiedad: tipo,
@@ -195,7 +190,7 @@ function manPropiedad(req, res) {
                                     errorT: errorT
                                 });
                             } else {
-                                return res.render('usuarios/administrador/manPropiedad', {
+                                return res.render('usuarios/administrador/manHistorial', {
                                     name: req.session.name,
                                     tipoUsuario: 2,
                                     tipoPropiedad: tipo,
@@ -209,7 +204,7 @@ function manPropiedad(req, res) {
                             }
                         });
                     } else {
-                        return res.render('usuarios/administrador/manPropiedad', {
+                        return res.render('usuarios/administrador/manHistorial', {
                             name: req.session.name,
                             tipoUsuario: 2,
                             data: data,
