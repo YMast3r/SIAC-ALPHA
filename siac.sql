@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-10-2024 a las 06:22:15
+-- Tiempo de generación: 21-10-2024 a las 02:49:44
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `siac2`
+-- Base de datos: `siac`
 --
 
 -- --------------------------------------------------------
@@ -38,12 +38,25 @@ CREATE TABLE `clasificacion_incidencia` (
 --
 
 INSERT INTO `clasificacion_incidencia` (`id_clasificacion_incidencia`, `tipo_incidencia`, `descripcion`) VALUES
-(1, 1, 'Apagón total o parcial'),
-(2, 1, 'Cortocircuito'),
-(4, 1, 'Falla en interruptores'),
-(5, 2, 'Fuga de agua'),
-(6, 2, 'Problemas de drenaje'),
-(7, 2, 'Presión baja del agua');
+(0, 0, 'Otra clasificación'),
+(1, 1, 'Instalaciones Eléctricas'),
+(2, 1, 'Plomería'),
+(3, 1, 'Jardinería'),
+(4, 1, 'Infraestructura'),
+(5, 2, 'Accesos'),
+(6, 2, 'Personal de seguridad'),
+(7, 2, 'Robo o Intrusión'),
+(8, 3, 'Alumbrado Público'),
+(9, 3, 'Recolección de Basura'),
+(10, 3, 'Servicios de Limpieza'),
+(11, 4, 'Ruido'),
+(12, 4, 'Estacionamiento'),
+(13, 4, 'Conducta inapropiada'),
+(14, 5, 'Gimnasio'),
+(15, 5, 'Piscina'),
+(16, 5, 'Salón de eventos'),
+(17, 6, 'Facturación'),
+(18, 6, 'Atención al cliente');
 
 -- --------------------------------------------------------
 
@@ -94,6 +107,8 @@ CREATE TABLE `incidencia` (
   `folio` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_tipo_incidencia` int(11) NOT NULL,
+  `clasificacion_incidencia` int(11) NOT NULL,
+  `subcategoria_incidencia` int(11) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha` date NOT NULL,
   `id_status_incidencia` int(11) NOT NULL,
@@ -106,8 +121,8 @@ CREATE TABLE `incidencia` (
 -- Volcado de datos para la tabla `incidencia`
 --
 
-INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `descripcion`, `fecha`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
-(1, 3, 2, 'Se metió Mauricio a mi casa a comer', '2024-05-07', 1, 2, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg');
+INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `clasificacion_incidencia`, `subcategoria_incidencia`, `descripcion`, `fecha`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
+(1, 3, 2, 7, 17, 'Se metió Mauricio a mi casa a comer', '2024-05-07', 1, 2, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg');
 
 -- --------------------------------------------------------
 
@@ -313,6 +328,65 @@ INSERT INTO `status_seguimiento` (`id_status_seguimiento`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `subcategoria_incidencia`
+--
+
+CREATE TABLE `subcategoria_incidencia` (
+  `id_subcategoria_incidencia` int(11) NOT NULL,
+  `id_clasificacion_incidencia` int(11) DEFAULT NULL,
+  `descripcion` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `subcategoria_incidencia`
+--
+
+INSERT INTO `subcategoria_incidencia` (`id_subcategoria_incidencia`, `id_clasificacion_incidencia`, `descripcion`) VALUES
+(0, 0, 'Otra subcategoría'),
+(1, 1, 'Apagón total o parcial'),
+(2, 1, 'Cortocircuito'),
+(3, 1, 'Falla en interruptores'),
+(4, 2, 'Fuga de agua'),
+(5, 2, 'Problemas de drenaje'),
+(6, 2, 'Presión baja del agua'),
+(7, 3, 'Árboles sin podar'),
+(8, 3, 'Césped en mal estado'),
+(9, 3, 'Plagas en áreas verdes'),
+(10, 4, 'Grietas en paredes'),
+(11, 4, 'Reparación de techos'),
+(12, 4, 'Daños en puertas/ventanas'),
+(13, 5, 'Fallo en el portón de entrada'),
+(14, 5, 'Problemas con tarjetas de acceso'),
+(15, 6, 'Mala conducta de vigilantes'),
+(16, 6, 'Vigilancia insuficiente'),
+(17, 7, 'Robo en propiedad privada'),
+(18, 7, 'Intento de intrusión'),
+(19, 8, 'Farolas fundidas'),
+(20, 8, 'Áreas oscuras'),
+(21, 9, 'Retraso en la recolección'),
+(22, 9, 'Basura acumulada'),
+(23, 10, 'Áreas comunes sucias'),
+(24, 10, 'Limpieza de áreas verdes insuficiente'),
+(25, 11, 'Música alta'),
+(26, 11, 'Fiestas nocturnas'),
+(27, 12, 'Uso indebido de espacios de estacionamiento'),
+(28, 12, 'Bloqueo de acceso'),
+(29, 13, 'Actos vandálicos'),
+(30, 13, 'Maltrato a otros vecinos o personal'),
+(31, 14, 'Equipo dañado'),
+(32, 14, 'Falta de limpieza'),
+(33, 15, 'Agua sucia'),
+(34, 15, 'Fugas de agua'),
+(35, 16, 'Daños en el mobiliario'),
+(36, 16, 'Problemas con el aire acondicionado'),
+(37, 17, 'Facturas incorrectas'),
+(38, 17, 'Falta de información en recibos'),
+(39, 18, 'Retrasos en la respuesta'),
+(40, 18, 'Falta de personal capacitado');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipo_empleado`
 --
 
@@ -346,8 +420,13 @@ CREATE TABLE `tipo_incidencia` (
 --
 
 INSERT INTO `tipo_incidencia` (`id_tipo_incidencia`, `descripcion`) VALUES
-(1, 'mantenimiento'),
-(2, 'seguridad');
+(0, 'Otro'),
+(1, 'Mantenimiento'),
+(2, 'Seguridad'),
+(3, 'Servicios'),
+(4, 'Quejas de vecinos'),
+(5, 'Áreas comunes'),
+(6, 'Problemas administrativos');
 
 -- --------------------------------------------------------
 
@@ -468,6 +547,8 @@ ALTER TABLE `incidencia`
   ADD KEY `FK_usuarios_incidencia` (`id_usuario`),
   ADD KEY `FK_administrador_incidencia` (`id_administardor`),
   ADD KEY `FK_incidencias_tipo` (`id_tipo_incidencia`),
+  ADD KEY `FK_clasificacion_incidencia_base` (`clasificacion_incidencia`),
+  ADD KEY `FK_subcategoria_incidencia` (`subcategoria_incidencia`),
   ADD KEY `FK_incidencias_status` (`id_status_incidencia`);
 
 --
@@ -529,6 +610,13 @@ ALTER TABLE `status_seguimiento`
   ADD PRIMARY KEY (`id_status_seguimiento`);
 
 --
+-- Indices de la tabla `subcategoria_incidencia`
+--
+ALTER TABLE `subcategoria_incidencia`
+  ADD PRIMARY KEY (`id_subcategoria_incidencia`),
+  ADD KEY `FK_clasificacion_incidencia` (`id_clasificacion_incidencia`);
+
+--
 -- Indices de la tabla `tipo_empleado`
 --
 ALTER TABLE `tipo_empleado`
@@ -574,7 +662,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `clasificacion_incidencia`
 --
 ALTER TABLE `clasificacion_incidencia`
-  MODIFY `id_clasificacion_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_clasificacion_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
@@ -625,6 +713,12 @@ ALTER TABLE `status_seguimiento`
   MODIFY `id_status_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `subcategoria_incidencia`
+--
+ALTER TABLE `subcategoria_incidencia`
+  MODIFY `id_subcategoria_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
 -- AUTO_INCREMENT de la tabla `tipo_empleado`
 --
 ALTER TABLE `tipo_empleado`
@@ -634,7 +728,7 @@ ALTER TABLE `tipo_empleado`
 -- AUTO_INCREMENT de la tabla `tipo_incidencia`
 --
 ALTER TABLE `tipo_incidencia`
-  MODIFY `id_tipo_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_tipo_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_pago`
@@ -682,8 +776,10 @@ ALTER TABLE `empleado`
 --
 ALTER TABLE `incidencia`
   ADD CONSTRAINT `FK_administrador_incidencia` FOREIGN KEY (`id_administardor`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `FK_clasificacion_incidencia_base` FOREIGN KEY (`clasificacion_incidencia`) REFERENCES `clasificacion_incidencia` (`id_clasificacion_incidencia`),
   ADD CONSTRAINT `FK_incidencias_status` FOREIGN KEY (`id_status_incidencia`) REFERENCES `status_incidencia` (`id_status_incidencia`),
   ADD CONSTRAINT `FK_incidencias_tipo` FOREIGN KEY (`id_tipo_incidencia`) REFERENCES `tipo_incidencia` (`id_tipo_incidencia`),
+  ADD CONSTRAINT `FK_subcategoria_incidencia` FOREIGN KEY (`subcategoria_incidencia`) REFERENCES `subcategoria_incidencia` (`id_subcategoria_incidencia`),
   ADD CONSTRAINT `FK_usuarios_incidencia` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
 
 --
@@ -716,6 +812,12 @@ ALTER TABLE `propiedad`
 --
 ALTER TABLE `seguimiento`
   ADD CONSTRAINT `FK_status_seguimiento` FOREIGN KEY (`id_status_seguimiento`) REFERENCES `status_seguimiento` (`id_status_seguimiento`);
+
+--
+-- Filtros para la tabla `subcategoria_incidencia`
+--
+ALTER TABLE `subcategoria_incidencia`
+  ADD CONSTRAINT `FK_clasificacion_incidencia` FOREIGN KEY (`id_clasificacion_incidencia`) REFERENCES `clasificacion_incidencia` (`id_clasificacion_incidencia`);
 
 --
 -- Filtros para la tabla `usuario`
