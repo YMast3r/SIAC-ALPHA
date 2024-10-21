@@ -69,7 +69,7 @@ function manIncidencia(req, res) {
             if (rows && rows.length > 0) {
                 const usuario = rows;
 
-                conn.query('SELECT * FROM tipo_incidencia', [id], (err, rows) => {
+                conn.query('SELECT * FROM tipo_incidencia', (err, rows) => {
                     if (err) {
                         console.log(err);
                         return;
@@ -77,54 +77,65 @@ function manIncidencia(req, res) {
                     if (rows && rows.length > 0) {
                         const tipos = rows;
 
-                        conn.query('SELECT * FROM status_incidencia', (err, statusRows) => {
+                        conn.query('SELECT * FROM clasificacion_incidencia', (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 return;
                             }
-                            if (statusRows && statusRows.length > 0) {
-                                const status = statusRows;
+                            if (rows && rows.length > 0) {
+                                const clasificacion = rows;
 
-                                conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, c.descripcion AS status, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario  WHERE a.id_usuario = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                conn.query('SELECT * FROM subcategoria_incidencia', (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                         return;
                                     }
                                     if (rows && rows.length > 0) {
-                                        const datos = rows.map(row => ({
-                                            ...row,
-                                            fecha: formatDate(row.fecha),
-                                        }));
-                                        return res.render(ruta, {
-                                            datos: datos,
-                                            usuario: usuario,
-                                            error: error,
-                                            data: data,
-                                            status: status,
-                                            tipos: tipos, 
-                                            name: req.session.name,
-                                            id: req.session.idUser,
-                                            tipoUsuario: tipo
-                                        });
-                                    } else {
-                                        console.log('No se encontraron incidencias');
-                                        return res.render(ruta, {
-                                            name: req.session.name,
-                                            id: req.session.idUser,
-                                            tipoUsuario: tipo,
-                                            errorDatos: 1,
-                                            usuario: usuario,
-                                            tipos: tipos,
-                                            status: status,
+                                        const subcategoria = rows;
+
+                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, f.descripcion AS subcategoria, c.descripcion AS status, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia JOIN subcategoria_incidencia f ON a.subcategoria_incidencia = f.id_subcategoria_incidencia WHERE a.id_usuario = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                            if (err) {
+                                                console.log(err);
+                                                return;
+                                            }
+                                            if (rows && rows.length > 0) {
+                                                const datos = rows.map(row => ({
+                                                    ...row,
+                                                    fecha: formatDate(row.fecha),
+                                                }));
+                                                return res.render(ruta, {
+                                                    datos: datos,
+                                                    usuario: usuario,
+                                                    error: error,
+                                                    data: data,
+                                                    tipos: tipos,
+                                                    clasificacionLista: clasificacion,
+                                                    subcategoriaLista: subcategoria,
+                                                    name: req.session.name,
+                                                    id: req.session.idUser,
+                                                    tipoUsuario: tipo
+                                                });
+                                            } else {
+                                                console.log('No se encontraron incidencias');
+                                                return res.render(ruta, {
+                                                    name: req.session.name,
+                                                    id: req.session.idUser,
+                                                    tipoUsuario: tipo,
+                                                    errorDatos: 1,
+                                                    usuario: usuario,
+                                                    tipos: tipos,
+                                                    clasificacionLista: clasificacion,
+                                                    subcategoriaLista: subcategoria,
+                                                });
+                                            }
                                         });
                                     }
                                 });
-                                
                             }
                         });
                     }
                 });
-            } 
+            }
         });
     });
 }
@@ -160,11 +171,11 @@ function altaIncidencia(req, res) {
                     let evidencia = req.file ? `/imagenes/imagenesIncidencia/${req.file.filename}` : null;
 
                     if (tipo == 3) {
-                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, fecha, id_status_incidencia, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?)';
-                        parametros = [idCon, data.descripcion, data.tipo, data.fecha, 1, data.asunto, evidencia];
+                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, clasificacion_incidencia, subcategoria_incidencia, fecha, id_status_incidencia, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        parametros = [idCon, data.descripcion, data.tipo, data.clasificacion, data.subcategoria, data.fecha, 1, data.asunto, evidencia];
                     } else {
-                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, fecha, id_status_incidencia, id_administardor, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-                        parametros = [idCon, data.descripcion, data.tipo, data.fecha, 1, idAdm, data.asunto, evidencia];
+                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, clasificacion_incidencia, subcategoria_incidencia, fecha, id_status_incidencia, id_administardor, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        parametros = [idCon, data.descripcion, data.tipo, data.clasificacion, data.subcategoria, data.fecha, 1, idAdm, data.asunto, evidencia];
                     }
                     conn.query(consulta, parametros, (err, rows) => {
                         if (err) {
@@ -173,7 +184,7 @@ function altaIncidencia(req, res) {
                             if (evidencia) {
                                 const tempPath = req.file.path;
                                 const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesIncidencia', req.file.filename);
-                                fs.rename(tempPath, targetPath, function(err) {
+                                fs.rename(tempPath, targetPath, function (err) {
                                     if (err) {
                                         console.log(err);
                                         req.session.errorMI = 'Error al mover la imagen';

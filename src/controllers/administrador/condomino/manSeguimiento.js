@@ -69,7 +69,7 @@ function manSeguimiento(req, res) {
                     }
                     if (rows && rows.length > 0) {
                         const tipoEmpleado = rows;
-                        conn.query("SELECT u.id_usuario, u.nombre, u.tipo_usuario, e.tipo_empleado, CONCAT( u.nombre, ' - ', CASE WHEN u.tipo_usuario = 3 THEN 'Condómino' WHEN u.tipo_usuario = 4 THEN te.descripcion END ) AS nombre_y_tipo FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario LEFT JOIN tipo_empleado te ON e.tipo_empleado = te.id_tipo_empleado WHERE u.tipo_usuario IN (2, 3, 4)", (err, rows) => {
+                        conn.query("SELECT u.id_usuario, u.nombre, u.tipo_usuario, e.tipo_empleado, CONCAT( CASE WHEN u.tipo_usuario = 3 THEN 'Condómino' WHEN u.tipo_usuario = 4 THEN te.descripcion WHEN u.tipo_usuario = 2 THEN 'Administrador' END, ' - ', u.nombre ) AS nombre_y_tipo FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario LEFT JOIN tipo_empleado te ON e.tipo_empleado = te.id_tipo_empleado WHERE u.tipo_usuario IN (2, 3, 4)", (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 return;
@@ -98,7 +98,7 @@ function manSeguimiento(req, res) {
                                                     }
                                                     if (statusRows && statusRows.length > 0) {
                                                         const status = statusRows;
-                                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.descripcion, b.descripcion AS tipo, c.descripcion AS status, d.nombre AS usuario, COALESCE(e.nombre, "Indefinido") AS administrador FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario LEFT JOIN usuario e ON a.id_administardor = e.id_usuario WHERE a.folio = ?', [id], (err, inciRows) => {
+                                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, f.descripcion AS subcategoria, c.descripcion AS status, a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia JOIN subcategoria_incidencia f ON a.subcategoria_incidencia = f.id_subcategoria_incidencia WHERE a.folio = ? ORDER BY a.folio DESC', [id], (err, inciRows) => {
                                                             if (err) {
                                                                 console.log(err);
                                                                 return;

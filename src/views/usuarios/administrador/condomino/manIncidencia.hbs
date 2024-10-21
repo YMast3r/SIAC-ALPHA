@@ -4,6 +4,9 @@
 
 <head>
     <script src="https://cdn.tailwindcss.com"></script><!-- sirve para usar tailwind -->
+    <link href="/select2/css/select2.min.css" rel="stylesheet" />
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/select2/js/select2.min.js"></script>
 </head>
 
 <body class="bg-indigo-300">
@@ -70,7 +73,11 @@
                             </span>
                         </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Asunto</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Tipo</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">
+                            Tipo,
+                            Clasificación,
+                            subcategoría
+                        </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Status</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Fecha</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Evidencia</th>
@@ -84,7 +91,13 @@
                         </td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl text-center">
                             {{this.asunto}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">{{this.tipo}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">
+                            {{this.tipo}},
+                            <br>
+                            {{this.clasificacion}},
+                            <br>
+                            {{this.subcategoria}}
+                        </td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">{{this.status}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">{{this.fecha}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-r-xl border-br-lg">
@@ -137,10 +150,30 @@
                 <i class="fas fa-lock"></i>
                 <i class="fas fa-cogs"></i> --}}
                 Tipo</label>
+                <br>
             <select id="tipo" name="tipo"
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                <option selected value="">Todos</option>
                 {{#each tipos}}
                 <option value="{{this.id_tipo_incidencia}}">{{this.descripcion}}</option>
+                {{/each}}
+            </select>
+
+            <label for="clasificacion">Clasificación</label>
+            <select id="clasificacion" name="clasificacion"
+                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                <option selected value="">Todas</option>
+                {{#each clasificacionLista}}
+                <option value="{{this.id_clasificacion_incidencia}}">{{this.descripcion}}</option>
+                {{/each}}
+            </select>
+
+            <label for="subcategoria">Subcategoria</label>
+            <select id="subcategoria" name="subcategoria"
+                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                <option selected value=""></option>
+                {{#each subcategoriaLista}}
+                <option value="{{this.id_subcategoria_incidencia}}">{{this.descripcion}}</option>
                 {{/each}}
             </select>
 
@@ -272,8 +305,139 @@
             });
         });
     </script>
+    
+    <script>
+        $(document).ready(function () {
+            // Inicializamos Select2 en todos los selects
+            $('#tipo').select2({
+                placeholder: "Seleccione un tipo incidencia",
+                allowClear: true,
+                language: {
+                    noResults: function () {
+                        return "No se encontraron resultados";
+                    }
+                }
+            });
+
+            $('#clasificacion').select2({
+                placeholder: "Seleccione una clasificación",
+                allowClear: true,
+                language: {
+                    noResults: function () {
+                        return "No se encontraron resultados";
+                    }
+                }
+            });
+
+            $('#subcategoria').select2({
+                placeholder: "Seleccione una subcategoría",
+                allowClear: true,
+                language: {
+                    noResults: function () {
+                        return "No se encontraron resultados";
+                    }
+                }
+            });
+
+            // Deshabilitar inicialmente los selects de clasificación y subcategoría
+            $('#clasificacion').prop('disabled', true);
+            $('#subcategoria').prop('disabled', true);
+
+            // Detectar el evento 'change' de Select2 para 'tipo'
+            $('#tipo').on('change', function () {
+                const selectedTipo = $(this).val(); // Obtener el valor seleccionado
+
+                const clasificaciones = [
+                    {{#each clasificacionLista}}
+                        { id: "{{this.id_clasificacion_incidencia}}", nombre: "{{this.descripcion}}", tipo: "{{this.tipo_incidencia}}" },
+                    {{/each}}
+                ];
+
+                const clasificacionSelect = $('#clasificacion');
+                clasificacionSelect.empty(); // Limpiar las opciones del select de clasificación
+                clasificacionSelect.append('<option value="" selected></option>'); // Agregar opción vacía
+
+                if (selectedTipo) {
+                    // Filtrar las clasificaciones según el tipo seleccionado
+                    const filteredClasificaciones = clasificaciones.filter(emp => emp.tipo === selectedTipo);
+
+                    // Agregar las opciones filtradas al select de clasificación
+                    filteredClasificaciones.forEach(emp => {
+                        const option = $('<option></option>').val(emp.id).text(emp.nombre);
+                        clasificacionSelect.append(option);
+                    });
+
+                    // Habilitar el select de clasificación
+                    clasificacionSelect.prop('disabled', false);
+                } else {
+                    // Deshabilitar el select de clasificación si no hay tipo seleccionado
+                    clasificacionSelect.prop('disabled', true);
+                    $('#subcategoria').prop('disabled', true);
+                }
+
+                // Limpiar el select de subcategoría cuando se cambia el tipo
+                $('#subcategoria').val(null).trigger('change');
+            });
+
+            // Detectar el evento 'change' de Select2 para 'clasificacion'
+            $('#clasificacion').on('change', function () {
+                const selectedClasificacion = $(this).val(); // Obtener el valor seleccionado
+
+                const subcategorias = [
+                    {{#each subcategoriaLista}}
+                        { id: "{{this.id_subcategoria_incidencia}}", nombre: "{{this.descripcion}}", tipo: "{{this.id_clasificacion_incidencia}}" },
+                    {{/each}}
+                ];
+
+                const subcategoriaSelect = $('#subcategoria');
+                subcategoriaSelect.empty(); // Limpiar las opciones del select de subcategoría
+                subcategoriaSelect.append('<option value="" selected></option>'); // Agregar opción vacía
+
+                if (selectedClasificacion) {
+                    // Filtrar las subcategorías según la clasificación seleccionada
+                    const filteredSubcategorias = subcategorias.filter(emp => emp.tipo === selectedClasificacion);
+
+                    // Agregar las opciones filtradas al select de subcategoría
+                    filteredSubcategorias.forEach(emp => {
+                        const option = $('<option></option>').val(emp.id).text(emp.nombre);
+                        subcategoriaSelect.append(option);
+                    });
+
+                    // Habilitar el select de subcategoría
+                    subcategoriaSelect.prop('disabled', false);
+                } else {
+                    // Deshabilitar el select de subcategoría si no hay clasificación seleccionada
+                    subcategoriaSelect.prop('disabled', true);
+                }
+            });
+        });
+    </script>
+
+<style>
+    /* Ajustes de altura */
+    .select2-container--default .select2-selection--single {
+        height: 3rem; /* Ajusta este valor según el tamaño que quieras */
+        display: flex;
+        align-items: center; /* Centra el texto verticalmente */
+        position: relative; /* Posición relativa para manejar la x */
+    }
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        line-height: 3rem; /* Ajusta este valor al mismo valor que el height */
+    }
+    .select2-container .select2-selection--single .select2-selection__arrow {
+        height: 3rem; /* Ajusta el ícono del desplegable */
+    }
+    /* Mover la X al lado derecho */
+    .select2-container--default .select2-selection--single .select2-selection__clear {
+        position: absolute;
+        right: 10px; /* Ajusta la distancia del borde derecho */
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer; /* Cambia el cursor a pointer para mayor claridad */
+    }
+</style>
+    <script src="imagen.js"></script>
 </body>
-<script src="imagen.js"></script>
 
 </html>
 {{else}}
