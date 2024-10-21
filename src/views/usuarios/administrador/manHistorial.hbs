@@ -1,1 +1,151 @@
-<h1>i wana make a supersonic man out of you, dont stop me now</h1>
+<h1 class="text-2xl font-bold text-center mb-6">Historial</h1>
+<div class="grid grid-cols-2 gap-4 p-4">
+    <a href="/manIncidenciasH" onclick="showTab('incidencias')" class="border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition">
+        <h2 class="text-lg font-semibold">Incidencias</h2>
+        <p class="text-sm">Página de incidencias reportadas de parte de los condóminos</p>
+    </a>
+    <a href="/manPagosH" onclick="showTab('pagos')" class="border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition">
+        <h2 class="text-lg font-semibold">Pagos</h2>
+        <p class="text-sm">Página de pagos registrados por parte de los condóminos</p>
+    </a>
+    <a href="/manCondominosH" onclick="showTab('condominos')" class="border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition">
+        <h2 class="text-lg font-semibold">Condominos</h2>
+        <p class="text-sm">Pagina de condominos registrados</p>
+    </a>
+    <a href="/manPropiedadesH" onclick="showTab('propiedades')" class="border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition">
+        <h2 class="text-lg font-semibold">Propiedades</h2>
+        <p class="text-sm">Pagina de propiedades registradas</p>
+    </a>
+</div>
+
+<!--pestañas-->
+
+<!--pestaña de incidencia-->
+<div id="incidencias" class=" mt-4">
+    <h1 class="text-2xl font-bold text-center mb-6">Incidencias registradas</h1>
+    {{#if incidencias.length}}
+        <table class="table-auto w-full text-left bg-white shadow-md rounded mb-4">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2">Folio</th>
+                    <th class="px-4 py-2">Usuario</th>
+                    <th class="px-4 py-2">Tipo de Incidencia</th>
+                    <th class="px-4 py-2">Fecha</th>
+                    <th class="px-4 py-2">Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each incidencias}}
+                    <tr>
+                        <td class="border px-4 py-2">{{this.folio}}</td>
+                        <td class="border px-4 py-2">{{this.usuario}}</td>
+                        <td class="border px-4 py-2">{{this.tipo_incidencia}}</td>
+                        <td class="border px-4 py-2">{{this.fecha}}</td>
+                        <td class="border px-4 py-2">{{this.descripcion}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <p class="text-center text-gray-500">No se encontraron incidencias registradas.</p>
+    {{/if}}
+</div>
+
+<!--pestaña de pagos-->
+<div id="pagos" class=" mt-4">
+    <h1 class="text-2xl font-bold text-center mb-6">Pagos Registrados</h1>
+
+{{#if pagos.length}}
+    <table class="table-auto w-full text-left bg-white shadow-md rounded mb-4">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="px-4 py-2">Folio</th>
+                <th class="px-4 py-2">Propiedad</th>
+                <th class="px-4 py-2">Importe</th>
+                <th class="px-4 py-2">Tipo de Pago</th>
+                <th class="px-4 py-2">Fecha</th>
+                <th class="px-4 py-2">Mes</th>
+                <th class="px-4 py-2">Año</th>
+                <th class="px-4 py-2">Número de Recibo</th>
+                <th class="px-4 py-2">Referencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each pagos}}
+                <tr>
+                    <td class="border px-4 py-2">{{this.folio}}</td>
+                    <td class="border px-4 py-2">{{this.propiedad}}</td>
+                    <td class="border px-4 py-2">{{this.importe}}</td>
+                    <td class="border px-4 py-2">{{this.tipo_pago}}</td>
+                    <td class="border px-4 py-2">{{this.fecha}}</td>
+                    <td class="border px-4 py-2">{{this.mes}}</td>
+                    <td class="border px-4 py-2">{{this.año}}</td>
+                    <td class="border px-4 py-2">{{this.numero_recibo}}</td>
+                    <td class="border px-4 py-2">{{this.referencia}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p class="text-center text-gray-500">No se encontraron pagos registrados.</p>
+{{/if}}
+</div>
+
+<!--pestaña de condominos-->
+<div id="condominos" class=" mt-4">
+    <h1 class="text-2xl font-bold text-center mb-6">Condominos Registrados</h1>
+    {{#if datos.length}}
+        <table class="table-auto w-full text-left bg-white shadow-md rounded mb-4">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2">Nombre</th>
+                    <th class="px-4 py-2">Correo Electrónico</th>
+                    <th class="px-4 py-2">Teléfono</th>
+                    <th class="px-4 py-2">Propiedades Anexadas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each datos}}
+                    <tr>
+                        <td class="border px-4 py-2">{{this.nombre}}</td>
+                        <td class="border px-4 py-2">{{this.correo_electronico}}</td>
+                        <td class="border px-4 py-2">{{this.telefono}}</td>
+                        <td class="border px-4 py-2">{{this.propiedades}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <p class="text-center text-gray-500">No se encontraron condóminos registrados.</p>
+    {{/if}}
+</div>
+
+<!--Pestaña de propiedades-->
+<div id="propiedades" class=" mt-4">
+    <h1 class="text-2xl font-bold text-center mb-6">Condominos Registrados</h1>    
+    {{#if propiedad.length}}
+        <table class="table-auto w-full text-left bg-white shadow-md rounded mb-4">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2">ID</th>
+                    <th class="px-4 py-2">Descripción</th>
+                    <th class="px-4 py-2">Condómino</th>
+                    <th class="px-4 py-2">Tipo de Propiedad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each propiedad}}
+                    <tr>
+                        <td class="border px-4 py-2">{{this.id_propiedad}}</td>
+                        <td class="border px-4 py-2">{{this.descripcion}}</td>
+                        <td class="border px-4 py-2">{{this.condomino}}</td>
+                        <td class="border px-4 py-2">{{this.tipo_propiedad}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <p class="text-center text-gray-500">No se encontraron propiedades registradas.</p>
+    {{/if}}
+</div>
+

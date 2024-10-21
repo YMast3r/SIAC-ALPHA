@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Empleado</title>
+    <style>
+        .input-error {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/3 border rounded-lg shadow-lg">
+        <h1 class="text-2xl m-5 font-bold text-center text-xl">Registra un empleado</h1>
+        <form id="registroForm" action="/registrarEmpleado" method="POST">
+            <table>
+                <tr>
+                    <td><label for="nombre">Nombre:</label></td>
+                    <td><input value="Angel" type="text" id="nombre" name="nombre" required></td>
+                </tr>
+                <tr>
+                    <td><label for="apellidos">Apellidos:</label></td>
+                    <td><input value="Pedroza" type="text" id="apellidos" name="apellidos" required></td>
+                </tr>
+                <tr>
+                    <td><label for="fecha_nacimiento">Fecha de Nacimiento:</label></td>
+                    <td><input value="2007-02-24" type="date" id="fecha_nacimiento" name="fecha_nacimiento" required></td>
+                </tr>
+                <tr>
+                    <td><label for="tipo_empleado">Tipo de Empleado:</label></td>
+                    <td><input value="1" type="text" id="tipo_empleado" name="tipo_empleado" required></td>
+                </tr>
+                <tr>
+                    <td><label for="salario">Salario:</label></td>
+                    <td><input value="9999999" type="number" id="salario" name="salario" step="0.01" required></td>
+                </tr>
+                <tr>
+                    <td><label for="fecha_contratacion">Fecha de Contratación:</label></td>
+                    <td><input value="2024-08-09" type="date" id="fecha_contratacion" name="fecha_contratacion" required></td>
+                </tr>
+                <tr>
+                    <td><label for="telefono">Teléfono:</label></td>
+                    <td><input value="999999999" type="tel" id="telefono" name="telefono" required></td>
+                </tr>
+                <tr>
+                    <td><label for="correo_electronico">Correo Electrónico:</label></td>
+                    <td><input value="yo@gmail.com" type="email" id="correo_electronico" name="correo_electronico" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Contraseña:</label></td>
+                    <td>
+                        <input value="123" type="password" id="password" name="password" required>
+                        <button type="button" id="togglePassword">ver</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="confirm_password">Confirmar Contraseña:</label></td>
+                    <td>
+                        <input value="123" type="password" id="confirm_password" name="confirm_password" required>
+                        <button type="button" id="toggleConfirmPassword">ver</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="direccion">Dirección:</label></td>
+                    <td><input value="Enrique Segoviano" type="text" id="direccion" name="direccion" required></td>
+                </tr>
+                <tr>
+                    <td><label for="ciudad">Ciudad:</label></td>
+                    <td><input value="si" type="text" id="ciudad" name="ciudad" required></td>
+                </tr>
+                <tr>
+                    <td><label for="estado">Estado:</label></td>
+                    <td><input value="simon" type="text" id="estado" name="estado" required></td>
+                </tr>
+                <tr>
+                    <td><label for="codigo_postal">Código Postal:</label></td>
+                    <td><input value="22222" type="text" id="codigo_postal" name="codigo_postal" required></td>
+                </tr>
+                <tr>
+                    <td><label for="nss">Número de Seguridad Social:</label></td>
+                    <td><input value="20266" type="text" id="nss" name="nss" required></td>
+                </tr>
+                <tr>
+                    <td><label for="nacionalidad">Nacionalidad:</label></td>
+                    <td><input value="aqui" type="text" id="nacionalidad" name="nacionalidad" required></td>
+                </tr>
+                <tr>
+                    <td><label for="genero">Género:</label></td>
+                    <td>
+                        <select id="genero" name="genero" required>
+                            <option value="">Seleccione</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="estado_civil">Estado Civil:</label></td>
+                    <td>
+                        <select id="estado_civil" name="estado_civil" required>
+                            <option value="">Seleccione</option>
+                            <option value="Soltero">Soltero/a</option>
+                            <option value="Casado">Casado/a</option>
+                            <option value="Divorciado">Divorciado/a</option>
+                            <option value="Viudo">Viudo/a</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div style="text-align: center;">
+                <button type="submit">Registrar</button>
+            </div>
+        </form>
+    </div>
+    <script src="telefono.js"></script>
+    <script src="correo.js"></script>
+    <script src="ojo.js"></script>
+</body>
+</html>

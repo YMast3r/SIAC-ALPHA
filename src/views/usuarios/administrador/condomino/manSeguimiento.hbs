@@ -63,7 +63,11 @@
                     <tr>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg">Folio</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium ">Asunto</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Tipo</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl text-center font-medium">
+                            Tipo,
+                            Clasificación,
+                            subcategoría
+                        </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Status</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg text-center">
                             Descripción</th>
@@ -75,7 +79,13 @@
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.folio}}
                         </td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.asunto}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.tipo}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">
+                            {{this.tipo}},
+                            <br>
+                            {{this.clasificacion}},
+                            <br>
+                            {{this.subcategoria}}
+                        </td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.status}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center">
                             {{this.descripcion}}</td>
@@ -269,18 +279,6 @@
             window.open(src, "_blank");
         }
 
-        $(document).ready(function () {
-            $('#empleado').select2({
-                placeholder: "Seleccione una persona",
-                allowClear: true,
-                language: {
-                    noResults: function () {
-                        return "No se encontraron resultados";
-                    }
-                }
-            });
-        });
-
         document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
             event.preventDefault();
 
@@ -335,85 +333,121 @@
 
     </script>
 
-
     <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const tipoUsuarioSelect = document.getElementById('tipoUsuario');
-    const tipoEmpleadoSelect = document.getElementById('tipoEmpleado');
-    const empleadoSelect = document.getElementById('empleado');
-    const empleados = [
-        {{#each empleado}}
-            { id: "{{this.id_usuario}}", nombre: "{{this.nombre}}", tipo: "{{this.tipo_usuario}}", tipo_empleado: "{{this.tipo_empleado}}", nombre_y_tipo: "{{this.nombre_y_tipo}}" },
-        {{/each}}
-    ];
+        document.addEventListener('DOMContentLoaded', () => {
+            const tipoUsuarioSelect = document.getElementById('tipoUsuario');
+            const tipoEmpleadoSelect = document.getElementById('tipoEmpleado');
+            const empleadoSelect = document.getElementById('empleado');
+            const empleados = [
+                {{#each empleado}}
+                    { id: "{{this.id_usuario}}", nombre: "{{this.nombre}}", tipo: "{{this.tipo_usuario}}", tipo_empleado: "{{this.tipo_empleado}}", nombre_y_tipo: "{{this.nombre_y_tipo}}" },
+                {{/each}}
+            ];
 
-    tipoUsuarioSelect.addEventListener('change', (event) => {
-        const selectedTipoUsuario = event.target.value;
+            const resetEmpleadoSelect = () => {
+                empleadoSelect.innerHTML = '<option value="" selected></option>'; // Opción vacía por defecto
+            };
 
-        // Limpiar el select de empleados
-        empleadoSelect.innerHTML = '<option value="" selected></option>'; // Opción vacía por defecto
-
-        // Mostrar/ocultar el contenedor de tipoEmpleado
-        if (selectedTipoUsuario === '4') { // Suponiendo que '4' es el valor para 'Empleado'
-            document.getElementById('empleadoContainer').style.display = 'block';
-            
-            // Filtrar empleados según el tipo de usuario seleccionado
-            let filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipoUsuario || selectedTipoUsuario === "");
-
-            // Limpiar el select de empleados antes de agregar opciones
-            empleadoSelect.innerHTML = '<option value="" selected></option>';
-
-            // Agregar opciones al select de empleados
-            filteredEmpleados.forEach(emp => {
-                const option = document.createElement('option');
-                option.value = emp.id;
-                option.textContent = emp.nombre_y_tipo;
-                empleadoSelect.appendChild(option);
-            });
-
-            // Filtrar por tipo de empleado
-            tipoEmpleadoSelect.addEventListener('change', (event) => {
-                const selectedTipoEmpleado = event.target.value;
-
-                // Limpiar el select de empleados antes de aplicar el nuevo filtro
-                empleadoSelect.innerHTML = '<option value="" selected></option>'; // Limpiar empleados
-
-                // Filtrar empleados según el tipo de empleado seleccionado
-                filteredEmpleados = empleados.filter(emp => emp.tipo_empleado === selectedTipoEmpleado || selectedTipoEmpleado === "");
-
-                // Agregar las opciones filtradas al select de empleados
+            const populateEmpleadoSelect = (filteredEmpleados, soloNombre) => {
+                resetEmpleadoSelect();
                 filteredEmpleados.forEach(emp => {
                     const option = document.createElement('option');
                     option.value = emp.id;
-                    option.textContent = emp.nombre;
+                    option.textContent = soloNombre ? emp.nombre : emp.nombre_y_tipo;
                     empleadoSelect.appendChild(option);
                 });
+            };
+
+            tipoUsuarioSelect.addEventListener('change', (event) => {
+                const selectedTipoUsuario = event.target.value;
+                resetEmpleadoSelect();
+                tipoEmpleadoSelect.value = ''; // Restablecer el select de tipoEmpleado
+
+                // Mostrar/ocultar el contenedor de tipoEmpleado
+                const isEmpleado = selectedTipoUsuario === '4'; // Suponiendo que '4' es el valor para 'Empleado'
+                document.getElementById('empleadoContainer').style.display = isEmpleado ? 'block' : 'none';
+
+                // Filtrar empleados según el tipo de usuario seleccionado
+                let filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipoUsuario || selectedTipoUsuario === "");
+
+                // Si se seleccionó un tipo de usuario 'Empleado', filtrar por tipo de empleado
+                if (isEmpleado) {
+                    const selectedTipoEmpleado = tipoEmpleadoSelect.value;
+
+                    // Filtrar por tipo de empleado si está seleccionado
+                    if (selectedTipoEmpleado) {
+                        filteredEmpleados = filteredEmpleados.filter(emp => emp.tipo_empleado === selectedTipoEmpleado);
+                    }
+
+                    // Agregar opciones al select de empleados mostrando nombre y tipo
+                    populateEmpleadoSelect(filteredEmpleados, false);
+                }else {
+                    // Agregar opciones al select de empleados mostrando solo nombres
+                    populateEmpleadoSelect(filteredEmpleados, true);
+                }
+
+                if (selectedTipoUsuario === ''){
+                    // Agregar opciones al select de empleados mostrando solo nombres
+                    populateEmpleadoSelect(filteredEmpleados, false);
+
+                }
             });
 
-        } else {
-            // Si no se selecciona "Empleado", ocultar el select de tipoEmpleado y mostrar empleados según el tipo de usuario
-            document.getElementById('empleadoContainer').style.display = 'none';
-            tipoEmpleadoSelect.value = ''; // Restablecer el select de tipoEmpleado
+            tipoEmpleadoSelect.addEventListener('change', () => {
+                const selectedTipoUsuario = tipoUsuarioSelect.value;
+                const selectedTipoEmpleado = tipoEmpleadoSelect.value;
 
-            // Filtrar empleados según el tipo de usuario seleccionado
-            const filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipoUsuario || selectedTipoUsuario === "");
+                // Filtrar empleados según el tipo de usuario y tipo de empleado
+                let filteredEmpleados = empleados.filter(emp => emp.tipo === selectedTipoUsuario || selectedTipoUsuario === "");
 
-            // Limpiar el select de empleados antes de agregar opciones
-            empleadoSelect.innerHTML = '<option value="" selected></option>';
+                // Filtrar por tipo de empleado si está seleccionado
+                if (selectedTipoEmpleado) {
+                    filteredEmpleados = filteredEmpleados.filter(emp => emp.tipo_empleado === selectedTipoEmpleado);
+                    // Limpiar y agregar opciones al select de empleados, mostrando solo nombres
+                    populateEmpleadoSelect(filteredEmpleados, true);
+                }else{
+                    // Limpiar y agregar opciones al select de empleados, mostrando solo nombres
+                    populateEmpleadoSelect(filteredEmpleados, false);
+                }
 
-            // Agregar opciones al select de empleados
-            filteredEmpleados.forEach(emp => {
-                const option = document.createElement('option');
-                option.value = emp.id;
-                option.textContent = emp.nombre_y_tipo;
-                empleadoSelect.appendChild(option);
             });
-        }
-    });
-});
-
-
+        });
+        
+        $(document).ready(function () {
+            $('#empleado').select2({
+                placeholder: "Seleccione una persona",
+                allowClear: true,
+                language: {
+                    noResults: function () {
+                        return "No se encontraron resultados";
+                    }
+                }
+            });
+        });
     </script>
+    <style>
+    /* Ajustes de altura */
+    .select2-container--default .select2-selection--single {
+        height: 3rem; /* Ajusta este valor según el tamaño que quieras */
+        display: flex;
+        align-items: center; /* Centra el texto verticalmente */
+        position: relative; /* Posición relativa para manejar la x */
+    }
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        line-height: 3rem; /* Ajusta este valor al mismo valor que el height */
+    }
+    .select2-container .select2-selection--single .select2-selection__arrow {
+        height: 3rem; /* Ajusta el ícono del desplegable */
+    }
+    /* Mover la X al lado derecho */
+    .select2-container--default .select2-selection--single .select2-selection__clear {
+        position: absolute;
+        right: 10px; /* Ajusta la distancia del borde derecho */
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer; /* Cambia el cursor a pointer para mayor claridad */
+    }
+    </style>
     <script src="imagen.js"></script>
 </body>
 
