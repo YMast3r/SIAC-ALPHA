@@ -10,7 +10,7 @@
     <!-- Enlace a la hoja de estilos de Tailwind CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css">
     <!-- Enlace a Font Awesome -->
-    <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="bg-gray-200"> <!-- Fondo de la página -->
@@ -48,7 +48,7 @@
                 {{#isEqual tipoUsuario 2}}
                 <li class="px-2 sm:px-4">
                     <a href="/renAltaEmpleados"
-                        class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Registrar un nuevo esclavo</a>
+                        class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Registrar nuevo Empleado</a>
                 </li>
                 <li class="px-2 sm:px-4">
                     <a href="/renHistorial"
@@ -117,21 +117,28 @@
                             <li class="px-2 sm:px-4">
                                 <!-- Ajuste del tamaño del botón de registro para dispositivos móviles -->
                                 <a href="/ingresoA"
-                                    class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automatico</a>
+                                    class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 "><i class="fa-solid fa-hippo"></i>
+                                    <i class="fa-solid fa-dragon"></i>
+                                    <i class="fa-solid fa-spider"></i>
+                                    AUTO
+                                    <i class="fa-solid fa-cat"></i>
+                                    <i class="fa-solid fa-dog"></i>
+                                    <i class="fa-solid fa-fish"></i></a>
                             </li>
                             <br>
                             <li class="px-2 sm:px-4">
                                 <!-- Ajuste del tamaño del botón de registro para dispositivos móviles -->
                                 <a href="/ingresoAP"
-                                    class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automatico
+                                    class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automático
                                     pagos</a>
                             </li>
                             <li class="px-2 sm:px-4">
                                 <!-- Ajuste del tamaño del botón de registro para dispositivos móviles -->
                                 <a href="/ingresoAS"
-                                    class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automatico
+                                    class="font-semibold border-2 border-white hover:bg-white hover:text-gray-900 py-2 px-4 rounded-md text-xs  sm:text-sm mb-2 sm:mb-0 ">Automático
                                     seguimiento</a>
                             </li>
+        
                             {{/if}}
                             {{!-- Condición para el nombre --}}
                             {{/if}}
