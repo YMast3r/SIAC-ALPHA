@@ -1,5 +1,8 @@
 function renAltaEmpleados(req, res) {
-    res.render('usuarios/administrador/manAltaEmpleado')
+    res.render('usuarios/administrador/manAltaEmpleado', {
+        name: req.session.name,
+        tipoUsuario: 2,
+    });
 }
 
 function registrarEmpleado(req, res) {
