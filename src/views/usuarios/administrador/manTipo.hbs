@@ -24,6 +24,9 @@
             <a href="/manTipoIncidencia" id="formaClipPathI"
                 class="text-center w-24 overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-32 rounded-b-lg  hover:gray-500 -mr-4 "
                 onclick="mostrarSeccion('tipoIncidecia')">Tipo Incidencias</a>
+            <a href="/manClasificacion" id="formaClipPathC"
+                class="text-center w-24 overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-32 rounded-b-lg  hover:gray-500 -mr-4  "
+                onclick="mostrarSeccion('tipoPagos')">Clasificacion incidencia</a>
         </nav>
     </div>
 
@@ -32,7 +35,8 @@
         const elementos = [
             { id: 'formaClipPathU', textoInicial: 'T. Empleado', textoHover: 'Tipo Empleado', widthInicial: '8rem', widthHover: '12rem' },
             { id: 'formaClipPathP', textoInicial: 'T. Pagos', textoHover: 'Tipo Pagos', widthInicial: '8rem', widthHover: '12rem' },
-            { id: 'formaClipPathI', textoInicial: 'T. Incidencias', textoHover: 'Tipo Incidencias', widthInicial: '10rem', widthHover: '12rem' }
+            { id: 'formaClipPathI', textoInicial: 'T. Incidencias', textoHover: 'Tipo Incidencias', widthInicial: '10rem', widthHover: '12rem' },
+            { id: 'formaClipPathC', textoInicial: 'Clasificacion I', textoHover: 'Clasificacion incidencia', widthInicial: '10rem', widthHover: '15rem' }
         ];
 
         // Función para aplicar el clip-path y estilos
@@ -107,7 +111,7 @@
                     {{#each tableData}}
                     <tr class="hover:bg-gray-100">
                         {{#each ../tableHeaders}}
-                        <td class="px-4 py-2 text-center whitespace-nowrap">
+                        <td id="{{this.name}}" class="px-4 py-2 text-center whitespace-nowrap">
                             {{lookup ../this this.field}}
                         </td>
                         {{/each}}
@@ -146,15 +150,15 @@
                 <input type="hidden" name="tipo" value="{{tipo}}" />
                 {{#each formFields}}
                 <div class="p-2">
-                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
                     {{#isEqual this.label "Precio"}}
+                    <!-- Renderizar campo Precio con el icono de moneda -->
                     <div class="relative">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16"
-                            height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16" height="16"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
                             <path d="M12 3v3m0 12v3" />
                         </svg>
                         <input id="precio" type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
@@ -162,39 +166,32 @@
                             required="{{this.required}}">
                     </div>
                     {{else}}
+                    {{#isEqual this.type "select"}}
+                    <!-- Renderizar select con las opciones correctas -->
+                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                    <select name="{{this.name}}" id="{{this.name}}"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                        {{#each this.options}}
+                        <option value="{{this.value}}">{{this.text}}</option>
+                        {{/each}}
+                    </select>
+                    {{/isEqual}}
+                    {{#isEqual this.type "text"}}
+                    <!-- Renderizar cualquier otro campo de texto -->
+                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
                     <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}" placeholder="{{this.label}}"
                         class="border border-gray-200 w-full text-lg p-2" required="{{this.required}}">
+                    {{/isEqual}}
                     {{/isEqual}}
                 </div>
                 {{/each}}
                 <button type="submit"
-                    class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-3 block mt-4 mb-2 text-center">Registrar</button>
+                    class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-3 block mt-4 mb-2 text-center">
+                    Registrar
+                </button>
             </form>
-
         </div>
         <script>
-
-
-            document.addEventListener('DOMContentLoaded', function() {
-                // Selecciona todas las filas del tbody de la tabla
-                let rows = document.querySelectorAll('#tipoTable tbody tr');
-
-                // Itera sobre cada fila
-                rows.forEach(row => {
-                    // Asegúrate de que no es la fila de "noResult"
-                    if (row.id !== 'noResult') {
-                        // Suponiendo que la columna de precios es la tercera (índice 2), ajusta según sea necesario
-                        let priceCell = row.cells[2]; 
-
-                        // Verifica si la celda ya tiene un valor y agrega el símbolo $
-                        if (priceCell && !priceCell.textContent.includes('$')) {
-                            priceCell.textContent = `$${priceCell.textContent}`;
-                        }
-                    }
-                });
-            });
-
-
             document.getElementById('searchTipo').addEventListener('keyup', function () {
                 let filter = this.value.toLowerCase();
                 let rows = document.querySelectorAll('#tipoTable tbody tr');
