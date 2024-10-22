@@ -1,8 +1,13 @@
 function renAltaEmpleados(req, res) {
-    res.render('usuarios/administrador/manAltaEmpleado', {
-        name: req.session.name,
-        tipoUsuario: 2,
-    });
+    // Limpiamos otros campos de error y datos
+    req.session.errorMPago = "";
+    req.session.dataCampos = "";
+    try {
+        res.redirect('/manEmpleados');
+        return;
+    } catch {
+        manEmpleados(req, res);
+    }
 }
 
 function registrarEmpleado(req, res) {
@@ -22,7 +27,7 @@ function registrarEmpleado(req, res) {
         data.nombre,
         data.correo_electronico,
         data.password , // Asignar null si no se proporciona
-        data.tipo_usuario || 3, // Asignar un valor por defecto para tipo_usuario si no se proporciona
+        data.tipo_usuario || 4, // Asignar un valor por defecto para tipo_usuario si no se proporciona
         1, // Suponiendo que el estado por defecto es 1 (activo)
         data.telefono
     ];
@@ -85,7 +90,41 @@ function registrarEmpleado(req, res) {
     });
 }
 
+function manEmpleados(req, res) {
+    req.getConnection((err, conn) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("Error en la conexión con la base de datos");
+        }
+
+        // Consulta para obtener los empleados
+        conn.query('SELECT u.nombre AS nombre_usuario, u.correo_electronico, u.telefono, u.status, e.nombre, e.apellidos, e.tipo_empleado, e.salario, e.fecha_contratacion, e.direccion, e.ciudad, e.estado, e.codigo_postal, e.numero_seguridad_social, e.nacionalidad, e.genero, e.estado_civil FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario WHERE u.tipo_usuario = 4', (err, rows) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send("Error al recuperar los empleados");
+            }
+
+            // Consulta para obtener los tipos de empleado
+            conn.query('SELECT id_tipo_empleado, descripcion FROM tipo_empleado', (err, tiposEmpleado) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Error al recuperar los tipos de empleado");
+                }
+
+                res.render('usuarios/administrador/manAltaEmpleado', {
+                    name: req.session.name,
+                    tipoUsuario: 2,
+                    empleados: rows,
+                    tiposEmpleado: tiposEmpleado // Pasar los tipos de empleado a la vista
+                });
+            });
+        });
+    });
+}
+
+
 module.exports = { 
     renAltaEmpleados,
-    registrarEmpleado
+    registrarEmpleado,
+    manEmpleados
 };
