@@ -332,17 +332,18 @@ INSERT INTO `status_seguimiento` (`id_status_seguimiento`, `descripcion`) VALUES
 
 CREATE TABLE `tipo_empleado` (
   `id_tipo_empleado` int(20) NOT NULL,
-  `descripcion` varchar(100) NOT NULL
+  `descripcion` varchar(100) NOT NULL,
+  `salario` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `tipo_empleado`
 --
 
-INSERT INTO `tipo_empleado` (`id_tipo_empleado`, `descripcion`) VALUES
-(1, 'Administrador'),
-(2, 'Vigilante'),
-(3, 'Plomero');
+INSERT INTO `tipo_empleado` (`id_tipo_empleado`, `descripcion`, `salario`) VALUES
+(1, 'Administrador', 30000.00),
+(2, 'Vigilante', 10000.00),
+(3, 'Plomero', 15000.00);
 
 -- --------------------------------------------------------
 
