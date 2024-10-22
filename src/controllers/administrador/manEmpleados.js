@@ -114,7 +114,7 @@ function manEmpleados(req, res) {
                     ...row,
                     fecha_contratacion: formatDate(row.fecha_contratacion), // Formatea la fecha
                 }));
-
+                console.log("tiposEmpleado",tiposEmpleado)
                 res.render('usuarios/administrador/manEmpleado', {
                     name: req.session.name,
                     tipoUsuario: 2,
