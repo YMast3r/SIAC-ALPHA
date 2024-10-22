@@ -656,7 +656,6 @@ function altaPagoPlazo(req, res) {
                                 renPago(req, res);
                                 return;
                             }
-
                             conn.query(`SELECT DATE_FORMAT(fecha_anexo, '%Y-%m') AS año_mes_anexo FROM propiedad WHERE id_propiedad = ?`, [idPro], (err, rows) => {
                                 if (err) {
                                     console.log(err);
@@ -664,22 +663,23 @@ function altaPagoPlazo(req, res) {
                                     renPago(req, res);
                                     return;
                                 }
-                                const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-');
-
+                            
+                                const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
+                            
                                 // Consulta para obtener el último pago registrado
-                                conn.query(`SELECT MAX(CONCAT(año, '-', LPAD(mes, 2, '0'))) AS ultimo_pago FROM pago WHERE id_propiedad = ? AND tipo_pago = ?`, [idPro, data.tipoPagoPlazo], (err, pagoRows) => {
+                                conn.query(`SELECT folio, año, mes FROM pago WHERE id_propiedad = ? AND tipo_pago = ? ORDER BY año DESC, mes DESC LIMIT 1`, [idPro, data.tipoPago], (err, resultado) => {
                                     if (err) {
                                         console.log(err);
                                         req.session.errorMPagoP = 'Error en la consulta de pagos';
                                         renPago(req, res);
                                         return;
                                     }
+                            
+                                    const ultimoPago = resultado[0] || null;
 
-                                    const ultimoPago = pagoRows[0].ultimo_pago;
-
-                                    // Verificar si hay meses pendientes
-                                    if (ultimoPago === null || (yearAnexo != añoInicio || mesAnexo != mesInicio)) {
-                                        req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                    // Si no hay último pago, verificar por la fecha anexo
+                                    if (añoInicio < yearAnexo || (añoInicio == yearAnexo && mesInicio < mesAnexo)) {
+                                        req.session.errorMPagoP = 'No se pueden hacer pagos anteriores a la fecha de anexo';
                                         req.session.mensajeAltaPago = "";
                                         req.session.dataCampos = data;
                                         try {
@@ -688,7 +688,39 @@ function altaPagoPlazo(req, res) {
                                             console.log('No hay imagen');
                                         }
                                         renPago(req, res);
+                                        return;
+                                    }
+                                    
+                                    // Lógica de comparación
+                                    if (ultimoPago) {
+                                        // Verificar si la fecha proporcionada es mayor al último pago
+                                        if (añoInicio > ultimoPago.año ||  (añoInicio == ultimoPago.año && mesInicio > (ultimoPago.mes +1 ))){
+                                            req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                            req.session.mensajeAltaPago = "";
+                                            req.session.dataCampos = data;
+                                            try {
+                                                borrarImagenTemporal(tempPath);
+                                            } catch {
+                                                console.log('No hay imagen');
+                                            }
+                                            renPago(req, res);
+                                            return;
+                                        }
                                     } else {
+                                        // Si no hay último pago, verificar por la fecha anexo
+                                        if (añoInicio > yearAnexo || (añoInicio == yearAnexo && mesInicio > mesAnexo)) {
+                                            req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                            req.session.mensajeAltaPago = "";
+                                            req.session.dataCampos = data;
+                                            try {
+                                                borrarImagenTemporal(tempPath);
+                                            } catch {
+                                                console.log('No hay imagen');
+                                            }
+                                            renPago(req, res);
+                                            return;
+                                        }
+                                    }
                                         // Obtener la cuota de tipo propiedad
                                         conn.query('SELECT pago FROM tipo_propiedad WHERE id_tipo_propiedad = (SELECT id_tipo_propiedad FROM propiedad WHERE id_propiedad = ?)', [idPro], (err, rows) => {
                                             if (err) {
@@ -822,7 +854,6 @@ function altaPagoPlazo(req, res) {
                                                 });
                                             }
                                         });
-                                    }
                                 });
 
                             });
