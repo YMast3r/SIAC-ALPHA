@@ -423,22 +423,23 @@ function altaPago(req, res) {
                                                             renPago(req, res);
                                                             return;
                                                         }
-                                                        const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-');
-
+                                                    
+                                                        const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
+                                                    
                                                         // Consulta para obtener el último pago registrado
-                                                        conn.query(`SELECT MAX(CONCAT(año, '-', LPAD(mes, 2, '0'))) AS ultimo_pago FROM pago WHERE id_propiedad = ? AND tipo_pago = ?`, [idPro, data.tipoPago], (err, pagoRows) => {
+                                                        conn.query(`SELECT folio, año, mes FROM pago WHERE id_propiedad = ? AND tipo_pago = ? ORDER BY año DESC, mes DESC LIMIT 1`, [idPro, data.tipoPago], (err, resultado) => {
                                                             if (err) {
                                                                 console.log(err);
                                                                 req.session.errorMPago = 'Error en la consulta de pagos';
                                                                 renPago(req, res);
                                                                 return;
                                                             }
+                                                    
+                                                            const ultimoPago = resultado[0] || null;
 
-                                                            const ultimoPago = pagoRows[0].ultimo_pago;
-
-                                                            // Verificar si hay meses pendientes
-                                                            if (ultimoPago === null || (yearAnexo != year || mesAnexo != mes)) {
-                                                                req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                                            // Si no hay último pago, verificar por la fecha anexo
+                                                            if (year < yearAnexo || (year == yearAnexo && mes < mesAnexo)) {
+                                                                req.session.errorMPago = 'No se pueden hacer pagos anteriores a la fecha de anexo';
                                                                 req.session.mensajeAltaPagoPlazo = "";
                                                                 req.session.dataCampos = data;
                                                                 try {
@@ -447,35 +448,67 @@ function altaPago(req, res) {
                                                                     console.log('No hay imagen');
                                                                 }
                                                                 renPago(req, res);
-                                                            } else {
-
-                                                                conn.query(consulta, parametros, (err, rows) => {
-                                                                    if (err) {
-                                                                        console.log(err);
-                                                                        return res.status(500).send("Error en la insert");
-                                                                    } else {
-                                                                        if (imagenRuta) {
-                                                                            const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
-                                                                            fs.rename(tempPath, targetPath, function (err) {
-                                                                                if (err) {
-                                                                                    console.log(err);
-                                                                                    req.session.errorMPago = 'Error al mover la imagen';
-                                                                                    req.session.mensajeAltaPagoPlazo = "";
-                                                                                    renPago(req, res);
-                                                                                    return;
-                                                                                }
-                                                                                renderPago(req, res);
-                                                                            });
-                                                                        } else {
-                                                                            req.session.mensajeAltaPago = "Se registró el pago correctamente";
-                                                                            req.session.mensajeAltaPagoPlazo = "";
-                                                                            renPagoAlta(req, res);
-                                                                        }
-                                                                    }
-                                                                });
+                                                                return;
                                                             }
+                                                            
+                                                            // Lógica de comparación
+                                                            if (ultimoPago) {
+                                                                // Verificar si la fecha proporcionada es mayor al último pago
+                                                                if (year > ultimoPago.año ||  (year == ultimoPago.año && mes > (ultimoPago.mes +1 ))){
+                                                                    req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                                                    req.session.mensajeAltaPagoPlazo = "";
+                                                                    req.session.dataCampos = data;
+                                                                    try {
+                                                                        borrarImagenTemporal(tempPath);
+                                                                    } catch {
+                                                                        console.log('No hay imagen');
+                                                                    }
+                                                                    renPago(req, res);
+                                                                    return;
+                                                                }
+                                                            } else {
+                                                                // Si no hay último pago, verificar por la fecha anexo
+                                                                if (year > yearAnexo || (year == yearAnexo && mes > mesAnexo)) {
+                                                                    req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                                                    req.session.mensajeAltaPagoPlazo = "";
+                                                                    req.session.dataCampos = data;
+                                                                    try {
+                                                                        borrarImagenTemporal(tempPath);
+                                                                    } catch {
+                                                                        console.log('No hay imagen');
+                                                                    }
+                                                                    renPago(req, res);
+                                                                    return;
+                                                                }
+                                                            }
+                                                    
+                                                            // Si pasó las verificaciones, proceder con la inserción del pago
+                                                            conn.query(consulta, parametros, (err, rows) => {
+                                                                if (err) {
+                                                                    console.log(err);
+                                                                    return res.status(500).send("Error en la insert");
+                                                                } else {
+                                                                    if (imagenRuta) {
+                                                                        const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
+                                                                        fs.rename(tempPath, targetPath, function (err) {
+                                                                            if (err) {
+                                                                                console.log(err);
+                                                                                req.session.errorMPago = 'Error al mover la imagen';
+                                                                                req.session.mensajeAltaPagoPlazo = "";
+                                                                                renPago(req, res);
+                                                                                return;
+                                                                            }
+                                                                            renderPago(req, res);
+                                                                        });
+                                                                    } else {
+                                                                        req.session.mensajeAltaPago = "Se registró el pago correctamente";
+                                                                        req.session.mensajeAltaPagoPlazo = "";
+                                                                        renPagoAlta(req, res);
+                                                                    }
+                                                                }
+                                                            });
                                                         });
-                                                    });
+                                                    });                                                    
                                                 } else {
                                                     req.session.errorMPago = 'Ya existe un pago registrado';
                                                     req.session.mensajeAltaPagoPlazo = "";

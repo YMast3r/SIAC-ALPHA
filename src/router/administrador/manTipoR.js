@@ -25,7 +25,8 @@ router.get('/manTipoIncidencia', (req, res) => {
 // Ruta para renderizar manTipoUsuario general (ejemplo con 'altaTipo')
 router.get('/manTipoEmpleado', (req, res) => {
     const formFields = [
-        { label: 'Descripción', type: 'text', name: 'descripcion', required: true }
+        { label: 'Descripción', type: 'text', name: 'descripcion', required: true },
+        { label: 'Salario', type: 'tel', name: 'precio', required: true }
     ];
     req.session.errorBorrarR = 'tipo_empleado';
     manTipo.manTipo(req, res, 'tipo_empleado', 'id_tipo_empleado', 'descripcion', null, formFields);

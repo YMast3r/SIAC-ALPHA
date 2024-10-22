@@ -188,6 +188,15 @@ function manTipo(req, res, tableName, idField, descriptionField, tipoField, form
             });
             
             return; // Salimos de la función después de hacer la consulta de incidencias
+        } else if (tableName === "tipo_empleado") {
+            query = `SELECT ${idField}, descripcion, salario AS precio 
+                     FROM ${tableName} 
+                     ORDER BY ${orderByParam} ${orderDirectionParam}`;
+            tableHeaders = [
+                { name: 'ID', field: idField, sortable: true, orderDirection: orderByParam === idField ? orderDirectionParam : null },
+                { name: 'Descripción', field: descriptionField, sortable: false, orderDirection: orderByParam === descriptionField ? orderDirectionParam : null },
+                { name: 'Salario', field: 'precio', sortable: false }
+            ];
         } else {
             query = `SELECT ${idField}, descripcion
             FROM ${tableName} 
