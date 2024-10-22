@@ -104,7 +104,7 @@ function manEmpleados(req, res) {
             }
 
             // Consulta para obtener los tipos de empleado
-            conn.query('SELECT id_tipo_empleado, descripcion FROM tipo_empleado', (err, tiposEmpleado) => {
+            conn.query('SELECT * FROM tipo_empleado', (err, tiposEmpleado) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send("Error al recuperar los tipos de empleado");
@@ -114,7 +114,6 @@ function manEmpleados(req, res) {
                     ...row,
                     fecha_contratacion: formatDate(row.fecha_contratacion), // Formatea la fecha
                 }));
-                console.log("tiposEmpleado",tiposEmpleado)
                 res.render('usuarios/administrador/manEmpleado', {
                     name: req.session.name,
                     tipoUsuario: 2,
