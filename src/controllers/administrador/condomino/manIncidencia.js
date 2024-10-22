@@ -85,49 +85,37 @@ function manIncidencia(req, res) {
                             if (rows && rows.length > 0) {
                                 const clasificacion = rows;
 
-                                conn.query('SELECT * FROM subcategoria_incidencia', (err, rows) => {
+                                conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, c.descripcion AS STATUS , a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia WHERE a.folio = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                         return;
                                     }
                                     if (rows && rows.length > 0) {
-                                        const subcategoria = rows;
-
-                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, f.descripcion AS subcategoria, c.descripcion AS status, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia JOIN subcategoria_incidencia f ON a.subcategoria_incidencia = f.id_subcategoria_incidencia WHERE a.id_usuario = ? ORDER BY a.folio DESC', [id], (err, rows) => {
-                                            if (err) {
-                                                console.log(err);
-                                                return;
-                                            }
-                                            if (rows && rows.length > 0) {
-                                                const datos = rows.map(row => ({
-                                                    ...row,
-                                                    fecha: formatDate(row.fecha),
-                                                }));
-                                                return res.render(ruta, {
-                                                    datos: datos,
-                                                    usuario: usuario,
-                                                    error: error,
-                                                    data: data,
-                                                    tipos: tipos,
-                                                    clasificacionLista: clasificacion,
-                                                    subcategoriaLista: subcategoria,
-                                                    name: req.session.name,
-                                                    id: req.session.idUser,
-                                                    tipoUsuario: tipo
-                                                });
-                                            } else {
-                                                console.log('No se encontraron incidencias');
-                                                return res.render(ruta, {
-                                                    name: req.session.name,
-                                                    id: req.session.idUser,
-                                                    tipoUsuario: tipo,
-                                                    errorDatos: 1,
-                                                    usuario: usuario,
-                                                    tipos: tipos,
-                                                    clasificacionLista: clasificacion,
-                                                    subcategoriaLista: subcategoria,
-                                                });
-                                            }
+                                        const datos = rows.map(row => ({
+                                            ...row,
+                                            fecha: formatDate(row.fecha),
+                                        }));
+                                        return res.render(ruta, {
+                                            datos: datos,
+                                            usuario: usuario,
+                                            error: error,
+                                            data: data,
+                                            tipos: tipos,
+                                            clasificacionLista: clasificacion,
+                                            name: req.session.name,
+                                            id: req.session.idUser,
+                                            tipoUsuario: tipo
+                                        });
+                                    } else {
+                                        console.log('No se encontraron incidencias');
+                                        return res.render(ruta, {
+                                            name: req.session.name,
+                                            id: req.session.idUser,
+                                            tipoUsuario: tipo,
+                                            errorDatos: 1,
+                                            usuario: usuario,
+                                            tipos: tipos,
+                                            clasificacionLista: clasificacion,
                                         });
                                     }
                                 });
