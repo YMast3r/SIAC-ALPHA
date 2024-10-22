@@ -1,13 +1,17 @@
 function renAltaEmpleados(req, res) {
-    res.render('usuarios/administrador/manAltaEmpleado', {
-        name: req.session.name,
-        tipoUsuario: 2,
-    });
+    // Limpiamos otros campos de error y datos
+    req.session.errorMPago = "";
+    req.session.dataCampos = "";
+    try {
+        res.redirect('/manEmpleados');
+        return;
+    } catch {
+        manEmpleados(req, res);
+    }
 }
 
 function registrarEmpleado(req, res) {
     const data = req.body;
-    console.log("data", data)
 
     // Validar los datos de entrada
     if (!data.nombre || !data.apellidos || !data.correo_electronico || !data.telefono || !data.direccion || !data.ciudad || !data.estado || !data.codigo_postal || !data.nss || !data.nacionalidad || !data.genero || !data.estado_civil) {
@@ -22,7 +26,7 @@ function registrarEmpleado(req, res) {
         data.nombre,
         data.correo_electronico,
         data.password , // Asignar null si no se proporciona
-        data.tipo_usuario || 3, // Asignar un valor por defecto para tipo_usuario si no se proporciona
+        data.tipo_usuario || 4, // Asignar un valor por defecto para tipo_usuario si no se proporciona
         1, // Suponiendo que el estado por defecto es 1 (activo)
         data.telefono
     ];
@@ -85,7 +89,53 @@ function registrarEmpleado(req, res) {
     });
 }
 
+function manEmpleados(req, res) {
+    req.getConnection((err, conn) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("Error en la conexión con la base de datos");
+        }
+
+        // Consulta para obtener los empleados
+        conn.query('SELECT e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.nombre, e.apellidos, u.descripcion AS tipo_empleado, e.salario, e.fecha_contratacion, e.direccion, e.ciudad, e.estado, e.codigo_postal, e.numero_seguridad_social, e.nacionalidad, e.genero, e.estado_civil FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado', (err, rows) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send("Error al recuperar los empleados");
+            }
+
+            // Consulta para obtener los tipos de empleado
+            conn.query('SELECT id_tipo_empleado, descripcion FROM tipo_empleado', (err, tiposEmpleado) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Error al recuperar los tipos de empleado");
+                }
+
+                const datos = rows.map(row => ({
+                    ...row,
+                    fecha_contratacion: formatDate(row.fecha_contratacion), // Formatea la fecha
+                }));
+
+                res.render('usuarios/administrador/manAltaEmpleado', {
+                    name: req.session.name,
+                    tipoUsuario: 2,
+                    empleados: datos,
+                    tiposEmpleado: tiposEmpleado // Pasar los tipos de empleado a la vista
+                });
+            });
+        });
+    });
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
 module.exports = { 
     renAltaEmpleados,
-    registrarEmpleado
+    registrarEmpleado,
+    manEmpleados
 };
