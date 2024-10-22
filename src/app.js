@@ -18,7 +18,7 @@ const manSeguimiento = require('./router/administrador/condomino/manSeguimientoR
 const manPropiedad = require('./router/administrador/manPropiedadR');
 const manTipo = require('./router/administrador/manTipoR');
 const manHistorial = require('./router/administrador/manHistorialR');
-const manAltaEmpleado = require('./router/administrador/manAltaEmpleadoR')
+const manEmpleado = require('./router/administrador/manEmpleadoR')
 
 const app = express();
 
@@ -100,7 +100,7 @@ app.use('/', manTipo);
 app.use('/', manHistorial);
 
 // ruta de alta de
-app.use('/', manAltaEmpleado);
+app.use('/', manEmpleado);
 
 app.get('/', (req, res) => {
 	if (req.session.loggedin) {
