@@ -12,7 +12,6 @@ function renAltaEmpleados(req, res) {
 
 function registrarEmpleado(req, res) {
     const data = req.body;
-    console.log("data", data)
 
     // Validar los datos de entrada
     if (!data.nombre || !data.apellidos || !data.correo_electronico || !data.telefono || !data.direccion || !data.ciudad || !data.estado || !data.codigo_postal || !data.nss || !data.nacionalidad || !data.genero || !data.estado_civil) {
@@ -98,7 +97,7 @@ function manEmpleados(req, res) {
         }
 
         // Consulta para obtener los empleados
-        conn.query('SELECT u.nombre AS nombre_usuario, u.correo_electronico, u.telefono, u.status, e.nombre, e.apellidos, e.tipo_empleado, e.salario, e.fecha_contratacion, e.direccion, e.ciudad, e.estado, e.codigo_postal, e.numero_seguridad_social, e.nacionalidad, e.genero, e.estado_civil FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario WHERE u.tipo_usuario = 4', (err, rows) => {
+        conn.query('SELECT e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.nombre, e.apellidos, u.descripcion AS tipo_empleado, e.salario, e.fecha_contratacion, e.direccion, e.ciudad, e.estado, e.codigo_postal, e.numero_seguridad_social, e.nacionalidad, e.genero, e.estado_civil FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado', (err, rows) => {
             if (err) {
                 console.log(err);
                 return res.status(500).send("Error al recuperar los empleados");
@@ -111,10 +110,15 @@ function manEmpleados(req, res) {
                     return res.status(500).send("Error al recuperar los tipos de empleado");
                 }
 
+                const datos = rows.map(row => ({
+                    ...row,
+                    fecha_contratacion: formatDate(row.fecha_contratacion), // Formatea la fecha
+                }));
+
                 res.render('usuarios/administrador/manAltaEmpleado', {
                     name: req.session.name,
                     tipoUsuario: 2,
-                    empleados: rows,
+                    empleados: datos,
                     tiposEmpleado: tiposEmpleado // Pasar los tipos de empleado a la vista
                 });
             });
@@ -122,6 +126,13 @@ function manEmpleados(req, res) {
     });
 }
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
 
 module.exports = { 
     renAltaEmpleados,
