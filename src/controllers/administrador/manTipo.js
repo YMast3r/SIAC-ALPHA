@@ -257,6 +257,13 @@ function altaTipo(req, res) {
         req.session.errorMT = 'No puedes ingresar un precio de 0.00';
         req.session.dataCampos = data;
         req.session.errorBorrar = tipo;
+        if (tipo === "tipo_empleado") {
+            req.session.formF = formularios['empleado'];
+            req.session.tablaC = tablas['empleado'];
+        } else {
+            req.session.formF = formularios['pagos'];
+            req.session.tablaC = tablas['pagos'];
+        }
         renTipo(req, res);
         return;
     } else {
