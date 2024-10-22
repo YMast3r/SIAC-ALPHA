@@ -42,6 +42,16 @@ router.get('/manClasificacion', (req, res) => {
     manTipo.manTipo(req, res, 'clasificacion_incidencia', 'id_clasificacion_incidencia', 'descripcion', 'tipo_incidencia', formFields);
 });
 
+router.get('/manPaginaTipo', (req, res) => {
+    req.session.errorMT = "";
+    req.session.dataCampos = "";
+    req.session.altaTDM = "";
+    return res.render('usuarios/administrador/manPaginaTipo', {
+        name: req.session.name,
+        tipoUsuario: 2,
+    });
+});
+    
 // Ruta para manejar el alta de un tipo de pago
 router.post('/altaTipo', manTipo.altaTipo);
 
