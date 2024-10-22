@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-10-2024 a las 09:01:29
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 21-10-2024 a las 02:49:44
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -95,12 +95,7 @@ INSERT INTO `empleado` (`id_empleado`, `id_usuario`, `nombre`, `apellidos`, `fec
 (1, 2, 'Ivan Sebastián', 'Guerrero Basurto', '0000-00-00', 1, 30000.00, '2020-01-15', '555-1234', 'IsaacGallegos@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'M', 'Casado', NULL, NULL),
 (2, 5, 'Regina Odette', 'Hernández Buenrostro', '0000-00-00', 1, 20000.00, '2020-01-15', '555-1234', 'ReginaOdette@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'F', 'Casado', NULL, NULL),
 (3, 4, 'Isaac', 'Gallegos Mena', '0000-00-00', 2, 10000.00, '2020-01-15', '555-1234', 'IsaacGallegos@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'M', 'Casado', NULL, NULL),
-(4, 7, 'Ian Yeshua', 'López Garcia', '0000-00-00', 3, 15000.00, '2019-05-20', '555-5678', 'ianYeshua@condominio.com', 'Avenida Siempre Viva 456', 'Aguascalientes', 'Aguascalientes', '12345', '987-65-4321', 'Mexicana', 'M', 'Soltero', NULL, NULL),
-(5, 8, 'Angel', 'Pedroza', '2007-02-24', 2, 12312.00, '2024-10-21', '123 456 7890', '123123@gmail.com', 'mi casa', 'aqui', 'soltero ', '20299', 'no me acurdo', 'de aqui', 'M', 'Viudo', NULL, NULL),
-(6, 9, 'Angel', 'Pedroza', '2007-02-24', 2, 4546.00, '1222-02-21', '123 456 7890', '123123@gmail.com', 'mi casa', 'as', 'soltero ', '20299', 'no me acurdo', 'de aqui', 'M', 'Viudo', NULL, NULL),
-(7, 10, 'Uriel', 'Castaeñda', '2007-02-24', 3, 99999999.99, '5555-05-05', '123 456 7890', 'aaaa@simon.com', 'mi casa', 'as', 'soltero ', '20299', 'no me acurdo', 'de aqui', 'M', 'Divorciado', NULL, NULL),
-(8, 11, 'Angel', 'Pedroza', '2024-10-02', 3, 888.00, '2024-09-30', '1234456678899', 'IvanSebastian@gmail.com', 'mi casa', 'que te valga', 'soltero ', '20299', '124124124124124124', 'de aqui', 'M', 'Viudo', NULL, NULL),
-(9, 12, 'PK', 'Burryz', '2024-10-22', 3, 100.00, '2024-10-22', '123 456 7890', 'aaaaaaaaaa@gmail.com', 'enrique segobiano', 'aqui', 'soltero ', '20299', '91283', 'de aqui', 'M', 'Divorciado', NULL, NULL);
+(4, 7, 'Ian Yeshua', 'López Garcia', '0000-00-00', 3, 15000.00, '2019-05-20', '555-5678', 'ianYeshua@condominio.com', 'Avenida Siempre Viva 456', 'Aguascalientes', 'Aguascalientes', '12345', '987-65-4321', 'Mexicana', 'M', 'Soltero', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -242,8 +237,7 @@ CREATE TABLE `propiedad` (
 
 INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`, `fecha_anexo`) VALUES
 (1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-01-01'),
-(2, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL),
-(3, 9, 'la caja en la vanqueta', 2, '2024-10-21');
+(2, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -399,7 +393,7 @@ INSERT INTO `subcategoria_incidencia` (`id_subcategoria_incidencia`, `id_clasifi
 CREATE TABLE `tipo_empleado` (
   `id_tipo_empleado` int(20) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `salario` int(11) NOT NULL
+  `salario` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
@@ -407,10 +401,9 @@ CREATE TABLE `tipo_empleado` (
 --
 
 INSERT INTO `tipo_empleado` (`id_tipo_empleado`, `descripcion`, `salario`) VALUES
-(1, 'Administrador', 0),
-(2, 'Vigilante', 0),
-(3, 'Plomero', 0),
-(5, 'Narcotraficante', 0);
+(1, 'Administrador', 30000.00),
+(2, 'Vigilante', 10000.00),
+(3, 'Plomero', 15000.00);
 
 -- --------------------------------------------------------
 
@@ -526,12 +519,7 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`,
 (4, 'Isaac', 'IsaacGallegos@gmail.com', '$2b$12$x12.RpNjleTnslNzHs7S3eKPGbzjuVxnyj72rWrrXR12T5zTEzCIK', 4, 4, '449 568 6105'),
 (5, 'Odette', 'ReginaOdette@gmail.com', '$2b$12$NW7UbFZy20tqgoZ5xztNhO.2.OzItFkLe9W.I2iN5/0KQAEUtoOVm', 2, 4, '351 304 6049'),
 (6, 'Martin Contreras', 'martin.contreras.romo@cetis155.edu.mx', '$2b$12$FiY7dY.GKsNP5nF9xq1JweJp57FwkBJ09fgxiS5pjz5AGfDWopgLG', 3, 4, '449 555 8755'),
-(7, 'Ian', 'ianYeshua@gmail.com', '$2b$12$mNtF3BfNJpMah78Dyw93i.CQYrF/tD6h7jscGgBuxtb/R4mImlqpy', 4, 4, '449 429 6282'),
-(8, 'Angel', '123123@gmail.com', '1234567890', 4, 1, '123 456 7890'),
-(9, 'Angel', '123123@gmail.com', '1234567890', 3, 1, '123 456 7890'),
-(10, 'Uriel', 'aaaa@simon.com', '1234567890', 4, 1, '123 456 7890'),
-(11, 'Angel', 'IvanSebastian@gmail.com', '1234567890', 4, 1, '1234456678899'),
-(12, 'PK', 'aaaaaaaaaa@gmail.com', '123456Abcd', 4, 1, '123 456 7890');
+(7, 'Ian', 'ianYeshua@gmail.com', '$2b$12$mNtF3BfNJpMah78Dyw93i.CQYrF/tD6h7jscGgBuxtb/R4mImlqpy', 4, 4, '449 429 6282');
 
 --
 -- Índices para tablas volcadas
@@ -681,7 +669,7 @@ ALTER TABLE `clasificacion_incidencia`
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `id_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `incidencia`
@@ -705,7 +693,7 @@ ALTER TABLE `pago_plazos`
 -- AUTO_INCREMENT de la tabla `propiedad`
 --
 ALTER TABLE `propiedad`
-  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `status`
@@ -735,7 +723,7 @@ ALTER TABLE `subcategoria_incidencia`
 -- AUTO_INCREMENT de la tabla `tipo_empleado`
 --
 ALTER TABLE `tipo_empleado`
-  MODIFY `id_tipo_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_tipo_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_incidencia`
@@ -765,7 +753,7 @@ ALTER TABLE `tipo_usuario`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas

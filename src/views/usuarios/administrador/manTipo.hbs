@@ -150,7 +150,8 @@
                 <input type="hidden" name="tipo" value="{{tipo}}" />
                 {{#each formFields}}
                 <div class="p-2">
-                    {{#isEqual this.label "Precio"}}
+                    {{#isEqual this.name "precio"}}
+                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
                     <!-- Renderizar campo Precio con el icono de moneda -->
                     <div class="relative">
                         <svg xmlns="http://www.w3.org/2000/svg"

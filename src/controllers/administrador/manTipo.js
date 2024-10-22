@@ -11,6 +11,13 @@ const formularios = {
         id: 'pagos',
         campos: [
             { label: 'Descripción', type: 'text', name: 'descripcion', required: true },
+            { label: 'Salario', type: 'tel', name: 'precio', required: true }
+        ]
+    },
+    empleado: {
+        id: 'empleado',
+        campos: [
+            { label: 'Descripción', type: 'text', name: 'descripcion', required: true },
             { label: 'Precio', type: 'tel', name: 'precio', required: true }
         ]
     },
@@ -79,7 +86,7 @@ function renderManTipoAlta(req, res) {
         req.session.formF = formularios['simple']
         req.session.tablaC = tablas['incidencia']
     } else if (altaTD == "Se registró tipo empleado correctamente") {
-        req.session.formF = formularios['simple']
+        req.session.formF = formularios['empleado']
         req.session.tablaC = tablas['empleado']
     } else if (altaTD == "Se registró clasificacion incidencia correctamente") {
         req.session.formF = formularios['clasificacion']
@@ -189,7 +196,7 @@ function manTipo(req, res, tableName, idField, descriptionField, tipoField, form
             
             return; // Salimos de la función después de hacer la consulta de incidencias
         } else if (tableName === "tipo_empleado") {
-            query = `SELECT ${idField}, descripcion, salario AS precio 
+            query = `SELECT ${idField}, descripcion, CONCAT('$', FORMAT(salario, 2)) AS precio 
                      FROM ${tableName} 
                      ORDER BY ${orderByParam} ${orderDirectionParam}`;
             tableHeaders = [
@@ -277,6 +284,9 @@ function altaTipo(req, res) {
                     } else if (tipo == 'clasificacion_incidencia') {
                         insertQuery = 'INSERT INTO clasificacion_incidencia (descripcion, tipo_incidencia) VALUES (?, ?)';
                         insertParams = [data.descripcion, data.tipo_incidencia];
+                    } else if (tipo == 'tipo_empleado') {
+                        insertQuery = 'INSERT INTO tipo_empleado (descripcion, salario) VALUES (?, ?)';
+                        insertParams = [data.descripcion, data.precio];
                     } else {
                         insertQuery = `INSERT INTO ${tipo}  (descripcion) VALUES (?)`;
                         insertParams = [data.descripcion];
@@ -305,7 +315,7 @@ function altaTipo(req, res) {
                         req.session.formF = formularios['simple']
                         req.session.tablaC = tablas['incidencia']
                     } else if (tipo === "tipo_empleado") {
-                        req.session.formF = formularios['simple']
+                        req.session.formF = formularios['empleado']
                         req.session.tablaC = tablas['empleado']
                     } else if (tipo === "clasificacion_incidencia") {
                         req.session.formF = formularios['clasificacion']
