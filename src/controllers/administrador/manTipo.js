@@ -64,7 +64,7 @@ function renTipo(req, res) {
         }
     } catch (error) {
         console.error('Error:', error);
-        manTipo(req, res, tablaCampos['columnas'][0], tablaCampos['columnas'][1], tablaCampos['columnas'][2], null, formFields);
+        manTipo(req, res, tablaCampos['columnas'][0], tablaCampos['columnas'][1], tablaCampos['columnas'][2], tablaCampos['columnas'][3], formFields);
     }
 }
 
@@ -312,16 +312,18 @@ function altaTipo(req, res) {
                     req.session.dataCampos = data;
                     req.session.errorBorrar = tipo;
                     if (tipo === "tipo_incidencia") {
-                        req.session.formF = formularios['simple']
-                        req.session.tablaC = tablas['incidencia']
+                        req.session.formF = formularios['simple'];
+                        req.session.tablaC = tablas['incidencia'];
                     } else if (tipo === "tipo_empleado") {
-                        req.session.formF = formularios['empleado']
-                        req.session.tablaC = tablas['empleado']
+                        req.session.formF = formularios['empleado'];
+                        req.session.tablaC = tablas['empleado'];
                     } else if (tipo === "clasificacion_incidencia") {
-                        req.session.formF = formularios['clasificacion']
-                        req.session.tablaC = tablas['clasificacion']
+                        req.session.formF = formularios['clasificacion'];
+                        req.session.tablaC = tablas['clasificacion'];
                     } else {
                         console.log("tipo pago")
+                        req.session.formF = formularios['pagos'];
+                        req.session.tablaC = tablas['pagos'];
                     }
                     renTipo(req, res);
                 }
