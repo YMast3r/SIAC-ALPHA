@@ -91,7 +91,9 @@
                                 <img src="{{this.evidencia}}" alt="Evidencia" class="w-20 h-20 object-cover rounded-sm mx-auto"
                                     onclick="mostrarImagen(this.src)">
                                 {{else}}
-                                Sin evidencia
+                                <div class="w-20 h-20 object-cover rounded-sm text-lg text-center shadow-l-lg mx-auto" >
+                                    <img src="/imagenes/sinImagen.png" alt="Sin evidencia">
+                                </div>
                                 {{/if}}
                             </td>
                         </tr>
