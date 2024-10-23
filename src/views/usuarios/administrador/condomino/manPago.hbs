@@ -112,6 +112,9 @@
     {{#if errorDatos}}
     <center>
         <h1 class="font-semibold text-4xl flex justify-center m-5">No hay pagos registrados</h1>
+        {{#each usuarioPro}}
+        <P>Por favor, realice el pago correspondiente a la fecha del anexo de la propiedad que corresponde al mes de {{this.mes}} del año 20{{this.año}}</P>
+        {{/each}}
     </center>
 
     {{!-- Condición para ver si hay pagos --}}
@@ -554,6 +557,7 @@
                                 <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium ">DESCRIPCIÓN</th>
                                 <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium">TIPO</th>
                                 <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tr-lg">PRECIO</th>
+                                <th class="px-2 py-2 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tl-lg">Fecha</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -568,6 +572,8 @@
                                     {{this.tipo_propiedad}}</td>
                                 <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-br-lg">
                                     ${{this.pago}}</td>
+                                <td class="px-4 py-2 bg-white text-center text-lg border-b-2 border-gray-200 rounded-md">
+                                    {{this.fecha_anexo}}</td>
                             </tr>
 
                             {{/each}}
