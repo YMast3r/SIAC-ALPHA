@@ -184,103 +184,113 @@ function manPago(req, res) {
                         } else {
                             query = 'SELECT * FROM tipo_pago'
                         }
-                        conn.query(query, (err, rows) => {
+                        conn.query('SELECT * FROM tipo_pago', (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 return;
                             }
-                            if (rows.length > 0) {
-                                const tipoPago = rows;
-                                conn.query('SELECT pago FROM tipo_propiedad WHERE id_tipo_propiedad = (SELECT id_tipo_propiedad FROM propiedad WHERE id_propiedad = ?)', [id], (err, rows) => {
-                                    if (err) {
-                                        console.log(err);
-                                        return;
-                                    }
+                            const tipoPagoFiltro = rows;
+                            conn.query(query, (err, rows) => {
+                                if (err) {
+                                    console.log(err);
+                                    return;
+                                }
+                                if (rows.length > 0) {
+                                    const tipoPago = rows;
+                                    conn.query('SELECT pago FROM tipo_propiedad WHERE id_tipo_propiedad = (SELECT id_tipo_propiedad FROM propiedad WHERE id_propiedad = ?)', [id], (err, rows) => {
+                                        if (err) {
+                                            console.log(err);
+                                            return;
+                                        }
 
-                                    if (rows.length > 0) {
-                                        const cuota = rows[0].pago;
+                                        if (rows.length > 0) {
+                                            const cuota = rows[0].pago;
 
-                                        conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
-                                            if (err) {
-                                                console.log(err);
-                                            }
-                                            if (rows.length > 0) {
-                                                const datos = rows.map(row => ({
-                                                    ...row,
-                                                    fecha: formatDate(row.fecha), // Formatea la fecha
-                                                }));
-                                                conn.query('SELECT a.folio, b1.descripcion AS mes_inicio, a.año_inicio, b2.descripcion AS mes_final, a.año_final, t.descripcion AS tipo_pago, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.comprobante AS evidencia FROM pago_plazos a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b1 ON a.mes_inicio = b1.mes JOIN mes b2 ON a.mes_final = b2.mes JOIN tipo_pago t ON a.id_tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
-                                                    if (err) {
-                                                        console.log(err);
-                                                    }
+                                            conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                                if (err) {
+                                                    console.log(err);
+                                                }
+                                                if (rows.length > 0) {
+                                                    const datos = rows.map(row => ({
+                                                        ...row,
+                                                        fecha: formatDate(row.fecha), // Formatea la fecha
+                                                    }));
+                                                    conn.query('SELECT a.folio, b1.descripcion AS mes_inicio, a.año_inicio, b2.descripcion AS mes_final, a.año_final, t.descripcion AS tipo_pago, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.comprobante AS evidencia FROM pago_plazos a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b1 ON a.mes_inicio = b1.mes JOIN mes b2 ON a.mes_final = b2.mes JOIN tipo_pago t ON a.id_tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                                        if (err) {
+                                                            console.log(err);
+                                                        }
 
-                                                    if (rows.length > 0) {
-                                                        const datosPlazo = rows.map(row => ({
-                                                            ...row,
-                                                            fecha: formatDate(row.fecha), // Formatea la fecha
-                                                        }));
-                                                        return res.render('usuarios/administrador/condomino/manPago', {
-                                                            datosPlazo: datosPlazo,
-                                                            datos: datos,
-                                                            usuario: usuario,
-                                                            usuarioPro: usuarioPro,
-                                                            tipoPago: tipoPago,
-                                                            cuota: cuota,
-                                                            error: error,
-                                                            errorP: errorP,
-                                                            mensajeAlta: mensajeAlta,
-                                                            mensajeAltaP: mensajeAltaP,
-                                                            data: data,
-                                                            propia: 1,
-                                                            name: req.session.name,
-                                                            id: req.session.idUser,
-                                                            tipoUsuario: tipo
-                                                        });
-                                                    } else {
-                                                        console.log('No se encontraron pagos a plazos');
-                                                        return res.render('usuarios/administrador/condomino/manPago', {
-                                                            datos: datos,
-                                                            errorDatosP: 1,
-                                                            name: req.session.name,
-                                                            id: req.session.idUser,
-                                                            tipoUsuario: tipo,
-                                                            propia: 1,
-                                                            data: data,
-                                                            usuario: usuario,
-                                                            usuarioPro: usuarioPro,
-                                                            tipoPago: tipoPago,
-                                                            cuota: cuota,
-                                                            error: error,
-                                                            errorP: errorP,
-                                                            mensajeAlta: mensajeAlta,
-                                                            mensajeAltaP: mensajeAltaP,
-                                                        });
-                                                    }
-                                                });//
-                                            } else {
-                                                console.log('No se encontraron pagos');
-                                                return res.render('usuarios/administrador/condomino/manPago', {
-                                                    errorDatos: 1,
-                                                    errorDatosP: 1,
-                                                    name: req.session.name,
-                                                    id: req.session.idUser,
-                                                    tipoUsuario: tipo,
-                                                    propia: 1,
-                                                    data: data,
-                                                    usuario: usuario,
-                                                    usuarioPro: usuarioPro,
-                                                    tipoPago: tipoPago,
-                                                    cuota: cuota,
-                                                    error: error,
-                                                    errorP: errorP,
-                                                    mensajeAlta: mensajeAlta,
-                                                    mensajeAltaP: mensajeAltaP,
-                                                });
-                                            }
-                                        });//
-                                    }
-                                });
-                            }
+                                                        if (rows.length > 0) {
+                                                            const datosPlazo = rows.map(row => ({
+                                                                ...row,
+                                                                fecha: formatDate(row.fecha), // Formatea la fecha
+                                                            }));
+                                                            return res.render('usuarios/administrador/condomino/manPago', {
+                                                                datosPlazo: datosPlazo,
+                                                                datos: datos,
+                                                                usuario: usuario,
+                                                                usuarioPro: usuarioPro,
+                                                                tipoPago: tipoPago,
+                                                                tipoPagoFiltro: tipoPagoFiltro,
+                                                                cuota: cuota,
+                                                                error: error,
+                                                                errorP: errorP,
+                                                                mensajeAlta: mensajeAlta,
+                                                                mensajeAltaP: mensajeAltaP,
+                                                                data: data,
+                                                                propia: 1,
+                                                                name: req.session.name,
+                                                                id: req.session.idUser,
+                                                                tipoUsuario: tipo
+                                                            });
+                                                        } else {
+                                                            console.log('No se encontraron pagos a plazos');
+                                                            return res.render('usuarios/administrador/condomino/manPago', {
+                                                                datos: datos,
+                                                                errorDatosP: 1,
+                                                                name: req.session.name,
+                                                                id: req.session.idUser,
+                                                                tipoUsuario: tipo,
+                                                                propia: 1,
+                                                                data: data,
+                                                                usuario: usuario,
+                                                                usuarioPro: usuarioPro,
+                                                                tipoPago: tipoPago,
+                                                                tipoPagoFiltro: tipoPagoFiltro,
+                                                                cuota: cuota,
+                                                                error: error,
+                                                                errorP: errorP,
+                                                                mensajeAlta: mensajeAlta,
+                                                                mensajeAltaP: mensajeAltaP,
+                                                            });
+                                                        }
+                                                    });//
+                                                } else {
+                                                    console.log('No se encontraron pagos');
+                                                    return res.render('usuarios/administrador/condomino/manPago', {
+                                                        errorDatos: 1,
+                                                        errorDatosP: 1,
+                                                        name: req.session.name,
+                                                        id: req.session.idUser,
+                                                        tipoUsuario: tipo,
+                                                        propia: 1,
+                                                        data: data,
+                                                        usuario: usuario,
+                                                        usuarioPro: usuarioPro,
+                                                        tipoPago: tipoPago,
+                                                        tipoPagoFiltro: tipoPagoFiltro,
+                                                        cuota: cuota,
+                                                        error: error,
+                                                        errorP: errorP,
+                                                        mensajeAlta: mensajeAlta,
+                                                        mensajeAltaP: mensajeAltaP,
+                                                    });
+                                                }
+                                            });//
+                                        }
+                                    });
+                                }
+                            });
                         });
                     } else {
                         console.log('Error en la búsqueda del usuario');
@@ -425,9 +435,9 @@ function altaPago(req, res) {
                                                             renPago(req, res);
                                                             return;
                                                         }
-                                                    
+
                                                         const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
-                                                    
+
                                                         // Consulta para obtener el último pago registrado
                                                         conn.query(`SELECT folio, año, mes FROM pago WHERE id_propiedad = ? AND tipo_pago = ? ORDER BY año DESC, mes DESC LIMIT 1`, [idPro, data.tipoPago], (err, resultado) => {
                                                             if (err) {
@@ -436,7 +446,7 @@ function altaPago(req, res) {
                                                                 renPago(req, res);
                                                                 return;
                                                             }
-                                                    
+
                                                             const ultimoPago = resultado[0] || null;
 
                                                             // Si no hay último pago, verificar por la fecha anexo
@@ -452,11 +462,11 @@ function altaPago(req, res) {
                                                                 renPago(req, res);
                                                                 return;
                                                             }
-                                                            
+
                                                             // Lógica de comparación
                                                             if (ultimoPago) {
                                                                 // Verificar si la fecha proporcionada es mayor al último pago
-                                                                if (year > ultimoPago.año ||  (year == ultimoPago.año && mes > (ultimoPago.mes +1 ))){
+                                                                if (year > ultimoPago.año || (year == ultimoPago.año && mes > (ultimoPago.mes + 1))) {
                                                                     req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                                                     req.session.mensajeAltaPagoPlazo = "";
                                                                     req.session.dataCampos = data;
@@ -483,7 +493,7 @@ function altaPago(req, res) {
                                                                     return;
                                                                 }
                                                             }
-                                                    
+
                                                             // Si pasó las verificaciones, proceder con la inserción del pago
                                                             conn.query(consulta, parametros, (err, rows) => {
                                                                 if (err) {
@@ -510,7 +520,7 @@ function altaPago(req, res) {
                                                                 }
                                                             });
                                                         });
-                                                    });                                                    
+                                                    });
                                                 } else {
                                                     req.session.errorMPago = 'Ya existe un pago registrado';
                                                     req.session.mensajeAltaPagoPlazo = "";
@@ -665,9 +675,9 @@ function altaPagoPlazo(req, res) {
                                     renPago(req, res);
                                     return;
                                 }
-                            
+
                                 const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
-                            
+
                                 // Consulta para obtener el último pago registrado
                                 conn.query(`SELECT folio, año, mes FROM pago WHERE id_propiedad = ? AND tipo_pago = ? ORDER BY año DESC, mes DESC LIMIT 1`, [idPro, data.tipoPago], (err, resultado) => {
                                     if (err) {
@@ -676,7 +686,7 @@ function altaPagoPlazo(req, res) {
                                         renPago(req, res);
                                         return;
                                     }
-                            
+
                                     const ultimoPago = resultado[0] || null;
 
                                     // Si no hay último pago, verificar por la fecha anexo
@@ -692,11 +702,11 @@ function altaPagoPlazo(req, res) {
                                         renPago(req, res);
                                         return;
                                     }
-                                    
+
                                     // Lógica de comparación
                                     if (ultimoPago) {
                                         // Verificar si la fecha proporcionada es mayor al último pago
-                                        if (añoInicio > ultimoPago.año ||  (añoInicio == ultimoPago.año && mesInicio > (ultimoPago.mes +1 ))){
+                                        if (añoInicio > ultimoPago.año || (añoInicio == ultimoPago.año && mesInicio > (ultimoPago.mes + 1))) {
                                             req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                             req.session.mensajeAltaPago = "";
                                             req.session.dataCampos = data;
@@ -723,139 +733,139 @@ function altaPagoPlazo(req, res) {
                                             return;
                                         }
                                     }
-                                        // Obtener la cuota de tipo propiedad
-                                        conn.query('SELECT pago FROM tipo_propiedad WHERE id_tipo_propiedad = (SELECT id_tipo_propiedad FROM propiedad WHERE id_propiedad = ?)', [idPro], (err, rows) => {
-                                            if (err) {
-                                                console.log(err);
-                                                return res.status(500).send("Error en la consulta del tipo propiedad");
-                                            }
+                                    // Obtener la cuota de tipo propiedad
+                                    conn.query('SELECT pago FROM tipo_propiedad WHERE id_tipo_propiedad = (SELECT id_tipo_propiedad FROM propiedad WHERE id_propiedad = ?)', [idPro], (err, rows) => {
+                                        if (err) {
+                                            console.log(err);
+                                            return res.status(500).send("Error en la consulta del tipo propiedad");
+                                        }
 
-                                            if (rows.length > 0) {
-                                                const cuota = rows[0].pago;
+                                        if (rows.length > 0) {
+                                            const cuota = rows[0].pago;
 
-                                                conn.query('SELECT precio FROM tipo_pago WHERE id_tipo_pago = ?', [data.tipoPagoPlazo], (err, rows) => {
-                                                    if (err) {
-                                                        console.log(err);
-                                                        return res.status(500).send("Error en la consulta del tipo de pago");
+                                            conn.query('SELECT precio FROM tipo_pago WHERE id_tipo_pago = ?', [data.tipoPagoPlazo], (err, rows) => {
+                                                if (err) {
+                                                    console.log(err);
+                                                    return res.status(500).send("Error en la consulta del tipo de pago");
+                                                }
+
+                                                if (rows.length > 0) {
+                                                    const precio = rows[0].precio;
+
+                                                    let importe;
+                                                    if (data.tipoPagoPlazo == 1 || data.tipoPagoPlazo == 2) {
+                                                        importe = cuota;
+                                                    } else {
+                                                        importe = precio;
                                                     }
 
-                                                    if (rows.length > 0) {
-                                                        const precio = rows[0].precio;
+                                                    // Registrar pagos individuales en la tabla "pagos" para cada mes en el rango
+                                                    let pagos = [];
+                                                    let recargoOperacion;
+                                                    const fechaActual = new Date();
+                                                    const fechaFormateada = fechaActual.toISOString().split('T')[0];
 
-                                                        let importe;
-                                                        if (data.tipoPagoPlazo == 1 || data.tipoPagoPlazo == 2) {
-                                                            importe = cuota;
-                                                        } else {
-                                                            importe = precio;
+                                                    // Calcular el número total de meses
+                                                    const totalMeses = (añoFin - añoInicio) * 12 + (mesFin - mesInicio + 1);
+
+                                                    if (data.recargoPlazo) {
+                                                        data.recargoPlazo = data.recargoPlazo.replace(/,/g, ''); // Remueve todas las comas del precio
+                                                    }
+
+                                                    // Dividir el recargo entre el número total de meses
+                                                    recargoOperacion = data.recargoPlazo / totalMeses;
+
+                                                    // Asegurarte de que recargoOperacion sea un número
+                                                    if (isNaN(recargoOperacion)) {
+                                                        recargoOperacion = 0; // O algún valor por defecto apropiado
+                                                    }
+
+                                                    // Ingresar el pago en la tabla "pagoPlazos"
+                                                    const queryPagoPlazo = tipo == 3 ?
+                                                        'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
+                                                        'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                                                    let pagoPlazo;
+
+                                                    const importePlazo = importe * totalMeses;
+                                                    if (data.recargoPlazo) {
+                                                        data.recargoPlazo = data.recargoPlazo.replace(/,/g, ''); // Remueve todas las comas del precio
+                                                    }
+                                                    if (data.recargoPlazo === null) {
+                                                        data.recargoPlazo = 0;
+                                                    }
+                                                    if (tipo == 3) {
+                                                        pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, importePlazo, data.recargoPlazo, imagenRuta];
+                                                    } else {
+                                                        pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
+                                                    }
+
+                                                    conn.query(queryPagoPlazo, pagoPlazo, (err) => {
+                                                        if (err) {
+                                                            console.log(err);
+                                                            req.session.errorMPagoP = 'Error al insertar el pago en pagoPlazos';
+                                                            req.session.mensajeAltaPago = "";
+                                                            renPago(req, res);
                                                         }
 
-                                                        // Registrar pagos individuales en la tabla "pagos" para cada mes en el rango
-                                                        let pagos = [];
-                                                        let recargoOperacion;
-                                                        const fechaActual = new Date();
-                                                        const fechaFormateada = fechaActual.toISOString().split('T')[0];
-
-                                                        // Calcular el número total de meses
-                                                        const totalMeses = (añoFin - añoInicio) * 12 + (mesFin - mesInicio + 1);
-
-                                                        if (data.recargoPlazo) {
-                                                            data.recargoPlazo = data.recargoPlazo.replace(/,/g, ''); // Remueve todas las comas del precio
-                                                        }
-
-                                                        // Dividir el recargo entre el número total de meses
-                                                        recargoOperacion = data.recargoPlazo / totalMeses;
-
-                                                        // Asegurarte de que recargoOperacion sea un número
-                                                        if (isNaN(recargoOperacion)) {
-                                                            recargoOperacion = 0; // O algún valor por defecto apropiado
-                                                        }
-
-                                                        // Ingresar el pago en la tabla "pagoPlazos"
-                                                        const queryPagoPlazo = tipo == 3 ?
-                                                            'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
-                                                            'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                                        let pagoPlazo;
-
-                                                        const importePlazo = importe * totalMeses;
-                                                        if (data.recargoPlazo) {
-                                                            data.recargoPlazo = data.recargoPlazo.replace(/,/g, ''); // Remueve todas las comas del precio
-                                                        }
-                                                        if (data.recargoPlazo === null) {
-                                                            data.recargoPlazo = 0;
-                                                        }
-                                                        if (tipo == 3) {
-                                                            pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, importePlazo, data.recargoPlazo, imagenRuta];
-                                                        } else {
-                                                            pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, idAdm, importePlazo, data.recargoPlazo, imagenRuta];
-                                                        }
-
-                                                        conn.query(queryPagoPlazo, pagoPlazo, (err) => {
+                                                        conn.query('SELECT MAX(folio) as folio FROM pago_plazos', (err, rows) => {
                                                             if (err) {
                                                                 console.log(err);
-                                                                req.session.errorMPagoP = 'Error al insertar el pago en pagoPlazos';
+                                                                req.session.errorMPagoP = 'Error al insertar los pagos';
                                                                 req.session.mensajeAltaPago = "";
                                                                 renPago(req, res);
                                                             }
+                                                            const id_plazo = rows[0].folio;
 
-                                                            conn.query('SELECT MAX(folio) as folio FROM pago_plazos', (err, rows) => {
+                                                            for (let año = añoInicio; año <= añoFin; año++) {
+                                                                // Definir el mes de inicio y fin para cada año
+                                                                let mesIni = (año === añoInicio) ? mesInicio : 1;
+                                                                let mesFinLoop = (año === añoFin) ? mesFin : 12;
+
+                                                                // Iterar sobre los meses del año actual
+                                                                for (let mes = mesIni; mes <= mesFinLoop; mes++) {
+                                                                    if (tipo == 3) {
+                                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta, id_plazo]);
+                                                                    } else {
+                                                                        pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta, id_plazo]);
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            const queryPagos = tipo == 3 ?
+                                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia, id_plazo) VALUES ?' :
+                                                                'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia, id_plazo) VALUES ?';
+
+                                                            conn.query(queryPagos, [pagos], (err) => {
                                                                 if (err) {
                                                                     console.log(err);
                                                                     req.session.errorMPagoP = 'Error al insertar los pagos';
                                                                     req.session.mensajeAltaPago = "";
                                                                     renPago(req, res);
                                                                 }
-                                                                const id_plazo = rows[0].folio;
 
-                                                                for (let año = añoInicio; año <= añoFin; año++) {
-                                                                    // Definir el mes de inicio y fin para cada año
-                                                                    let mesIni = (año === añoInicio) ? mesInicio : 1;
-                                                                    let mesFinLoop = (año === añoFin) ? mesFin : 12;
-
-                                                                    // Iterar sobre los meses del año actual
-                                                                    for (let mes = mesIni; mes <= mesFinLoop; mes++) {
-                                                                        if (tipo == 3) {
-                                                                            pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta, id_plazo]);
-                                                                        } else {
-                                                                            pagos.push([idPro, importe, recargoOperacion, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta, id_plazo]);
+                                                                if (imagenRuta) {
+                                                                    const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
+                                                                    fs.rename(req.file.path, targetPath, function (err) {
+                                                                        if (err) {
+                                                                            console.log(err);
+                                                                            req.session.errorMPagoP = 'Error al mover la imagen';
+                                                                            req.session.mensajeAltaPago = "";
+                                                                            renPago(req, res);
                                                                         }
-                                                                    }
+                                                                        return renderPago(req, res);
+                                                                    });
+                                                                } else {
+                                                                    req.session.mensajeAltaPagoPlazo = "Se registró el pago a plazos correctamente";
+                                                                    req.session.mensajeAltaPago = "";
+                                                                    return renPagoAlta(req, res);
                                                                 }
-
-                                                                const queryPagos = tipo == 3 ?
-                                                                    'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia, id_plazo) VALUES ?' :
-                                                                    'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia, id_plazo) VALUES ?';
-
-                                                                conn.query(queryPagos, [pagos], (err) => {
-                                                                    if (err) {
-                                                                        console.log(err);
-                                                                        req.session.errorMPagoP = 'Error al insertar los pagos';
-                                                                        req.session.mensajeAltaPago = "";
-                                                                        renPago(req, res);
-                                                                    }
-
-                                                                    if (imagenRuta) {
-                                                                        const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
-                                                                        fs.rename(req.file.path, targetPath, function (err) {
-                                                                            if (err) {
-                                                                                console.log(err);
-                                                                                req.session.errorMPagoP = 'Error al mover la imagen';
-                                                                                req.session.mensajeAltaPago = "";
-                                                                                renPago(req, res);
-                                                                            }
-                                                                            return renderPago(req, res);
-                                                                        });
-                                                                    } else {
-                                                                        req.session.mensajeAltaPagoPlazo = "Se registró el pago a plazos correctamente";
-                                                                        req.session.mensajeAltaPago = "";
-                                                                        return renPagoAlta(req, res);
-                                                                    }
-                                                                });
                                                             });
                                                         });
-                                                    }
-                                                });
-                                            }
-                                        });
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
                                 });
 
                             });
