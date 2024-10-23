@@ -74,7 +74,7 @@
                         </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Asunto</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">
-                            Tipo,
+                            Tipo
                             Clasificación
                         </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">Status</th>
@@ -102,7 +102,14 @@
                             <img src="{{this.evidencia}}" alt="Evidencia"
                                 class="w-20 h-20 object-cover rounded-sm text-lg text-center shadow-l-lg mx-auto" onclick="mostrarImagen(this.src)">
                             {{else}}
-                            Sin evidencia
+                            {{!-- <i class="fas fa-image" style="position: relative;">
+                            <i class="fas fa-ban" style="position: absolute; top: -5px; left: -5px; font-size: 1.5em; color: rgb(59, 59, 59);"></i>
+                            </i> --}}
+                            <div class="w-20 h-20 object-cover rounded-sm text-lg text-center shadow-l-lg mx-auto" >
+                                <img src="/imagenes/sinImagen.png" alt="Sin evidencia">
+                            </div>
+                            
+
                             {{/if}}
                         </td>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
@@ -193,6 +200,11 @@
     </div>
     <script src="fecha.js"></script>
     <script>
+        // Abre una nueva ventana con la imagen en tamaño completo
+        function mostrarImagen(src) {
+            window.open(src, "_blank");
+        }
+
         document.getElementById("buscarAsunto").addEventListener("input", function (event) {
             let valor = event.target.value;
             // Permitir solo letras, números y espacios
