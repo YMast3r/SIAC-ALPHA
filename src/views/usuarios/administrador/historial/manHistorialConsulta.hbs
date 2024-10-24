@@ -1,0 +1,69 @@
+{{#if name}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+
+    
+    <a href="/renHistorial">
+        <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
+    </a>
+    <div class="w-11/12 mx-auto max-h-60 overflow-y-auto">
+        <table id="tipoTable" class="w-full table-auto border-collapse">
+            <thead class="bg-white sticky top-0">
+                <tr>
+                    {{#each tableHeaders}}
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
+                        {{#if this.sortable}}
+                        <a href="?orderBy={{this.field}}&orderDirection={{#isEqual this.orderDirection 'ASC'}}DESC{{else}}ASC{{/isEqual}}"
+                        class="flex items-center justify-center text-center">
+                            {{this.name}}
+                            {{#if this.sortable}}
+                            <span class="ml-2">
+                                {{#isEqual this.orderDirection 'ASC'}}
+                                ↑↓
+                                {{else}}
+                                ↓↑
+                                {{/isEqual}}
+                            </span>
+                            {{/if}}
+                        </a>
+                        {{else}}
+                        <span class="text-center">{{this.name}}</span>
+                        {{/if}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200 text-lg">
+                {{#each tableData}}
+                <tr class="hover:bg-gray-100">
+                    {{#each ../tableHeaders}}
+                    <td id="{{this.name}}" class="px-4 py-2 text-center whitespace-nowrap">
+                        {{lookup ../this this.field}}
+                    </td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+                <!-- Fila para "No se encontró ninguna descripción" -->
+                <tr id="noResult" style="display: none;">
+                    <td colspan="{{tableHeaders.length}}"
+                        class="px-4 py-4 bg-white text-center font-normal rounded text-lg">
+                        No se encontró ninguna descripción
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+
+{{else}}
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
+</div>
+{{/if}}
