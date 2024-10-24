@@ -1,6 +1,7 @@
 const { manEmpleados } = require("./manEmpleados");
 
 function renderHistorial(req, res) {
+    req.session.campoR = '';
     res.render('usuarios/administrador/historial/manHistorial', {
         name: req.session.name,
         tipoUsuario: 2,
@@ -19,6 +20,7 @@ function manIncidencias(req, res) {
     // Obtener los parámetros de ordenación desde la URL (si están definidos)
     const orderByParam = req.query.orderBy || 'folio';  // Por defecto se ordena por folio
     const orderDirectionParam = req.query.orderDirection === 'DESC' ? 'DESC' : 'ASC'; // Por defecto es ASC
+    const ruta = req.session.campoR;
 
     req.getConnection((err, conn) => {
         if (err) {
@@ -68,6 +70,7 @@ function manIncidencias(req, res) {
                     tableHeaders: tableHeaders,
                     tableData: incidencias,
                     orderDirection: orderDirectionParam,
+                    ruta,
                     name: req.session.name,
                     id: req.session.idUser,
                     tipoUsuario: req.session.tipoUsuario
@@ -89,6 +92,8 @@ function manSeguimiento(req, res) {
     // Obtener los parámetros de ordenación desde la URL (si están definidos)
     const orderByParam = req.query.orderBy || 'movimiento';  // Por defecto se ordena por movimiento
     const orderDirectionParam = req.query.orderDirection === 'DESC' ? 'DESC' : 'ASC'; // Por defecto es ASC
+
+    const ruta = req.session.campoR;
 
     req.getConnection((err, conn) => {
         if (err) {
@@ -133,6 +138,7 @@ function manSeguimiento(req, res) {
                     tableHeaders: tableHeaders,
                     tableData: seguimientos,
                     orderDirection: orderDirectionParam,
+                    ruta,
                     name: req.session.name,
                     id: req.session.idUser,
                     tipoUsuario: req.session.tipoUsuario
@@ -157,6 +163,7 @@ function manPagos(req, res) {
 
     const campoDatos = req.session.campoDatos;
     const campo = req.session.campo;
+    const ruta = req.session.campoR;
     req.session.campo = campo;
 
     console.log("campoDatos: ", campoDatos);
@@ -237,7 +244,7 @@ function manPagos(req, res) {
                     // Si no hay registros, enviar un mensaje de error
                     req.session.errorConsultaE = "No se encontraron pagos con los parámetros proporcionados.";
                     req.session.consultaData = campoDatos;
-                    return manHistorialEspesifico(req, res);
+                    return manHistorialEspecifico(req, res);
                 }
 
                 if (rows.length > 0) {
@@ -266,6 +273,7 @@ function manPagos(req, res) {
                         tableHeaders: tableHeaders,
                         tableData: pagos,
                         campo: campo,
+                        ruta,
                         name: req.session.name,
                         id: req.session.idUser,
                         tipoUsuario: req.session.tipoUsuario
@@ -274,28 +282,28 @@ function manPagos(req, res) {
                     // Si no hay registros, enviar un mensaje de error
                     req.session.errorConsultaE = "No se encontraron pagos con los parámetros proporcionados.";
                     req.session.consultaData = campoDatos;
-                    return manHistorialEspesifico(req, res);
+                    return manHistorialEspecifico(req, res);
                 }
             }
         );
     });
 }
 
-function renHistorialEspesifico(req, res) {
+function renHistorialEspecifico(req, res) {
     // Recuperamos el id guardado
     const campoId = req.session.campo;
     try {
-        res.redirect(`/manHistorialEspesifico-${campoId}`);
+        res.redirect(`/manHistorialEspecifico-${campoId}`);
         return;
     } catch {
-        manHistorialEspesifico(req, res);
+        manHistorialEspecifico(req, res);
     }
 }
 
 // Obtener la fecha y hora actual
 const fechaActual = new Date();
 
-function manHistorialEspesifico (req, res) {
+function manHistorialEspecifico (req, res) {
     const campoId = req.session.campo;
 
     let campo;
@@ -309,6 +317,7 @@ function manHistorialEspesifico (req, res) {
 
     const error = req.session.errorConsultaE;
     const data = req.session.consultaData;
+    const ruta = req.session.campoR;
 
     req.getConnection(async (err, conn) => {
         if (err) {
@@ -423,11 +432,12 @@ function manHistorialEspesifico (req, res) {
 
             //console.log("pagoDatos: ", pagoDatos);
             // Renderizar la vista
-            res.render('usuarios/administrador/historial/manHistorialEspesifico', {
+            res.render('usuarios/administrador/historial/manHistorialEspecifico', {
                 name: req.session.name,
                 tipoUsuario: 2,
-                campo: campo,
-                años: años,
+                campo,
+                ruta,
+                años,
                 meses: rowsMes,
                 formFields,
                 data: data,
@@ -462,11 +472,45 @@ function consultaEspesifica(req, res) {
     }
 }
 
+function renHistorialCampos(req, res) {
+    // Tomamos el campo de la ruta
+    const renCampo = req.params.renCampo;
+
+    // Limpiamos valores
+    req.session.campo = '';
+    req.session.errorConsultaE = '';
+    req.session.consultaData = '';
+    
+    if (renCampo == 'pagosG'){
+        req.session.campoR = 'pagos';
+        res.redirect('/manPagosConsulta');
+    } else if (renCampo == 'pagosE'){
+        req.session.campoR = 'pagos';
+        res.redirect('/manHistorialEspecifico-pagos');
+    } else if (renCampo == 'IncidenciasG'){
+        req.session.campoR = 'incidencias';
+        res.redirect('/manIncidenciasConsulta');
+    } else if (renCampo == 'IncidenciasE'){
+        req.session.campoR = 'incidencias';
+        res.redirect('/manHistorialEspecifico-incidencias');
+    } else if (renCampo == 'seguimientosG'){
+        req.session.campoR = 'seguimientos';
+        res.redirect('/manSeguimientoConsulta');
+    } else if (renCampo == 'seguimientosE'){
+        req.session.campoR = 'seguimientos';
+        res.redirect('/manHistorialEspecifico-seguimientos');
+    }else{
+        console.log("No se encontro niguna ruta")
+        renderHistorial(req, res);
+    }
+}
+
 module.exports = {
     renderHistorial,
     manPagos,
     manIncidencias,
-    manHistorialEspesifico,
+    manHistorialEspecifico,
+    renHistorialCampos,
     consultaEspesifica,
     manSeguimiento
 };

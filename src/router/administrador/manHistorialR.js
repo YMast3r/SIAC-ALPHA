@@ -6,7 +6,8 @@ router.get('/renderHistorial', manHistorial.renderHistorial);
 router.get('/manPagosConsulta', manHistorial.manPagos);
 router.get('/manIncidenciasConsulta', manHistorial.manIncidencias);
 router.get('/manSeguimientoConsulta', manHistorial.manSeguimiento);
-router.get('/manHistorialEspesifico-:campo', manHistorial.manHistorialEspesifico)
+router.get('/manHistorialEspecifico-:campo', manHistorial.manHistorialEspecifico)
+router.get('/renHistorialCampos-:renCampo', manHistorial.renHistorialCampos)
 router.post('/consultaEspesifica', manHistorial.consultaEspesifica);
 
 module.exports = router;

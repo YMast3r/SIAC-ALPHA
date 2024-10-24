@@ -7,18 +7,16 @@
 
 <body>
 
-    
+
     <a href="/renderHistorial">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
     </a>
-    {{#isEqual campo "pagos"}}
-    <a href="#">
-        <h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center pt-4 pb-8">General</h2>
+    <a href="renHistorialCampos-{{ruta}}G">
+        <p>General de {{ruta}}</p>
     </a>
-    <a href="#">
-        <h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center pt-4 pb-8">Espesifico</h2>
+    <a href="renHistorialCampos-{{ruta}}E">
+        <p>Específico de {{ruta}}</p>
     </a>
-    {{/isEqual}}
     <div class="w-11/12 mx-auto max-h-60 overflow-y-auto">
         <table id="tipoTable" class="w-full table-auto border-collapse">
             <thead class="bg-white sticky top-0">
@@ -27,7 +25,7 @@
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
                         {{#if this.sortable}}
                         <a href="?orderBy={{this.field}}&orderDirection={{#isEqual this.orderDirection 'ASC'}}DESC{{else}}ASC{{/isEqual}}"
-                        class="flex items-center justify-center text-center">
+                            class="flex items-center justify-center text-center">
                             {{this.name}}
                             {{#if this.sortable}}
                             <span class="ml-2">

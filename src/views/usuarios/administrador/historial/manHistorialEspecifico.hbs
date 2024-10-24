@@ -9,12 +9,14 @@
     <a href="/renderHistorial">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
     </a>
-    <p class="font-semibold text-3xl flex justify-center">Espesifico</p>
+    <a href="renHistorialCampos-{{ruta}}G"><p>General de {{ruta}} mostrar toda la tabla</p></a>
+    <a href="renHistorialCampos-{{ruta}}E"><p>Específico de {{ruta}}</p></a>
+    <p class="font-semibold text-3xl flex justify-center">Página para consulta especifica de {{campo}}</p>
     {{#isEqual campo "pagos"}}
     <!-- Formulario para pago -->
     <div class="flex justify-center">
         <div class="w-4/12">
-            <h2 class="font-semibold text-2xl pt-3 text-center">Formulario para historial de pagos espesifico</h2>
+            <h2 class="font-semibold text-2xl pt-3 text-center">Formulario para historial de pagos especifíco</h2>
             <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
                 <form action="/consultaEspesifica" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="hidden" name="campo" value="{{campo}}" />
@@ -34,8 +36,7 @@
                         <!-- Renderizar cualquier otro campo de texto -->
                         <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
                         <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
-                            placeholder="{{this.label}}" class="border border-gray-200 w-full text-lg p-2"
-                            required="{{this.required}}">
+                            placeholder="{{this.label}}" class="border border-gray-200 w-full text-lg p-2">
                         {{/isEqual}}
                     </div>
                     {{/each}}
