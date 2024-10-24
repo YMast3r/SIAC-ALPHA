@@ -1,6 +1,6 @@
 const { manEmpleados } = require("./manEmpleados");
 
-function renHistorial(req, res) {
+function renderHistorial(req, res) {
     res.render('usuarios/administrador/historial/manHistorial', {
         name: req.session.name,
         tipoUsuario: 2,
@@ -292,12 +292,6 @@ function renHistorialEspesifico(req, res) {
     }
 }
 
-function renderHistorialEspesifico(req, res) {
-    req.session.errorConsultaE = "";
-    req.session.dataCampos = "";
-    renHistorialEspesifico(req, res)
-}
-
 // Obtener la fecha y hora actual
 const fechaActual = new Date();
 
@@ -339,17 +333,6 @@ function manHistorialEspesifico (req, res) {
                 return;
             }
 
-            // Creación del objeto pagoDatos con todas las consultas
-            const pagoDatos = {
-                meses: rowsMes,
-                propiedades: rowsPropieda,
-                tiposPropiedad: rowsTipoPro,
-                tiposPago: rowsTipoPago,
-                referencias: rowsReferencia,
-                administradores: rowsAdm,
-                condominos: rowsCon
-            };
-
             // Generación de los años
             const fechaActual = new Date();
             const año = fechaActual.getFullYear();
@@ -357,6 +340,86 @@ function manHistorialEspesifico (req, res) {
             for (let i = año - 5; i <= año + 5; i++) {
                 años.push({ año: i, correcto: (i === año ? 1 : 0) });
             }
+
+            // Creación del objeto pagoDatos con todas las consultas
+            const formFields = [
+                {
+                    label: 'Fecha registro', 
+                    type: 'date', 
+                    name: 'fecha',
+                    colSpan: 'md:col-span-1',
+                },
+                {
+                    label: 'Propiedad', 
+                    type: 'select', 
+                    name: 'propiedad', 
+                    colSpan: 'md:col-span-2',
+                    options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
+                },
+                {
+                    label: 'Mes Inicio', 
+                    type: 'select', 
+                    name: 'mesI', 
+                    colSpan: 'md:col-span-1',
+                    options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
+                },
+                {
+                    label: 'Año Final', 
+                    type: 'select', 
+                    name: 'añoI', 
+                    colSpan: 'md:col-span-1',
+                    options: años.map(m => ({ value: m.año, text: m.año }))
+                },
+                {
+                    label: 'Mes Final', 
+                    type: 'select', 
+                    name: 'mesF', 
+                    colSpan: 'md:col-span-1',
+                    options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
+                },
+                {
+                    label: 'Mes Final', 
+                    type: 'select', 
+                    name: 'añoF', 
+                    colSpan: 'md:col-span-1',
+                    options: años.map(m => ({ value: m.año, text: m.año }))
+                },
+                {
+                    label: 'Tipo de Propiedad', 
+                    type: 'select', 
+                    name: 'tipoPropiedad', 
+                    colSpan: 'md:col-span-1',
+                    options: rowsTipoPro.map(tp => ({ value: tp.id_tipo_propiedad, text: tp.tipo_propiedad_descripcion }))
+                },
+                {
+                    label: 'Tipo de Pago', 
+                    type: 'select', 
+                    name: 'tipoPago', 
+                    colSpan: 'md:col-span-1',
+                    options: rowsTipoPago.map(tp => ({ value: tp.id_tipo_pago, text: tp.tipo_pago_descripcion }))
+                },
+                {
+                    label: 'Administrador', 
+                    type: 'select', 
+                    name: 'administrador', 
+                    colSpan: 'md:col-span-1',
+                    options: rowsAdm.map(a => ({ value: a.id_administrador, text: a.administrador }))
+                },
+                {
+                    label: 'Condómino', 
+                    type: 'select', 
+                    name: 'condomino', 
+                    colSpan: 'md:col-span-1',
+                    options: rowsCon.map(c => ({ value: c.id_condomino, text: c.condomino }))
+                },
+                {
+                    label: 'Referencia', 
+                    type: 'select', 
+                    name: 'referencia', 
+                    colSpan: 'md:col-span-1',
+                    options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
+                },
+            ];            
 
             //console.log("pagoDatos: ", pagoDatos);
             // Renderizar la vista
@@ -366,7 +429,7 @@ function manHistorialEspesifico (req, res) {
                 campo: campo,
                 años: años,
                 meses: rowsMes,
-                pagoDatos: pagoDatos,
+                formFields,
                 data: data,
                 error: error
             });
@@ -400,7 +463,7 @@ function consultaEspesifica(req, res) {
 }
 
 module.exports = {
-    renHistorial,
+    renderHistorial,
     manPagos,
     manIncidencias,
     manHistorialEspesifico,

@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <a href="/renHistorial">
+    <a href="/renderHistorial">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
     </a>
     <p class="font-semibold text-3xl flex justify-center">Espesifico</p>
@@ -18,143 +18,35 @@
             <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
                 <form action="/consultaEspesifica" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="hidden" name="campo" value="{{campo}}" />
-                    <!-- Nombre y Apellidos -->
-                    <div class="md:col-span-1">
-                        <label for="fecha"><i class="fas fa-calendar"></i> Fecha de registro</label>
-                        <input type="date" id="fecha" name="fecha" placeholder="YYYY-MM" value="{{data.fecha}}"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-2">
-                    </div>
-                    <div class="md:col-span-1">
-
-                    </div>
-                    <div class="md:col-span-1">
-                        <label for="Mes"><i class="fas fa-calendar"></i> Mes inicio</label>
-                        <select id="mesI" name="mesI"
+                    {{#each formFields}}
+                    <div class="p-2 {{this.colSpan}}">
+                        {{#isEqual this.type "select"}}
+                        <!-- Renderizar select con las opciones correctas -->
+                        <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                        <select name="{{this.name}}" id="{{this.name}}"
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            {{#each meses}}
-                            {{#isEqual this.mes this.correcto}}
-                            <option value="{{this.mes}} " selected>{{this.descripcion}}</option>
-                            {{else}}
-                            <option value="{{this.mes}}">{{this.descripcion}}</option>
-                            {{/isEqual}}
+                            <option value=""></option>
+                            {{#each this.options}}
+                            <option value="{{this.value}}">{{this.text}}</option>
                             {{/each}}
                         </select>
+                        {{else}}
+                        <!-- Renderizar cualquier otro campo de texto -->
+                        <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                        <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
+                            placeholder="{{this.label}}" class="border border-gray-200 w-full text-lg p-2"
+                            required="{{this.required}}">
+                        {{/isEqual}}
                     </div>
-                    <div class="md:col-span-1">
-                        <label for="Año"><i class="fas fa-calendar"></i> Año inicio</label>
-                        <select id="añoI" name="añoI"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            {{#each años}}
-                            {{#isEqual this.correcto 1}}
-                            <option value="{{this.año}}" selected>{{this.año}}</option>
-                            {{else}}
-                            <option value="{{this.año}}">{{this.año}}</option>
-                            {{/isEqual}}
-                            {{/each}}
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-1">
-                        <label for="Mes"><i class="fas fa-calendar"></i> Mes final</label>
-                        <select id="mesF" name="mesF"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            {{#each meses}}
-                            {{#isEqual this.mes this.correcto}}
-                            <option value="{{this.mes}} " selected>{{this.descripcion}}</option>
-                            {{else}}
-                            <option value="{{this.mes}}">{{this.descripcion}}</option>
-                            {{/isEqual}}
-                            {{/each}}
-                        </select>
-                    </div>
-                    <div class="md:col-span-1">
-                        <label for="AñoF"><i class="fas fa-calendar"></i> Año final</label>
-                        <select id="añoF" name="añoF"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            {{#each años}}
-                            {{#isEqual this.correcto 1}}
-                            <option value="{{this.año}}" selected>{{this.año}}</option>
-                            {{else}}
-                            <option value="{{this.año}}">{{this.año}}</option>
-                            {{/isEqual}}
-                            {{/each}}
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-1">
-                        <label for="Tipo_pago"><i class="fas fa-calendar"></i> Tipo pago</label>
-                        <select id="tipoPago" name="tipoPago"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            <option value="" selected></option>
-                            {{#each pagoDatos.tiposPago}}
-                            <option value="{{this.id_tipo_pago}}">{{this.tipo_pago_descripcion}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-1">
-                        <label for="Tipo_propiedad"><i class="fas fa-calendar"></i> Tipo propiedad</label>
-                        <select id="tipoPropiedad" name="tipoPropiedad"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            <option value="" selected></option>
-                            {{#each pagoDatos.tiposPropiedad}}
-                            <option value="{{this.id_tipo_propiedad}}">{{this.tipo_propiedad_descripcion}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-1">
-                        <label for="adm"><i class="fas fa-calendar"></i> Administrador</label>
-                        <select id="adm" name="adm"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            <option value="" selected></option>
-                            {{#each pagoDatos.administradores}}
-                            <option value="{{this.id_administrador}}">{{this.administrador}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-1">
-                        <label for="condomino"><i class="fas fa-calendar"></i> Condomino</label>
-                        <select id="condomino" name="condomino"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            <option value="" selected></option>
-                            {{#each pagoDatos.condominos}}
-                            <option value="{{this.id_condomino}}">{{this.condomino}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-
+                    {{/each}}
                     <div class="md:col-span-2">
-                        <label for="referencia"><i class="fas fa-calendar"></i> Referencia</label>
-                        <select id="referencia" name="referencia"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            <option value="" selected></option>
-                            {{#each pagoDatos.referencias}}
-                            <option value="{{this.referencia}}">{{this.referencia}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label for="propiedad"><i class="fas fa-calendar"></i> Propiedades</label>
-                        <select id="propiedad" name="propiedad"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                            <option value="" selected></option>
-                            {{#each pagoDatos.propiedades}}
-                            <option value="{{this.id_propiedad}}">{{this.propiedad_descripcion}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    <div class="md:col-span-2">
-
                         <button type="submit"
-                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">Realizar
-                            consulta</button>
+                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
+                            Realizar consulta
+                        </button>
                     </div>
-                    </tbody>
-                    </table>
                 </form>
+
             </div>
         </div>
     </div>
@@ -166,7 +58,7 @@
     <p>propiedades</p>
     {{/isEqual}}
 
-    
+
     <!-- Popup de error -->
     <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg p-6 shadow-lg">
