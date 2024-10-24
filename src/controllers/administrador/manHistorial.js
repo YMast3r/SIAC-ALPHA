@@ -1,79 +1,11 @@
+const { manEmpleados } = require("./manEmpleados");
+
 function renHistorial(req, res) {
     res.render('usuarios/administrador/historial/manHistorial', {
         name: req.session.name,
         tipoUsuario: 2,
     });
 }
-
-function manPagos(req, res) {
-    // Obtener los parámetros de ordenación desde la URL (si están definidos)
-    const orderByParam = req.query.orderBy || 'folio'; // Cambia el valor por defecto si es necesario
-    const orderDirectionParam = req.query.orderDirection === 'DESC' ? 'DESC' : 'ASC'; // Por defecto es ASC
-
-    req.getConnection((err, conn) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-
-        // Modifica la consulta para incluir la ordenación dinámica
-        conn.query(`SELECT a.folio, p.descripcion AS propiedad, FORMAT(a.importe, 2) AS importe, 
-                           t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, 
-                           a.año, u.nombre AS administrador, 
-                           COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
-                           COALESCE(a.referencia, 'Indefinido') AS referencia 
-                    FROM pago a 
-                    JOIN propiedad p ON a.id_propiedad = p.id_propiedad 
-                    JOIN mes b ON a.mes = b.mes 
-                    JOIN usuario u ON a.id_administrador = u.id_usuario 
-                    JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago 
-                    ORDER BY ${orderByParam} ${orderDirectionParam}`,
-            (err, rows) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-
-                if (rows.length > 0) {
-                    const pagos = rows.map(row => ({
-                        ...row,
-                        fecha: formatDate(row.fecha),
-                    }));
-
-                    const tableHeaders = [
-                        { name: 'Folio', field: 'folio', sortable: true },
-                        { name: 'Propiedad', field: 'propiedad', sortable: false },
-                        { name: 'Importe', field: 'importe', sortable: true },
-                        { name: 'Tipo de Pago', field: 'tipo_pago', sortable: false },
-                        { name: 'Fecha', field: 'fecha', sortable: true },
-                        { name: 'Mes', field: 'mes', sortable: true }, // Ahora es sortable
-                        { name: 'Año', field: 'año', sortable: true }, // Ahora es sortable
-                        { name: 'Administrador', field: 'administrador', sortable: false },
-                        { name: 'Número de Recibo', field: 'numero_recibo', sortable: false },
-                        { name: 'Referencia', field: 'referencia', sortable: false }
-                    ].map(header => ({
-                        ...header,
-                        orderDirection: header.sortable && orderByParam === header.field ? orderDirectionParam : null
-                    }));
-                    return res.render('usuarios/administrador/historial/manHistorialConsulta', {
-                        tableHeaders: tableHeaders,
-                        tableData: pagos,
-                        name: req.session.name,
-                        id: req.session.idUser,
-                        tipoUsuario: req.session.tipoUsuario
-                    });
-                } /* else {
-                    return res.render('usuarios/administrador/pagos', {
-                        errorDatos: 1,
-                        name: req.session.name,
-                        id: req.session.idUser,
-                        tipoUsuario: req.session.tipoUsuario
-                    });
-                } */
-            });
-    });
-}
-
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -218,6 +150,137 @@ function manSeguimiento(req, res) {
     });
 }
 
+function manPagos(req, res) {
+    // Obtener los parámetros de ordenación desde la URL (si están definidos)
+    const orderByParam = req.query.orderBy || 'folio'; // Cambia el valor por defecto si es necesario
+    const orderDirectionParam = req.query.orderDirection === 'DESC' ? 'DESC' : 'ASC'; // Por defecto es ASC
+
+    const campoDatos = req.session.campoDatos;
+    const campo = req.session.campo;
+    req.session.campo = campo;
+
+    console.log("campoDatos: ", campoDatos);
+
+    // Validar si campoDatos tiene datos válidos
+    let whereClause = ' WHERE 1=1 '; // Siempre true, para agregar condiciones dinámicamente
+    let params = []; // Parámetros para la consulta preparada
+    if (campoDatos) {
+        // Construcción dinámica del WHERE basado en campoDatos
+
+        // Filtrar por cada campo de campoDatos si está presente
+        if (campoDatos.fecha) {
+            whereClause += ' AND a.fecha = ?';
+            params.push(campoDatos.fecha);
+        }
+        if (campoDatos.mesI && campoDatos.mesF) {
+            whereClause += ' AND a.mes BETWEEN ? AND ?';
+            params.push(campoDatos.mesI, campoDatos.mesF);
+        }
+        if (campoDatos.añoI && campoDatos.añoF) {
+            whereClause += ' AND a.año BETWEEN ? AND ?';
+            params.push(campoDatos.añoI, campoDatos.añoF);
+        }
+        if (campoDatos.tipoPago) {
+            whereClause += ' AND a.tipo_pago = ?';
+            params.push(campoDatos.tipoPago);
+        }
+        if (campoDatos.tipoPropiedad) {
+            whereClause += ' AND p.id_propiedad = ?';
+            params.push(campoDatos.tipoPropiedad);
+        }
+        if (campoDatos.adm) {
+            whereClause += ' AND a.id_administrador = ?';
+            params.push(campoDatos.adm);
+        }
+        if (campoDatos.condomino) {
+            // Relacionar condómino a través de la tabla usuario (c.id_usuario)
+            whereClause += ' AND a.id_condomino = ?';
+            params.push(campoDatos.condomino);
+        }
+        if (campoDatos.referencia) {
+            whereClause += ' AND a.referencia = ?';
+            params.push(campoDatos.referencia);
+        }
+        if (campoDatos.propiedad) {
+            whereClause += ' AND p.id_propiedad = ?';
+            params.push(campoDatos.propiedad);
+        }
+    } else {
+        console.log("No hay campos");
+    }
+
+    req.getConnection((err, conn) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+
+        // Modificar la consulta para incluir la ordenación dinámica y el WHERE dinámico
+        conn.query(
+            `SELECT a.folio, p.descripcion AS propiedad, FORMAT(a.importe, 2) AS importe, 
+                    t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, 
+                    a.año, u.nombre AS administrador, 
+                    c.nombre AS condomino, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
+                    COALESCE(a.referencia, 'Indefinido') AS referencia 
+             FROM pago a 
+             JOIN propiedad p ON a.id_propiedad = p.id_propiedad 
+             JOIN mes b ON a.mes = b.mes 
+             JOIN usuario u ON a.id_administrador = u.id_usuario 
+             JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago
+             JOIN usuario c ON p.id_usuario = c.id_usuario
+             ${whereClause} 
+             ORDER BY ${orderByParam} ${orderDirectionParam}`,
+            params,
+            (err, rows) => {
+                if (err) {
+                    console.log(err);
+                    // Si no hay registros, enviar un mensaje de error
+                    req.session.errorConsultaE = "No se encontraron pagos con los parámetros proporcionados.";
+                    req.session.consultaData = campoDatos;
+                    return manHistorialEspesifico(req, res);
+                }
+
+                if (rows.length > 0) {
+                    const pagos = rows.map(row => ({
+                        ...row,
+                        fecha: formatDate(row.fecha),
+                    }));
+
+                    const tableHeaders = [
+                        { name: 'Folio', field: 'folio', sortable: true },
+                        { name: 'Propiedad', field: 'propiedad', sortable: false },
+                        { name: 'Importe', field: 'importe', sortable: true },
+                        { name: 'Tipo de Pago', field: 'tipo_pago', sortable: false },
+                        { name: 'Fecha', field: 'fecha', sortable: true },
+                        { name: 'Mes', field: 'mes', sortable: true },
+                        { name: 'Año', field: 'año', sortable: true },
+                        { name: 'Administrador', field: 'administrador', sortable: false },
+                        { name: 'Número de Recibo', field: 'numero_recibo', sortable: false },
+                        { name: 'Referencia', field: 'referencia', sortable: false }
+                    ].map(header => ({
+                        ...header,
+                        orderDirection: header.sortable && orderByParam === header.field ? orderDirectionParam : null
+                    }));
+
+                    return res.render('usuarios/administrador/historial/manHistorialConsulta', {
+                        tableHeaders: tableHeaders,
+                        tableData: pagos,
+                        campo: campo,
+                        name: req.session.name,
+                        id: req.session.idUser,
+                        tipoUsuario: req.session.tipoUsuario
+                    });
+                } else {
+                    // Si no hay registros, enviar un mensaje de error
+                    req.session.errorConsultaE = "No se encontraron pagos con los parámetros proporcionados.";
+                    req.session.consultaData = campoDatos;
+                    return manHistorialEspesifico(req, res);
+                }
+            }
+        );
+    });
+}
+
 function renHistorialEspesifico(req, res) {
     // Recuperamos el id guardado
     const campoId = req.session.campo;
@@ -230,7 +293,7 @@ function renHistorialEspesifico(req, res) {
 }
 
 function renderHistorialEspesifico(req, res) {
-    req.session.errorHistorialE = "";
+    req.session.errorConsultaE = "";
     req.session.dataCampos = "";
     renHistorialEspesifico(req, res)
 }
@@ -238,8 +301,7 @@ function renderHistorialEspesifico(req, res) {
 // Obtener la fecha y hora actual
 const fechaActual = new Date();
 
-function manHistorialEspesifico(req, res) {
-    // recuperamos el id de la propiedad
+function manHistorialEspesifico (req, res) {
     const campoId = req.session.campo;
 
     let campo;
@@ -249,51 +311,92 @@ function manHistorialEspesifico(req, res) {
     } else {
         campo = campoId;
     }
-    // guardamos el id de la propiedad
-    req.session.campo = campoId;
+    req.session.campo = campo;
 
-    const error = req.session.errorHistorialE;
-    const data = req.session.dataCampos;
+    const error = req.session.errorConsultaE;
+    const data = req.session.consultaData;
 
-    req.getConnection((err, conn) => {
+    req.getConnection(async (err, conn) => {
         if (err) {
             console.log(err);
             return;
         }
-        conn.query('SELECT mes, descripcion, DATE_FORMAT(CURDATE(), \'%m\') AS correcto FROM mes', (err, rowsMes) => {
-            if (err) {
-                console.log(err);
+
+        try {
+            // Consultas en paralelo para optimización
+            const [rowsMes, rowsPropieda, rowsTipoPro, rowsTipoPago, rowsReferencia, rowsAdm, rowsCon] = await Promise.all([
+                queryAsync(conn, 'SELECT mes, descripcion, DATE_FORMAT(CURDATE(), \'%m\') AS correcto FROM mes'),
+                queryAsync(conn, 'SELECT DISTINCT p.descripcion AS propiedad_descripcion, pa.id_propiedad FROM pago pa JOIN propiedad p ON pa.id_propiedad = p.id_propiedad'),
+                queryAsync(conn, 'SELECT DISTINCT tpro.descripcion AS tipo_propiedad_descripcion, tpro.id_tipo_propiedad FROM pago pa JOIN propiedad p ON pa.id_propiedad = p.id_propiedad JOIN tipo_propiedad tpro ON p.id_tipo_propiedad = tpro.id_tipo_propiedad'),
+                queryAsync(conn, 'SELECT DISTINCT p.descripcion AS tipo_pago_descripcion, p.id_tipo_pago FROM pago pa JOIN tipo_pago p ON pa.tipo_pago = p.id_tipo_pago'),
+                queryAsync(conn, 'SELECT DISTINCT pa.referencia FROM pago pa'),
+                queryAsync(conn, 'SELECT DISTINCT a.nombre AS administrador, a.id_usuario AS id_administrador FROM pago pa JOIN usuario a ON pa.id_administrador = a.id_usuario'),
+                queryAsync(conn, 'SELECT DISTINCT c.nombre AS condomino, c.id_usuario AS id_condomino FROM pago pa JOIN propiedad p ON pa.id_propiedad = p.id_propiedad JOIN usuario c ON p.id_usuario = c.id_usuario')
+            ]);
+
+            if (!rowsPropieda.length || !rowsTipoPro.length || !rowsTipoPago.length || !rowsReferencia.length || !rowsAdm.length || !rowsCon.length) {
+                console.log("No data found in one or more queries");
                 return;
             }
-            conn.query('SELECT pa.folio, pa.id_propiedad, p.descripcion AS propiedad_descripcion, pa.importe, pa.recargo, pa.año, pa.mes, pa.fecha, tp.id_tipo_pago, tp.descripcion AS tipo_pago_descripcion, tpro.id_tipo_propiedad, tpro.descripcion AS tipo_propiedad_descripcion, pa.numero_recibo, pa.referencia, c.id_usuario AS id_condomino, c.nombre AS condomino, a.id_usuario AS id_administrador, a.nombre AS administrador, c.status AS usuario_status FROM pago pa JOIN propiedad p ON pa.id_propiedad = p.id_propiedad JOIN usuario c ON p.id_usuario = c.id_usuario JOIN usuario a ON pa.id_administrador = a.id_usuario JOIN tipo_pago tp ON pa.tipo_pago = tp.id_tipo_pago JOIN tipo_propiedad tpro ON p.id_tipo_propiedad = tpro.id_tipo_propiedad ORDER BY pa.folio DESC', (err, rowsPago) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                if (rowsPago.length > 0) {
-                    const año = fechaActual.getFullYear();
-                    let años = [];
-                    for (let i = año - 5; i <= año + 5; i++) {
-                        correcto = (i === año) ? 1 : 0;
-                        años.push({ año: i, correcto: correcto });
-                    }
-                    res.render('usuarios/administrador/historial/manHistorialEspesifico', {
-                        name: req.session.name,
-                        tipoUsuario: 2,
-                        campo: campo,
-                        años: años,
-                        meses: rowsMes,
-                        data: data,
-                        error: error
-                    });
-                };
-            });//tipo pago
-        });// meses
+
+            // Creación del objeto pagoDatos con todas las consultas
+            const pagoDatos = {
+                meses: rowsMes,
+                propiedades: rowsPropieda,
+                tiposPropiedad: rowsTipoPro,
+                tiposPago: rowsTipoPago,
+                referencias: rowsReferencia,
+                administradores: rowsAdm,
+                condominos: rowsCon
+            };
+
+            // Generación de los años
+            const fechaActual = new Date();
+            const año = fechaActual.getFullYear();
+            const años = [];
+            for (let i = año - 5; i <= año + 5; i++) {
+                años.push({ año: i, correcto: (i === año ? 1 : 0) });
+            }
+
+            //console.log("pagoDatos: ", pagoDatos);
+            // Renderizar la vista
+            res.render('usuarios/administrador/historial/manHistorialEspesifico', {
+                name: req.session.name,
+                tipoUsuario: 2,
+                campo: campo,
+                años: años,
+                meses: rowsMes,
+                pagoDatos: pagoDatos,
+                data: data,
+                error: error
+            });
+
+        } catch (err) {
+            console.log(err);
+        }
+    });
+}
+
+// Función auxiliar para ejecutar las consultas con promesas
+function queryAsync(conn, query) {
+    return new Promise((resolve, reject) => {
+        conn.query(query, (err, rows) => {
+            if (err) return reject(err);
+            resolve(rows);
+        });
     });
 }
 
 function consultaEspesifica(req, res) {
+    const data = req.body;
+    req.session.campo = req.session.campo;
+    req.session.campoDatos = data;
 
+    if (data.campo == 'pagos') {
+        manPagos(req, res);
+    } else {
+        console.log("adios: ");
+    }
 }
 
 module.exports = {

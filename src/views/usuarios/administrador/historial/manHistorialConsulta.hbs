@@ -11,6 +11,14 @@
     <a href="/renHistorial">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
     </a>
+    {{#isEqual campo "pagos"}}
+    <a href="#">
+        <h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center pt-4 pb-8">General</h2>
+    </a>
+    <a href="#">
+        <h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center pt-4 pb-8">Espesifico</h2>
+    </a>
+    {{/isEqual}}
     <div class="w-11/12 mx-auto max-h-60 overflow-y-auto">
         <table id="tipoTable" class="w-full table-auto border-collapse">
             <thead class="bg-white sticky top-0">
