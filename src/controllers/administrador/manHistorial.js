@@ -16,11 +16,59 @@ function formatDate(dateString) {
     return `${day}/${month}/${year}`;
 }
 
+
 function manIncidencias(req, res) {
     // Obtener los parámetros de ordenación desde la URL (si están definidos)
     const orderByParam = req.query.orderBy || 'folio';  // Por defecto se ordena por folio
     const orderDirectionParam = req.query.orderDirection === 'DESC' ? 'DESC' : 'ASC'; // Por defecto es ASC
+
+    const campoDatos = req.session.campoDatos;
     const ruta = req.session.campoR;
+
+    //console.log("campoDatos: ", campoDatos);
+
+    // Validar si campoDatos tiene datos válidos
+
+    // Construcción dinámica del WHERE basado en campoDatos
+    let whereClause = ' WHERE 1=1 '; // Siempre true, para agregar condiciones dinámicamente
+    let params = []; // Parámetros para la consulta preparada
+
+    if (campoDatos) {
+        if (campoDatos.folio) {
+            whereClause += ' AND a.folio = ?';
+            params.push(campoDatos.folio);
+        }
+        if (campoDatos.asunto) {
+            whereClause += ' AND a.asunto LIKE ?';
+            params.push(`%${campoDatos.asunto}%`); // Búsqueda parcial por asunto
+        }
+        if (campoDatos.fecha) {
+            whereClause += ' AND a.fecha = ?';
+            params.push(campoDatos.fecha);
+        }
+        if (campoDatos.tipo_incidencia) {
+            whereClause += ' AND a.id_tipo_incidencia = ?';
+            params.push(campoDatos.tipo_incidencia);
+        }
+        if (campoDatos.clasificacion_incidencia) {
+            whereClause += ' AND a.clasificacion_incidencia = ?';
+            params.push(campoDatos.clasificacion_incidencia);
+        }
+        if (campoDatos.status_incidencia) {
+            whereClause += ' AND a.id_status_incidencia = ?';
+            params.push(campoDatos.status_incidencia);
+        }
+        if (campoDatos.administrador) {
+            whereClause += ' AND a.id_administardor = ?';
+            params.push(campoDatos.administrador);
+        }
+        if (campoDatos.usuario) {
+            whereClause += ' AND a.id_usuario = ?';
+            params.push(campoDatos.usuario);
+        }
+    } else {
+        console.log("No hay campos");
+    }
 
     req.getConnection((err, conn) => {
         if (err) {
@@ -28,27 +76,32 @@ function manIncidencias(req, res) {
             return;
         }
 
-        // Consulta SQL con orden dinámico
+        // Consulta SQL con cláusula WHERE dinámica y orden dinámico
         const query = `
             SELECT a.folio, a.asunto, a.fecha, b.descripcion AS tipo, e.descripcion AS clasificacion, 
-                   c.descripcion AS STATUS, a.descripcion, d.nombre AS usuario
+                   c.descripcion AS status, a.descripcion, d.nombre AS usuario, u.nombre AS administrador
             FROM incidencia a
             JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia
             JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia
             JOIN usuario d ON a.id_usuario = d.id_usuario
+            JOIN usuario u ON a.id_administardor = u.id_usuario
             JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia
+            ${whereClause}
             ORDER BY ${conn.escapeId(orderByParam)} ${orderDirectionParam}`;
 
-        conn.query(query, (err, rows) => {
+        conn.query(query, params, (err, rows) => {
             if (err) {
                 console.log(err);
-                return;
+                // Si no se encuentran incidencias, mostrar un mensaje de error
+                req.session.errorConsultaE = "No se encontraron incidencias con los parámetros proporcionados.";
+                req.session.consultaData = campoDatos;
+                return manHistorialEspecifico(req, res);
             }
 
             if (rows.length > 0) {
                 const incidencias = rows.map(row => ({
                     ...row,
-                    fecha: formatDate(row.fecha), // Asegúrate de tener una función formatDate
+                    fecha: formatDate(row.fecha), // Formatear la fecha si es necesario
                 }));
 
                 const tableHeaders = [
@@ -57,12 +110,11 @@ function manIncidencias(req, res) {
                     { name: 'Fecha', field: 'fecha', sortable: true },
                     { name: 'Tipo', field: 'tipo', sortable: false },
                     { name: 'Clasificación', field: 'clasificacion', sortable: false },
-                    { name: 'Estatus', field: 'STATUS', sortable: true },
+                    { name: 'Estatus', field: 'status', sortable: true },
                     { name: 'Descripción', field: 'descripcion', sortable: false },
                     { name: 'Usuario', field: 'usuario', sortable: true }
                 ].map(header => ({
                     ...header,
-                    // Solo asigna orderDirection si es sortable y coincide con el campo actual
                     orderDirection: header.sortable && orderByParam === header.field ? orderDirectionParam : null
                 }));
 
@@ -75,15 +127,12 @@ function manIncidencias(req, res) {
                     id: req.session.idUser,
                     tipoUsuario: req.session.tipoUsuario
                 });
-            } /* else {
-                // Si no hay incidencias, mostramos un mensaje de error
-                return res.render('usuarios/administrador/incidencias', {
-                    errorDatos: 1,
-                    name: req.session.name,
-                    id: req.session.idUser,
-                    tipoUsuario: req.session.tipoUsuario
-                });
-            } */
+            } else {
+                // Si no se encuentran incidencias, mostrar un mensaje de error
+                req.session.errorConsultaE = "No se encontraron incidencias con los parámetros proporcionados.";
+                req.session.consultaData = campoDatos;
+                return manHistorialEspecifico(req, res);
+            }
         });
     });
 }
@@ -93,7 +142,41 @@ function manSeguimiento(req, res) {
     const orderByParam = req.query.orderBy || 'movimiento';  // Por defecto se ordena por movimiento
     const orderDirectionParam = req.query.orderDirection === 'DESC' ? 'DESC' : 'ASC'; // Por defecto es ASC
 
+    const campoDatos = req.session.campoDatos;
     const ruta = req.session.campoR;
+
+    console.log("campoDatos: ", campoDatos);
+
+    // Validar si campoDatos tiene datos válidos
+
+    // Construcción dinámica del WHERE basado en campoDatos
+    let whereClause = ' WHERE 1=1 '; // Siempre true, para agregar condiciones dinámicamente
+    let params = []; // Parámetros para la consulta preparada
+    if (campoDatos) {
+
+        if (campoDatos.folio) {
+            whereClause += ' AND s.folio = ?';
+            params.push(campoDatos.folio);
+        }
+        if (campoDatos.movimiento) {
+            whereClause += ' AND s.movimiento LIKE ?';
+            params.push(`%${campoDatos.movimiento}%`); // Búsqueda parcial por movimiento
+        }
+        if (campoDatos.fecha) {
+            whereClause += ' AND s.fecha = ?';
+            params.push(campoDatos.fecha);
+        }
+        if (campoDatos.comentario) {
+            whereClause += ' AND s.comentario LIKE ?';
+            params.push(`%${campoDatos.comentario}%`); // Búsqueda parcial por comentario
+        }
+        if (campoDatos.status_seguimiento) {
+            whereClause += ' AND s.id_status_seguimiento = ?';
+            params.push(campoDatos.status_seguimiento);
+        }
+    } else {
+        console.log("No hay campos");
+    }
 
     req.getConnection((err, conn) => {
         if (err) {
@@ -101,24 +184,28 @@ function manSeguimiento(req, res) {
             return;
         }
 
-        // Consulta SQL con orden dinámico
+        // Consulta SQL con cláusula WHERE dinámica y orden dinámico
         const query = `
             SELECT s.folio, s.movimiento, u.nombre AS empleado, s.comentario, ss.descripcion AS status, s.fecha 
             FROM seguimiento s
             JOIN usuario u ON s.id_empleado = u.id_usuario
             JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento
+            ${whereClause}
             ORDER BY ${conn.escapeId(orderByParam)} ${orderDirectionParam}`;
 
-        conn.query(query, (err, rows) => {
+        conn.query(query, params, (err, rows) => {
             if (err) {
                 console.log(err);
-                return;
+                // Si no se encuentran seguimientos, mostrar un mensaje de error
+                req.session.errorConsultaE = "No se encontraron seguimientos con los parámetros proporcionados.";
+                req.session.consultaData = campoDatos;
+                return manHistorialEspecifico(req, res);
             }
 
             if (rows.length > 0) {
                 const seguimientos = rows.map(row => ({
                     ...row,
-                    fecha: formatDate(row.fecha), // Asegúrate de tener una función formatDate
+                    fecha: formatDate(row.fecha), // Formatear la fecha si es necesario
                 }));
 
                 const tableHeaders = [
@@ -130,7 +217,6 @@ function manSeguimiento(req, res) {
                     { name: 'Fecha', field: 'fecha', sortable: true }
                 ].map(header => ({
                     ...header,
-                    // Solo asigna orderDirection si es sortable y coincide con el campo actual
                     orderDirection: header.sortable && orderByParam === header.field ? orderDirectionParam : null
                 }));
 
@@ -143,18 +229,16 @@ function manSeguimiento(req, res) {
                     id: req.session.idUser,
                     tipoUsuario: req.session.tipoUsuario
                 });
-            } /* else {
-                // Si no hay seguimientos, mostramos un mensaje de error
-                return res.render('usuarios/administrador/seguimientos', {
-                    errorDatos: 1,
-                    name: req.session.name,
-                    id: req.session.idUser,
-                    tipoUsuario: req.session.tipoUsuario
-                });
-            } */
+            } else {
+                // Si no se encuentran seguimientos, mostrar un mensaje de error
+                req.session.errorConsultaE = "No se encontraron seguimientos con los parámetros proporcionados.";
+                req.session.consultaData = campoDatos;
+                return manHistorialEspecifico(req, res);
+            }
         });
     });
 }
+
 
 function manPagos(req, res) {
     // Obtener los parámetros de ordenación desde la URL (si están definidos)
@@ -166,7 +250,7 @@ function manPagos(req, res) {
     const ruta = req.session.campoR;
     req.session.campo = campo;
 
-    console.log("campoDatos: ", campoDatos);
+    //console.log("campoDatos: ", campoDatos);
 
     // Validar si campoDatos tiene datos válidos
     let whereClause = ' WHERE 1=1 '; // Siempre true, para agregar condiciones dinámicamente
@@ -303,7 +387,7 @@ function renHistorialEspecifico(req, res) {
 // Obtener la fecha y hora actual
 const fechaActual = new Date();
 
-function manHistorialEspecifico (req, res) {
+function manHistorialEspecifico(req, res) {
     const campoId = req.session.campo;
 
     let campo;
@@ -314,6 +398,7 @@ function manHistorialEspecifico (req, res) {
         campo = campoId;
     }
     req.session.campo = campo;
+    console.log("campo: ", campo);
 
     const error = req.session.errorConsultaE;
     const data = req.session.consultaData;
@@ -326,21 +411,8 @@ function manHistorialEspecifico (req, res) {
         }
 
         try {
-            // Consultas en paralelo para optimización
-            const [rowsMes, rowsPropieda, rowsTipoPro, rowsTipoPago, rowsReferencia, rowsAdm, rowsCon] = await Promise.all([
-                queryAsync(conn, 'SELECT mes, descripcion, DATE_FORMAT(CURDATE(), \'%m\') AS correcto FROM mes'),
-                queryAsync(conn, 'SELECT DISTINCT p.descripcion AS propiedad_descripcion, pa.id_propiedad FROM pago pa JOIN propiedad p ON pa.id_propiedad = p.id_propiedad'),
-                queryAsync(conn, 'SELECT DISTINCT tpro.descripcion AS tipo_propiedad_descripcion, tpro.id_tipo_propiedad FROM pago pa JOIN propiedad p ON pa.id_propiedad = p.id_propiedad JOIN tipo_propiedad tpro ON p.id_tipo_propiedad = tpro.id_tipo_propiedad'),
-                queryAsync(conn, 'SELECT DISTINCT p.descripcion AS tipo_pago_descripcion, p.id_tipo_pago FROM pago pa JOIN tipo_pago p ON pa.tipo_pago = p.id_tipo_pago'),
-                queryAsync(conn, 'SELECT DISTINCT pa.referencia FROM pago pa'),
-                queryAsync(conn, 'SELECT DISTINCT a.nombre AS administrador, a.id_usuario AS id_administrador FROM pago pa JOIN usuario a ON pa.id_administrador = a.id_usuario'),
-                queryAsync(conn, 'SELECT DISTINCT c.nombre AS condomino, c.id_usuario AS id_condomino FROM pago pa JOIN propiedad p ON pa.id_propiedad = p.id_propiedad JOIN usuario c ON p.id_usuario = c.id_usuario')
-            ]);
+            let formFields = [];
 
-            if (!rowsPropieda.length || !rowsTipoPro.length || !rowsTipoPago.length || !rowsReferencia.length || !rowsAdm.length || !rowsCon.length) {
-                console.log("No data found in one or more queries");
-                return;
-            }
 
             // Generación de los años
             const fechaActual = new Date();
@@ -350,85 +422,241 @@ function manHistorialEspecifico (req, res) {
                 años.push({ año: i, correcto: (i === año ? 1 : 0) });
             }
 
-            // Creación del objeto pagoDatos con todas las consultas
-            const formFields = [
-                {
-                    label: 'Fecha registro', 
-                    type: 'date', 
-                    name: 'fecha',
-                    colSpan: 'md:col-span-1',
-                },
-                {
-                    label: 'Propiedad', 
-                    type: 'select', 
-                    name: 'propiedad', 
-                    colSpan: 'md:col-span-2',
-                    options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
-                },
-                {
-                    label: 'Mes Inicio', 
-                    type: 'select', 
-                    name: 'mesI', 
-                    colSpan: 'md:col-span-1',
-                    options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
-                },
-                {
-                    label: 'Año Final', 
-                    type: 'select', 
-                    name: 'añoI', 
-                    colSpan: 'md:col-span-1',
-                    options: años.map(m => ({ value: m.año, text: m.año }))
-                },
-                {
-                    label: 'Mes Final', 
-                    type: 'select', 
-                    name: 'mesF', 
-                    colSpan: 'md:col-span-1',
-                    options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
-                },
-                {
-                    label: 'Mes Final', 
-                    type: 'select', 
-                    name: 'añoF', 
-                    colSpan: 'md:col-span-1',
-                    options: años.map(m => ({ value: m.año, text: m.año }))
-                },
-                {
-                    label: 'Tipo de Propiedad', 
-                    type: 'select', 
-                    name: 'tipoPropiedad', 
-                    colSpan: 'md:col-span-1',
-                    options: rowsTipoPro.map(tp => ({ value: tp.id_tipo_propiedad, text: tp.tipo_propiedad_descripcion }))
-                },
-                {
-                    label: 'Tipo de Pago', 
-                    type: 'select', 
-                    name: 'tipoPago', 
-                    colSpan: 'md:col-span-1',
-                    options: rowsTipoPago.map(tp => ({ value: tp.id_tipo_pago, text: tp.tipo_pago_descripcion }))
-                },
-                {
-                    label: 'Administrador', 
-                    type: 'select', 
-                    name: 'administrador', 
-                    colSpan: 'md:col-span-1',
-                    options: rowsAdm.map(a => ({ value: a.id_administrador, text: a.administrador }))
-                },
-                {
-                    label: 'Condómino', 
-                    type: 'select', 
-                    name: 'condomino', 
-                    colSpan: 'md:col-span-1',
-                    options: rowsCon.map(c => ({ value: c.id_condomino, text: c.condomino }))
-                },
-                {
-                    label: 'Referencia', 
-                    type: 'select', 
-                    name: 'referencia', 
-                    colSpan: 'md:col-span-1',
-                    options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
-                },
-            ];            
+            /////////////////////////////////////////
+            /* consultas para pagos */
+            /////////////////////////////////////////
+            // Consultas en paralelo para optimización
+
+            const [rowsMes, rowsPropieda, rowsTipoPro, rowsTipoPago, rowsReferencia, rowsAdm, rowsCon] = await Promise.all([
+                queryAsync(conn, 'SELECT mes, descripcion, DATE_FORMAT(CURDATE(), \'%m\') AS correcto FROM mes'),
+                queryAsync(conn, 'SELECT descripcion AS propiedad_descripcion, id_propiedad FROM propiedad'),
+                queryAsync(conn, 'SELECT descripcion AS tipo_propiedad_descripcion, id_tipo_propiedad FROM tipo_propiedad'),
+                queryAsync(conn, 'SELECT descripcion AS tipo_pago_descripcion, id_tipo_pago FROM tipo_pago'),
+                queryAsync(conn, 'SELECT DISTINCT referencia FROM pago'),
+                queryAsync(conn, 'SELECT nombre AS administrador, id_usuario AS id_administrador FROM usuario WHERE tipo_usuario = 2'),
+                queryAsync(conn, 'SELECT nombre AS condomino, id_usuario AS id_condomino FROM usuario WHERE tipo_usuario = 3')
+            ]);
+
+            if (!rowsPropieda.length || !rowsTipoPro.length || !rowsTipoPago.length || !rowsReferencia.length || !rowsAdm.length || !rowsCon.length) {
+                console.log("No data found in one or more queries");
+                return;
+            }
+
+
+            /////////////////////////////////////////
+            /* consultas para seguimiento */
+            /////////////////////////////////////////
+            // Consultas en paralelo para optimización
+            const [rowsMovimiento, rowsPersona, rowsComentario, rowsStatusSeguimiento] = await Promise.all([
+                queryAsync(conn, 'SELECT DISTINCT movimiento FROM seguimiento'),
+                queryAsync(conn, "SELECT u.id_usuario, u.nombre, u.tipo_usuario, e.tipo_empleado, CONCAT( CASE WHEN u.tipo_usuario = 3 THEN 'Condómino' WHEN u.tipo_usuario = 4 THEN te.descripcion WHEN u.tipo_usuario = 2 THEN 'Administrador' END, ' - ', u.nombre ) AS nombre_y_tipo FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario LEFT JOIN tipo_empleado te ON e.tipo_empleado = te.id_tipo_empleado WHERE u.tipo_usuario IN(2, 3, 4)"),
+                queryAsync(conn, 'SELECT DISTINCT comentario FROM seguimiento'),
+                queryAsync(conn, 'SELECT descripcion AS status_seguimiento, id_status_seguimiento FROM status_seguimiento')
+            ]);
+
+            if (!rowsMovimiento.length || !rowsPersona.length || !rowsComentario.length || !rowsStatusSeguimiento.length) {
+                console.log("No data found in one or more queries");
+                return;
+            }
+
+            /////////////////////////////////////////
+            /* consultas para incidencias */
+            /////////////////////////////////////////
+            // Consultas en paralelo para optimización
+            const [rowsTipoIncidencia, rowsClasificacion, rowsStatusIncidencia, rowsAdmIncidencia, rowsUsuario, rowsFolioIncidencia, rowsAsunto] = await Promise.all([
+                queryAsync(conn, 'SELECT descripcion AS tipo_incidencia, id_tipo_incidencia FROM tipo_incidencia'),
+                queryAsync(conn, 'SELECT descripcion AS clasificacion_incidencia, id_clasificacion_incidencia FROM clasificacion_incidencia'),
+                queryAsync(conn, 'SELECT descripcion AS status_incidencia, id_status_incidencia FROM status_incidencia'),
+                queryAsync(conn, 'SELECT nombre AS administrador, id_usuario AS id_administrador FROM usuario u WHERE tipo_usuario = 2'),
+                queryAsync(conn, 'SELECT nombre AS usuario, id_usuario FROM usuario u WHERE tipo_usuario = 3'),
+                queryAsync(conn, 'SELECT folio AS folio_incidencia FROM incidencia'),
+                queryAsync(conn, 'SELECT DISTINCT asunto FROM incidencia')
+            ]);
+
+            if (!rowsTipoIncidencia.length || !rowsClasificacion.length || !rowsStatusIncidencia.length || !rowsAdmIncidencia.length || !rowsUsuario.length || !rowsFolioIncidencia.length || !rowsAsunto.length) {
+                console.log("No data found in one or more queries");
+                return;
+            }
+
+            if (campo == 'pagos') {
+
+                formFields = [
+                    {
+                        label: 'Fecha registro',
+                        type: 'date',
+                        name: 'fecha',
+                        colSpan: 'md:col-span-1',
+                    },
+                    {
+                        label: 'Propiedad',
+                        type: 'select',
+                        name: 'propiedad',
+                        colSpan: 'md:col-span-2',
+                        options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
+                    },
+                    {
+                        label: 'Mes Inicio',
+                        type: 'select',
+                        name: 'mesI',
+                        colSpan: 'md:col-span-1',
+                        options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
+                    },
+                    {
+                        label: 'Año Final',
+                        type: 'select',
+                        name: 'añoI',
+                        colSpan: 'md:col-span-1',
+                        options: años.map(m => ({ value: m.año, text: m.año }))
+                    },
+                    {
+                        label: 'Mes Final',
+                        type: 'select',
+                        name: 'mesF',
+                        colSpan: 'md:col-span-1',
+                        options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
+                    },
+                    {
+                        label: 'Mes Final',
+                        type: 'select',
+                        name: 'añoF',
+                        colSpan: 'md:col-span-1',
+                        options: años.map(m => ({ value: m.año, text: m.año }))
+                    },
+                    {
+                        label: 'Tipo de Propiedad',
+                        type: 'select',
+                        name: 'tipoPropiedad',
+                        colSpan: 'md:col-span-1',
+                        options: rowsTipoPro.map(tp => ({ value: tp.id_tipo_propiedad, text: tp.tipo_propiedad_descripcion }))
+                    },
+                    {
+                        label: 'Tipo de Pago',
+                        type: 'select',
+                        name: 'tipoPago',
+                        colSpan: 'md:col-span-1',
+                        options: rowsTipoPago.map(tp => ({ value: tp.id_tipo_pago, text: tp.tipo_pago_descripcion }))
+                    },
+                    {
+                        label: 'Administrador',
+                        type: 'select',
+                        name: 'administrador',
+                        colSpan: 'md:col-span-1',
+                        options: rowsAdm.map(a => ({ value: a.id_administrador, text: a.administrador }))
+                    },
+                    {
+                        label: 'Condómino',
+                        type: 'select',
+                        name: 'condomino',
+                        colSpan: 'md:col-span-1',
+                        options: rowsCon.map(c => ({ value: c.id_condomino, text: c.condomino }))
+                    },
+                    {
+                        label: 'Referencia',
+                        type: 'select',
+                        name: 'referencia',
+                        colSpan: 'md:col-span-1',
+                        options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
+                    },
+                ];
+            } else if (campo == 'incidencias') {
+                formFields = [
+                    {
+                        label: 'Folio',
+                        type: 'select',
+                        name: 'folio',
+                        colSpan: 'md:col-span-1',
+                        options: rowsFolioIncidencia.map(p => ({ value: p.folio_incidencia, text: p.folio_incidencia }))
+                    },
+                    {
+                        label: 'Asunto',
+                        type: 'select',
+                        name: 'asunto',
+                        colSpan: 'md:col-span-21',
+                        options: rowsAsunto.map(m => ({ value: m.asunto, text: m.asunto }))
+                    },
+                    {
+                        label: 'Fecha registro',
+                        type: 'date',
+                        name: 'fecha',
+                        colSpan: 'md:col-span-1',
+                    },
+                    {
+                        label: 'Tipo incidencia',
+                        type: 'select',
+                        name: 'tipo_incidencia',
+                        colSpan: 'md:col-span-1',
+                        options: rowsTipoIncidencia.map(m => ({ value: m.id_tipo_incidencia, text: m.tipo_incidencia }))
+                    },
+                    {
+                        label: 'Clasificacion incidencia',
+                        type: 'select',
+                        name: 'clasificacion_incidencia',
+                        colSpan: 'md:col-span-1',
+                        options: rowsClasificacion.map(m => ({ value: m.id_clasificacion_incidencia, text: m.clasificacion_incidencia }))
+                    },
+                    {
+                        label: 'Status incidencia',
+                        type: 'select',
+                        name: 'status_incidencia',
+                        colSpan: 'md:col-span-1',
+                        options: rowsStatusIncidencia.map(m => ({ value: m.id_status_incidencia, text: m.status_incidencia }))
+                    },
+                    {
+                        label: 'Administrador',
+                        type: 'select',
+                        name: 'administrador',
+                        colSpan: 'md:col-span-1',
+                        options: rowsAdmIncidencia.map(a => ({ value: a.id_administrador, text: a.administrador }))
+                    },
+                    {
+                        label: 'Usuario',
+                        type: 'select',
+                        name: 'usuario',
+                        colSpan: 'md:col-span-1',
+                        options: rowsUsuario.map(c => ({ value: c.id_usuario, text: c.usuario }))
+                    },
+                ]
+
+            } else if (campo == 'seguimientos') {
+                formFields = [
+                    {
+                        label: 'Folio',
+                        type: 'select',
+                        name: 'folio',
+                        colSpan: 'md:col-span-1',
+                        options: rowsFolioIncidencia.map(p => ({ value: p.folio_incidencia, text: p.folio_incidencia }))
+                    },
+                    {
+                        label: 'Movimiento',
+                        type: 'select',
+                        name: 'movimiento',
+                        colSpan: 'md:col-span-21',
+                        options: rowsMovimiento.map(m => ({ value: m.movimiento, text: m.movimiento }))
+                    },
+                    {
+                        label: 'Fecha registro',
+                        type: 'date',
+                        name: 'fecha',
+                        colSpan: 'md:col-span-1',
+                    },
+                    {
+                        label: 'Comentario',
+                        type: 'select',
+                        name: 'comentario',
+                        colSpan: 'md:col-span-1',
+                        options: rowsComentario.map(m => ({ value: m.comentario, text: m.comentario }))
+                    },
+                    {
+                        label: 'Status seguimiento',
+                        type: 'select',
+                        name: 'status_seguimiento',
+                        colSpan: 'md:col-span-1',
+                        options: rowsStatusSeguimiento.map(m => ({ value: m.id_status_seguimiento, text: m.status_seguimiento }))
+                    }
+                ]
+            } else {
+                console.log("NIguno de los campos")
+            }
 
             //console.log("pagoDatos: ", pagoDatos);
             // Renderizar la vista
@@ -437,8 +665,6 @@ function manHistorialEspecifico (req, res) {
                 tipoUsuario: 2,
                 campo,
                 ruta,
-                años,
-                meses: rowsMes,
                 formFields,
                 data: data,
                 error: error
@@ -467,39 +693,44 @@ function consultaEspesifica(req, res) {
 
     if (data.campo == 'pagos') {
         manPagos(req, res);
+    } else if (data.campo == 'incidencias') {
+        manIncidencias(req, res);
+    } else if (data.campo == 'seguimientos') {
+        manSeguimiento(req, res);
     } else {
         console.log("adios: ");
     }
 }
 
 function renHistorialCampos(req, res) {
+    // Limpiamos valores
+    req.session.campo = "";
+    req.session.errorConsultaE = "";
+    req.session.consultaData = "";
+    req.session.campoDatos = "";
+
     // Tomamos el campo de la ruta
     const renCampo = req.params.renCampo;
 
-    // Limpiamos valores
-    req.session.campo = '';
-    req.session.errorConsultaE = '';
-    req.session.consultaData = '';
-    
-    if (renCampo == 'pagosG'){
+    if (renCampo == 'pagosG') {
         req.session.campoR = 'pagos';
         res.redirect('/manPagosConsulta');
-    } else if (renCampo == 'pagosE'){
+    } else if (renCampo == 'pagosE') {
         req.session.campoR = 'pagos';
         res.redirect('/manHistorialEspecifico-pagos');
-    } else if (renCampo == 'IncidenciasG'){
+    } else if (renCampo == 'incidenciasG') {
         req.session.campoR = 'incidencias';
         res.redirect('/manIncidenciasConsulta');
-    } else if (renCampo == 'IncidenciasE'){
+    } else if (renCampo == 'incidenciasE') {
         req.session.campoR = 'incidencias';
         res.redirect('/manHistorialEspecifico-incidencias');
-    } else if (renCampo == 'seguimientosG'){
+    } else if (renCampo == 'seguimientosG') {
         req.session.campoR = 'seguimientos';
         res.redirect('/manSeguimientoConsulta');
-    } else if (renCampo == 'seguimientosE'){
+    } else if (renCampo == 'seguimientosE') {
         req.session.campoR = 'seguimientos';
         res.redirect('/manHistorialEspecifico-seguimientos');
-    }else{
+    } else {
         console.log("No se encontro niguna ruta")
         renderHistorial(req, res);
     }

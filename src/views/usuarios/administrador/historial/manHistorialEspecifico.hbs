@@ -12,7 +12,6 @@
     <a href="renHistorialCampos-{{ruta}}G"><p>General de {{ruta}} mostrar toda la tabla</p></a>
     <a href="renHistorialCampos-{{ruta}}E"><p>Específico de {{ruta}}</p></a>
     <p class="font-semibold text-3xl flex justify-center">Página para consulta especifica de {{campo}}</p>
-    {{#isEqual campo "pagos"}}
     <!-- Formulario para pago -->
     <div class="flex justify-center">
         <div class="w-4/12">
@@ -51,14 +50,6 @@
             </div>
         </div>
     </div>
-    {{/isEqual}}
-    {{#isEqual campo "incidencias"}}
-    <p>incidencias</p>
-    {{/isEqual}}
-    {{#isEqual campo "seguimientos"}}
-    <p>propiedades</p>
-    {{/isEqual}}
-
 
     <!-- Popup de error -->
     <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
