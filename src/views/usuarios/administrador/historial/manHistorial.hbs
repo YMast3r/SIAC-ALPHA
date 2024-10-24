@@ -6,25 +6,44 @@
 
 <div class="flex space-x-4 mx-auto justify-center">
 
-    <div class=" p-4 border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition shadow-lg w-1/6">
+    <div class=" p-4 border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition shadow-lg w-1/5 flex flex-col">
         <h2 class="text-xl font-semibold text-center pb-2">Incidencias</h2>
-        <p class="text-sm text-center">Página de incidencias <br> reportadas de parte de los condóminos.</p>
-        <a href="/renHistorialCampos-IncidenciasG">General</a>
-        <a href="/renHistorialCampos-IncidenciasE">Específico</a>
+        <p class="text-sm text-center flex-grow">Página de incidencias reportadas <br> de parte de los condóminos.</p>
+        {{!-- BOTONES DE INCIDENCIAS --}}
+        <div class="flex space-x-2 pt-6">
+            <a class="rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-2  text-center w-1/2" href="/renHistorialCampos-IncidenciasG">
+                General
+            </a>
+            <a class="rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-2  text-center w-1/2" href="/renHistorialCampos-IncidenciasE">
+                Específico
+            </a>
+        </div>
+
     </div>
 
-    <div class=" p-4 border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition shadow-lg w-1/6">
+    <div class=" p-4 border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition shadow-lg w-1/5 flex flex-col">
         <h2 class="text-xl font-semibold text-center pb-2">Pagos</h2>
-        <p class="text-sm text-center">Página de pagos <br> registrados por parte de los condóminos.</p>
-        <a href="/renHistorialCampos-pagosG">General</a>
-        <a href="/renHistorialCampos-pagosE">Específico</a>
+        <p class="text-sm text-center flex-grow">Página de pagos registrados <br> por parte de los condóminos.</p>
+        {{!-- BOTONES DE PAGOS --}}
+        <div class="flex space-x-2">
+            <a class="rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-2  text-center w-1/2" href="/renHistorialCampos-pagosG">
+            General</a>
+            <a class="rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-2  text-center w-1/2" href="/renHistorialCampos-pagosE">
+            Específico</a>
+        </div>
     </div>
 
-    <div class=" p-4 border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition shadow-lg w-1/6">
+    <div class=" p-4 border rounded-lg p-6 bg-gray-100 hover:bg-gray-200 transition shadow-lg w-1/5 flex flex-col">
         <h2 class="text-xl font-semibold text-center pb-2">Seguimiento</h2>
-        <p class="text-sm text-center">Página de seguimiento <br> registradas.</p>
-        <a href="/renHistorialCampos-seguimientosG">General</a>
-        <a href="/renHistorialCampos-seguimientosE">Específico</a>
+        <p class="text-sm text-center flex-grow">Página de seguimientos <br> registrados.</p>
+        {{!-- BOTONES DE SEGUIMINETO --}}
+        <div class="flex space-x-2">
+            <a class="rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-2  text-center w-1/2" href="/manSeguimientoConsulta">
+            General</a>
+            <a class="rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-2  text-center w-1/2" href="/renHistorialCampos-seguimientosE">
+            Específico</a>
+        </div>
+        
     </div>
 </div>
 
