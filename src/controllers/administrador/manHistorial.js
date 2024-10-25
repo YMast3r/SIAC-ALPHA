@@ -292,7 +292,7 @@ function manPagos(req, res) {
         }
         if (campoDatos.condomino) {
             // Relacionar condómino a través de la tabla usuario (c.id_usuario)
-            whereClause += ' AND a.id_condomino = ?';
+            whereClause += ' AND c.id_usuario = ?';
             params.push(campoDatos.condomino);
         }
         if (campoDatos.referencia) {
@@ -319,7 +319,7 @@ function manPagos(req, res) {
             `SELECT a.folio, p.descripcion AS propiedad, FORMAT(a.importe, 2) AS importe, 
                     t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, 
                     a.año, u.nombre AS administrador, 
-                    c.nombre AS condomino, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
+                    c.nombre AS condomino, c.id_usuario, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
                     COALESCE(a.referencia, 'Indefinido') AS referencia 
              FROM pago a 
              JOIN propiedad p ON a.id_propiedad = p.id_propiedad 
@@ -354,6 +354,7 @@ function manPagos(req, res) {
                         { name: 'Mes', field: 'mes', sortable: true },
                         { name: 'Año', field: 'año', sortable: true },
                         { name: 'Administrador', field: 'administrador', sortable: false },
+                        { name: 'Condómino', field: 'condomino', sortable: false },
                         { name: 'Número de Recibo', field: 'numero_recibo', sortable: false },
                         { name: 'Referencia', field: 'referencia', sortable: false }
                     ].map(header => ({
@@ -403,7 +404,6 @@ function manHistorialEspecifico(req, res) {
         campo = campoId;
     }
     req.session.campo = campo;
-    console.log("campo: ", campo);
 
     const error = req.session.errorConsultaE;
     const data = req.session.consultaData;
@@ -491,7 +491,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'date',
                         name: 'fecha',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-calendar' // Agrega la clase del icono aquí
+                        icon: 'fas fa-calendar',
                     },
                     {
                         label: 'Referencia',
@@ -582,6 +582,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'folio',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
                         options: rowsFolioIncidencia.map(p => ({ value: p.folio_incidencia, text: p.folio_incidencia }))
                     },
                     {
@@ -589,12 +590,14 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'asunto',
                         colSpan: 'md:col-span-21',
+                        icon: 'fas fa-file-signature',
                         options: rowsAsunto.map(m => ({ value: m.asunto, text: m.asunto }))
                     },
                     {
                         label: 'Fecha registro',
                         type: 'date',
                         name: 'fecha',
+                        icon: 'fas fa-calendar',
                         colSpan: 'md:col-span-1',
                     },
                     {
@@ -602,6 +605,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'tipo_incidencia',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
                         options: rowsTipoIncidencia.map(m => ({ value: m.id_tipo_incidencia, text: m.tipo_incidencia }))
                     },
                     {
@@ -609,6 +613,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'clasificacion_incidencia',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
                         options: rowsClasificacion.map(m => ({ value: m.id_clasificacion_incidencia, text: m.clasificacion_incidencia }))
                     },
                     {
@@ -616,6 +621,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'status_incidencia',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
                         options: rowsStatusIncidencia.map(m => ({ value: m.id_status_incidencia, text: m.status_incidencia }))
                     },
                     {
@@ -623,6 +629,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'administrador',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-user-tie',
                         options: rowsAdmIncidencia.map(a => ({ value: a.id_administrador, text: a.administrador }))
                     },
                     {
@@ -630,6 +637,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'usuario',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-user',
                         options: rowsUsuario.map(c => ({ value: c.id_usuario, text: c.usuario }))
                     },
                 ]
@@ -641,6 +649,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'folio',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
                         options: rowsFolioIncidencia.map(p => ({ value: p.folio_incidencia, text: p.folio_incidencia }))
                     },
                     {
@@ -648,6 +657,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'movimiento',
                         colSpan: 'md:col-span-21',
+                        icon: 'fas fa-file-signature',
                         options: rowsMovimiento.map(m => ({ value: m.movimiento, text: m.movimiento }))
                     },
                     {
@@ -655,12 +665,14 @@ function manHistorialEspecifico(req, res) {
                         type: 'date',
                         name: 'fecha',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar'
                     },
                     {
                         label: 'Comentario',
                         type: 'select',
                         name: 'comentario',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
                         options: rowsComentario.map(m => ({ value: m.comentario, text: m.comentario }))
                     },
                     {
@@ -668,6 +680,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'status_seguimiento',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
                         options: rowsStatusSeguimiento.map(m => ({ value: m.id_status_seguimiento, text: m.status_seguimiento }))
                     },
                     {
@@ -675,6 +688,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'persona_asignada',
                         colSpan: 'md:col-span-2',
+                        icon: 'fas fa-user-tie',
                         options: rowsPersona.map(c => ({ value: c.id_usuario, text: c.nombre_y_tipo }))
                     }
                 ]
