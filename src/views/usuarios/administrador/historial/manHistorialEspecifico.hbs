@@ -6,17 +6,32 @@
 </head>
 
 <body>
+    {{!-- <div class="border-b-2 border-gray-300 my-3"></div> --}}
+
+    <a href="/renderHistorial"
+        class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</a>
+
+    <a href="renHistorialCampos-{{ruta}}E">
+        <p class=" font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 "
+            title="Página para la consulta específica de {{campo}}">Específico de {{ruta}}</p>
+    </a>
+    <div class="border-b-2 border-gray-300 w-2/6 mx-auto mt-1 mb-3 pt-4"></div>
+
+    <div class="pb-8 text-center pt-7">
+        <a href="renHistorialCampos-{{ruta}}G"
+            class=" mx-auto rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-3 px-6 text-center">
+            Ir a general de {{ruta}}
+        </a>
+    </div>
+
     <a href="/renderHistorial">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
     </a>
-    <a href="renHistorialCampos-{{ruta}}G"><p>General de {{ruta}} mostrar toda la tabla</p></a>
-    <a href="renHistorialCampos-{{ruta}}E"><p>Específico de {{ruta}}</p></a>
-    <p class="font-semibold text-3xl flex justify-center">Página para consulta especifica de {{campo}}</p>
-    {{#isEqual campo "pagos"}}
     <!-- Formulario para pago -->
-    <div class="flex justify-center">
-        <div class="w-4/12">
-            <h2 class="font-semibold text-2xl pt-3 text-center">Formulario para historial de pagos especifíco</h2>
+    <h2 class="font-semibold text-2xl pt-3 pb-7 text-center">Formulario para historial de pagos especifíco</h2>
+
+    <div class="flex justify-center ">
+        <div class="w-4/12 ">
             <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
                 <form action="/consultaEspesifica" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="hidden" name="campo" value="{{campo}}" />
@@ -24,7 +39,12 @@
                     <div class="p-2 {{this.colSpan}}">
                         {{#isEqual this.type "select"}}
                         <!-- Renderizar select con las opciones correctas -->
-                        <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                        <label for="{{this.name}}" class="block text-lg">
+                            {{#if this.icon}} <!-- Verificar si hay un icono -->
+                            <i class="{{this.icon}}"></i> <!-- Agregar el icono aquí -->
+                            {{/if}}
+                            {{this.label}}
+                        </label>
                         <select name="{{this.name}}" id="{{this.name}}"
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                             <option value=""></option>
@@ -34,7 +54,12 @@
                         </select>
                         {{else}}
                         <!-- Renderizar cualquier otro campo de texto -->
-                        <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                        <label for="{{this.name}}" class="block text-lg">
+                            {{#if this.icon}} <!-- Verificar si hay un icono -->
+                            <i class="{{this.icon}}"></i> <!-- Agregar el icono aquí -->
+                            {{/if}}
+                            {{this.label}}
+                        </label>
                         <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
                             placeholder="{{this.label}}" class="border border-gray-200 w-full text-lg p-2">
                         {{/isEqual}}
@@ -47,24 +72,15 @@
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
-    {{/isEqual}}
-    {{#isEqual campo "incidencias"}}
-    <p>incidencias</p>
-    {{/isEqual}}
-    {{#isEqual campo "seguimientos"}}
-    <p>propiedades</p>
-    {{/isEqual}}
-
 
     <!-- Popup de error -->
     <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg p-6 shadow-lg">
             <div class="mb-4">
-                <p>Algo ha salido mal, intentalo de nuevo</p>
+                <p>Algo ha salido mal, inténtalo de nuevo</p>
             </div>
             <div class="flex justify-end">
                 <button id="close-modal"
