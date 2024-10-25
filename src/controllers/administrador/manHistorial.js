@@ -143,7 +143,9 @@ function manSeguimiento(req, res) {
     const orderDirectionParam = req.query.orderDirection === 'DESC' ? 'DESC' : 'ASC'; // Por defecto es ASC
 
     const campoDatos = req.session.campoDatos;
+    const campo = req.session.campo;
     const ruta = req.session.campoR;
+    req.session.campo = campo;
 
     //console.log("campoDatos: ", campoDatos);
 
@@ -229,6 +231,7 @@ function manSeguimiento(req, res) {
                     tableData: seguimientos,
                     orderDirection: orderDirectionParam,
                     ruta,
+                    campo: campo,
                     name: req.session.name,
                     id: req.session.idUser,
                     tipoUsuario: req.session.tipoUsuario
