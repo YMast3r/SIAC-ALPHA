@@ -23,6 +23,12 @@
     
     
 {{!--     <p class="font-semibold text-3xl flex justify-center">Página para consulta específica de {{campo}}</p> --}}    {{#isEqual campo "pagos"}}
+    <a href="/renderHistorial">
+        <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
+    </a>
+    <a href="renHistorialCampos-{{ruta}}G"><p>General de {{ruta}} mostrar toda la tabla</p></a>
+    <a href="renHistorialCampos-{{ruta}}E"><p>Específico de {{ruta}}</p></a>
+    <p class="font-semibold text-3xl flex justify-center">Página para consulta especifica de {{campo}}</p>
     <!-- Formulario para pago -->
 <h2 class="font-semibold text-2xl pt-3 pb-7 text-center">Formulario para historial de pagos especifíco</h2>
 
@@ -62,14 +68,6 @@
             </div>
         </div>
     </div>
-    {{/isEqual}}
-    {{#isEqual campo "incidencias"}}
-    <p>incidencias</p>
-    {{/isEqual}}
-    {{#isEqual campo "seguimientos"}}
-    <p>propiedades</p>
-    {{/isEqual}}
-
 
     <!-- Popup de error -->
     <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
