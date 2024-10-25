@@ -145,7 +145,7 @@ function manSeguimiento(req, res) {
     const campoDatos = req.session.campoDatos;
     const ruta = req.session.campoR;
 
-    console.log("campoDatos: ", campoDatos);
+    //console.log("campoDatos: ", campoDatos);
 
     // Validar si campoDatos tiene datos válidos
 
@@ -279,9 +279,9 @@ function manPagos(req, res) {
             whereClause += ' AND p.id_propiedad = ?';
             params.push(campoDatos.tipoPropiedad);
         }
-        if (campoDatos.adm) {
+        if (campoDatos.administrador) {
             whereClause += ' AND a.id_administrador = ?';
-            params.push(campoDatos.adm);
+            params.push(campoDatos.administrador);
         }
         if (campoDatos.condomino) {
             // Relacionar condómino a través de la tabla usuario (c.id_usuario)
@@ -296,6 +296,7 @@ function manPagos(req, res) {
             whereClause += ' AND p.id_propiedad = ?';
             params.push(campoDatos.propiedad);
         }
+        //console.log("params", params);
     } else {
         console.log("No hay campos");
     }
