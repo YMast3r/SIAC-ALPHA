@@ -518,7 +518,7 @@ function manHistorialEspecifico(req, res) {
                         options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
                     },
                     {
-                        label: 'Año Final',
+                        label: 'Año Inicio',
                         type: 'select',
                         name: 'añoI',
                         colSpan: 'md:col-span-1',
