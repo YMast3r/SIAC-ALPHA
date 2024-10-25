@@ -76,7 +76,7 @@ function manSeguimiento(req, res) {
                             }
                             if (rows && rows.length > 0) {
                                 const empleado = rows;
-                                conn.query('SELECT id_usuario FROM incidencia WHERE folio=?', [id], (err, rows) => {
+                                conn.query('SELECT id_usuario, fecha FROM incidencia WHERE folio=?', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                         return;
@@ -172,6 +172,25 @@ function altaSeguimiento(req, res) {
         }
         const data = req.body;
         const id = req.session.idFolio;
+        //recuperar fecha de hoy
+        const fechaActual = new Date();
+        const fechaFormateada = `${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}`;
+        console.log(fechaFormateada); // Imprime la fecha formateada como dd/mm/yyyy
+        console.log("fechas",data.fecha,fechaFormateada)
+        // Verificar que la fecha proporcionada no sea futura
+        if (data.fecha > fechaFormateada) {
+            console.log(err);
+            req.session.errorMSeg = 'No se pueden fechas adelantadas';
+            renSeguimiento(req, res);
+            return;
+        } 
+        if (data.fecha<fechaFormateada){
+            console.log(err);
+            console.log("fecha 1:",data.fecha,"fecha 2:",fechaFormateada);
+            req.session.errorMSeg = 'La fecha no puede ser antes de la fecha Incidencia';
+            renSeguimiento(req, res);
+            return;
+        };
         req.session.idFolio = id;
 
         req.getConnection((err, conn) => {
