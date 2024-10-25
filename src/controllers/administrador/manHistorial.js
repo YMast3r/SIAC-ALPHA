@@ -491,6 +491,14 @@ function manHistorialEspecifico(req, res) {
                         icon: 'fas fa-calendar' // Agrega la clase del icono aquí
                     },
                     {
+                        label: 'Referencia',
+                        type: 'select',
+                        name: 'referencia',
+                        colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
+                        options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
+                    },
+                    {
                         label: 'Propiedad',
                         type: 'select',
                         name: 'propiedad',
@@ -562,14 +570,7 @@ function manHistorialEspecifico(req, res) {
                         icon: 'fas fa-user',
                         options: rowsCon.map(c => ({ value: c.id_condomino, text: c.condomino }))
                     },
-                    {
-                        label: 'Referencia',
-                        type: 'select',
-                        name: 'referencia',
-                        colSpan: 'md:col-span-1',
-                        icon: 'fas fa-receipt',
-                        options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
-                    },
+                    
                 ];
             } else if (campo == 'incidencias') {
                 formFields = [

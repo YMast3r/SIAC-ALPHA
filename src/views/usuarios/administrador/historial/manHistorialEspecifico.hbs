@@ -25,9 +25,9 @@
     </div>
 
     <!-- Formulario para pago -->
-    <h2 class="font-semibold text-2xl pt-3 pb-7 text-center">Formulario para historial de pagos especifíco</h2>
+    <h2 class="font-semibold text-2xl pt-3 pb-7 text-center">Formulario para historial de {{ruta}} especifíco</h2>
 
-    <div class="flex justify-center ">
+    <div class="flex justify-center mb-8">
         <div class="w-4/12 ">
             <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
                 <form action="/consultaEspesifica" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -64,7 +64,7 @@
                     {{/each}}
                     <div class="md:col-span-2">
                         <button type="submit"
-                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
+                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-2 block text-center">
                             Realizar consulta
                         </button>
                     </div>
