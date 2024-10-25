@@ -490,8 +490,8 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'propiedad',
                         colSpan: 'md:col-span-2',
-/*                         icon: 'fas fa-city',
- */                        options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
+                        icon: 'fas fa-house',
+                        options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
                     },
                     {
                         label: 'Mes Inicio',
@@ -538,6 +538,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'tipoPago',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-money-bill-alt',
                         options: rowsTipoPago.map(tp => ({ value: tp.id_tipo_pago, text: tp.tipo_pago_descripcion }))
                     },
                     {
@@ -545,6 +546,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'administrador',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-user-tie',
                         options: rowsAdm.map(a => ({ value: a.id_administrador, text: a.administrador }))
                     },
                     {
@@ -552,6 +554,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'condomino',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-user',
                         options: rowsCon.map(c => ({ value: c.id_condomino, text: c.condomino }))
                     },
                     {
@@ -559,6 +562,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'referencia',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-receipt',
                         options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
                     },
                 ];
