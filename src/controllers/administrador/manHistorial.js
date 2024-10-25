@@ -483,20 +483,22 @@ function manHistorialEspecifico(req, res) {
                         type: 'date',
                         name: 'fecha',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-envelope' // Agrega la clase del icono aquí
+                        icon: 'fas fa-calendar' // Agrega la clase del icono aquí
                     },
                     {
                         label: 'Propiedad',
                         type: 'select',
                         name: 'propiedad',
                         colSpan: 'md:col-span-2',
-                        options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
+/*                         icon: 'fas fa-city',
+ */                        options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
                     },
                     {
                         label: 'Mes Inicio',
                         type: 'select',
                         name: 'mesI',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-day',
                         options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
                     },
                     {
@@ -504,6 +506,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'añoI',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-minus',
                         options: años.map(m => ({ value: m.año, text: m.año }))
                     },
                     {
@@ -511,13 +514,15 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'mesF',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-day',
                         options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
                     },
                     {
-                        label: 'Mes Final',
+                        label: 'Año Final',
                         type: 'select',
                         name: 'añoF',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-minus',
                         options: años.map(m => ({ value: m.año, text: m.año }))
                     },
                     {
@@ -525,6 +530,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'tipoPropiedad',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-city',
                         options: rowsTipoPro.map(tp => ({ value: tp.id_tipo_propiedad, text: tp.tipo_propiedad_descripcion }))
                     },
                     {
