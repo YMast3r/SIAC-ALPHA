@@ -174,6 +174,10 @@ function manSeguimiento(req, res) {
             whereClause += ' AND s.id_status_seguimiento = ?';
             params.push(campoDatos.status_seguimiento);
         }
+        if (campoDatos.persona_asignada) {
+            whereClause += ' AND s.id_usuario = ?';
+            params.push(campoDatos.persona_asignada);
+        }
     } else {
         console.log("No hay campos");
     }
@@ -657,6 +661,13 @@ function manHistorialEspecifico(req, res) {
                         name: 'status_seguimiento',
                         colSpan: 'md:col-span-1',
                         options: rowsStatusSeguimiento.map(m => ({ value: m.id_status_seguimiento, text: m.status_seguimiento }))
+                    },
+                    {
+                        label: 'Persona asignada',
+                        type: 'select',
+                        name: 'persona_asignada',
+                        colSpan: 'md:col-span-2',
+                        options: rowsPersona.map(m => ({ value: m.id_usuario, text: m.id_usuario }))
                     }
                 ]
             } else {
