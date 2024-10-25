@@ -84,7 +84,7 @@ CREATE TABLE `empleado` (
 --
 
 INSERT INTO `empleado` (`id_empleado`, `id_usuario`, `nombre`, `apellidos`, `tipo_empleado`, `salario`, `fecha_contratacion`, `telefono`, `correo_electronico`, `empresa`, `fecha_baja`, `motivo_baja`) VALUES
-(1, 2, 'Ivan Sebastián', 'Guerrero Basurto', 1, 30000.00, '2020-01-15', '449 223 9955', 'IsaacGallegos@condominio.com', 'Empresa falsa', null, null),
+(1, 2, 'Ivan Sebastián', 'Guerrero Basurto', 1, 30000.00, '2020-01-15', '449 223 9955', 'IvanSebastian@gmail.com', 'Empresa falsa', null, null),
 (2, 5, 'Regina Odette', 'Hernández Buenrostro', 1, 20000.00, '2020-01-15', '351 304 6049', 'ReginaOdette@condominio.com', 'Empresa falsa', null, null),
 (3, 4, 'Isaac', 'Gallegos Mena', 2, 10000.00, '2020-01-15', '449 568 6105', 'IsaacGallegos@condominio.com', 'Empresa falsa', null, null),
 (4, 7, 'Ian Yeshua', 'López Garcia', 3, 15000.00, '2019-05-20', '449 429 6282', 'ianYeshua@condominio.com', 'Empresa falsa', null, null);
