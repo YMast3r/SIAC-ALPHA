@@ -8,29 +8,27 @@
 <body>
     {{!-- <div class="border-b-2 border-gray-300 my-3"></div> --}}
 
-    <a href="/renderHistorial"class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</a>
+    <a href="/renderHistorial"
+        class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</a>
 
-    <a href="renHistorialCampos-{{ruta}}E"><p class=" font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 " title="Página para la consulta específica de {{campo}}">Específico de {{ruta}}</p></a> 
+    <a href="renHistorialCampos-{{ruta}}E">
+        <p class=" font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 "
+            title="Página para la consulta específica de {{campo}}">Específico de {{ruta}}</p>
+    </a>
     <div class="border-b-2 border-gray-300 w-2/6 mx-auto mt-1 mb-3 pt-4"></div>
 
     <div class="pb-8 text-center pt-7">
-        <a href="renHistorialCampos-{{ruta}}G" class=" mx-auto rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-3 px-6 text-center">
+        <a href="renHistorialCampos-{{ruta}}G"
+            class=" mx-auto rounded-md bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base py-3 px-6 text-center">
             Ir a general de {{ruta}}
-        </a> 
+        </a>
     </div>
 
-    
-    
-    
-{{!--     <p class="font-semibold text-3xl flex justify-center">Página para consulta específica de {{campo}}</p> --}}    {{#isEqual campo "pagos"}}
     <a href="/renderHistorial">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Historial</h1>
     </a>
-    <a href="renHistorialCampos-{{ruta}}G"><p>General de {{ruta}} mostrar toda la tabla</p></a>
-    <a href="renHistorialCampos-{{ruta}}E"><p>Específico de {{ruta}}</p></a>
-    <p class="font-semibold text-3xl flex justify-center">Página para consulta especifica de {{campo}}</p>
     <!-- Formulario para pago -->
-<h2 class="font-semibold text-2xl pt-3 pb-7 text-center">Formulario para historial de pagos especifíco</h2>
+    <h2 class="font-semibold text-2xl pt-3 pb-7 text-center">Formulario para historial de pagos especifíco</h2>
 
     <div class="flex justify-center ">
         <div class="w-4/12 ">
