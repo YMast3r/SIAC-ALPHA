@@ -22,6 +22,15 @@
             <table class="w-full">
                 <thead class="sticky top-0 bg-white">
                     <tr>
+                        <tr>
+                            <th id="contenedorFlecha" style="cursor: pointer;" class="px-4 {{!-- py-4 --}} bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg ">
+                            <span class="inline-flex items-center space-x-1">
+                                <p> ID </p>
+                                {{!-- &nbsp; --}}
+                                <a href="#" id="flechaDesc" data-order="desc">&darr;</a>
+                                <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
+                            </span>
+                        </th>
                         <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Nombre</th>
                         <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Apellidos</th>
                         <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Correo Electrónico</th>
@@ -29,19 +38,13 @@
                         <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Tipo de Empleado</th>
                         <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Salario</th>
                         <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Fecha de Contratación</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Dirección</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Ciudad</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Estado</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Código Postal</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Seguridad Social</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Nacionalidad</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Género</th>
-                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Estado Civil</th>
+                        <th class="px-4 py-2 border-b-2 border-gray-400 text-lg font-medium">Empresa</th>
                     </tr>
                 </thead>
                 <tbody id="tabla">
                     {{#each empleados}}
                     <tr class="bg-white">
+                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.id_empleado}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.nombre}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.apellidos}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.correo_electronico}}</td>
@@ -49,31 +52,11 @@
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.tipo_empleado}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center">${{this.salario}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.fecha_contratacion}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.direccion}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.ciudad}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.estado}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.codigo_postal}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.numero_seguridad_social}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.nacionalidad}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.genero}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.estado_civil}}</td>
+                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center">{{this.empresa}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Popup de error -->
-    <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 shadow-lg">
-            <div class="mb-4">
-                <p>Algo ha salido mal, intentalo de nuevo</p>
-            </div>
-            <div class="flex justify-end">
-                <button id="close-modal"
-                    class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cerrar</button>
-            </div>
         </div>
     </div>
 
@@ -92,19 +75,7 @@
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
         </div>
 
-        <!-- Fecha de Nacimiento y Fecha de Contratación -->
-        <div class="md:col-span-1">
-            <label for="fecha_nacimiento"><i class="fas fa-calendar"></i> Fecha de Nacimiento:</label>
-            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"  value="{{data.fecha_nacimiento}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-        <div class="md:col-span-1">
-            <label for="fecha_contratacion"><i class="fas fa-calendar"></i> Fecha de Contratación:</label>
-            <input type="date" id="fecha_contratacion" name="fecha_contratacion"  value="{{data.fecha_contratacion}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
         
-
         <!-- Tipo de Empleadono y Salari -->
         <div class="md:col-span-1">
             <label for="tipo_empleado"><i class="fas fa-user-tie"></i> Tipo de Empleado:</label>
@@ -117,7 +88,6 @@
                 {{/each}}
             </select>
         </div>
-        
         <div class="md:col-span-1">
             <label for="salario" class="block text-lg"><i class="fas fa-dollar-sign"></i>
             Salario:</label>
@@ -135,6 +105,19 @@
             </div>
         </div>
 
+        <!-- Fecha de  Fecha de Contratación -->
+        <div class="md:col-span-1">
+            <label for="fecha_contratacion"><i class="fas fa-calendar"></i> Fecha de Contratación:</label>
+            <input type="date" id="fecha_contratacion" name="fecha_contratacion"  value="{{data.fecha_contratacion}}" required
+                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+        </div>
+
+        <!-- Empresa de subcontratación  -->
+        <div class="md:col-span-2">
+            <label for="empresa"><i class="fas fa-map-marker-alt">&nbsp;</i> Empresa de subcontratación:</label>
+            <input type="text" id="empresa" name="empresa"  value="{{data.empresa}}" required
+                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+        </div>
 
         <!-- Teléfono y Correo -->
         <div class="md:col-span-1">
@@ -199,72 +182,29 @@
             </div>
         </div>
 
-        <!-- Dirección y Datos de Localización -->
-        <div class="md:col-span-2">
-            <label for="direccion"><i class="fas fa-map-marker-alt">&nbsp;</i> Dirección:</label>
-            <input type="text" id="direccion" name="direccion"  value="{{data.direccion}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-        <div class="md:col-span-1">
-            <label for="ciudad"><i class="fas fa-city">&nbsp;</i> Ciudad:</label>
-            <input type="text" id="ciudad" name="ciudad" value="{{data.ciudad}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-        <div class="md:col-span-1">
-            <label for="estado"><i class="fas fa-map-marked-alt">&nbsp;</i> Estado:</label>
-            <input type="text" id="estado" name="estado"  value="{{data.estado}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-
-        <!-- Código Postal y NSS -->
-        <div class="md:col-span-1">
-            <label for="codigo_postal"><i class="fas fa-map-marker-alt">&nbsp;</i> Código Postal:</label>
-            <input type="text" id="codigo_postal" name="codigo_postal"  value="{{data.codigo_postal}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-        <div class="md:col-span-1">
-            <label for="nss"><i class="fas fa-id-card"></i> Número de Seguridad Social:</label>
-            <input type="text" id="nss" name="nss"  value="{{data.nss}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-
-        <!-- Nacionalidad, Género y Estado Civil -->
-        <div class="md:col-span-1">
-            <label for="nacionalidad"><i class="fas fa-globe-americas"></i> Nacionalidad:</label>
-            <input type="text" id="nacionalidad" name="nacionalidad"  value="{{data.nacionalidad}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-        <div class="md:col-span-1">
-            <label for="genero"><i class="fas fa-venus-mars"></i> Género:</label>
-            <select id="genero" name="genero"  value="{{data.genero}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-                <option value="">Seleccione</option>
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
-            </select>
-        </div>
-        <div class="md:col-span-1">
-            <label for="estado_civil"><i class="fas fa-heart"></i> Estado Civil:</label>
-            <select id="estado_civil" name="estado_civil"  value="{{data.estado_civil}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-                <option value="">Seleccione</option>
-                <option value="soltero">Soltero/a</option>
-                <option value="casado">Casado/a</option>
-                <option value="divorciado">Divorciado/a</option>
-                <option value="viudo">Viudo/a</option>
-            </select>
-        </div>
-
         <!-- Botón de envío -->
-        <div class="md:col-span-1 flex justify-end mt-4">
+        <div class="md:col-span-2 flex justify-end mt-4">
             <button type="submit"
-                class="rounded-md bg-gray-500 w-3/4 text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
+                class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
                 Registrar
             </button>
         </div>
     </form>
 </div>
 
+
+    <!-- Popup de error -->
+    <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 shadow-lg">
+            <div class="mb-4">
+                <p>Algo ha salido mal, intentalo de nuevo</p>
+            </div>
+            <div class="flex justify-end">
+                <button id="close-modal"
+                    class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cerrar</button>
+            </div>
+        </div>
+    </div>
 
     <script src="telefono.js"></script>
     <script src="correo.js"></script>
@@ -379,6 +319,59 @@ function actualizarSalario() {
         popup.classList.add('hidden'); // Ocultar el popup
     });
 
+</script>
+<script>
+    document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        // flechas
+        let abajo = document.getElementById('flechaDesc');
+        let arriba = document.getElementById('flechaAsc');
+
+        let orden; // Definir la variable "orden"
+
+        // Verificar si está en descendente
+        if (abajo.getAttribute('data-order') === 'desc') {
+            // Cambio a orden ascendente
+            abajo.innerHTML = '&uarr;';
+            abajo.setAttribute('data-order', 'asc');
+            orden = 'asc'; // Cambiar el valor de "orden"
+
+            // Cambiar arriba a descendente
+            arriba.innerHTML = '&darr;';
+            arriba.setAttribute('data-order', 'desc');
+        } else {
+            // Cambio a orden descendente
+            abajo.innerHTML = '&darr;';
+            abajo.setAttribute('data-order', 'desc');
+            orden = 'desc'; // Cambiar el valor de "orden"
+
+            // Cambiar arriba a ascendente
+            arriba.innerHTML = '&uarr;';
+            arriba.setAttribute('data-order', 'asc');
+        }
+
+        let tbody = document.getElementById('tabla');
+        let filas = Array.from(tbody.getElementsByTagName('tr'));
+
+        // Ordenar las filas en base a la primera columna (FOLIO)
+        filas.sort(function (a, b) {
+            let valorA = a.getElementsByTagName('td')[0].innerText;
+            let valorB = b.getElementsByTagName('td')[0].innerText;
+
+            if (orden === 'asc') {
+                return valorA.localeCompare(valorB, undefined, { numeric: true });
+            } else {
+                return valorB.localeCompare(valorA, undefined, { numeric: true });
+            }
+        });
+
+        // Limpiar el tbody y agregar las filas ordenadas
+        tbody.innerHTML = '';
+        filas.forEach(function (fila) {
+            tbody.appendChild(fila);
+        });
+    });
 </script>
 </body>
 

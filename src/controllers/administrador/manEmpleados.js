@@ -82,29 +82,20 @@ function registrarEmpleado(req, res) {
 
                 // Crear consulta para insertar en la tabla empleado
                 const consultaEmpleado = `
-                INSERT INTO empleado (id_usuario, nombre, apellidos, fecha_nacimiento, tipo_empleado, salario, 
-                fecha_contratacion, telefono, correo_electronico, direccion, ciudad, estado, 
-                codigo_postal, numero_seguridad_social, nacionalidad, genero, estado_civil, 
+                INSERT INTO empleado (id_usuario, nombre, apellidos, tipo_empleado, salario, 
+                fecha_contratacion, telefono, correo_electronico, empresa, 
                 fecha_baja, motivo_baja)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
                 const parametrosEmpleado = [
                     idUsuario,
                     data.nombre,
                     data.apellidos,
-                    data.fecha_nacimiento || null,
                     data.tipo_empleado || null,
                     data.salario || null,
                     data.fecha_contratacion || null,
                     data.telefono,
                     data.correo_electronico,
-                    data.direccion || null,
-                    data.ciudad || null,
-                    data.estado || null,
-                    data.codigo_postal || null,
-                    data.nss || null,
-                    data.nacionalidad || null,
-                    data.genero || null,
-                    data.estado_civil || null,
+                    data.empresa || null,
                     null, // fecha_baja
                     null  // motivo_baja
                 ];
@@ -133,7 +124,7 @@ function manEmpleados(req, res) {
         }
 
         // Consulta para obtener los empleados
-        conn.query('SELECT e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.nombre, e.apellidos, u.descripcion AS tipo_empleado, e.salario, e.fecha_contratacion, e.direccion, e.ciudad, e.estado, e.codigo_postal, e.numero_seguridad_social, e.nacionalidad, e.genero, e.estado_civil FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado', (err, rows) => {
+        conn.query('SELECT e.id_empleado, e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.nombre, e.apellidos, u.descripcion AS tipo_empleado, e.salario, e.fecha_contratacion, e.empresa FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado ORDER BY e.id_empleado DESC', (err, rows) => {
             if (err) {
                 console.log(err);
                 return res.status(500).send("Error al recuperar los empleados");
