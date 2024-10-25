@@ -145,7 +145,7 @@ function manSeguimiento(req, res) {
     const campoDatos = req.session.campoDatos;
     const ruta = req.session.campoR;
 
-    console.log("campoDatos: ", campoDatos);
+    //console.log("campoDatos: ", campoDatos);
 
     // Validar si campoDatos tiene datos válidos
 
@@ -173,6 +173,10 @@ function manSeguimiento(req, res) {
         if (campoDatos.status_seguimiento) {
             whereClause += ' AND s.id_status_seguimiento = ?';
             params.push(campoDatos.status_seguimiento);
+        }
+        if (campoDatos.persona_asignada) {
+            whereClause += ' AND s.id_empleado = ?';
+            params.push(campoDatos.persona_asignada);
         }
     } else {
         console.log("No hay campos");
@@ -279,9 +283,9 @@ function manPagos(req, res) {
             whereClause += ' AND p.id_propiedad = ?';
             params.push(campoDatos.tipoPropiedad);
         }
-        if (campoDatos.adm) {
+        if (campoDatos.administrador) {
             whereClause += ' AND a.id_administrador = ?';
-            params.push(campoDatos.adm);
+            params.push(campoDatos.administrador);
         }
         if (campoDatos.condomino) {
             // Relacionar condómino a través de la tabla usuario (c.id_usuario)
@@ -296,6 +300,7 @@ function manPagos(req, res) {
             whereClause += ' AND p.id_propiedad = ?';
             params.push(campoDatos.propiedad);
         }
+        //console.log("params", params);
     } else {
         console.log("No hay campos");
     }
@@ -483,13 +488,22 @@ function manHistorialEspecifico(req, res) {
                         type: 'date',
                         name: 'fecha',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-envelope' // Agrega la clase del icono aquí
+                        icon: 'fas fa-calendar' // Agrega la clase del icono aquí
+                    },
+                    {
+                        label: 'Referencia',
+                        type: 'select',
+                        name: 'referencia',
+                        colSpan: 'md:col-span-1',
+                        icon: 'fas fa-file-signature',
+                        options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
                     },
                     {
                         label: 'Propiedad',
                         type: 'select',
                         name: 'propiedad',
                         colSpan: 'md:col-span-2',
+                        icon: 'fas fa-house',
                         options: rowsPropieda.map(p => ({ value: p.id_propiedad, text: p.propiedad_descripcion }))
                     },
                     {
@@ -497,6 +511,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'mesI',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-day',
                         options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
                     },
                     {
@@ -504,6 +519,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'añoI',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-minus',
                         options: años.map(m => ({ value: m.año, text: m.año }))
                     },
                     {
@@ -511,13 +527,15 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'mesF',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-day',
                         options: rowsMes.map(m => ({ value: m.mes, text: m.descripcion }))
                     },
                     {
-                        label: 'Mes Final',
+                        label: 'Año Final',
                         type: 'select',
                         name: 'añoF',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-calendar-minus',
                         options: años.map(m => ({ value: m.año, text: m.año }))
                     },
                     {
@@ -525,6 +543,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'tipoPropiedad',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-city',
                         options: rowsTipoPro.map(tp => ({ value: tp.id_tipo_propiedad, text: tp.tipo_propiedad_descripcion }))
                     },
                     {
@@ -532,6 +551,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'tipoPago',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-money-bill-alt',
                         options: rowsTipoPago.map(tp => ({ value: tp.id_tipo_pago, text: tp.tipo_pago_descripcion }))
                     },
                     {
@@ -539,6 +559,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'administrador',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-user-tie',
                         options: rowsAdm.map(a => ({ value: a.id_administrador, text: a.administrador }))
                     },
                     {
@@ -546,15 +567,10 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'condomino',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-user',
                         options: rowsCon.map(c => ({ value: c.id_condomino, text: c.condomino }))
                     },
-                    {
-                        label: 'Referencia',
-                        type: 'select',
-                        name: 'referencia',
-                        colSpan: 'md:col-span-1',
-                        options: rowsReferencia.map(r => ({ value: r.referencia, text: r.referencia }))
-                    },
+                    
                 ];
             } else if (campo == 'incidencias') {
                 formFields = [
@@ -650,6 +666,13 @@ function manHistorialEspecifico(req, res) {
                         name: 'status_seguimiento',
                         colSpan: 'md:col-span-1',
                         options: rowsStatusSeguimiento.map(m => ({ value: m.id_status_seguimiento, text: m.status_seguimiento }))
+                    },
+                    {
+                        label: 'Persona asignada',
+                        type: 'select',
+                        name: 'persona_asignada',
+                        colSpan: 'md:col-span-2',
+                        options: rowsPersona.map(c => ({ value: c.id_usuario, text: c.nombre_y_tipo }))
                     }
                 ]
             } else {
