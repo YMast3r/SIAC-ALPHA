@@ -23,7 +23,12 @@
                     <div class="p-2 {{this.colSpan}}">
                         {{#isEqual this.type "select"}}
                         <!-- Renderizar select con las opciones correctas -->
-                        <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                        <label for="{{this.name}}" class="block text-lg">
+                            {{#if this.icon}} <!-- Verificar si hay un icono -->
+                            <i class="{{this.icon}}"></i> <!-- Agregar el icono aquí -->
+                            {{/if}}
+                            {{this.label}}
+                        </label>
                         <select name="{{this.name}}" id="{{this.name}}"
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                             <option value=""></option>
@@ -33,7 +38,12 @@
                         </select>
                         {{else}}
                         <!-- Renderizar cualquier otro campo de texto -->
-                        <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                        <label for="{{this.name}}" class="block text-lg">
+                            {{#if this.icon}} <!-- Verificar si hay un icono -->
+                            <i class="{{this.icon}}"></i> <!-- Agregar el icono aquí -->
+                            {{/if}}
+                            {{this.label}}
+                        </label>
                         <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
                             placeholder="{{this.label}}" class="border border-gray-200 w-full text-lg p-2">
                         {{/isEqual}}
@@ -46,7 +56,6 @@
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

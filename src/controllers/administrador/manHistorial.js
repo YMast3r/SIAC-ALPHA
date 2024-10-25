@@ -384,9 +384,6 @@ function renHistorialEspecifico(req, res) {
     }
 }
 
-// Obtener la fecha y hora actual
-const fechaActual = new Date();
-
 function manHistorialEspecifico(req, res) {
     const campoId = req.session.campo;
 
@@ -486,6 +483,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'date',
                         name: 'fecha',
                         colSpan: 'md:col-span-1',
+                        icon: 'fas fa-envelope' // Agrega la clase del icono aquí
                     },
                     {
                         label: 'Propiedad',
