@@ -175,7 +175,7 @@ function manSeguimiento(req, res) {
             params.push(campoDatos.status_seguimiento);
         }
         if (campoDatos.persona_asignada) {
-            whereClause += ' AND s.id_usuario = ?';
+            whereClause += ' AND s.id_empleado = ?';
             params.push(campoDatos.persona_asignada);
         }
     } else {
@@ -667,7 +667,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'persona_asignada',
                         colSpan: 'md:col-span-2',
-                        options: rowsPersona.map(m => ({ value: m.id_usuario, text: m.id_usuario }))
+                        options: rowsPersona.map(c => ({ value: c.id_usuario, text: c.nombre_y_tipo }))
                     }
                 ]
             } else {
