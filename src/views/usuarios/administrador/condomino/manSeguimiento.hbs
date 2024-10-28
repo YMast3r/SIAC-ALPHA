@@ -22,6 +22,7 @@
             <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Seguimiento</h1>
         </a>
 
+        {{#isEqual tipoUsuario 2}}
         <!-- Subtítulo del Condomino -->
         <h2 class="font-semibold text-2xl flex justify-center m-1 text-gray-700">Condómino</h2>
 
@@ -53,6 +54,8 @@
                 </tbody>
             </table>
         </div>
+        {{/isEqual}}
+
     </div>
 
     <br>
@@ -171,6 +174,7 @@
 
     {{/if}}
 
+    {{#isEqual tipoUsuario 2}}
     <div class="flex justify-center m-5">
         <h1 class="font-semibold text-4xl flex justify-center m-5">Alta</h1>
     </div>
@@ -254,6 +258,9 @@
             }
         </script>
     </div>
+    {{/isEqual}}
+
+
     </div>
     <script src="fecha.js"></script>
     <script>

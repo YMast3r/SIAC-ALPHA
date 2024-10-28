@@ -45,15 +45,13 @@ function manIncidencia(req, res) {
     req.session.errorMSeg = "";
     const error = req.session.errorMI;
     const data = req.session.dataCampos;
+    const tipoU = req.session.tipoUsuario;
 
     let tipo;
-    let ruta;
-    if (req.session.tipoUsuario == 3) {
+    if (tipoU == 3) {
         tipo = 3;
-        ruta = 'usuarios/condomino/manIncidencia';
     } else {
         tipo = 2;
-        ruta = 'usuarios/administrador/condomino/manIncidencia';
     }
 
     req.getConnection((err, conn) => {
@@ -95,7 +93,7 @@ function manIncidencia(req, res) {
                                             ...row,
                                             fecha: formatDate(row.fecha),
                                         }));
-                                        return res.render(ruta, {
+                                        return res.render('usuarios/administrador/condomino/manIncidencia', {
                                             datos: datos,
                                             usuario: usuario,
                                             error: error,
@@ -108,7 +106,7 @@ function manIncidencia(req, res) {
                                         });
                                     } else {
                                         console.log('No se encontraron incidencias');
-                                        return res.render(ruta, {
+                                        return res.render('usuarios/administrador/condomino/manIncidencia', {
                                             name: req.session.name,
                                             id: req.session.idUser,
                                             tipoUsuario: tipo,

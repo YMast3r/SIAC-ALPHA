@@ -49,6 +49,14 @@ function manSeguimiento(req, res) {
 
     const error = req.session.errorMSeg;
     const data = req.session.dataCampos;
+    const tipoU = req.session.tipoUsuario;
+
+    let tipo;
+    if (tipoU == 3) {
+        tipo = 3;
+    } else {
+        tipo = 2;
+    }
 
     req.getConnection((err, conn) => {
         if (err) {
@@ -130,14 +138,14 @@ function manSeguimiento(req, res) {
                                                                             error: error,
                                                                             data: data,
                                                                             name: req.session.name,
-                                                                            tipoUsuario: 2
+                                                                            tipoUsuario: tipo
                                                                         });
                                                                     } else {
                                                                         console.log('No se encontraron Seguimientos');
                                                                         return res.render('usuarios/administrador/condomino/manSeguimiento', {
                                                                             errorDatos: 1,
                                                                             name: req.session.name,
-                                                                            tipoUsuario: 2,
+                                                                            tipoUsuario: tipo,
                                                                             segui: 1,
                                                                             error: error,
                                                                             usuario: usuario,
