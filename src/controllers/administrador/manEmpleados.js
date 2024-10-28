@@ -16,15 +16,24 @@ function renderEmpleados(req, res) {
 
 function registrarEmpleado(req, res) {
     const data = req.body;
-    console.log(data)
 
     if (data.password !== data.confPassword) {
         req.session.errorMEmpleado = 'Error: La contraseña y la confirmación no coinciden';
         req.session.dataCampos = data;
-
         renEmpleados(req, res);
         return;
     }
+
+    //recuperar fecha de hoy
+    const fechaActual = new Date();
+    const fechaFormateada = `${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}`;
+    // Verificar que la fecha proporcionada no sea futura
+    if (data.fecha_contratacion > fechaFormateada) {
+        req.session.dataCampos = data;
+        req.session.errorMEmpleado = 'No se pueden fechas adelantadas';
+        renEmpleados(req, res);
+        return;
+    } 
 
     let letras = /.{8,}/; // Al menos 8 caracteres
     let especialCaracter = /[^A-Za-z0-9]/; // Al menos 1 carácter especial
@@ -48,7 +57,7 @@ function registrarEmpleado(req, res) {
         const errM = 'La contraseña debe tener al menos.<br>' + errorMensaje;
         req.session.dataCampos = data;
         req.session.errorMEmpleado = errM;
-        renEmpleados(req, res); 
+        renEmpleados(req, res);
         return;
     } else {
         // Crear consulta para insertar en la tabla usuario
@@ -70,48 +79,60 @@ function registrarEmpleado(req, res) {
                 return res.status(500).send("Error en la conexión con la base de datos");
             }
 
-            // Insertar en la tabla usuario
-            conn.query(consultaUsuario, parametrosUsuario, (err, resultadoUsuario) => {
+            conn.query('SELECT * FROM usuario WHERE correo_electronico = ? OR nombre = ? OR telefono = ?', [data.correo_electronico, data.nombre, data.telefono], (err, userdata) => {
                 if (err) {
-                    console.log(err);
-                    return res.status(500).send("Error al registrar el usuario");
+                    console.error('Error en la consulta:', err);
+                    return;
                 }
+                if (userdata.length > 0) {
+                    req.session.dataCampos = data;
+                    req.session.errorMEmpleado = 'Error: El usuario o el correo o el teléfono ya existe!';
+                    renEmpleados(req, res);
+                } else {
+                    // Insertar en la tabla usuario
+                    conn.query(consultaUsuario, parametrosUsuario, (err, resultadoUsuario) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).send("Error al registrar el usuario");
+                        }
 
-                // Obtener el id_usuario del nuevo registro
-                const idUsuario = resultadoUsuario.insertId;
+                        // Obtener el id_usuario del nuevo registro
+                        const idUsuario = resultadoUsuario.insertId;
 
-                // Crear consulta para insertar en la tabla empleado
-                const consultaEmpleado = `
+                        // Crear consulta para insertar en la tabla empleado
+                        const consultaEmpleado = `
                 INSERT INTO empleado (id_usuario, nombre, apellidos, tipo_empleado, salario, 
                 fecha_contratacion, telefono, correo_electronico, empresa, 
                 fecha_baja, motivo_baja)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-                if (data.salario){
-                    data.salario = data.salario.replace(/,/g, ''); // Remueve           
+                        if (data.salario) {
+                            data.salario = data.salario.replace(/,/g, ''); // Remueve           
+                        }
+                        const parametrosEmpleado = [
+                            idUsuario,
+                            data.nombre,
+                            data.apellidos,
+                            data.tipo_empleado || null,
+                            data.salario || null,
+                            data.fecha_contratacion || null,
+                            data.telefono,
+                            data.correo_electronico,
+                            data.empresa || null,
+                            null, // fecha_baja
+                            null  // motivo_baja
+                        ];
+
+                        // Insertar en la tabla empleado
+                        conn.query(consultaEmpleado, parametrosEmpleado, (err) => {
+                            if (err) {
+                                console.log(err);
+                                return res.status(500).send("Error al registrar el empleado");
+                            }
+
+                            res.redirect('/renderEmpleados');
+                        });
+                    });
                 }
-                const parametrosEmpleado = [
-                    idUsuario,
-                    data.nombre,
-                    data.apellidos,
-                    data.tipo_empleado || null,
-                    data.salario || null,
-                    data.fecha_contratacion || null,
-                    data.telefono,
-                    data.correo_electronico,
-                    data.empresa || null,
-                    null, // fecha_baja
-                    null  // motivo_baja
-                ];
-
-                // Insertar en la tabla empleado
-                conn.query(consultaEmpleado, parametrosEmpleado, (err) => {
-                    if (err) {
-                        console.log(err);
-                        return res.status(500).send("Error al registrar el empleado");
-                    }
-
-                    res.redirect('/renderEmpleados');
-                });
             });
         });
     }

@@ -91,7 +91,7 @@ function manSeguimiento(req, res) {
                                             if (UsuarioRows && UsuarioRows.length > 0) {
                                                 const usuario = UsuarioRows;
                                                 // Consulta para obtener los status
-                                                conn.query('SELECT * FROM status_seguimiento', (err, statusRows) => {
+                                                conn.query('SELECT * FROM status_seguimiento WHERE id_status_seguimiento != 1', (err, statusRows) => {
                                                     if (err) {
                                                         console.log(err);
                                                         return;
@@ -104,7 +104,10 @@ function manSeguimiento(req, res) {
                                                                 return;
                                                             }
                                                             if (inciRows && inciRows.length > 0) {
-                                                                const incidencia = inciRows;
+                                                                const incidencia = inciRows.map(inciRows => ({
+                                                                    ...inciRows,
+                                                                    fecha: formatDate(inciRows.fecha), // Formatea la fecha
+                                                                }));
 
                                                                 conn.query('SELECT s.folio, s.movimiento, u.nombre AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.evidencia FROM seguimiento s JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = ? ORDER BY s.movimiento DESC', [id], (err, rows) => {
                                                                     if (err) {
@@ -172,100 +175,125 @@ function altaSeguimiento(req, res) {
         }
         const data = req.body;
         const id = req.session.idFolio;
+        req.session.idFolio = id;
+
         //recuperar fecha de hoy
         const fechaActual = new Date();
         const fechaFormateada = `${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}`;
-        console.log(fechaFormateada); // Imprime la fecha formateada como dd/mm/yyyy
-        console.log("fechas",data.fecha,fechaFormateada)
         // Verificar que la fecha proporcionada no sea futura
         if (data.fecha > fechaFormateada) {
-            console.log(err);
-            req.session.errorMSeg = 'No se pueden fechas adelantadas';
-            renSeguimiento(req, res);
-            return;
-        } 
-        if (data.fecha<fechaFormateada){
-            console.log(err);
-            console.log("fecha 1:",data.fecha,"fecha 2:",fechaFormateada);
-            req.session.errorMSeg = 'La fecha no puede ser antes de la fecha Incidencia';
-            renSeguimiento(req, res);
-            return;
-        };
-        req.session.idFolio = id;
+            try {
 
+                borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
+            } catch {
+                console.log('No hay imagen')
+            }
+            req.session.errorMSeg = 'No se pueden fechas adelantadas';
+            req.session.dataCampos = data;
+            renSeguimiento(req, res);
+            return;
+        }
         req.getConnection((err, conn) => {
             if (err) {
                 console.log(err);
                 req.session.errorMSeg = 'Error en la conexión con la base de datos';
+                req.session.dataCampos = data;
                 renSeguimiento(req, res);
                 return;
             }
-            conn.query('SELECT MAX(movimiento) + 1 as max_movimiento FROM seguimiento WHERE folio = ?', [id], (err, rows) => {
+            conn.query('SELECT fecha FROM incidencia WHERE folio = ?', [id], (err, rows) => {
                 if (err) {
                     console.log(err);
                     req.session.errorMSeg = 'Error en la consulta del seguimiento';
+                    req.session.dataCampos = data;
                     renSeguimiento(req, res);
                     return;
                 }
-                if (rows.length > 0) {
-                    let movimiento = rows[0].max_movimiento;
-                    if (!movimiento) {
-                        movimiento = 1;
+                const fechaIncidencia = new Date(rows[0].fecha);
+                const fechaActual = new Date(data.fecha);
+                if (fechaActual < fechaIncidencia) {
+                    try {
+
+                        borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
+                    } catch {
+                        console.log('No hay imagen')
                     }
-                    conn.query('SELECT COUNT(*) AS cont FROM seguimiento WHERE id_status_seguimiento = ? AND id_status_seguimiento != 2 AND folio = ?', [data.status, id], (err, rows) => {
-                        if (err) {
-                            console.log(err);
-                            req.session.errorMSeg = 'Error en la consulta del seguimiento';
-                            renSeguimiento(req, res);
-                            return;
-                        }
-                        if (rows[0].cont == 0) {
-                            const imagenRuta = req.file ? `/imagenes/imagenesSeguimiento/${req.file.filename}` : null;
-
-                            conn.query('INSERT INTO seguimiento (folio, movimiento, id_empleado, comentario, id_status_seguimiento, fecha, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, movimiento, data.empleado, data.comentario, data.status, data.fecha, imagenRuta], (err, rows) => {
-                                if (err) {
-                                    console.log(err);
-                                    req.session.errorMSeg = 'Error al insertar el seguimiento';
-                                    renSeguimiento(req, res);
-                                } else {
-                                    conn.query('UPDATE incidencia SET id_status_incidencia=? WHERE folio=?', [data.status, id], (err, rows) => {
-                                        if (err) {
-                                            console.log(err);
-                                            req.session.errorMSeg = 'Error al actualizar la incidencia';
-                                            renSeguimiento(req, res);
-                                        } else {
-                                            if (imagenRuta) {
-                                                const tempPath = req.file.path;
-                                                const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesSeguimiento', req.file.filename);
-                                                fs.rename(tempPath, targetPath, function (err) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                        req.session.errorMSeg = 'Error al mover la imagen';
-                                                        renSeguimiento(req, res);
-                                                        return;
-                                                    }
-                                                    renderSeguimiento(req, res);
-                                                });
-                                            } else {
-                                                renderSeguimiento(req, res);
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        } else {
-                            try {
-
-                                borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
-                            } catch {
-                                console.log('No hay imagen')
-                            }
-                            req.session.errorMSeg = 'Ya existe ese estado';
-                            req.session.dataCampos = data;
-                            renSeguimiento(req, res);
-                        }
-                    });
+                    req.session.errorMSeg = 'La fecha no puede ser antes de la fecha Incidencia';
+                    req.session.dataCampos = data;
+                    renSeguimiento(req, res);
+                    return;
                 }
+                conn.query('SELECT MAX(movimiento) + 1 as max_movimiento FROM seguimiento WHERE folio = ?', [id], (err, rows) => {
+                    if (err) {
+                        console.log(err);
+                        req.session.errorMSeg = 'Error en la consulta del seguimiento';
+                        req.session.dataCampos = data;
+                        renSeguimiento(req, res);
+                        return;
+                    }
+                    if (rows.length > 0) {
+                        let movimiento = rows[0].max_movimiento;
+                        if (!movimiento) {
+                            movimiento = 1;
+                        }
+                        conn.query('SELECT COUNT(*) AS contR FROM seguimiento WHERE id_status_seguimiento = 3 AND folio = ?', [id], (err, rows) => {
+                            if (err) {
+                                console.log(err);
+                                req.session.errorMSeg = 'Error en la consulta del seguimiento';
+                                req.session.dataCampos = data;
+                                renSeguimiento(req, res);
+                                return;
+                            }
+                            if (rows[0].contR == 0) {
+                                const imagenRuta = req.file ? `/imagenes/imagenesSeguimiento/${req.file.filename}` : null;
+                                conn.query('INSERT INTO seguimiento (folio, movimiento, id_empleado, comentario, id_status_seguimiento, fecha, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, movimiento, data.empleado, data.comentario, data.status, data.fecha, imagenRuta], (err, rows) => {
+                                    if (err) {
+                                        console.log(err);
+                                        req.session.errorMSeg = 'Error al insertar el seguimiento';
+                                        req.session.dataCampos = data;
+                                        renSeguimiento(req, res);
+                                    } else {
+                                        conn.query('UPDATE incidencia SET id_status_incidencia=? WHERE folio=?', [data.status, id], (err, rows) => {
+                                            if (err) {
+                                                console.log(err);
+                                                req.session.errorMSeg = 'Error al actualizar la incidencia';
+                                                req.session.dataCampos = data;
+                                                renSeguimiento(req, res);
+                                            } else {
+                                                if (imagenRuta) {
+                                                    const tempPath = req.file.path;
+                                                    const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesSeguimiento', req.file.filename);
+                                                    fs.rename(tempPath, targetPath, function (err) {
+                                                        if (err) {
+                                                            console.log(err);
+                                                            req.session.errorMSeg = 'Error al mover la imagen';
+                                                            req.session.dataCampos = data;
+                                                            renSeguimiento(req, res);
+                                                            return;
+                                                        }
+                                                        renderSeguimiento(req, res);
+                                                    });
+                                                } else {
+                                                    renderSeguimiento(req, res);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                try {
+
+                                    borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
+                                } catch {
+                                    console.log('No hay imagen')
+                                }
+                                req.session.errorMSeg = "La incidencia ya fue solucionada y no permite más seguimientos.";
+                                req.session.dataCampos = data;
+                                renSeguimiento(req, res);
+                            }
+                        });
+                    }
+                });
             });
         });
     });

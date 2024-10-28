@@ -71,6 +71,7 @@
                             Clasificación
                         </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Status</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Fecha</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg text-center">
                             Descripción</th>
                     </tr>
@@ -78,8 +79,7 @@
                 <tbody>
                     {{#each incidencia}}
                     <tr>
-                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.folio}}
-                        </td>
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.folio}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.asunto}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">
                             {{this.tipo}},
@@ -87,6 +87,7 @@
                             {{this.clasificacion}},
                         </td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.status}}</td>
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.fecha}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center">
                             {{this.descripcion}}</td>
                     </tr>
@@ -181,7 +182,7 @@
             
                 Comentario</label>
             <br>
-            <textarea name="comentario" id="comentario" placeholder="Comentario"
+            <textarea name="comentario" id="comentario" placeholder="Comentario" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">{{data.comentario}}</textarea>
             <br>
 
@@ -205,7 +206,7 @@
         </div>
         <div class="pb-3">
             <label for="empleado"><i class="fas fa-user">&nbsp;</i>Persona asignada:</label> <br>
-            <select id="empleado" name="empleado" class="w-full">
+            <select id="empleado" name="empleado" required class="w-full">
                 <option value="" selected></option>
                 {{#each empleado}}
                 <option value="{{this.id_usuario}}" data-tipo="{{this.tipo_usuario}}">{{this.nombre_y_tipo}}</option>
@@ -220,7 +221,7 @@
 
             <label for="status"><i class="fas fa-spinner">&nbsp;</i>
                 Status</label>
-            <select id="status" name="status"
+            <select id="status" name="status" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                 {{#each status}}
                 {{#isEqual this.correcto 2}}

@@ -143,11 +143,8 @@ function altaIncidencia(req, res) {
         const fechaActual = new Date();
         const fechaFormateada = `${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}-${fechaActual.getDate()}`;
 
-        console.log(fechaFormateada); // Imprime la fecha formateada como dd/mm/yyyy
-        console.log("fechas",data.fecha,fechaFormateada)
         // Verificar que la fecha proporcionada no sea futura
         if (data.fecha > fechaFormateada) {
-            console.log(err);
             req.session.errorMI = 'No se pueden fechas adelantadas';
             renIncidencia(req, res);
             return;

@@ -279,13 +279,11 @@ function manipulaCondomino(req, res) {
         conn.query(consulta, parametros, (err, userdata) => {
             if (err) {
                 console.error('Error en la consulta:', err);
-                req.session.errorMC = 'Error: Problema al realizar la consulta!';
-                res.redirect('/ruta-de-error'); // Redirige a una ruta de error
                 return;
             }
 
             if (userdata.length > 0) {
-                req.session.errorMC = 'Error: El usuario ya existe o el correo o el teléfono ya existe!';
+                req.session.errorMC = 'Error: El usuario o el correo o el teléfono ya existe!';
                 req.session.dataCampos = data;
                 if (idMod) {
                     ediCondomino(req, res);
