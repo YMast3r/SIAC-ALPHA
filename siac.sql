@@ -69,20 +69,12 @@ CREATE TABLE `empleado` (
   `id_usuario` int(11) DEFAULT NULL,
   `nombre` varchar(50) NOT NULL,
   `apellidos` varchar(50) NOT NULL,
-  `fecha_nacimiento` date DEFAULT NULL,
   `tipo_empleado` int(11) DEFAULT NULL,
   `salario` decimal(10,2) DEFAULT NULL,
   `fecha_contratacion` date DEFAULT NULL,
   `telefono` varchar(15) DEFAULT NULL,
   `correo_electronico` varchar(50) DEFAULT NULL,
-  `direccion` varchar(100) DEFAULT NULL,
-  `ciudad` varchar(50) DEFAULT NULL,
-  `estado` varchar(50) DEFAULT NULL,
-  `codigo_postal` varchar(10) DEFAULT NULL,
-  `numero_seguridad_social` varchar(20) DEFAULT NULL,
-  `nacionalidad` varchar(50) DEFAULT NULL,
-  `genero` enum('M','F','Otro') DEFAULT NULL,
-  `estado_civil` enum('Soltero','Casado','Divorciado','Viudo') DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
   `fecha_baja` date DEFAULT NULL,
   `motivo_baja` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
@@ -91,11 +83,11 @@ CREATE TABLE `empleado` (
 -- Volcado de datos para la tabla `empleado`
 --
 
-INSERT INTO `empleado` (`id_empleado`, `id_usuario`, `nombre`, `apellidos`, `fecha_nacimiento`, `tipo_empleado`, `salario`, `fecha_contratacion`, `telefono`, `correo_electronico`, `direccion`, `ciudad`, `estado`, `codigo_postal`, `numero_seguridad_social`, `nacionalidad`, `genero`, `estado_civil`, `fecha_baja`, `motivo_baja`) VALUES
-(1, 2, 'Ivan Sebastián', 'Guerrero Basurto', '0000-00-00', 1, 30000.00, '2020-01-15', '555-1234', 'IsaacGallegos@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'M', 'Casado', NULL, NULL),
-(2, 5, 'Regina Odette', 'Hernández Buenrostro', '0000-00-00', 1, 20000.00, '2020-01-15', '555-1234', 'ReginaOdette@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'F', 'Casado', NULL, NULL),
-(3, 4, 'Isaac', 'Gallegos Mena', '0000-00-00', 2, 10000.00, '2020-01-15', '555-1234', 'IsaacGallegos@condominio.com', 'Calle Falsa 123', 'Aguascalientes', 'Aguascalientes', '12345', '123-45-6789', 'Mexicana', 'M', 'Casado', NULL, NULL),
-(4, 7, 'Ian Yeshua', 'López Garcia', '0000-00-00', 3, 15000.00, '2019-05-20', '555-5678', 'ianYeshua@condominio.com', 'Avenida Siempre Viva 456', 'Aguascalientes', 'Aguascalientes', '12345', '987-65-4321', 'Mexicana', 'M', 'Soltero', NULL, NULL);
+INSERT INTO `empleado` (`id_empleado`, `id_usuario`, `nombre`, `apellidos`, `tipo_empleado`, `salario`, `fecha_contratacion`, `telefono`, `correo_electronico`, `empresa`, `fecha_baja`, `motivo_baja`) VALUES
+(1, 2, 'Ivan Sebastián', 'Guerrero Basurto', 1, 30000.00, '2020-01-15', '449 223 9955', 'IvanSebastian@gmail.com', 'Empresa falsa', null, null),
+(2, 5, 'Regina Odette', 'Hernández Buenrostro', 1, 20000.00, '2020-01-15', '351 304 6049', 'ReginaOdette@condominio.com', 'Empresa falsa', null, null),
+(3, 4, 'Isaac', 'Gallegos Mena', 2, 10000.00, '2020-01-15', '449 568 6105', 'IsaacGallegos@condominio.com', 'Empresa falsa', null, null),
+(4, 7, 'Ian Yeshua', 'López Garcia', 3, 15000.00, '2019-05-20', '449 429 6282', 'ianYeshua@condominio.com', 'Empresa falsa', null, null);
 
 -- --------------------------------------------------------
 
@@ -453,7 +445,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`, `tipo_usuario`, `status`, `telefono`) VALUES
-(1, 'Super Administrador', 'superAdm@gmail.com', '$2b$12$aXt.urKj5OgRLGnATTloj.siVIgmasf7uCVdWndWHyK/raktqif3a', 1, 4, '449 429 6282'),
+(1, 'Super Administrador', 'superAdm@gmail.com', '$2b$12$aXt.urKj5OgRLGnATTloj.siVIgmasf7uCVdWndWHyK/raktqif3a', 1, 4, '449 429 9878'),
 (2, 'Ivan', 'IvanSebastian@gmail.com', '$2b$12$1SGgp4REQ8oF178B55IgfeEzFvx4gD2L1wAH6lQTW5dANqBN8X8SK', 2, 4, '449 223 9955'),
 (3, 'Gael', 'GaelGabriel@gmail.com', '$2b$12$cZp3DQIUwFj8rKttO3lxC.CdFzpCvQeSE7TsMgup6iYb2osX/GMZ.', 3, 4, '449 107 7654'),
 (4, 'Isaac', 'IsaacGallegos@gmail.com', '$2b$12$x12.RpNjleTnslNzHs7S3eKPGbzjuVxnyj72rWrrXR12T5zTEzCIK', 4, 4, '449 568 6105'),
