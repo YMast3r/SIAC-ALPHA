@@ -86,6 +86,9 @@ function registrarEmpleado(req, res) {
                 fecha_contratacion, telefono, correo_electronico, empresa, 
                 fecha_baja, motivo_baja)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                if (data.salario){
+                    data.salario = data.salario.replace(/,/g, ''); // Remueve           
+                }
                 const parametrosEmpleado = [
                     idUsuario,
                     data.nombre,
@@ -124,14 +127,14 @@ function manEmpleados(req, res) {
         }
 
         // Consulta para obtener los empleados
-        conn.query('SELECT e.id_empleado, e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.nombre, e.apellidos, u.descripcion AS tipo_empleado, e.salario, e.fecha_contratacion, e.empresa FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado ORDER BY e.id_empleado DESC', (err, rows) => {
+        conn.query('SELECT e.id_empleado, e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.nombre, e.apellidos, u.descripcion AS tipo_empleado, FORMAT(e.salario, 2) AS salario, e.fecha_contratacion, e.empresa FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado ORDER BY e.id_empleado DESC', (err, rows) => {
             if (err) {
                 console.log(err);
                 return res.status(500).send("Error al recuperar los empleados");
             }
 
             // Consulta para obtener los tipos de empleado
-            conn.query('SELECT * FROM tipo_empleado', (err, tiposEmpleado) => {
+            conn.query('SELECT id_tipo_empleado, descripcion, FORMAT(salario,2) AS salario FROM tipo_empleado', (err, tiposEmpleado) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send("Error al recuperar los tipos de empleado");

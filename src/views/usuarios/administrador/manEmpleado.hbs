@@ -79,10 +79,10 @@
         <!-- Tipo de Empleadono y Salari -->
         <div class="md:col-span-1">
             <label for="tipo_empleado"><i class="fas fa-user-tie"></i> Tipo de Empleado:</label>
-            <select id="tipo_empleado" name="tipo_empleado" value="{{data.tipo_empleado}}" required
+            <select id="tipo_empleado" name="tipo_empleado" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
                 onchange="actualizarSalario()">
-                <option value="">Seleccione</option>
+                <option value="" selected>Seleccione</option>
                 {{#each tiposEmpleado}}
                 <option value="{{this.id_tipo_empleado}}" data-salario="{{this.salario}}">{{this.descripcion}}</option>
                 {{/each}}
@@ -280,7 +280,7 @@ function actualizarSalario() {
     const selectTipoEmpleado = document.getElementById('tipo_empleado');
     const selectedOption = selectTipoEmpleado.options[selectTipoEmpleado.selectedIndex];
     const salario = selectedOption.getAttribute('data-salario');
-    
+
     document.getElementById('salario').value = salario ? salario : '';
 }
 </script>
