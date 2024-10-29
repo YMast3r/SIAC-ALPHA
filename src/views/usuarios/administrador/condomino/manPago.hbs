@@ -719,37 +719,39 @@
             document.getElementById(seccion).classList.remove('hidden');
         }
     </script>
+    <!--Filtro fecha y mes-->
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
             const mesFiltro = document.getElementById("mesFiltro");
             const añoFiltro = document.getElementById("filtroAño");
+            const tipoFiltro = document.getElementById("tipoFiltro");
             const tablaPagos = document.getElementById("tablaPagos");
             const filas = tablaPagos.getElementsByTagName("tr");
 
             function filtrarTabla() {
                 const mes = mesFiltro.value.toLowerCase();
                 const año = añoFiltro.value.toLowerCase();
+                const tipo = tipoFiltro.value.toLowerCase();
 
                 for (let i = 1; i < filas.length; i++) {
                     const fila = filas[i];
                     const celdaMes = fila.cells[2].textContent.toLowerCase();
                     const celdaAño = fila.cells[1].textContent.toLowerCase();
+                    const celdaTipo = fila.cells[3].textContent.toLowerCase();
 
-                    // Verificar si la fila coincide con el mes y el año filtrados
                     const coincideMes = mes === "" || celdaMes.includes(mes);
                     const coincideAño = año === "" || celdaAño.includes(año);
+                    const coincideTipo = tipo === "" || celdaTipo.includes(tipo);
 
-                    if (coincideMes && coincideAño) {
+                    if (coincideMes && coincideAño && coincideTipo) {
                         fila.style.display = "";
                     } else {
                         fila.style.display = "none";
                     }
                 }
-            }
 
-            // Agregar eventos de escucha para cuando cambian los valores de los filtros
-            mesFiltro.addEventListener("change", filtrarTabla);
-            añoFiltro.addEventListener("input", filtrarTabla);
+                verificarPagos();  // Verificar si hay resultados después de aplicar los filtros
+            }
 
             function verificarPagos() {
                 const tablaPagosBody = document.getElementById('tablaPagosBody');
@@ -771,9 +773,10 @@
                 }
             }
 
-            // Llamar a la función después de aplicar filtros
-            document.getElementById('filtroAño').addEventListener('input', verificarPagos);
-            document.getElementById('mesFiltro').addEventListener('change', verificarPagos);
+            // Agregar eventos para los tres filtros
+            mesFiltro.addEventListener("change", filtrarTabla);
+            añoFiltro.addEventListener("input", filtrarTabla);
+            tipoFiltro.addEventListener("change", filtrarTabla);
         });
     </script>
     <script defer>
@@ -918,6 +921,8 @@
             document.getElementById('pagos_plazos').classList.remove('hidden');
         }
     </script>
+    <!--filtro del tipo-->
+    <!--
     <script>
         document.getElementById('tipoFiltro').addEventListener('change', function () {
             const tipoSeleccionado = this.value.toLowerCase();
@@ -933,6 +938,7 @@
             });
         });
     </script>
+    -->
 </body>
 
 </html>
