@@ -605,7 +605,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'tipo_incidencia',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-exclamation-triangle',
+                        icon: 'fas fa-clipboard-list',
                         options: rowsTipoIncidencia.map(m => ({ value: m.id_tipo_incidencia, text: m.tipo_incidencia }))
                     },
                     {
@@ -613,7 +613,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'clasificacion_incidencia',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-exclamation-triangle',
+                        icon: 'fas fa-clipboard-list',
                         options: rowsClasificacion.map(m => ({ value: m.id_clasificacion_incidencia, text: m.clasificacion_incidencia }))
                     },
                     {
