@@ -218,7 +218,7 @@
             let noResult = true;
 
             rows.forEach(row => {
-                let nombre = row.cells[0].innerText.toLowerCase();
+                let nombre = row.cells[1].innerText.toLowerCase();
                 if (nombre.includes(filter)) {
                     row.style.display = '';
                     noResult = false;
