@@ -582,7 +582,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'folio',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-file-invoice',
                         options: rowsFolioIncidencia.map(p => ({ value: p.folio_incidencia, text: p.folio_incidencia }))
                     },
                     {
@@ -590,7 +590,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'asunto',
                         colSpan: 'md:col-span-21',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-bullhorn',
                         options: rowsAsunto.map(m => ({ value: m.asunto, text: m.asunto }))
                     },
                     {
@@ -605,23 +605,23 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'tipo_incidencia',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-clipboard-list',
                         options: rowsTipoIncidencia.map(m => ({ value: m.id_tipo_incidencia, text: m.tipo_incidencia }))
                     },
                     {
-                        label: 'Clasificacion incidencia',
+                        label: 'Clasificación de incidencia',
                         type: 'select',
                         name: 'clasificacion_incidencia',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-clipboard-list',
                         options: rowsClasificacion.map(m => ({ value: m.id_clasificacion_incidencia, text: m.clasificacion_incidencia }))
                     },
                     {
-                        label: 'Status incidencia',
+                        label: 'Status de la incidencia',
                         type: 'select',
                         name: 'status_incidencia',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-spinner',
                         options: rowsStatusIncidencia.map(m => ({ value: m.id_status_incidencia, text: m.status_incidencia }))
                     },
                     {
@@ -645,19 +645,19 @@ function manHistorialEspecifico(req, res) {
             } else if (campo == 'seguimientos') {
                 formFields = [
                     {
-                        label: 'Folio',
+                        label: 'Folio de la Incidencia',
                         type: 'select',
                         name: 'folio',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-file-invoice',
                         options: rowsFolioIncidencia.map(p => ({ value: p.folio_incidencia, text: p.folio_incidencia }))
                     },
                     {
-                        label: 'Movimiento',
+                        label: 'Número del seguimiento',
                         type: 'select',
                         name: 'movimiento',
-                        colSpan: 'md:col-span-21',
-                        icon: 'fas fa-file-signature',
+                        colSpan: 'md:col-span-1',
+                        icon: 'fas fa-list-ol',
                         options: rowsMovimiento.map(m => ({ value: m.movimiento, text: m.movimiento }))
                     },
                     {
@@ -672,7 +672,7 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'comentario',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-message',
                         options: rowsComentario.map(m => ({ value: m.comentario, text: m.comentario }))
                     },
                     {
@@ -680,14 +680,14 @@ function manHistorialEspecifico(req, res) {
                         type: 'select',
                         name: 'status_seguimiento',
                         colSpan: 'md:col-span-1',
-                        icon: 'fas fa-file-signature',
+                        icon: 'fas fa-spinner',
                         options: rowsStatusSeguimiento.map(m => ({ value: m.id_status_seguimiento, text: m.status_seguimiento }))
                     },
                     {
                         label: 'Persona asignada',
                         type: 'select',
                         name: 'persona_asignada',
-                        colSpan: 'md:col-span-2',
+                        colSpan: 'md:col-span-1',
                         icon: 'fas fa-user-tie',
                         options: rowsPersona.map(c => ({ value: c.id_usuario, text: c.nombre_y_tipo }))
                     }
