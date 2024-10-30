@@ -133,7 +133,7 @@ CREATE TABLE `mes` (
 INSERT INTO `mes` (`mes`, `descripcion`) VALUES
 (1, 'Enero'),
 (2, 'Febrero'),
-(3, 'marzo'),
+(3, 'Marzo'),
 (4, 'Abril'),
 (5, 'Mayo'),
 (6, 'Junio'),
