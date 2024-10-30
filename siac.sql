@@ -239,7 +239,7 @@ INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_p
 CREATE TABLE `seguimiento` (
   `folio` int(11) NOT NULL,
   `movimiento` int(11) NOT NULL,
-  `id_empleado` int(11) NOT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
   `comentario` text NOT NULL,
   `id_status_seguimiento` int(11) NOT NULL,
   `fecha` date NOT NULL,

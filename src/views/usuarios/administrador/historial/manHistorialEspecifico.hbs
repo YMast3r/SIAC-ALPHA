@@ -85,21 +85,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            // Aplica select2 a todos los elementos <select> en el documento
-            $('select').select2({
-                placeholder: "Seleccione una opción",  // Placeholder genérico
-                allowClear: true,
-                language: {
-                    noResults: function () {
-                        return "No se encontraron resultados";
-                    }
-                }
-            });
-        });
-    </script>
     <script>
         // Mostrar mensaje de error personalizado si hay un mensaje de error
         const errorMessage = '{{error}}'; // Asumiendo que 'errorT' contiene el mensaje de error desde el backend
@@ -132,6 +117,21 @@
             popup.classList.add('hidden'); // Ocultar el popup
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Aplica select2 a todos los elementos <select> en el documento
+            $('select').select2({
+                placeholder: "Seleccione una opción",  // Placeholder genérico
+                allowClear: true,
+                language: {
+                    noResults: function () {
+                        return "No se encontraron resultados";
+                    }
+                }
+            });
+        });
     </script>
 
     <style>
