@@ -79,12 +79,12 @@ function manIncidencias(req, res) {
         // Consulta SQL con cláusula WHERE dinámica y orden dinámico
         const query = `
             SELECT a.folio, a.asunto, a.fecha, b.descripcion AS tipo, e.descripcion AS clasificacion, 
-                   c.descripcion AS status, a.descripcion, d.nombre AS usuario, u.nombre AS administrador
+                   c.descripcion AS status, a.descripcion, d.nombre AS usuario, COALESCE(u.nombre, "Indefinido") AS administrador
             FROM incidencia a
             JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia
             JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia
             JOIN usuario d ON a.id_usuario = d.id_usuario
-            JOIN usuario u ON a.id_administardor = u.id_usuario
+            LEFT JOIN usuario u ON a.id_administardor = u.id_usuario
             JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia
             ${whereClause}
             ORDER BY ${conn.escapeId(orderByParam)} ${orderDirectionParam}`;
@@ -112,7 +112,8 @@ function manIncidencias(req, res) {
                     { name: 'Clasificación', field: 'clasificacion', sortable: false },
                     { name: 'Estatus', field: 'status', sortable: true },
                     { name: 'Descripción', field: 'descripcion', sortable: false },
-                    { name: 'Usuario', field: 'usuario', sortable: true }
+                    { name: 'Usuario', field: 'usuario', sortable: true },
+                    { name: 'Administrador', field: 'administrador', sortable: true }
                 ].map(header => ({
                     ...header,
                     orderDirection: header.sortable && orderByParam === header.field ? orderDirectionParam : null
