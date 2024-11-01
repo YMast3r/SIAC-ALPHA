@@ -54,8 +54,8 @@
 
     {{!-- ---PESTAÑAS--- --}}
 
-    <div>
-        <nav class="flex justify-end bg-gray-200 pr-2 ">
+    <div class="sticky top-0 relative z-10">
+        <nav class="flex justify-end bg-gray-200 pr-2 sticky top-0 ">
 
                 <button id="formaClipPath3" class=" w-20 overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  clip-path-Forma-Triangular"
                 onclick="mostrarSeccion('info')">Información del condómino
@@ -65,7 +65,7 @@
                 onclick="mostrarSeccion('pagos')">Pagos
             </button>
 
-                <button id="formaClipPath" class=" w-16 overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4 clip-path-Pestañas " onclick="mostrarSeccion('pagos_plazos')"  >  Plazos de pagos 
+                <button id="formaClipPath" class=" w-16 overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4 clip-path-Pestañas " onclick="mostrarSeccion('pagos_plazos')"  >  Pagos adelantados 
             </button>
 
         </nav>
@@ -73,7 +73,7 @@
     <script>
         // Selecciona los elementos y sus configuraciones
         const elementos = [
-            { id: 'formaClipPath', textoInicial: 'Plazos', textoHover: 'Pago a plazos', widthInicial: '5rem', widthHover: '9rem' },
+            { id: 'formaClipPath', textoInicial: 'Adelantos', textoHover: 'Pagos adelantados', widthInicial: '7rem', widthHover: '11rem' },
             { id: 'formaClipPath2', widthInicial: '6rem' },
             { id: 'formaClipPath3', textoInicial: 'Info.', textoHover: 'Información del condómino', widthInicial: '5.5rem', widthHover: '18rem' }
         ];
