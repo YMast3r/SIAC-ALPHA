@@ -171,12 +171,23 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`) VALUES
-(1, 1, 800, 100, 2024, 1, '2024-09-11', 2, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(2, 1, 800, 100, 2024, 2, '2024-09-11', 2, 2, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(3, 1, 800, 100, 2024, 3, '2024-09-11', 2, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(4, 1, 800, 100, 2024, 4, '2024-09-11', 2, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(5, 1, 800, 100, 2024, 5, '2024-09-11', 2, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(6, 1, 800, 100, 2024, 6, '2024-09-11', 2, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1);
+(1, 1, 800, 0, 2024, 1, '2024-09-11', 1, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(2, 1, 800, 0, 2024, 2, '2024-09-11', 1, 2, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(3, 1, 800, 0, 2024, 3, '2024-09-11', 1, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(4, 1, 800, 0, 2024, 4, '2024-09-11', 1, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(5, 1, 800, 0, 2024, 5, '2024-09-11', 1, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(6, 1, 800, 0, 2024, 6, '2024-09-11', 1, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(7, 1, 800, 200, 2024, 7, '2024-09-11', 1, 7, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
+(8, 1, 800, 200, 2024, 8, '2024-09-11', 1, 8, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
+(9, 1, 800, 200, 2024, 9, '2024-09-11', 1, 9, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
+(10, 2, 500, 200, 2024, 1, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(11, 2, 500, 0, 2024, 2, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(12, 2, 500, 0, 2024, 3, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(13, 2, 500, 0, 2024, 4, '2024-09-11', 1, 13, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(14, 2, 500, 0, 2024, 5, '2024-09-11', 1, 14, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(15, 2, 500, 0, 2024, 6, '2024-09-11', 1, 15, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(16, 1, 800, 200, 2024, 10, '2024-09-11', 1, 17, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2),
+(17, 1, 800, 200, 2024, 11, '2024-09-11', 1, 18, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -206,7 +217,8 @@ CREATE TABLE `pago_plazos` (
 --
 
 INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `numero_recibo`, `referencia`, `fecha`, `id_administrador`, `comprobante`) VALUES
-(1, 1, 2024, 6, 2024, 1, 2, 4800, 600, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
+(1, 1, 2024, 6, 2024, 1, 2, 4800, null, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg'),
+(2, 10, 2024, 11, 2024, 1, 2, 1600, 400, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
 
 -- --------------------------------------------------------
 
@@ -228,7 +240,8 @@ CREATE TABLE `propiedad` (
 
 INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`, `fecha_anexo`) VALUES
 (1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-01-01'),
-(2, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
+(2, 3, 'Ana María Díaz de León Escobedo 231, Vista del Sol III, 20264 Aguascalientes, Ags.', 2, 2024-01-01),
+(3, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -607,19 +620,19 @@ ALTER TABLE `incidencia`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `pago_plazos`
 --
 ALTER TABLE `pago_plazos`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `propiedad`
 --
 ALTER TABLE `propiedad`
-  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `status`

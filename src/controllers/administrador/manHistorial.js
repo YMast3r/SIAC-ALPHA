@@ -84,7 +84,7 @@ function manIncidencias(req, res) {
         // Consulta SQL con cláusula WHERE dinámica y orden dinámico
         const query = `
             SELECT a.folio, a.asunto, a.fecha, b.descripcion AS tipo, e.descripcion AS clasificacion, 
-                   c.descripcion AS status, a.descripcion, d.nombre AS usuario, COALESCE(u.nombre, "Indefinido") AS administrador
+                   c.descripcion AS status, a.descripcion, d.nombre AS usuario, COALESCE(u.nombre, "Sin administrador") AS administrador
             FROM incidencia a
             JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia
             JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia
@@ -297,8 +297,12 @@ function manPagos(req, res) {
             params.push(campoDatos.tipoPropiedad);
         }
         if (campoDatos.administrador) {
-            whereClause += ' AND a.id_administrador = ?';
-            params.push(campoDatos.administrador);
+            if (campoDatos.administrador == 0) {
+                whereClause += ' AND a.id_administrador IS NULL';
+            } else {
+                whereClause += ' AND a.id_administrador = ?';
+                params.push(campoDatos.administrador);
+            }
         }
         if (campoDatos.condomino) {
             // Relacionar condómino a través de la tabla usuario (c.id_usuario)
@@ -328,13 +332,13 @@ function manPagos(req, res) {
         conn.query(
             `SELECT a.folio, p.descripcion AS propiedad, FORMAT(a.importe, 2) AS importe, 
                     t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, 
-                    a.año, u.nombre AS administrador, 
+                    a.año, COALESCE(u.nombre, 'Sin administrador') AS administrador, 
                     c.nombre AS condomino, c.id_usuario, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
                     COALESCE(a.referencia, 'Indefinido') AS referencia 
              FROM pago a 
              JOIN propiedad p ON a.id_propiedad = p.id_propiedad 
              JOIN mes b ON a.mes = b.mes 
-             JOIN usuario u ON a.id_administrador = u.id_usuario 
+             LEFT JOIN usuario u ON a.id_administrador = u.id_usuario 
              JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago
              JOIN usuario c ON p.id_usuario = c.id_usuario
              ${whereClause} 
