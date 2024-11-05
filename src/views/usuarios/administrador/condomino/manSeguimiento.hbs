@@ -18,7 +18,7 @@
     <!-- Sección de Datos -->
     <div class="flex flex-col items-center mt-4">
         <!-- Enlace al seguimiento -->
-        <a href="/renderSeguimiento" class="mb-4">
+        <a id="renderSeguimiento" href="/renderSeguimiento" class="mb-4">
             <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Seguimiento</h1>
         </a>
 
@@ -59,7 +59,7 @@
     </div>
 
     <br>
-    <a href="/renderIncidencia"><h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center m-1 text-gray-700">Incidencia</h2></a>
+    <a id="renderIncidencia" href="/renderIncidencia"><h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center m-1 text-gray-700">Incidencia</h2></a>
 
     <!-- Sección de Incidencias -->
     <div class="flex justify-center mt-4">
@@ -245,7 +245,7 @@
             {{/if}}
 
             <div class="flex justify-center">
-                <button type="submit"
+                <button id="{{this.id_status_seguimiento }}" type="submit"
                     class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">Agregar
                     seguimiento</button>
             </div>

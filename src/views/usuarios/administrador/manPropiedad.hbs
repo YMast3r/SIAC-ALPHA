@@ -64,7 +64,7 @@
 </script>
 
     <div>
-        <a href="/renderManPropiedad"
+        <a id="renderManPropiedad" href="/renderManPropiedad"
             class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Propiedades</a>
 
         <div id="propiedad" class="">
@@ -178,7 +178,7 @@
                                     </tr>
                                     <tr>
                                         <td class="p-2">
-                                            <button type="submit"
+                                            <button id="{{this.id_tipo_propiedad}}" type="submit"
                                                 class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-2 block text-center">Registrar
                                                 Propiedad</button>
                                         </td>
@@ -305,7 +305,7 @@
                                     </tr>
                                     <tr>
                                         <td class="p-2">
-                                            <button type="submit"
+                                            <button id="{{data.descripcionTipoPro}}" type="submit"
                                                 class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-2 block text-center">Registrar
                                                 Pago</button>
                                         </td>

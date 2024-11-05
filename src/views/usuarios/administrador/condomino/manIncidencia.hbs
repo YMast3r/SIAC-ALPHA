@@ -113,7 +113,7 @@
                             {{/if}}
                         </td>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
-                            <a href="/manSeguimiento-{{this.folio}}"
+                            <a id="{{this.folio}}" href="/manSeguimiento-{{this.folio}}"
                                 class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md">Detalle</a>
                         </td>
                     </tr>
@@ -178,7 +178,7 @@
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
 
             <div class="flex justify-center">
-                <button type="submit"
+                <button id="{{this.id_clasificacion_incidencia}}" type="submit"
                     class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md">Agregar
                     Incidencia</button>
             </div>

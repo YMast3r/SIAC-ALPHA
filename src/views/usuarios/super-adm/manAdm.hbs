@@ -12,7 +12,7 @@
 </head>
 <body class="bg-indigo-200">
     <div>
-        <a href="/renderAdm" class="font-semibold text-4xl flex justify-center m-5">Administradores</a>
+        <a id="renderAdm" href="/renderAdm" class="font-semibold text-4xl flex justify-center m-5">Administradores</a>
 
         <!-- Campo de búsqueda -->
         <div class="flex justify-center pt-2 mb-0 "></div>
@@ -52,7 +52,7 @@
                             <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.correo_electronico}}</td>
                             <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-2000">{{this.telefono}}</td>
                             <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">{{this.status}}</td>
-                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center"><a href="/ediAdm{{id}}"><svg class="h-8 w-10 text-black text-gray-600 mx-auto" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />  <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" /></svg></a></td>
+                            <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-center"><a id="{{id}}" href="/ediAdm{{id}}"><svg class="h-8 w-10 text-black text-gray-600 mx-auto" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />  <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" /></svg></a></td>
                         </tr>
                         {{/each}}
                         <tr id="noResultsRow" class="hidden">
@@ -170,7 +170,7 @@
                             <h4 style="text-align: center; color: red;">*{{{error}}}</h4>
                         {{/if}}
 
-                        <button type="submit" class=" rounded-md bg-gray-500 w-full  text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center " >Enviar</button>
+                        <button id="{{this.id_status}}" type="submit" class=" rounded-md bg-gray-500 w-full  text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center " >Enviar</button>
                     </form>
                     <script>
                         // Mostrar alerta si hay un mensaje de error

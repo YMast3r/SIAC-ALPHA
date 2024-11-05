@@ -18,7 +18,7 @@
     {{!-- ---PESTAÑAS--- --}}
 
     <div>
-        <a href="/manPaginaTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Página de tipos</a>
+        <a id="manPaginaTipo" href="/manPaginaTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Página de tipos</a>
 
         <h1 class="font-medium text-2xl mb-4 text-center text-gray-700">{{titulo}}</h1>
 
@@ -41,7 +41,7 @@
                         {{#each tableHeaders}}
                         <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
                             {{#if this.sortable}}
-                            <a href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
+                            <a id="{{this.filed}}" href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
                                 class="flex items-center justify-center text-center">
                                 {{this.name}}
                                 {{#if this.orderDirection}}
@@ -141,7 +141,7 @@
                     {{/isEqual}}
                 </div>
                 {{/each}}
-                <button type="submit"
+                <button id="registrarTipo" type="submit"
                     class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-3 block mt-4 mb-2 text-center">
                     Registrar
                 </button>
