@@ -125,7 +125,7 @@ function manTipo(req, res, tableName, idField, descriptionField, tipoField, form
         }));
 
         if (tableName === "tipo_pago") {
-            query = `SELECT ${idField}, descripcion, COALESCE(CONCAT('$', FORMAT(precio, 2)), 'Indefinido') AS precio 
+            query = `SELECT ${idField}, descripcion, COALESCE(CONCAT('$', FORMAT(precio, 2)), 'Por tipo de propiedad') AS precio 
                      FROM ${tableName} 
                      ORDER BY ${orderByParam} ${orderDirectionParam}`;
             tableHeaders = [
