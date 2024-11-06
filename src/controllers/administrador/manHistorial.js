@@ -59,8 +59,13 @@ function manIncidencias(req, res) {
             params.push(campoDatos.status_incidencia);
         }
         if (campoDatos.administrador) {
-            whereClause += ' AND a.id_administardor = ?';
-            params.push(campoDatos.administrador);
+            if (campoDatos.administrador == 0) {
+                whereClause += ' AND a.id_administardor IS NULL';
+
+            } else {
+                whereClause += ' AND a.id_administardor = ?';
+                params.push(campoDatos.administrador);
+            }
         }
         if (campoDatos.usuario) {
             whereClause += ' AND a.id_usuario = ?';
@@ -79,12 +84,12 @@ function manIncidencias(req, res) {
         // Consulta SQL con cláusula WHERE dinámica y orden dinámico
         const query = `
             SELECT a.folio, a.asunto, a.fecha, b.descripcion AS tipo, e.descripcion AS clasificacion, 
-                   c.descripcion AS status, a.descripcion, d.nombre AS usuario, u.nombre AS administrador
+                   c.descripcion AS status, a.descripcion, d.nombre AS usuario, COALESCE(u.nombre, "Sin administrador") AS administrador
             FROM incidencia a
             JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia
             JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia
             JOIN usuario d ON a.id_usuario = d.id_usuario
-            JOIN usuario u ON a.id_administardor = u.id_usuario
+            LEFT JOIN usuario u ON a.id_administardor = u.id_usuario
             JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia
             ${whereClause}
             ORDER BY ${conn.escapeId(orderByParam)} ${orderDirectionParam}`;
@@ -112,7 +117,8 @@ function manIncidencias(req, res) {
                     { name: 'Clasificación', field: 'clasificacion', sortable: false },
                     { name: 'Estatus', field: 'status', sortable: true },
                     { name: 'Descripción', field: 'descripcion', sortable: false },
-                    { name: 'Usuario', field: 'usuario', sortable: true }
+                    { name: 'Usuario', field: 'usuario', sortable: true },
+                    { name: 'Administrador', field: 'administrador', sortable: true }
                 ].map(header => ({
                     ...header,
                     orderDirection: header.sortable && orderByParam === header.field ? orderDirectionParam : null
@@ -177,8 +183,12 @@ function manSeguimiento(req, res) {
             params.push(campoDatos.status_seguimiento);
         }
         if (campoDatos.persona_asignada) {
-            whereClause += ' AND s.id_empleado = ?';
-            params.push(campoDatos.persona_asignada);
+            if (campoDatos.persona_asignada == 0) {
+                whereClause += ' AND s.id_empleado IS NULL';
+            } else {
+                whereClause += ' AND s.id_empleado = ?';
+                params.push(campoDatos.persona_asignada);
+            }
         }
     } else {
         console.log("No hay campos");
@@ -192,9 +202,9 @@ function manSeguimiento(req, res) {
 
         // Consulta SQL con cláusula WHERE dinámica y orden dinámico
         const query = `
-            SELECT s.folio, s.movimiento, u.nombre AS empleado, s.comentario, ss.descripcion AS status, s.fecha 
+            SELECT s.folio, s.movimiento, COALESCE(u.nombre, "Sin persona") AS empleado, s.comentario, ss.descripcion AS status, s.fecha 
             FROM seguimiento s
-            JOIN usuario u ON s.id_empleado = u.id_usuario
+            LEFT JOIN usuario u ON s.id_empleado = u.id_usuario
             JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento
             ${whereClause}
             ORDER BY ${conn.escapeId(orderByParam)} ${orderDirectionParam}`;
@@ -217,7 +227,7 @@ function manSeguimiento(req, res) {
                 const tableHeaders = [
                     { name: 'Folio', field: 'folio', sortable: true },
                     { name: 'Movimiento', field: 'movimiento', sortable: true },
-                    { name: 'Empleado', field: 'empleado', sortable: true },
+                    { name: 'Persona', field: 'empleado', sortable: true },
                     { name: 'Comentario', field: 'comentario', sortable: false },
                     { name: 'Estatus', field: 'status', sortable: true },
                     { name: 'Fecha', field: 'fecha', sortable: true }
@@ -287,8 +297,12 @@ function manPagos(req, res) {
             params.push(campoDatos.tipoPropiedad);
         }
         if (campoDatos.administrador) {
-            whereClause += ' AND a.id_administrador = ?';
-            params.push(campoDatos.administrador);
+            if (campoDatos.administrador == 0) {
+                whereClause += ' AND a.id_administrador IS NULL';
+            } else {
+                whereClause += ' AND a.id_administrador = ?';
+                params.push(campoDatos.administrador);
+            }
         }
         if (campoDatos.condomino) {
             // Relacionar condómino a través de la tabla usuario (c.id_usuario)
@@ -318,13 +332,13 @@ function manPagos(req, res) {
         conn.query(
             `SELECT a.folio, p.descripcion AS propiedad, FORMAT(a.importe, 2) AS importe, 
                     t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, 
-                    a.año, u.nombre AS administrador, 
+                    a.año, COALESCE(u.nombre, 'Sin administrador') AS administrador, 
                     c.nombre AS condomino, c.id_usuario, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
                     COALESCE(a.referencia, 'Indefinido') AS referencia 
              FROM pago a 
              JOIN propiedad p ON a.id_propiedad = p.id_propiedad 
              JOIN mes b ON a.mes = b.mes 
-             JOIN usuario u ON a.id_administrador = u.id_usuario 
+             LEFT JOIN usuario u ON a.id_administrador = u.id_usuario 
              JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago
              JOIN usuario c ON p.id_usuario = c.id_usuario
              ${whereClause} 
@@ -438,12 +452,13 @@ function manHistorialEspecifico(req, res) {
                 queryAsync(conn, 'SELECT descripcion AS tipo_propiedad_descripcion, id_tipo_propiedad FROM tipo_propiedad'),
                 queryAsync(conn, 'SELECT descripcion AS tipo_pago_descripcion, id_tipo_pago FROM tipo_pago'),
                 queryAsync(conn, 'SELECT DISTINCT referencia FROM pago'),
-                queryAsync(conn, 'SELECT nombre AS administrador, id_usuario AS id_administrador FROM usuario WHERE tipo_usuario = 2'),
+                queryAsync(conn, 'SELECT nombre AS administrador, id_usuario AS id_administrador FROM usuario WHERE tipo_usuario IN(0, 2)'),
                 queryAsync(conn, 'SELECT nombre AS condomino, id_usuario AS id_condomino FROM usuario WHERE tipo_usuario = 3')
             ]);
 
             if (!rowsPropieda.length || !rowsTipoPro.length || !rowsTipoPago.length || !rowsReferencia.length || !rowsAdm.length || !rowsCon.length) {
                 console.log("No data found in one or more queries");
+                res.redirect('/renderHistorial');
                 return;
             }
 
@@ -454,13 +469,14 @@ function manHistorialEspecifico(req, res) {
             // Consultas en paralelo para optimización
             const [rowsMovimiento, rowsPersona, rowsComentario, rowsStatusSeguimiento] = await Promise.all([
                 queryAsync(conn, 'SELECT DISTINCT movimiento FROM seguimiento'),
-                queryAsync(conn, "SELECT u.id_usuario, u.nombre, u.tipo_usuario, e.tipo_empleado, CONCAT( CASE WHEN u.tipo_usuario = 3 THEN 'Condómino' WHEN u.tipo_usuario = 4 THEN te.descripcion WHEN u.tipo_usuario = 2 THEN 'Administrador' END, ' - ', u.nombre ) AS nombre_y_tipo FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario LEFT JOIN tipo_empleado te ON e.tipo_empleado = te.id_tipo_empleado WHERE u.tipo_usuario IN(2, 3, 4)"),
+                queryAsync(conn, "SELECT u.id_usuario, u.nombre, u.tipo_usuario, e.tipo_empleado, CONCAT( CASE WHEN u.tipo_usuario = 0 THEN 'Sin tipo' WHEN u.tipo_usuario = 3 THEN 'Condómino' WHEN u.tipo_usuario = 4 THEN te.descripcion WHEN u.tipo_usuario = 2 THEN 'Administrador' END, ' - ', u.nombre ) AS nombre_y_tipo FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario LEFT JOIN tipo_empleado te ON e.tipo_empleado = te.id_tipo_empleado WHERE u.tipo_usuario IN(0, 2, 3, 4)"),
                 queryAsync(conn, 'SELECT DISTINCT comentario FROM seguimiento'),
                 queryAsync(conn, 'SELECT descripcion AS status_seguimiento, id_status_seguimiento FROM status_seguimiento')
             ]);
 
             if (!rowsMovimiento.length || !rowsPersona.length || !rowsComentario.length || !rowsStatusSeguimiento.length) {
                 console.log("No data found in one or more queries");
+                res.redirect('/renderHistorial');
                 return;
             }
 
@@ -472,7 +488,7 @@ function manHistorialEspecifico(req, res) {
                 queryAsync(conn, 'SELECT descripcion AS tipo_incidencia, id_tipo_incidencia FROM tipo_incidencia'),
                 queryAsync(conn, 'SELECT descripcion AS clasificacion_incidencia, id_clasificacion_incidencia FROM clasificacion_incidencia'),
                 queryAsync(conn, 'SELECT descripcion AS status_incidencia, id_status_incidencia FROM status_incidencia'),
-                queryAsync(conn, 'SELECT nombre AS administrador, id_usuario AS id_administrador FROM usuario u WHERE tipo_usuario = 2'),
+                queryAsync(conn, 'SELECT nombre AS administrador, id_usuario AS id_administrador FROM usuario u WHERE tipo_usuario IN(0, 2)'),
                 queryAsync(conn, 'SELECT nombre AS usuario, id_usuario FROM usuario u WHERE tipo_usuario = 3'),
                 queryAsync(conn, 'SELECT folio AS folio_incidencia FROM incidencia'),
                 queryAsync(conn, 'SELECT DISTINCT asunto FROM incidencia')
@@ -480,6 +496,7 @@ function manHistorialEspecifico(req, res) {
 
             if (!rowsTipoIncidencia.length || !rowsClasificacion.length || !rowsStatusIncidencia.length || !rowsAdmIncidencia.length || !rowsUsuario.length || !rowsFolioIncidencia.length || !rowsAsunto.length) {
                 console.log("No data found in one or more queries");
+                res.redirect('/renderHistorial');
                 return;
             }
 

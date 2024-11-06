@@ -29,7 +29,7 @@
                     {{#each tableHeaders}}
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl {{#if @first}}rounded-tl-lg{{/if}}">
                         {{#if this.sortable}}
-                        <a href="?orderBy={{this.field}}&orderDirection={{#isEqual this.orderDirection 'ASC'}}DESC{{else}}ASC{{/isEqual}}"
+                        <a id="{{this.name}}" href="?orderBy={{this.field}}&orderDirection={{#isEqual this.orderDirection 'ASC'}}DESC{{else}}ASC{{/isEqual}}"
                             class="flex items-center justify-center text-center">
                             {{this.name}}
                             <span class="ml-2">

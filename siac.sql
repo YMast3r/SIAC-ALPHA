@@ -133,7 +133,7 @@ CREATE TABLE `mes` (
 INSERT INTO `mes` (`mes`, `descripcion`) VALUES
 (1, 'Enero'),
 (2, 'Febrero'),
-(3, 'marzo'),
+(3, 'Marzo'),
 (4, 'Abril'),
 (5, 'Mayo'),
 (6, 'Junio'),
@@ -171,12 +171,23 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`) VALUES
-(1, 1, 800, 100, 2024, 1, '2024-09-11', 2, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(2, 1, 800, 100, 2024, 2, '2024-09-11', 2, 2, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(3, 1, 800, 100, 2024, 3, '2024-09-11', 2, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(4, 1, 800, 100, 2024, 4, '2024-09-11', 2, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(5, 1, 800, 100, 2024, 5, '2024-09-11', 2, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(6, 1, 800, 100, 2024, 6, '2024-09-11', 2, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1);
+(1, 1, 800, 0, 2024, 1, '2024-09-11', 1, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(2, 1, 800, 0, 2024, 2, '2024-09-11', 1, 2, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(3, 1, 800, 0, 2024, 3, '2024-09-11', 1, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(4, 1, 800, 0, 2024, 4, '2024-09-11', 1, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(5, 1, 800, 0, 2024, 5, '2024-09-11', 1, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(6, 1, 800, 0, 2024, 6, '2024-09-11', 1, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(7, 1, 800, 200, 2024, 7, '2024-09-11', 1, 7, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
+(8, 1, 800, 200, 2024, 8, '2024-09-11', 1, 8, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
+(9, 1, 800, 200, 2024, 9, '2024-09-11', 1, 9, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
+(10, 2, 500, 200, 2024, 1, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(11, 2, 500, 0, 2024, 2, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(12, 2, 500, 0, 2024, 3, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(13, 2, 500, 0, 2024, 4, '2024-09-11', 1, 13, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(14, 2, 500, 0, 2024, 5, '2024-09-11', 1, 14, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(15, 2, 500, 0, 2024, 6, '2024-09-11', 1, 15, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(16, 1, 800, 200, 2024, 10, '2024-09-11', 1, 17, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2),
+(17, 1, 800, 200, 2024, 11, '2024-09-11', 1, 18, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -206,7 +217,8 @@ CREATE TABLE `pago_plazos` (
 --
 
 INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `numero_recibo`, `referencia`, `fecha`, `id_administrador`, `comprobante`) VALUES
-(1, 1, 2024, 6, 2024, 1, 2, 4800, 600, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
+(1, 1, 2024, 6, 2024, 1, 2, 4800, null, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg'),
+(2, 10, 2024, 11, 2024, 1, 2, 1600, 400, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
 
 -- --------------------------------------------------------
 
@@ -228,7 +240,8 @@ CREATE TABLE `propiedad` (
 
 INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`, `fecha_anexo`) VALUES
 (1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-01-01'),
-(2, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
+(2, 3, 'Ana María Díaz de León Escobedo 231, Vista del Sol III, 20264 Aguascalientes, Ags.', 2, 2024-01-01),
+(3, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -239,7 +252,7 @@ INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_p
 CREATE TABLE `seguimiento` (
   `folio` int(11) NOT NULL,
   `movimiento` int(11) NOT NULL,
-  `id_empleado` int(11) NOT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
   `comentario` text NOT NULL,
   `id_status_seguimiento` int(11) NOT NULL,
   `fecha` date NOT NULL,
@@ -419,6 +432,7 @@ CREATE TABLE `tipo_usuario` (
 --
 
 INSERT INTO `tipo_usuario` (`id_tipo_usuario`, `descripcion`) VALUES
+(0, 'Sin tipo'),
 (1, 'Super Administrador'),
 (2, 'Administrador'),
 (3, 'Condomino '),
@@ -445,6 +459,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`, `tipo_usuario`, `status`, `telefono`) VALUES
+(0, 'Sin persona', 'SinCorreo@gmail.com', 'Sin contraseña', 0, 2, '000 000 0000'),
 (1, 'Super Administrador', 'superAdm@gmail.com', '$2b$12$aXt.urKj5OgRLGnATTloj.siVIgmasf7uCVdWndWHyK/raktqif3a', 1, 4, '449 429 9878'),
 (2, 'Ivan', 'IvanSebastian@gmail.com', '$2b$12$1SGgp4REQ8oF178B55IgfeEzFvx4gD2L1wAH6lQTW5dANqBN8X8SK', 2, 4, '449 223 9955'),
 (3, 'Gael', 'GaelGabriel@gmail.com', '$2b$12$cZp3DQIUwFj8rKttO3lxC.CdFzpCvQeSE7TsMgup6iYb2osX/GMZ.', 3, 4, '449 107 7654'),
@@ -605,19 +620,19 @@ ALTER TABLE `incidencia`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `pago_plazos`
 --
 ALTER TABLE `pago_plazos`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `propiedad`
 --
 ALTER TABLE `propiedad`
-  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `status`
