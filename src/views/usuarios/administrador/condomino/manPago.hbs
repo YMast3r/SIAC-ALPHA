@@ -39,7 +39,7 @@
                             <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200">{{this.tipo_propiedad}}</td>
                             <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200">${{this.pago}}</td>
                             <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200 text-center">
-                                <a href="/manPago-{{this.id_propiedad}}"
+                                <a id="{{this.id_propiedad}}" href="/manPago-{{this.id_propiedad}}"
                                     class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
                             </td>
                         </tr>
@@ -103,7 +103,7 @@
     </script>
 
     <div class="flex justify-around bg-gray-200 p-4">
-        <a href="/renderRecuperarPropiedadPago">
+        <a id="renderRecuperarPropiedadPago" href="/renderRecuperarPropiedadPago">
             <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-2">Propiedades del condómino</h1>
         </a>
     </div>
@@ -120,7 +120,7 @@
     {{!-- Condición para ver si hay pagos --}}
     {{else}}
 
-    <a href="/renderPago">
+    <a id="renderPago" href="/renderPago">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center">Pagos</h1>
     </a>
     <div class="text-center mb-5">
@@ -320,7 +320,7 @@
 
                 <!-- Botón para enviar el formulario -->
                 <!--Se ajustó el margen superior e inferior del botón para una mejor distribución en dispositivos móviles. (mt-4 mb-2)-->
-                <button type="submit"
+                <button id="enviarPago" type="submit"
                     class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">Enviar</button>
 
                 <!--Sección para mostrar errores-->
@@ -493,7 +493,7 @@
                     {{#isEqual tipoUsuario 3}} required {{/isEqual}}>
 
                 <!-- Botón para enviar el formulario -->
-                <button type="submit"
+                <button id="enviarVariosP" type="submit"
                     class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
                     Enviar
                 </button>
