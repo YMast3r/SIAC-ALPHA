@@ -41,7 +41,7 @@
                         {{#each tableHeaders}}
                         <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
                             {{#if this.sortable}}
-                            <a id="{{this.filed}}" href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
+                            <a id="{{this.name}}" href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
                                 class="flex items-center justify-center text-center">
                                 {{this.name}}
                                 {{#if this.orderDirection}}
