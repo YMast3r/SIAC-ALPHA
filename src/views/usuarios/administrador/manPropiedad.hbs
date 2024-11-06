@@ -95,7 +95,7 @@
                                         <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
                                     </span>
                                 </th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DESCRIPCIÓN
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DIRECCIÓN
                                 </th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">CONDÓMINO</th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center rounded-tr-lg text-xl">
@@ -138,11 +138,11 @@
                                     <tr>
                                         <td class="p-2 ">
                                             <label for="descripcionPropiedad" class="block  text-lg">
-                                                <i class="fas fa-pencil-alt">&nbsp;</i>
-                                                Descripción</label>
+                                                <i class="fas fa-map-marker-alt">&nbsp;</i>
+                                                Dirección</label>
                                             <input type="text" name="descripcionPropiedad"
                                                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
-                                                placeholder="Descripción" id="descripcionPropiedad" required
+                                                placeholder="Dirección" id="descripcionPropiedad" required
                                                 value="{{data.descripcionPropiedad}}">
                                         </td>
                                     </tr>
@@ -162,7 +162,7 @@
                                         <td class="p-2  text-lg">
                                             <label for="tipoPropiedad">
                                             <i class="fas fa-city">&nbsp;</i>
-                                            Tipo Propiedad</label>
+                                            Tipo de Propiedad</label>
                                             <select id="tipoPropiedad" name="tipoPropiedad"
                                                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                                                 {{#each tipoPropiedad}}
@@ -234,7 +234,7 @@
                                 </th>
                                 <th
                                     class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">
-                                    DESCRIPCIÓN
+                                    TIPO PROPIEDAD
                                 </th>
                                 <th
                                     class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium  text-lg text-center rounded-tr-lg">
@@ -274,11 +274,11 @@
                                     <tr>
                                         <td class="p-2 text-lg">
                                             <label for="descripcionTipoPro" class="block text-lg">
-                                            <i class="fas fa-pencil-alt">&nbsp;</i>
-                                                Descripción</label>
+                                            <i class="fas fa-city">&nbsp;</i>
+                                                Tipo de Propiedad</label>
                                             <input type="text" name="descripcionTipoPro"
                                                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
-                                                placeholder="Descripción" id="descripcionTipoPro" required
+                                                placeholder="Tipo de Propiedad  " id="descripcionTipoPro" required
                                                 value="{{data.descripcionTipoPro}}">
                                         </td>
                                     </tr>
