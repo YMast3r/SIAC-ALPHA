@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 22-10-2024 a las 20:32:35
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 06-11-2024 a las 01:52:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -84,10 +84,10 @@ CREATE TABLE `empleado` (
 --
 
 INSERT INTO `empleado` (`id_empleado`, `id_usuario`, `nombre`, `apellidos`, `tipo_empleado`, `salario`, `fecha_contratacion`, `telefono`, `correo_electronico`, `empresa`, `fecha_baja`, `motivo_baja`) VALUES
-(1, 2, 'Ivan Sebastián', 'Guerrero Basurto', 1, 30000.00, '2020-01-15', '449 223 9955', 'IvanSebastian@gmail.com', 'Empresa falsa', null, null),
-(2, 5, 'Regina Odette', 'Hernández Buenrostro', 1, 20000.00, '2020-01-15', '351 304 6049', 'ReginaOdette@condominio.com', 'Empresa falsa', null, null),
-(3, 4, 'Isaac', 'Gallegos Mena', 2, 10000.00, '2020-01-15', '449 568 6105', 'IsaacGallegos@condominio.com', 'Empresa falsa', null, null),
-(4, 7, 'Ian Yeshua', 'López Garcia', 3, 15000.00, '2019-05-20', '449 429 6282', 'ianYeshua@condominio.com', 'Empresa falsa', null, null);
+(1, 2, 'Ivan Sebastián', 'Guerrero Basurto', 1, 30000.00, '2020-01-15', '449 223 9955', 'IvanSebastian@gmail.com', 'Empresa falsa', NULL, NULL),
+(2, 5, 'Regina Odette', 'Hernández Buenrostro', 1, 20000.00, '2020-01-15', '351 304 6049', 'ReginaOdette@condominio.com', 'Empresa falsa', NULL, NULL),
+(3, 4, 'Isaac', 'Gallegos Mena', 2, 10000.00, '2020-01-15', '449 568 6105', 'IsaacGallegos@condominio.com', 'Empresa falsa', NULL, NULL),
+(4, 7, 'Ian Yeshua', 'López Garcia', 3, 15000.00, '2019-05-20', '449 429 6282', 'ianYeshua@condominio.com', 'Empresa falsa', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -177,15 +177,15 @@ INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`
 (4, 1, 800, 0, 2024, 4, '2024-09-11', 1, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
 (5, 1, 800, 0, 2024, 5, '2024-09-11', 1, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
 (6, 1, 800, 0, 2024, 6, '2024-09-11', 1, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(7, 1, 800, 200, 2024, 7, '2024-09-11', 1, 7, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
-(8, 1, 800, 200, 2024, 8, '2024-09-11', 1, 8, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
-(9, 1, 800, 200, 2024, 9, '2024-09-11', 1, 9, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, null),
-(10, 2, 500, 200, 2024, 1, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
-(11, 2, 500, 0, 2024, 2, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
-(12, 2, 500, 0, 2024, 3, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
-(13, 2, 500, 0, 2024, 4, '2024-09-11', 1, 13, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
-(14, 2, 500, 0, 2024, 5, '2024-09-11', 1, 14, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
-(15, 2, 500, 0, 2024, 6, '2024-09-11', 1, 15, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', null, null),
+(7, 1, 800, 200, 2024, 7, '2024-09-11', 1, 7, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL),
+(8, 1, 800, 200, 2024, 8, '2024-09-11', 1, 8, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL),
+(9, 1, 800, 200, 2024, 9, '2024-09-11', 1, 9, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL),
+(10, 2, 500, 200, 2024, 1, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
+(11, 2, 500, 0, 2024, 2, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
+(12, 2, 500, 0, 2024, 3, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
+(13, 2, 500, 0, 2024, 4, '2024-09-11', 1, 13, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
+(14, 2, 500, 0, 2024, 5, '2024-09-11', 1, 14, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
+(15, 2, 500, 0, 2024, 6, '2024-09-11', 1, 15, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
 (16, 1, 800, 200, 2024, 10, '2024-09-11', 1, 17, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2),
 (17, 1, 800, 200, 2024, 11, '2024-09-11', 1, 18, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2);
 
@@ -217,7 +217,7 @@ CREATE TABLE `pago_plazos` (
 --
 
 INSERT INTO `pago_plazos` (`folio`, `mes_inicio`, `año_Inicio`, `mes_final`, `año_final`, `id_propiedad`, `id_tipo_pago`, `importe`, `recargo`, `numero_recibo`, `referencia`, `fecha`, `id_administrador`, `comprobante`) VALUES
-(1, 1, 2024, 6, 2024, 1, 2, 4800, null, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg'),
+(1, 1, 2024, 6, 2024, 1, 2, 4800, 0, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg'),
 (2, 10, 2024, 11, 2024, 1, 2, 1600, 400, '12', '3456 7890 1234', '2024-09-11', 2, '/imagenes/imagenesPago/1717619209683.jpg');
 
 -- --------------------------------------------------------
@@ -240,7 +240,7 @@ CREATE TABLE `propiedad` (
 
 INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`, `fecha_anexo`) VALUES
 (1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-01-01'),
-(2, 3, 'Ana María Díaz de León Escobedo 231, Vista del Sol III, 20264 Aguascalientes, Ags.', 2, 2024-01-01),
+(2, 3, 'Ana María Díaz de León Escobedo 231, Vista del Sol III, 20264 Aguascalientes, Ags.', 2, '0000-00-00'),
 (3, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
 
 -- --------------------------------------------------------
@@ -346,9 +346,9 @@ CREATE TABLE `tipo_empleado` (
 --
 
 INSERT INTO `tipo_empleado` (`id_tipo_empleado`, `descripcion`, `salario`) VALUES
-(1, 'Administrador', 30000.00),
-(2, 'Vigilante', 10000.00),
-(3, 'Plomero', 15000.00);
+(1, 'Administrador', 30000),
+(2, 'Vigilante', 10000),
+(3, 'Plomero', 15000);
 
 -- --------------------------------------------------------
 
@@ -383,17 +383,17 @@ INSERT INTO `tipo_incidencia` (`id_tipo_incidencia`, `descripcion`) VALUES
 CREATE TABLE `tipo_pago` (
   `id_tipo_pago` int(20) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `precio` float DEFAULT NULL
+  `precio` float DEFAULT NULL,
+  `recargo` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `tipo_pago`
 --
 
-INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripcion`, `precio`) VALUES
-(1, 'Cuota', NULL),
-(2, 'Recargo', NULL),
-(3, 'Cuota extraordinaria', 1100);
+INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripcion`, `precio`, `recargo`) VALUES
+(1, 'Cuota', NULL, NULL),
+(2, 'Cuota extraordinaria', 1100, 400);
 
 -- --------------------------------------------------------
 
@@ -404,17 +404,18 @@ INSERT INTO `tipo_pago` (`id_tipo_pago`, `descripcion`, `precio`) VALUES
 CREATE TABLE `tipo_propiedad` (
   `id_tipo_propiedad` int(20) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `pago` float NOT NULL
+  `pago` float NOT NULL,
+  `recargo` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `tipo_propiedad`
 --
 
-INSERT INTO `tipo_propiedad` (`id_tipo_propiedad`, `descripcion`, `pago`) VALUES
-(1, 'casa', 800),
-(2, 'terreno', 500),
-(3, 'departamento', 750);
+INSERT INTO `tipo_propiedad` (`id_tipo_propiedad`, `descripcion`, `pago`, `recargo`) VALUES
+(1, 'casa', 800, 200),
+(2, 'terreno', 500, 150),
+(3, 'departamento', 750, 250);
 
 -- --------------------------------------------------------
 
@@ -594,166 +595,3 @@ ALTER TABLE `usuario`
   ADD KEY `FK_usuarios_tipo` (`tipo_usuario`),
   ADD KEY `FK_usuarios_status` (`status`);
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `clasificacion_incidencia`
---
-ALTER TABLE `clasificacion_incidencia`
-  MODIFY `id_clasificacion_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT de la tabla `empleado`
---
-ALTER TABLE `empleado`
-  MODIFY `id_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `incidencia`
---
-ALTER TABLE `incidencia`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `pago`
---
-ALTER TABLE `pago`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
---
--- AUTO_INCREMENT de la tabla `pago_plazos`
---
-ALTER TABLE `pago_plazos`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `propiedad`
---
-ALTER TABLE `propiedad`
-  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `status`
---
-ALTER TABLE `status`
-  MODIFY `id_status` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT de la tabla `status_incidencia`
---
-ALTER TABLE `status_incidencia`
-  MODIFY `id_status_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `status_seguimiento`
---
-ALTER TABLE `status_seguimiento`
-  MODIFY `id_status_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `tipo_empleado`
---
-ALTER TABLE `tipo_empleado`
-  MODIFY `id_tipo_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `tipo_incidencia`
---
-ALTER TABLE `tipo_incidencia`
-  MODIFY `id_tipo_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT de la tabla `tipo_pago`
---
-ALTER TABLE `tipo_pago`
-  MODIFY `id_tipo_pago` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `tipo_propiedad`
---
-ALTER TABLE `tipo_propiedad`
-  MODIFY `id_tipo_propiedad` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `tipo_usuario`
---
-ALTER TABLE `tipo_usuario`
-  MODIFY `id_tipo_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `clasificacion_incidencia`
---
-ALTER TABLE `clasificacion_incidencia`
-  ADD CONSTRAINT `FK_tipo_incidencia_clasificacion` FOREIGN KEY (`tipo_incidencia`) REFERENCES `tipo_incidencia` (`id_tipo_incidencia`);
-
---
--- Filtros para la tabla `empleado`
---
-ALTER TABLE `empleado`
-  ADD CONSTRAINT `FK_tipo_empleado` FOREIGN KEY (`tipo_empleado`) REFERENCES `tipo_empleado` (`id_tipo_empleado`),
-  ADD CONSTRAINT `FK_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
-
---
--- Filtros para la tabla `incidencia`
---
-ALTER TABLE `incidencia`
-  ADD CONSTRAINT `FK_administrador_incidencia` FOREIGN KEY (`id_administardor`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `FK_clasificacion_incidencia_base` FOREIGN KEY (`clasificacion_incidencia`) REFERENCES `clasificacion_incidencia` (`id_clasificacion_incidencia`),
-  ADD CONSTRAINT `FK_incidencias_status` FOREIGN KEY (`id_status_incidencia`) REFERENCES `status_incidencia` (`id_status_incidencia`),
-  ADD CONSTRAINT `FK_incidencias_tipo` FOREIGN KEY (`id_tipo_incidencia`) REFERENCES `tipo_incidencia` (`id_tipo_incidencia`),
-  ADD CONSTRAINT `FK_usuarios_incidencia` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
-
---
--- Filtros para la tabla `pago`
---
-ALTER TABLE `pago`
-  ADD CONSTRAINT `FK_pago_tipo_pago` FOREIGN KEY (`tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`),
-  ADD CONSTRAINT `FK_plazo` FOREIGN KEY (`id_plazo`) REFERENCES `pago_plazos` (`folio`),
-  ADD CONSTRAINT `FK_propiedad_pago` FOREIGN KEY (`id_propiedad`) REFERENCES `propiedad` (`id_propiedad`),
-  ADD CONSTRAINT `FK_usuarios_administrador` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`),
-  ADD CONSTRAINT `FK_usuarios_mes` FOREIGN KEY (`mes`) REFERENCES `mes` (`mes`);
-
---
--- Filtros para la tabla `pago_plazos`
---
-ALTER TABLE `pago_plazos`
-  ADD CONSTRAINT `FK_pago_tipo_pago_plazos` FOREIGN KEY (`id_tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`),
-  ADD CONSTRAINT `FK_plazos_propiedad` FOREIGN KEY (`id_propiedad`) REFERENCES `propiedad` (`id_propiedad`),
-  ADD CONSTRAINT `FK_usuarios_administradorPlazo` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`);
-
---
--- Filtros para la tabla `propiedad`
---
-ALTER TABLE `propiedad`
-  ADD CONSTRAINT `FK_propiedad_tipo` FOREIGN KEY (`id_tipo_propiedad`) REFERENCES `tipo_propiedad` (`id_tipo_propiedad`),
-  ADD CONSTRAINT `FK_uasuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
-
---
--- Filtros para la tabla `seguimiento`
---
-ALTER TABLE `seguimiento`
-  ADD CONSTRAINT `FK_status_seguimiento` FOREIGN KEY (`id_status_seguimiento`) REFERENCES `status_seguimiento` (`id_status_seguimiento`);
-
---
--- Filtros para la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `FK_usuarios_status` FOREIGN KEY (`status`) REFERENCES `status` (`id_status`),
-  ADD CONSTRAINT `FK_usuarios_tipo` FOREIGN KEY (`tipo_usuario`) REFERENCES `tipo_usuario` (`id_tipo_usuario`);
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

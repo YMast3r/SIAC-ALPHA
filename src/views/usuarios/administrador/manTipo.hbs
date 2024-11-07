@@ -18,7 +18,8 @@
     {{!-- ---PESTAÑAS--- --}}
 
     <div>
-        <a id="manPaginaTipo" href="/manPaginaTipo" class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Página de tipos</a>
+        <a id="manPaginaTipo" href="/manPaginaTipo"
+            class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Página de tipos</a>
 
         <h1 class="font-medium text-2xl mb-4 text-center text-gray-700">{{titulo}}</h1>
 
@@ -82,19 +83,6 @@
             </table>
         </div>
 
-        <!-- Popup de error -->
-        <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-            <div class="bg-white rounded-lg p-6 shadow-lg">
-                <div class="mb-4">
-                    <p>Algo ha salido mal, intentalo de nuevo</p>
-                </div>
-                <div class="flex justify-end">
-                    <button id="close-modal"
-                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cerrar</button>
-                </div>
-            </div>
-        </div>
-
         {{!-- Tabla de la Alta de tipo pago --}}
 
         <h1 class="font-semibold text-4xl flex justify-center m-5">Alta</h1>
@@ -105,6 +93,24 @@
                 {{#each formFields}}
                 <div class="p-2">
                     {{#isEqual this.name "precio"}}
+                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                    <!-- Renderizar campo Precio con el icono de moneda -->
+                    <div class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16"
+                            height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                            <path d="M12 3v3m0 12v3" />
+                        </svg>
+                        <input id="recargo" type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
+                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
+                            required="{{this.required}}">
+                    </div>
+                    {{else}}
+                    {{/isEqual}}
+                    {{#isEqual this.name "recargo"}}
                     <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
                     <!-- Renderizar campo Precio con el icono de moneda -->
                     <div class="relative">
@@ -147,6 +153,21 @@
                 </button>
             </form>
         </div>
+
+
+        <!-- Popup de error -->
+        <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-6 shadow-lg">
+                <div class="mb-4">
+                    <p>Algo ha salido mal, intentalo de nuevo</p>
+                </div>
+                <div class="flex justify-end">
+                    <button id="close-modal"
+                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cerrar</button>
+                </div>
+            </div>
+        </div>
+        
         <script>
             document.getElementById('searchTipo').addEventListener('keyup', function () {
                 let filter = this.value.toLowerCase();
@@ -173,10 +194,27 @@
         <script>
             // Obtener los elementos de entrada por su ID
             const precio = document.getElementById('precio');
+            const recargo = document.getElementById('recargo');
 
-            // Verificar si el campo ya tiene un valor
-            if (precio.value === '') {
-                precio.value = '0.00'; // Solo establece a '0.00' si está vacío
+            // Verificar si los elementos existen antes de trabajar con ellos
+            if (precio) {
+                // Verificar si el campo ya tiene un valor
+                if (precio.value === '') {
+                    precio.value = '0.00'; // Solo establece a '0.00' si está vacío
+                }
+
+                // Llamar a la función validarInput para el input de precio
+                validarInputF(precio);
+            }
+
+            if (recargo) {
+                // Verificar si el campo ya tiene un valor
+                if (recargo.value === '') {
+                    recargo.value = '0.00'; // Solo establece a '0.00' si está vacío
+                }
+
+                // Llamar a la función validarInput para el input de recargo
+                validarInputF(recargo);
             }
 
             // Función para validar que el input sea un número con hasta dos decimales
@@ -198,8 +236,6 @@
                 });
             }
 
-            // Llamar a la función validarInput para cada input de precio
-            validarInputF(precio);
         </script>
         <script>
             // Mostrar mensaje de error personalizado si hay un mensaje de error
