@@ -595,3 +595,166 @@ ALTER TABLE `usuario`
   ADD KEY `FK_usuarios_tipo` (`tipo_usuario`),
   ADD KEY `FK_usuarios_status` (`status`);
 
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `clasificacion_incidencia`
+--
+ALTER TABLE `clasificacion_incidencia`
+  MODIFY `id_clasificacion_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  MODIFY `id_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `incidencia`
+--
+ALTER TABLE `incidencia`
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `pago`
+--
+ALTER TABLE `pago`
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de la tabla `pago_plazos`
+--
+ALTER TABLE `pago_plazos`
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `propiedad`
+--
+ALTER TABLE `propiedad`
+  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `status`
+--
+ALTER TABLE `status`
+  MODIFY `id_status` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `status_incidencia`
+--
+ALTER TABLE `status_incidencia`
+  MODIFY `id_status_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `status_seguimiento`
+--
+ALTER TABLE `status_seguimiento`
+  MODIFY `id_status_seguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_empleado`
+--
+ALTER TABLE `tipo_empleado`
+  MODIFY `id_tipo_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_incidencia`
+--
+ALTER TABLE `tipo_incidencia`
+  MODIFY `id_tipo_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_pago`
+--
+ALTER TABLE `tipo_pago`
+  MODIFY `id_tipo_pago` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_propiedad`
+--
+ALTER TABLE `tipo_propiedad`
+  MODIFY `id_tipo_propiedad` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_usuario`
+--
+ALTER TABLE `tipo_usuario`
+  MODIFY `id_tipo_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `clasificacion_incidencia`
+--
+ALTER TABLE `clasificacion_incidencia`
+  ADD CONSTRAINT `FK_tipo_incidencia_clasificacion` FOREIGN KEY (`tipo_incidencia`) REFERENCES `tipo_incidencia` (`id_tipo_incidencia`);
+
+--
+-- Filtros para la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  ADD CONSTRAINT `FK_tipo_empleado` FOREIGN KEY (`tipo_empleado`) REFERENCES `tipo_empleado` (`id_tipo_empleado`),
+  ADD CONSTRAINT `FK_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+
+--
+-- Filtros para la tabla `incidencia`
+--
+ALTER TABLE `incidencia`
+  ADD CONSTRAINT `FK_administrador_incidencia` FOREIGN KEY (`id_administardor`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `FK_clasificacion_incidencia_base` FOREIGN KEY (`clasificacion_incidencia`) REFERENCES `clasificacion_incidencia` (`id_clasificacion_incidencia`),
+  ADD CONSTRAINT `FK_incidencias_status` FOREIGN KEY (`id_status_incidencia`) REFERENCES `status_incidencia` (`id_status_incidencia`),
+  ADD CONSTRAINT `FK_incidencias_tipo` FOREIGN KEY (`id_tipo_incidencia`) REFERENCES `tipo_incidencia` (`id_tipo_incidencia`),
+  ADD CONSTRAINT `FK_usuarios_incidencia` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+
+--
+-- Filtros para la tabla `pago`
+--
+ALTER TABLE `pago`
+  ADD CONSTRAINT `FK_pago_tipo_pago` FOREIGN KEY (`tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`),
+  ADD CONSTRAINT `FK_plazo` FOREIGN KEY (`id_plazo`) REFERENCES `pago_plazos` (`folio`),
+  ADD CONSTRAINT `FK_propiedad_pago` FOREIGN KEY (`id_propiedad`) REFERENCES `propiedad` (`id_propiedad`),
+  ADD CONSTRAINT `FK_usuarios_administrador` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `FK_usuarios_mes` FOREIGN KEY (`mes`) REFERENCES `mes` (`mes`);
+
+--
+-- Filtros para la tabla `pago_plazos`
+--
+ALTER TABLE `pago_plazos`
+  ADD CONSTRAINT `FK_pago_tipo_pago_plazos` FOREIGN KEY (`id_tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`),
+  ADD CONSTRAINT `FK_plazos_propiedad` FOREIGN KEY (`id_propiedad`) REFERENCES `propiedad` (`id_propiedad`),
+  ADD CONSTRAINT `FK_usuarios_administradorPlazo` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`);
+
+--
+-- Filtros para la tabla `propiedad`
+--
+ALTER TABLE `propiedad`
+  ADD CONSTRAINT `FK_propiedad_tipo` FOREIGN KEY (`id_tipo_propiedad`) REFERENCES `tipo_propiedad` (`id_tipo_propiedad`),
+  ADD CONSTRAINT `FK_uasuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+
+--
+-- Filtros para la tabla `seguimiento`
+--
+ALTER TABLE `seguimiento`
+  ADD CONSTRAINT `FK_status_seguimiento` FOREIGN KEY (`id_status_seguimiento`) REFERENCES `status_seguimiento` (`id_status_seguimiento`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `FK_usuarios_status` FOREIGN KEY (`status`) REFERENCES `status` (`id_status`),
+  ADD CONSTRAINT `FK_usuarios_tipo` FOREIGN KEY (`tipo_usuario`) REFERENCES `tipo_usuario` (`id_tipo_usuario`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
