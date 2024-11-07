@@ -137,19 +137,15 @@
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
 
             <label for="descripcion">                                            
-                <i class="fas fa-pencil-alt">&nbsp;</i>Descripción</label>
+                <i class="fas fa-clipboard-list">&nbsp;</i>Incidencia</label>
             <br>
-            <textarea name="descripcion" id="descripcion" placeholder="Descripción" required
+            <textarea name="descripcion" id="descripcion" placeholder="Incidencia" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"></textarea>
             <br>
 
             <label for="tipo">
-                {{!-- <i class="fas fa-shield-alt"></i>
-                <i class="fas fa-tools"></i>
-                <i class="fas fa-wrench"></i>
-                <i class="fas fa-lock"></i>
-                <i class="fas fa-cogs"></i> --}}
-                Tipo</label>
+                <i class="fas fa-clipboard-list"></i>
+                Tipo de Incidencia</label>
                 <br>
             <select id="tipo" name="tipo" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
@@ -159,7 +155,9 @@
                 {{/each}}
             </select>
 
-            <label for="clasificacion">Clasificación</label>
+            <label for="clasificacion">
+                <i class="fa-solid fa-list"></i>
+                Clasificación</label>
             <select id="clasificacion" name="clasificacion" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                 <option selected value="">Todas</option>

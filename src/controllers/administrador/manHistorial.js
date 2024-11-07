@@ -116,7 +116,7 @@ function manIncidencias(req, res) {
                     { name: 'Tipo', field: 'tipo', sortable: false },
                     { name: 'Clasificación', field: 'clasificacion', sortable: false },
                     { name: 'Estatus', field: 'status', sortable: true },
-                    { name: 'Descripción', field: 'descripcion', sortable: false },
+                    { name: 'Incidencia', field: 'descripcion', sortable: false },
                     { name: 'Usuario', field: 'usuario', sortable: true },
                     { name: 'Administrador', field: 'administrador', sortable: true }
                 ].map(header => ({
