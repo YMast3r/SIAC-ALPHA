@@ -34,7 +34,7 @@ const formularios = {
 const tablas = {
     clasificacion: {
         id: 'clasificacion',
-        columnas: ['clasificacion_incidencia', 'id_clasificacion_incidencia', 'Clasificacion inidencia']
+        columnas: ['clasificacion_incidencia', 'id_clasificacion_incidencia', 'Clasificación inidencia']
     },
     pagos: {
         id: 'pagos',
