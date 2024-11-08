@@ -36,11 +36,11 @@ router.get('/manTipoEmpleado', (req, res) => {
 // Ruta para manejar 'manTipoPago'
 router.get('/manClasificacion', (req, res) => {
     const formFields = [
-        { label: 'Clasificacion', type: 'text', name: 'descripcion', required: true },
+        { label: 'Clasificación incidencia', type: 'text', name: 'descripcion', required: true },
         { label: 'Tipo de Incidencia', type: 'select', name: 'tipo_incidencia', required: true, options: [] }
     ];
     req.session.errorBorrarR = 'clasificacion_incidencia';
-    manTipo.manTipo(req, res, 'clasificacion_incidencia', 'id_clasificacion_incidencia', 'Clasificacion incidencia', formFields);
+    manTipo.manTipo(req, res, 'clasificacion_incidencia', 'id_clasificacion_incidencia', 'Clasificación incidencia', formFields);
 });
 
 router.get('/manPaginaTipo', (req, res) => {
