@@ -25,9 +25,10 @@
                     <thead class="sticky top-0">
                         <tr>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg">ID PROPIEDAD</th>
-                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">DESCRIPCIÓN</th>
+                            <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">DIRECCIÓN</th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">TIPO</th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">PRECIO</th>
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">FECHA ANEXO</th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg"> </th>
                         </tr>
                     </thead>
@@ -38,8 +39,9 @@
                             <td class="px-6 py-2 text-lg bg-white border-b-2 border-gray-200">{{this.descripcion}}</td>
                             <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200">{{this.tipo_propiedad}}</td>
                             <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200">${{this.pago}}</td>
+                            <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200">{{this.fecha_anexo}}</td>
                             <td class="px-4 py-2 text-lg bg-white border-b-2 border-gray-200 text-center">
-                                <a href="/manPago-{{this.id_propiedad}}"
+                                <a id="{{this.id_propiedad}}" href="/manPago-{{this.id_propiedad}}"
                                     class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md hover:bg-gray-700">Seleccionar</a>
                             </td>
                         </tr>
@@ -54,8 +56,8 @@
 
     {{!-- ---PESTAÑAS--- --}}
 
-    <div>
-        <nav class="flex justify-end bg-gray-200 pr-2 ">
+    <div class="sticky top-0 relative z-10">
+        <nav class="flex justify-end bg-gray-200 pr-2 sticky top-0 ">
 
                 <button id="formaClipPath3" class=" w-20 overflow-hidden bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-72 rounded-b-lg  gray-500 -mr-5  clip-path-Forma-Triangular"
                 onclick="mostrarSeccion('info')">Información del condómino
@@ -65,7 +67,7 @@
                 onclick="mostrarSeccion('pagos')">Pagos
             </button>
 
-                <button id="formaClipPath" class=" w-16 overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4 clip-path-Pestañas " onclick="mostrarSeccion('pagos_plazos')"  >  Plazos de pagos 
+                <button id="formaClipPath" class=" w-16 overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 whitespace-nowrap transition-all duration-300 ease-in-out hover:w-36 rounded-b-lg  hover: gray-500 -mr-4 clip-path-Pestañas " onclick="mostrarSeccion('pagos_plazos')"  >  Alta varios pagos 
             </button>
 
         </nav>
@@ -73,7 +75,7 @@
     <script>
         // Selecciona los elementos y sus configuraciones
         const elementos = [
-            { id: 'formaClipPath', textoInicial: 'Plazos', textoHover: 'Pago a plazos', widthInicial: '5rem', widthHover: '9rem' },
+            { id: 'formaClipPath', textoInicial: 'Varios', textoHover: 'Alta de varios pagos', widthInicial: '7rem', widthHover: '11rem' },
             { id: 'formaClipPath2', widthInicial: '6rem' },
             { id: 'formaClipPath3', textoInicial: 'Info.', textoHover: 'Información del condómino', widthInicial: '5.5rem', widthHover: '18rem' }
         ];
@@ -103,7 +105,7 @@
     </script>
 
     <div class="flex justify-around bg-gray-200 p-4">
-        <a href="/renderRecuperarPropiedadPago">
+        <a id="renderRecuperarPropiedadPago" href="/renderRecuperarPropiedadPago">
             <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-2">Propiedades del condómino</h1>
         </a>
     </div>
@@ -120,7 +122,7 @@
     {{!-- Condición para ver si hay pagos --}}
     {{else}}
 
-    <a href="/renderPago">
+    <a id="renderPago" href="/renderPago">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center">Pagos</h1>
     </a>
     <div class="text-center mb-5">
@@ -212,7 +214,7 @@
                             NO. RECIBO
                         </th>
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg">
-                            PLAZO
+                            ID DE VARIOS PAGOS
                         </th>
                     </tr>
                 </thead>
@@ -264,37 +266,43 @@
                         <select id="tipoPago" name="tipoPago"
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
                             required>
+                            <option selected value="">Selecciona el tipo de pago</option>
                             {{#each tipoPago}}
-                            <option value="{{this.id_tipo_pago}}" data-precioPago="{{this.precio}}"
-                                data-cuotaPago="{{../cuota}}">
+                            <option value="{{this.id_tipo_pago}}" 
+                                data-precioPago="{{this.importe}}"
+                                data-recargoPago="{{this.recargo}}"
+                                data-meses="{{this.meses_por_pagar}}"
+                                data-fechaR="{{this.fecha}}"
+                                data-mes="{{this.mes}}"
+                                data-year="{{this.year}}">
                                 {{this.descripcion}}
                             </option>
                             {{/each}}
                         </select>
                     </div>
+                    <!-- Campos ocultos para almacenar los valores data-* -->
+                    <input type="hidden" name="importe" id="importe">
+                    <input type="hidden" name="recargoPago" id="recargoPago">
+                    <input type="hidden" name="meses" id="meses">
+                    <input type="hidden" name="fechaR" id="fechaR">
+                    <input type="hidden" name="mes" id="mes">
+                    <input type="hidden" name="year" id="year">
+                    <input type="hidden" name="cuotaPago" id="cuotaPago">
+
                     {{!-- Monto --}}
                     <div class="w-1/2">
                         <h3 id="mensajePago"> <i class="fas fa-money-bill-alt"></i> Monto </h3>
-                        <input type="text" id="precioPago" name="precio" value="${{cuota}}" readonly
+                        <input type="text" id="precioPago" name="precio" readonly
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" />
                     </div>
                 </div>
 
 
                 <!-- Campo para ingresar el Recargo -->
-                <label for="recargo" id="recargoLabel" class="block text-sm" style="display: none;">Recargo</label>
-                <div class="relative" style="display: none;" id="recargoContainer">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="24" height="24"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                        <path d="M12 3v3m0 12v3" />
-                    </svg>
-                    <input type="tel" id="recargo" name="recargo" placeholder="Recargo"
-                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-10 my-2 focus:bg-white hover:bg-gray-300"
-                        value="{{data.recargo}}">
+                <div style="display: none;" id="recargoContainer">
+                    <label for="recargo" id="recargoLabel" class="block text-sm">Recargo y meses por pagar</label>
+                    <input type="tel" id="recargo" name="recargo" placeholder="Recargo" readonly
+                        class="border border-gray-200 w-full text-lg p-2 pl-1 my-2 focus:bg-white hover:bg-gray-300">
                 </div>
 
                 <label for="fecha"><i class="fas fa-calendar"></i> Fecha</label>
@@ -320,7 +328,7 @@
 
                 <!-- Botón para enviar el formulario -->
                 <!--Se ajustó el margen superior e inferior del botón para una mejor distribución en dispositivos móviles. (mt-4 mb-2)-->
-                <button type="submit"
+                <button id="enviarPago" type="submit"
                     class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">Enviar</button>
 
                 <!--Sección para mostrar errores-->
@@ -432,37 +440,43 @@
                         <select id="tipoPagoPlazo" name="tipoPagoPlazo"
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
                             required>
+                            <option selected value="">Selecciona el tipo de pago</option>
                             {{#each tipoPago}}
-                            <option value="{{this.id_tipo_pago}}" data-precioPago="{{this.precio}}"
-                                data-cuotaPago="{{../cuota}}">
+                            <option value="{{this.id_tipo_pago}}" 
+                                data-precioPago="{{this.importe}}"
+                                data-recargoPago="{{this.recargo}}"
+                                data-meses="{{this.meses_por_pagar}}"
+                                data-fechaR="{{this.fecha}}"
+                                data-fechaR="{{this.fecha}}"
+                                data-fechaR="{{this.fecha}}"
+                                data-mes="{{this.mes}}"
+                                data-year="{{this.year}}">
                                 {{this.descripcion}}
                             </option>
                             {{/each}}
                         </select>
                     </div>
 
+                    <!-- Campos ocultos para almacenar los valores data-* -->
+                    <input type="hidden" name="importeVarios" id="importeVarios">
+                    <input type="hidden" name="recargoPagoVarios" id="recargoPagoVarios">
+                    <input type="hidden" name="mesesVarios" id="mesesVarios">
+                    <input type="hidden" name="fechaRVarios" id="fechaRVarios">
+                    <input type="hidden" name="mesVarios" id="mesVarios">
+                    <input type="hidden" name="yearVarios" id="yearVarios">
+
                     <!-- Campo de monto -->
                     <div class="w-1/2">
                         <h3 id="mensajePagoPlazo"> <i class="fas fa-money-bill-alt"></i> Monto </h3>
-                        <input type="text" id="precio" name="precio" value="${{cuota}}" readonly
+                        <input type="text" id="precio" name="precio" readonly
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" />
                     </div>
                 </div>
 
-                <label for="recargoPlazo" id="recargoPlazoLabel" class="block text-sm"
-                    style="display: none;">Recargo</label>
-                <div class="relative" style="display: none;" id="recargoPlazoContainer">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="24" height="24"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                        <path d="M12 3v3m0 12v3" />
-                    </svg>
-                    <input type="tel" id="recargoPlazo" name="recargoPlazo" placeholder="recargoPlazo" value="{{data.recargoPlazo}}"
-                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-10 my-2 focus:bg-white hover:bg-gray-300"
-                        value="{{data.recargoPlazo}}">
+                <div style="display: none;" id="recargoPlazoContainer">
+                    <label for="recargoPlazo" id="recargoPlazoLabel" class="block text-sm">Recargo y meses por pagar</label>
+                    <input type="tel" id="recargoPlazo" name="recargoPlazo" placeholder="recargoPlazo"
+                        class="border border-gray-200 w-full text-lg p-2 pl-1 my-2 focus:bg-white hover:bg-gray-300" readonly>
                 </div>
 
                 <label for="fechaInicio"><i class="fas fa-calendar"></i> Fecha Inicial</label>
@@ -493,7 +507,7 @@
                     {{#isEqual tipoUsuario 3}} required {{/isEqual}}>
 
                 <!-- Botón para enviar el formulario -->
-                <button type="submit"
+                <button id="enviarVariosP" type="submit"
                     class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
                     Enviar
                 </button>
@@ -554,10 +568,10 @@
                             <tr>
                                 <th class="px-2 py-2 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tl-lg">ID
                                     PROPIEDAD</th>
-                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium ">DESCRIPCIÓN</th>
+                                <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium ">DIRECCIÓN</th>
                                 <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium">TIPO</th>
                                 <th class="px-4 py-4 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tr-lg">PRECIO</th>
-                                <th class="px-2 py-2 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tl-lg">Fecha</th>
+                                <th class="px-2 py-2 bg-white border-b-2 text-xl border-gray-400 font-medium rounded-tl-lg">FECHA</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -599,43 +613,61 @@
     {{/if}}
     <script defer src="imagen.js"></script>
     <script defer>
-        function handleTipoPagoChange(selectElement, precioInputId, recargoLabelId, recargoContainerId, mensajeId) {
-            var recargoLabel = document.getElementById(recargoLabelId);
-            var recargoInput = document.getElementById(recargoContainerId);
-            var mensaje = document.getElementById(mensajeId);
+        function handleTipoPagoChange(selectElement, precioInputId, recargoInputId, recargoContainerId, mensajeId) {
+            let recargoInput = document.getElementById(recargoInputId);
+            let contenedorInput = document.getElementById(recargoContainerId);
+            let mensaje = document.getElementById(mensajeId);
 
-            var selectedOption = selectElement.options[selectElement.selectedIndex];
-            var precio = selectedOption.getAttribute('data-precio') || selectedOption.getAttribute('data-precioPago');
-            var cuota = selectedOption.getAttribute('data-cuota') || selectedOption.getAttribute('data-cuotaPago');
+            let selectedOption = selectElement.options[selectElement.selectedIndex];
+            
+            // Capturamos los valores de los atributos data-*
+            let precio = selectedOption.getAttribute('data-precio') || selectedOption.getAttribute('data-precioPago');
+            let cuota = selectedOption.getAttribute('data-cuota') || selectedOption.getAttribute('data-cuotaPago');
+            let recargoPago = selectedOption.getAttribute('data-recargoPago') || selectedOption.getAttribute('data-recargoPago');
+            let meses = parseInt(selectedOption.getAttribute('data-meses')) || parseInt(selectedOption.getAttribute('data-meses'));
+            let fechaR = selectedOption.getAttribute('data-fechaR') || selectedOption.getAttribute('data-fechaR');
+            let mes = selectedOption.getAttribute('data-mes') || '';
+            let year = selectedOption.getAttribute('data-year') || '';
+            let cuotaPago = selectedOption.getAttribute('data-cuotaPago') || '';
 
-            var precioInput = document.getElementById(precioInputId);
+            // Asignamos estos valores a los campos ocultos (agregados para tipoPagoPlazo)
+            document.getElementById('importeVarios').value = precio ? precio : '';
+            document.getElementById('recargoPagoVarios').value = recargoPago ? recargoPago : '';
+            document.getElementById('mesesVarios').value = meses ? meses : '';
+            document.getElementById('fechaRVarios').value = fechaR ? fechaR : '';
+            document.getElementById('mesVarios').value = mes ? mes : '';
+            document.getElementById('yearVarios').value = year ? year : '';
+
+            // Asignamos los valores a los campos visibles
+            document.getElementById('importe').value = precio ? precio : '';
+            document.getElementById('recargoPago').value = recargoPago ? recargoPago : '';
+            document.getElementById('meses').value = meses ? meses : '';
+            document.getElementById('fechaR').value = fechaR ? fechaR : '';
+            document.getElementById('mes').value = mes ? mes : '';
+            document.getElementById('year').value = year ? year : '';
 
             // Mostrar el precio correspondiente o limpiar el campo si no hay precio definido
-            precioInput.value = precio ? "$" + precio : '';
+            let precioInput = document.getElementById(precioInputId);
+            precioInput.value = precio ? "$" + precio + ".00" : '';
+            mensaje.innerHTML = '<i class="fas fa-money-bill-alt"></i> Monto';
 
-            if (selectElement.value == '2') {
-                precioInput.value = "$" + cuota;
-                recargoLabel.style.display = 'block';
-                recargoInput.style.display = 'block';
-                mensaje.innerHTML = '<i class="fas fa-money-bill-alt"></i> Monto con cuota inicial';
-            } else if (selectElement.value == '1') {
-                precioInput.value = "$" + cuota;
-                recargoLabel.style.display = 'none';
-                recargoInput.style.display = 'none';
-                mensaje.innerHTML = '<i class="fas fa-money-bill-alt"></i> Monto';
+            // Si hay meses por pagar, se muestra el recargo y el contenedor
+            if (meses > 0) {
+                contenedorInput.style.display = '';
+                recargoInput.value = "Recargo por mes de: $" + recargoPago + ".00 por: " + meses + " meses, desde la fecha: " + fechaR;
             } else {
-                recargoLabel.style.display = 'none';
-                recargoInput.style.display = 'none';
-                mensaje.innerHTML = '<i class="fas fa-money-bill-alt"></i> Monto';
+                contenedorInput.style.display = 'none';
             }
         }
 
+        // Escuchar cambios en el select de tipoPago
         document.getElementById('tipoPago').addEventListener('change', function () {
-            handleTipoPagoChange(this, 'precioPago', 'recargoLabel', 'recargoContainer', 'mensajePago');
+            handleTipoPagoChange(this, 'precioPago', 'recargo', 'recargoContainer', 'mensajePago');
         });
 
+        // Escuchar cambios en el select de tipoPagoPlazo
         document.getElementById('tipoPagoPlazo').addEventListener('change', function () {
-            handleTipoPagoChange(this, 'precio', 'recargoPlazoLabel', 'recargoPlazoContainer', 'mensajePagoPlazo');
+            handleTipoPagoChange(this, 'precio', 'recargoPlazo', 'recargoPlazoContainer', 'mensajePagoPlazo');
         });
     </script>
 
@@ -667,8 +699,6 @@
         function mostrarImagen(src) {
             window.open(src, "_blank");
         }
-        // Obtener los elementos de entrada por su ID
-        const recargoInput = document.getElementById('recargo');
         // Obtener los elementos de entrada por su ID
         const recargoInputPlazo = document.getElementById('recargoPlazo');
 
@@ -703,9 +733,6 @@
             });
 
         }
-
-        // Llamar a la función validarInput para cada input
-        validarInputF(recargoInput);
         validarInputF(recargoInputPlazo);
 
         // Función para mostrar una sección y ocultar las demás

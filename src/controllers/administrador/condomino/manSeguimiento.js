@@ -77,7 +77,7 @@ function manSeguimiento(req, res) {
                     }
                     if (rows && rows.length > 0) {
                         const tipoEmpleado = rows;
-                        conn.query("SELECT u.id_usuario, u.nombre, u.tipo_usuario, e.tipo_empleado, CONCAT( CASE WHEN u.tipo_usuario = 3 THEN 'Condómino' WHEN u.tipo_usuario = 4 THEN te.descripcion WHEN u.tipo_usuario = 2 THEN 'Administrador' END, ' - ', u.nombre ) AS nombre_y_tipo FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario LEFT JOIN tipo_empleado te ON e.tipo_empleado = te.id_tipo_empleado WHERE u.tipo_usuario IN (2, 3, 4)", (err, rows) => {
+                        conn.query("SELECT u.id_usuario, u.nombre, u.tipo_usuario, e.tipo_empleado, CONCAT( CASE WHEN u.tipo_usuario = 0 THEN 'Sin tipo' WHEN u.tipo_usuario = 3 THEN 'Condómino' WHEN u.tipo_usuario = 4 THEN te.descripcion WHEN u.tipo_usuario = 2 THEN 'Administrador' END, ' - ', u.nombre ) AS nombre_y_tipo FROM usuario u LEFT JOIN empleado e ON u.id_usuario = e.id_usuario LEFT JOIN tipo_empleado te ON e.tipo_empleado = te.id_tipo_empleado WHERE u.tipo_usuario IN(0, 2, 3, 4)", (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 return;
@@ -106,7 +106,7 @@ function manSeguimiento(req, res) {
                                                     }
                                                     if (statusRows && statusRows.length > 0) {
                                                         const status = statusRows;
-                                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, c.descripcion AS status, a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia WHERE a.folio = ? ORDER BY a.folio DESC', [id], (err, inciRows) => {
+                                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.hora, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, c.descripcion AS status, a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia WHERE a.folio = ? ORDER BY a.folio DESC', [id], (err, inciRows) => {
                                                             if (err) {
                                                                 console.log(err);
                                                                 return;
@@ -117,7 +117,7 @@ function manSeguimiento(req, res) {
                                                                     fecha: formatDate(inciRows.fecha), // Formatea la fecha
                                                                 }));
 
-                                                                conn.query('SELECT s.folio, s.movimiento, u.nombre AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.evidencia FROM seguimiento s JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = ? ORDER BY s.movimiento DESC', [id], (err, rows) => {
+                                                                conn.query('SELECT s.folio, s.movimiento, COALESCE(u.nombre, "Sin empleado") AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.hora, s.evidencia FROM seguimiento s LEFT JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = 12 ORDER BY s.movimiento DESC', [id], (err, rows) => {
                                                                     if (err) {
                                                                         console.log(err);
                                                                         return;
@@ -217,14 +217,21 @@ function altaSeguimiento(req, res) {
                     renSeguimiento(req, res);
                     return;
                 }
+                // Convertir ambas fechas a solo año, mes y día para evitar diferencias de zona horaria
+                console.log("fehas base: ", data.fecha, rows[0].fecha)
                 const fechaIncidencia = new Date(rows[0].fecha);
-                const fechaActual = new Date(data.fecha);
-                if (fechaActual < fechaIncidencia) {
-                    try {
+                const fechaSel = new Date(data.fecha);
 
+                const fechaIncidenciaComparacion = new Date(fechaIncidencia.getFullYear(), fechaIncidencia.getMonth(), fechaIncidencia.getDate());
+                const fechaSelComparacion = new Date(fechaSel.getFullYear(), fechaSel.getMonth(), fechaSel.getDate()+1);
+
+                console.log("fechas para comparación: ", fechaSelComparacion, fechaIncidenciaComparacion);
+
+                if (fechaSelComparacion < fechaIncidenciaComparacion) { // Solo verifica si es anterior
+                    try {
                         borrarImagenTemporal(req.file.path); // Borrar imagen temporal en caso de error
                     } catch {
-                        console.log('No hay imagen')
+                        console.log('No hay imagen');
                     }
                     req.session.errorMSeg = 'La fecha no puede ser antes de la fecha Incidencia';
                     req.session.dataCampos = data;
@@ -253,8 +260,12 @@ function altaSeguimiento(req, res) {
                                 return;
                             }
                             if (rows[0].contR == 0) {
+                                console.log('hi');
+                                if (data.empleado == 0) {
+                                    data.empleado = null;
+                                }
                                 const imagenRuta = req.file ? `/imagenes/imagenesSeguimiento/${req.file.filename}` : null;
-                                conn.query('INSERT INTO seguimiento (folio, movimiento, id_empleado, comentario, id_status_seguimiento, fecha, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, movimiento, data.empleado, data.comentario, data.status, data.fecha, imagenRuta], (err, rows) => {
+                                conn.query('INSERT INTO seguimiento (folio, movimiento, id_empleado, comentario, id_status_seguimiento, fecha, hora, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [id, movimiento, data.empleado, data.comentario, data.status, data.fecha, data.hora, imagenRuta], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                         req.session.errorMSeg = 'Error al insertar el seguimiento';

@@ -18,7 +18,7 @@
 
 {{!-- ---PESTAÑAS--- --}}
 
-<div>
+<div class="sticky top-0 relative z-10">
     <nav class="flex justify-end bg-gray-200">
         <button id="formaClipPathP"
             class="overflow-hidden bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 whitespace-nowrap transition-all duration-300 ease-in-out rounded-b-lg -mr-4"
@@ -64,7 +64,7 @@
 </script>
 
     <div>
-        <a href="/renderManPropiedad"
+        <a id="renderManPropiedad" href="/renderManPropiedad"
             class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Propiedades</a>
 
         <div id="propiedad" class="">
@@ -77,7 +77,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                         <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                     </span>
-                    <input type="text" id="search" placeholder="Buscar descripción en Propiedades..."
+                    <input type="text" id="search" placeholder="Buscar dirección en Propiedades..."
                         class=" bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
                 </div>
             </div>
@@ -95,7 +95,7 @@
                                         <a href="#" id="flechaAsc" data-order="asc">&uarr;</a>
                                     </span>
                                 </th>
-                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DESCRIPCIÓN
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">DIRECCIÓN
                                 </th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center text-xl">CONDÓMINO</th>
                             <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-center rounded-tr-lg text-xl">
@@ -120,7 +120,7 @@
                         <tbody id="noResult" style="display: none;">
                             <tr>
                                 <td colspan="4" class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">No se
-                                    encontró ninguna descripción</td>
+                                    encontró ninguna dirección.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,11 +138,11 @@
                                     <tr>
                                         <td class="p-2 ">
                                             <label for="descripcionPropiedad" class="block  text-lg">
-                                                <i class="fas fa-pencil-alt">&nbsp;</i>
-                                                Descripción</label>
+                                                <i class="fas fa-map-marker-alt">&nbsp;</i>
+                                                Dirección</label>
                                             <input type="text" name="descripcionPropiedad"
                                                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
-                                                placeholder="Descripción" id="descripcionPropiedad" required
+                                                placeholder="Dirección" id="descripcionPropiedad" required
                                                 value="{{data.descripcionPropiedad}}">
                                         </td>
                                     </tr>
@@ -162,7 +162,7 @@
                                         <td class="p-2  text-lg">
                                             <label for="tipoPropiedad">
                                             <i class="fas fa-city">&nbsp;</i>
-                                            Tipo Propiedad</label>
+                                            Tipo de Propiedad</label>
                                             <select id="tipoPropiedad" name="tipoPropiedad"
                                                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
                                                 {{#each tipoPropiedad}}
@@ -178,7 +178,7 @@
                                     </tr>
                                     <tr>
                                         <td class="p-2">
-                                            <button type="submit"
+                                            <button id="enviar" type="submit"
                                                 class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-2 block text-center">Registrar
                                                 Propiedad</button>
                                         </td>
@@ -213,7 +213,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                         <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
                     </span>
-                    <input type="text" id="searchTipoPropiedad" placeholder="Buscar descripción en Tipo Propiedad..."
+                    <input type="text" id="searchTipoPropiedad" placeholder="Buscar Tipo Propiedad..."
                         class="bg-white border border-gray-200 text-lg placeholder-gray-500 p-2 mb-0 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10">
                 </div>
             </div>
@@ -234,11 +234,14 @@
                                 </th>
                                 <th
                                     class="px-2 py-1 bg-white border-b-2 border-gray-400 font-medium text-lg text-center">
-                                    DESCRIPCIÓN
+                                    TIPO PROPIEDAD
                                 </th>
                                 <th
                                     class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium  text-lg text-center rounded-tr-lg">
                                     PAGO</th>
+                                <th
+                                    class="px-6 py-1 bg-white border-b-2 border-gray-400 font-medium  text-lg text-center rounded-tr-lg">
+                                    RECARGO</th>
                             </tr>
                         </thead>
                         <tbody id="tipoPropiedadTable">
@@ -250,13 +253,15 @@
                                     {{this.descripcion}}</td>
                                 <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded">
                                     ${{this.pago}}</td>
+                                <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-lg rounded">
+                                    ${{this.recargo}}</td>
                             </tr>
                             {{/each}}
                         </tbody>
                         <tbody id="noResultTipoPropiedad" style="display: none;">
                             <tr>
                                 <td colspan="3" class="px-4 py-2 bg-gray-100 border border-gray-600 text-center">No se
-                                    encontró ninguna descripción</td>
+                                    encontró ningún "Tipo Propiedad". </td>
                             </tr>
                         </tbody>
                     </table>
@@ -274,11 +279,11 @@
                                     <tr>
                                         <td class="p-2 text-lg">
                                             <label for="descripcionTipoPro" class="block text-lg">
-                                            <i class="fas fa-pencil-alt">&nbsp;</i>
-                                                Descripción</label>
+                                            <i class="fas fa-city">&nbsp;</i>
+                                                Tipo de Propiedad</label>
                                             <input type="text" name="descripcionTipoPro"
                                                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300"
-                                                placeholder="Descripción" id="descripcionTipoPro" required
+                                                placeholder="Tipo de Propiedad  " id="descripcionTipoPro" required
                                                 value="{{data.descripcionTipoPro}}">
                                         </td>
                                     </tr>
@@ -305,7 +310,28 @@
                                     </tr>
                                     <tr>
                                         <td class="p-2">
-                                            <button type="submit"
+                                            <label for="recargo" class="block text-lg">
+                                                <i class="fas fa-money-bill-alt"></i>
+                                                Recargo</label>
+                                            <div class="relative">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                            width="16" height="16"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                                                    <path d="M12 3v3m0 12v3" />
+                                                </svg>
+                                                <input type="tel" name="recargo"
+                                                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
+                                                    placeholder="recargo" id="recargo" required value="{{data.recargo}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2">
+                                            <button id="enviarTipo" type="submit"
                                                 class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-2 block text-center">Registrar
                                                 Pago</button>
                                         </td>
@@ -337,8 +363,54 @@
                     </div>
                 </div>
             </div>
-
         </div>
+
+        <script defer> 
+            // Obtener los elementos de entrada por su ID
+            const precio = document.getElementById('pago');
+            const recargo = document.getElementById('recargo');
+
+            // Verificar si los elementos existen antes de trabajar con ellos
+            if (precio) {
+                // Verificar si el campo ya tiene un valor
+                if (precio.value === '') {
+                    precio.value = '0.00'; // Solo establece a '0.00' si está vacío
+                }
+
+                // Llamar a la función validarInput para el input de precio
+                validarInputF(precio);
+            }
+
+            if (recargo) {
+                // Verificar si el campo ya tiene un valor
+                if (recargo.value === '') {
+                    recargo.value = '0.00'; // Solo establece a '0.00' si está vacío
+                }
+
+                // Llamar a la función validarInput para el input de recargo
+                validarInputF(recargo);
+            }
+
+            // Función para validar que el input sea un número con hasta dos decimales
+            function validarInputF(input) {
+                input.addEventListener('input', function () {
+                    let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
+                    let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
+
+                    // Si no hay valor, establece el valor inicial
+                    if (value === '') {
+                        input.value = '0.00';
+                        return;
+                    }
+
+                    // Aplicar formato de número con comas
+                    let formattedValue = floatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                    input.value = formattedValue;
+                });
+            }
+
+        </script>
 
         <!-- Script para el filtro de búsqueda en la primera tabla -->
         <script>
@@ -379,8 +451,6 @@
                 document.getElementById('noResultTipoPropiedad').style.display = noResult ? '' : 'none';
             });
 
-
-
             $(document).ready(function () {
                 $('#condomino').select2({
                     placeholder: "Seleccione un condómino",
@@ -392,35 +462,6 @@
                     }
                 });
             });
-
-            // Obtener los elementos de entrada por su ID
-            const pago = document.getElementById('pago');
-            // Función para validar que el input sea un número con hasta dos decimales
-            function validarInputF(input) {
-                // Si no hay valor, establece el valor inicial
-                if (input.value === '') {
-                    input.value = '0.00';
-                }
-                input.addEventListener('input', function () {
-
-                    let value = input.value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
-                    let floatValue = (parseFloat(value) / 100).toFixed(2); // Convertir a decimal (dos decimales)
-
-                    // Si no hay valor, establece el valor inicial
-                    if (value === '') {
-                        input.value = '0.00';
-                        return;
-                    }
-
-                    // Aplicar formato de número con comas
-                    let formattedValue = floatValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-                    input.value = formattedValue;
-                });
-
-            }
-            // Llamar a la función validarInput para cada input
-            validarInputF(pago);
 
             document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
                 event.preventDefault();

@@ -18,7 +18,7 @@
     <!-- Sección de Datos -->
     <div class="flex flex-col items-center mt-4">
         <!-- Enlace al seguimiento -->
-        <a href="/renderSeguimiento" class="mb-4">
+        <a id="renderSeguimiento" href="/renderSeguimiento" class="mb-4">
             <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center m-5">Seguimiento</h1>
         </a>
 
@@ -31,23 +31,23 @@
             <table class="w-full rounded-lg overflow-hidden">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg">Id</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Nombre</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Correo</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Teléfono</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">Estado</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium rounded-tl-lg">Id</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium">Nombre</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium">Correo</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium">Teléfono</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium rounded-tr-lg">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each usuario}}
                     <tr>
-                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.id}}
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl shadow-b-xl">{{this.id}}
                         </td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.nombre}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-xl shadow-b-xl text-center ">{{this.nombre}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-xl shadow-b-xl text-center ">
                             {{this.correo_electronico}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.telefono}}</td>
-                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-xl shadow-b-xl text-center ">{{this.telefono}}</td>
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 text-xl shadow-b-xl">
                             {{this.status}}</td>
                     </tr>
                     {{/each}}
@@ -59,32 +59,33 @@
     </div>
 
     <br>
-    <a href="/renderIncidencia"><h2 class="font-semibold text-3xl hover:text-gray-400 flex justify-center m-1 text-gray-700">Incidencia</h2></a>
+    <a id="renderIncidencia" href="/renderIncidencia"><h2 class="font-semibold text-2xl flex justify-center m-1 text-gray-700">Incidencia</h2></a>
 
     <!-- Sección de Incidencias -->
     <div class="flex justify-center mt-4">
-        <div class="overflow-x-auto max-h-60 w-7/12 rounded-lg">
+        <div class="overflow-x-auto max-h-60 w-8/12 rounded-lg">
             <table class="w-full rounded-lg overflow-hidden">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg">Folio</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium ">Asunto</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl text-center font-medium">
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium rounded-tl-lg">Folio</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium ">Asunto</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl text-center font-medium">
                             Tipo
                             Clasificación
                         </th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Status</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Fecha</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg text-center">
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium">Status</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium">Fecha</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium">Hora</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-2xl font-medium rounded-tr-lg text-center">
                             Descripción</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each incidencia}}
                     <tr>
-                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.folio}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.asunto}}</td>
-                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl">
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl  text-xl">{{this.folio}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl  text-xl text-center ">{{this.asunto}}</td>
+                        <td class="px-4 py-2 bg-white border-b-2 border-gray-200 text-lg text-center shadow-b-xl  text-xl">
                             {{this.tipo}},
                             <br>
                             {{this.clasificacion}},
@@ -138,6 +139,7 @@
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Comentario</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Status</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Fecha</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Hora</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">Evidencia
                         </th>
                     </tr>
@@ -151,6 +153,7 @@
                         <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.comentario}}</td>
                         <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.status}}</td>
                         <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.fecha}}</td>
+                        <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.hora}}</td>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">
                             {{#if this.evidencia}}
                             <img src="{{this.evidencia}}" alt="Evidencia" class="w-16 h-16 object-cover rounded-sm mx-auto"
@@ -222,6 +225,10 @@
             <input type="date" id="fecha" name="fecha" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
                 value="{{data.fecha}}">
+                
+            <label for="hora"><i class="fas fa-calendar"></i> Hora</label>
+            <input type="time" id="hora" name="hora"
+                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
 
             <label for="status"><i class="fas fa-spinner">&nbsp;</i>
                 Status</label>
@@ -245,7 +252,7 @@
             {{/if}}
 
             <div class="flex justify-center">
-                <button type="submit"
+                <button id="enviar" type="submit"
                     class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">Agregar
                     seguimiento</button>
             </div>

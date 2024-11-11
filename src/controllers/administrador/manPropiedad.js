@@ -48,7 +48,7 @@ function altaTipoPropiedad(req, res) {
                     if (data.pago) {
                         data.pago = data.pago.replace(/,/g, ''); // Remueve todas las comas del precio
                     }
-                    conn.query('INSERT INTO tipo_propiedad (descripcion, pago) VALUES (?, ?)', [data.descripcionTipoPro, data.pago], (error, rows) => {
+                    conn.query('INSERT INTO tipo_propiedad (descripcion, pago, recargo) VALUES (?, ?, ?)', [data.descripcionTipoPro, data.pago, data.recargo], (error, rows) => {
                         if (error) {
                             console.error("Error al insertar el tipo de propiedad:", error);
                             return res.status(500).send("Error al agregar el tipo de propiedad");
@@ -134,14 +134,14 @@ function manPropiedad(req, res) {
             }
             if (rows.length > 0) {
                 const condomino = rows;
-                conn.query('SELECT id_tipo_propiedad, descripcion, FORMAT(pago, 2) AS pago FROM tipo_propiedad ORDER BY id_tipo_propiedad DESC', (err, rows) => {
+                conn.query('SELECT id_tipo_propiedad, descripcion, FORMAT(pago, 2) AS pago, FORMAT(recargo, 2) AS recargo FROM tipo_propiedad ORDER BY id_tipo_propiedad DESC', (err, rows) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     if (rows.length > 0) {
                         const tipo = rows;
-                        conn.query('SELECT a.id_propiedad, a.descripcion, COALESCE(u.nombre, "Indefinido") AS condomino, b.descripcion AS tipo_propiedad FROM propiedad a JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad LEFT JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_propiedad DESC', (err, rows) => {
+                        conn.query('SELECT a.id_propiedad, a.descripcion, COALESCE(u.nombre, "Sin condomino") AS condomino, b.descripcion AS tipo_propiedad FROM propiedad a JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad LEFT JOIN usuario u ON a.id_usuario = u.id_usuario ORDER BY a.id_propiedad DESC', (err, rows) => {
                             if (err) {
                                 console.log(err);
                                 return;
