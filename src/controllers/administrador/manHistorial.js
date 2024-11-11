@@ -292,6 +292,13 @@ function manPagos(req, res) {
             whereClause += ' AND a.tipo_pago = ?';
             params.push(campoDatos.tipoPago);
         }
+        if (campoDatos.recargo) {
+            if (campoDatos.recargo == 'con_recargo') {
+                whereClause += ' AND a.recargo != 0.00';
+            } else {
+                whereClause += ' AND a.recargo = 0.00';
+            }
+        }
         if (campoDatos.tipoPropiedad) {
             whereClause += ' AND p.id_propiedad = ?';
             params.push(campoDatos.tipoPropiedad);
@@ -330,17 +337,33 @@ function manPagos(req, res) {
 
         // Modificar la consulta para incluir la ordenación dinámica y el WHERE dinámico
         conn.query(
-            `SELECT a.folio, p.descripcion AS propiedad, FORMAT(a.importe, 2) AS importe, 
-                    t.descripcion AS tipo_pago, a.fecha, b.descripcion AS mes, 
-                    a.año, COALESCE(u.nombre, 'Sin administrador') AS administrador, 
-                    c.nombre AS condomino, c.id_usuario, COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
+            `SELECT 
+                    a.folio, 
+                    p.descripcion AS propiedad, 
+                    FORMAT(a.importe, 2) AS importe, 
+                    FORMAT(a.recargo, 2) AS recargo, 
+                    FORMAT((a.importe + a.recargo), 2) AS total, 
+                    t.descripcion AS tipo_pago, 
+                    a.fecha, 
+                    b.descripcion AS mes, 
+                    a.año, 
+                    COALESCE(u.nombre, 'Sin administrador') AS administrador, 
+                    c.nombre AS condomino, 
+                    c.id_usuario, 
+                    COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
                     COALESCE(a.referencia, 'Indefinido') AS referencia 
-             FROM pago a 
-             JOIN propiedad p ON a.id_propiedad = p.id_propiedad 
-             JOIN mes b ON a.mes = b.mes 
-             LEFT JOIN usuario u ON a.id_administrador = u.id_usuario 
-             JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago
-             JOIN usuario c ON p.id_usuario = c.id_usuario
+                FROM 
+                    pago a 
+                JOIN 
+                    propiedad p ON a.id_propiedad = p.id_propiedad 
+                JOIN 
+                    mes b ON a.mes = b.mes 
+                LEFT JOIN 
+                    usuario u ON a.id_administrador = u.id_usuario 
+                JOIN 
+                    tipo_pago t ON a.tipo_pago = t.id_tipo_pago 
+                JOIN 
+                    usuario c ON p.id_usuario = c.id_usuario
              ${whereClause} 
              ORDER BY ${orderByParam} ${orderDirectionParam}`,
             params,
@@ -363,6 +386,8 @@ function manPagos(req, res) {
                         { name: 'Folio', field: 'folio', sortable: true },
                         { name: 'Propiedad', field: 'propiedad', sortable: false },
                         { name: 'Importe', field: 'importe', sortable: true },
+                        { name: 'Recargo', field: 'recargo', sortable: true },
+                        { name: 'Total', field: 'total', sortable: true },
                         { name: 'Tipo de Pago', field: 'tipo_pago', sortable: false },
                         { name: 'Fecha', field: 'fecha', sortable: true },
                         { name: 'Mes', field: 'mes', sortable: true },
@@ -559,6 +584,14 @@ function manHistorialEspecifico(req, res) {
                         options: años.map(m => ({ value: m.año, text: m.año }))
                     },
                     {
+                        label: 'Tipo de Pago',
+                        type: 'select',
+                        name: 'tipoPago',
+                        colSpan: 'md:col-span-1',
+                        icon: 'fas fa-money-bill-alt',
+                        options: rowsTipoPago.map(tp => ({ value: tp.id_tipo_pago, text: tp.tipo_pago_descripcion }))
+                    },
+                    {
                         label: 'Tipo de Propiedad',
                         type: 'select',
                         name: 'tipoPropiedad',
@@ -567,13 +600,15 @@ function manHistorialEspecifico(req, res) {
                         options: rowsTipoPro.map(tp => ({ value: tp.id_tipo_propiedad, text: tp.tipo_propiedad_descripcion }))
                     },
                     {
-                        label: 'Tipo de Pago',
-                        type: 'select',
-                        name: 'tipoPago',
-                        colSpan: 'md:col-span-1',
-                        icon: 'fas fa-money-bill-alt',
-                        options: rowsTipoPago.map(tp => ({ value: tp.id_tipo_pago, text: tp.tipo_pago_descripcion }))
-                    },
+                        label: 'Recargo:',
+                        type: 'radio',  // Cambiado de 'select' a 'radio'
+                        name: 'recargo',
+                        colSpan: 'md:col-span-2',
+                        options: [
+                            { value: 'con_recargo', text: 'Con recargo' },
+                            { value: 'sin_recargo', text: 'Sin recargo' }
+                        ]
+                    },                    
                     {
                         label: 'Administrador',
                         type: 'select',
@@ -590,7 +625,6 @@ function manHistorialEspecifico(req, res) {
                         icon: 'fas fa-user',
                         options: rowsCon.map(c => ({ value: c.id_condomino, text: c.condomino }))
                     },
-                    
                 ];
             } else if (campo == 'incidencias') {
                 formFields = [
