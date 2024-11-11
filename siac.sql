@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-11-2024 a las 01:52:32
+-- Tiempo de generación: 11-11-2024 a las 18:03:43
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -56,7 +56,8 @@ INSERT INTO `clasificacion_incidencia` (`id_clasificacion_incidencia`, `tipo_inc
 (15, 5, 'Piscina'),
 (16, 5, 'Salón de eventos'),
 (17, 6, 'Facturación'),
-(18, 6, 'Atención al cliente');
+(18, 6, 'Atención al cliente'),
+(19, 4, 'Quejas por falta de limpieza en áreas comunes');
 
 -- --------------------------------------------------------
 
@@ -87,7 +88,17 @@ INSERT INTO `empleado` (`id_empleado`, `id_usuario`, `nombre`, `apellidos`, `tip
 (1, 2, 'Ivan Sebastián', 'Guerrero Basurto', 1, 30000.00, '2020-01-15', '449 223 9955', 'IvanSebastian@gmail.com', 'Empresa falsa', NULL, NULL),
 (2, 5, 'Regina Odette', 'Hernández Buenrostro', 1, 20000.00, '2020-01-15', '351 304 6049', 'ReginaOdette@condominio.com', 'Empresa falsa', NULL, NULL),
 (3, 4, 'Isaac', 'Gallegos Mena', 2, 10000.00, '2020-01-15', '449 568 6105', 'IsaacGallegos@condominio.com', 'Empresa falsa', NULL, NULL),
-(4, 7, 'Ian Yeshua', 'López Garcia', 3, 15000.00, '2019-05-20', '449 429 6282', 'ianYeshua@condominio.com', 'Empresa falsa', NULL, NULL);
+(4, 7, 'Ian Yeshua', 'López Garcia', 3, 15000.00, '2019-05-20', '449 429 6282', 'ianYeshua@condominio.com', 'Empresa falsa', NULL, NULL),
+(5, 20, 'Erick', 'Garcia', 3, 15500.00, '2019-06-30', '555 123 4567', 'Ercik@gmail.com', 'Grupo Talento', NULL, NULL),
+(6, 21, 'Juan ', 'Pérez Gómez', 1, 30000.00, '2024-10-31', '555 123 4568', 'juan.perez@gmail.com', 'Subcontrataciones Globales S.A.', NULL, NULL),
+(7, 22, 'Carlos', 'García', 1, 44450.00, '2018-07-19', '449 338 2333', 'carlos@gmail.com', 'Manpower Group', NULL, NULL),
+(8, 23, 'luisa Martinez', 'Gómez', 2, 15000.00, '2019-10-31', '555 234 5678', 'luisaMartinez@gmail.com', 'Adecco México', NULL, NULL),
+(9, 24, 'María ', 'García López', 2, 10000.00, '2024-10-31', '555 234 5674', 'maria.garcia@gmail.com', 'Soluciones Integrales de Outsourcing', NULL, NULL),
+(10, 25, 'Oliver', 'Diaz', 2, 99999999.99, '2024-10-28', '423 242 4524', 'asdfgauf@gmail.com', 'Alianzas de Servicios Globales', NULL, NULL),
+(11, 26, 'José Hernández', 'Pérez', 1, 30500.00, '2017-10-31', '555 345 6789', 'JosePerez@gmail.com', 'Randstad México', NULL, NULL),
+(12, 27, 'Javier Oliver ', 'Hernández Diaz', 2, 12000.00, '2024-10-30', '423 245 2234', 'OliverDiaz@gmail.com', 'Expertos en Outsourcing', NULL, NULL),
+(13, 28, 'Luis Angel', 'Moreno Ruiz', 3, 20000.00, '2024-10-25', '449 425 2454', 'Luisangel@gmail.com', 'Asesoría Integral de Servicios', NULL, NULL),
+(14, 29, 'Jorge Ramírez', 'Díaz', 1, 31000.00, '2020-07-25', '555 789 0199', 'jorgeRamirez@gmail.com', ' Korn Ferry México', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -102,6 +113,7 @@ CREATE TABLE `incidencia` (
   `clasificacion_incidencia` int(11) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha` date NOT NULL,
+  `hora` time DEFAULT NULL,
   `id_status_incidencia` int(11) NOT NULL,
   `id_administardor` int(11) DEFAULT NULL,
   `asunto` varchar(255) DEFAULT NULL,
@@ -112,8 +124,18 @@ CREATE TABLE `incidencia` (
 -- Volcado de datos para la tabla `incidencia`
 --
 
-INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `clasificacion_incidencia`, `descripcion`, `fecha`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
-(1, 3, 2, 7, 'Se metió Mauricio a mi casa a comer', '2024-05-07', 1, 2, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg');
+INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `clasificacion_incidencia`, `descripcion`, `fecha`, `hora`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
+(1, 3, 2, 7, 'Se metió Mauricio a mi casa a comer', '2024-05-07', '00:00:00', 1, NULL, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg'),
+(2, 8, 6, 18, 'El día de ayer me atendieron de mala gana solo por por que pregunte sobre los servicios que me brinden y no me respondieron y me atendieron grosero', '2024-10-30', '00:00:00', 1, NULL, 'Por atención al cliente', NULL),
+(3, 14, 1, 1, 'Ayer en la tarde se fue la luz en toda la colonia y sigue sin regresar', '2024-10-31', '00:00:00', 1, NULL, 'se fue la luz en toda la colonia', NULL),
+(4, 19, 3, 8, 'Hoy pasaba por la calle illinois a las 12:30 pm y note que los focos de las farolas no estaban prendidos', '2024-11-02', '00:00:00', 1, NULL, 'Focos de farolas fundidos por la calle Illinois', '/imagenes/imagenesIncidencia/1730769406724.jpg'),
+(5, 17, 1, 1, ' El sistema de refrigeración no está funcionando correctamente, lo que pone en riesgo los servidores.', '2024-10-29', '00:00:00', 1, NULL, 'Fallo en el sistema de refrigeración en el Departamento de IT', '/imagenes/imagenesIncidencia/1730769445604.jpg'),
+(6, 15, 4, 11, 'Los empleados han reportado ruidos constantes debido a obras nocturnas en la zona. Esto está afectando la productividad.', '2024-11-06', '00:00:00', 1, 2, 'Ruidos molestos durante la noche por obras cercana', '/imagenes/imagenesIncidencia/1730769583760.jpeg'),
+(7, 16, 1, 1, ' Las luces de la oficina principal no encienden correctamente, lo que dificulta el trabajo de los empleados.', '2024-11-02', '00:00:00', 1, 2, 'Problema con la iluminación en el área de oficinas', '/imagenes/imagenesIncidencia/1730769661187.jpg'),
+(8, 6, 3, 10, 'Solicitud para fumigar el departamento debido a la presencia de insectos.', '2024-11-01', '00:00:00', 1, 2, 'Solicitud de fumigación', '/imagenes/imagenesIncidencia/1730770039491.jpeg'),
+(9, 18, 2, 6, ' El sistema de cámaras en el estacionamiento no está funcionando correctamente, lo que aumenta el riesgo de incidentes.', '2024-10-29', '00:00:00', 1, 2, 'Fallo en el sistema de cámaras de seguridad en el estacionamiento', '/imagenes/imagenesIncidencia/1730770576994.jpg'),
+(10, 9, 5, 16, 'Solicitud de limpieza adicional en el salón de eventos.', '2024-10-23', '00:00:00', 1, 2, 'Solicitud de limpieza en la sala', '/imagenes/imagenesIncidencia/1730771689112.jpeg'),
+(11, 10, 1, 2, 'Reporte de un goteo de agua en la tubería de la cocina del departamento.', '2024-10-18', '00:00:00', 1, 2, 'Goteo en la cocina', '/imagenes/imagenesIncidencia/1730772128428.jpeg');
 
 -- --------------------------------------------------------
 
@@ -172,7 +194,7 @@ CREATE TABLE `pago` (
 
 INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`) VALUES
 (1, 1, 800, 0, 2024, 1, '2024-09-11', 1, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
-(2, 1, 800, 0, 2024, 2, '2024-09-11', 1, 2, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
+(2, 1, 800, 0, 2024, 2, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
 (3, 1, 800, 0, 2024, 3, '2024-09-11', 1, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
 (4, 1, 800, 0, 2024, 4, '2024-09-11', 1, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
 (5, 1, 800, 0, 2024, 5, '2024-09-11', 1, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1),
@@ -180,7 +202,7 @@ INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`
 (7, 1, 800, 200, 2024, 7, '2024-09-11', 1, 7, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL),
 (8, 1, 800, 200, 2024, 8, '2024-09-11', 1, 8, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL),
 (9, 1, 800, 200, 2024, 9, '2024-09-11', 1, 9, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL),
-(10, 2, 500, 200, 2024, 1, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
+(10, 2, 500, 0, 2024, 1, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
 (11, 2, 500, 0, 2024, 2, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
 (12, 2, 500, 0, 2024, 3, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
 (13, 2, 500, 0, 2024, 4, '2024-09-11', 1, 13, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL),
@@ -240,8 +262,20 @@ CREATE TABLE `propiedad` (
 
 INSERT INTO `propiedad` (`id_propiedad`, `id_usuario`, `descripcion`, `id_tipo_propiedad`, `fecha_anexo`) VALUES
 (1, 3, 'Av Perseo 301, Primo Verdad Inegi, 20267 Aguascalientes, Ags.', 1, '2024-01-01'),
-(2, 3, 'Ana María Díaz de León Escobedo 231, Vista del Sol III, 20264 Aguascalientes, Ags.', 2, '0000-00-00'),
-(3, NULL, '230 Ana María Díaz de León Escobedo', 2, NULL);
+(2, 3, '230 Ana María Díaz de León Escobedo', 2, '2024-01-01'),
+(3, NULL, 'Calle Falsa 123, Ciudad Inventada', 3, NULL),
+(4, NULL, 'Calle Sin Rumbo No. 123, Colonia Espejismo, Ciudad del Olvido, CP 00000, México', 1, NULL),
+(5, NULL, 'Avenida Desvío Infinito No. 789, Fraccionamiento Espectral, Pueblo Fantasía, CP 22222, México', 1, NULL),
+(6, NULL, 'Calle García Márquez, 45 Colonia Lomas Verdes Ciudad de México, CP 53700 México', 1, NULL),
+(7, NULL, 'Pasaje de la Nada No. 101, Colonia Fantasma, Ciudad Sin Nombre, CP 33333, México', 3, NULL),
+(8, NULL, 'Bulevar del Viento Errante No. 202, Residencial Ilusión, Villa de los Desaparecidos, CP 44444, Méxic', 3, NULL),
+(9, NULL, 'Sendero del Espejismo No. 303, Colinas del Engaño, Rancho Invisible, CP 55555, México', 3, NULL),
+(10, NULL, 'Vereda del Desvarío No. 404, Fraccionamiento Olvido, Ciudad Ilusoria, CP 66666, México', 3, NULL),
+(11, NULL, 'Callejón del Sin Fin No. 505, Colonia Perpetua, Pueblo de la Quimera, CP 77777, México', 1, NULL),
+(12, NULL, 'Paseo del Engaño No. 606, Residencial Mirage, Ciudad Inexistente, CP 88888, México', 3, NULL),
+(13, NULL, 'Camino de los Desvanecidos No. 707, Barrio Sombras, Villa Fantasma, CP 99999, México', 2, NULL),
+(14, NULL, 'Avenida de los Sueños Rotos No. 808, Fraccionamiento Imaginario, Pueblo Perdido, CP 12345, México', 2, NULL),
+(15, NULL, 'Ruta del Eco Perdido No. 909, Barrio Silencio, Ciudad del Vacio, CP 10101, México', 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -256,6 +290,7 @@ CREATE TABLE `seguimiento` (
   `comentario` text NOT NULL,
   `id_status_seguimiento` int(11) NOT NULL,
   `fecha` date NOT NULL,
+  `hora` time NOT NULL,
   `evidencia` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -263,9 +298,9 @@ CREATE TABLE `seguimiento` (
 -- Volcado de datos para la tabla `seguimiento`
 --
 
-INSERT INTO `seguimiento` (`folio`, `movimiento`, `id_empleado`, `comentario`, `id_status_seguimiento`, `fecha`, `evidencia`) VALUES
-(1, 1, 4, 'Se llaman a las autoridades.', 2, '2024-05-08', NULL),
-(1, 2, 4, 'Se arrestó de manera brusca.', 3, '2024-05-08', '\\imagenes\\imagenesSeguimiento\\1717643978162.jpeg');
+INSERT INTO `seguimiento` (`folio`, `movimiento`, `id_empleado`, `comentario`, `id_status_seguimiento`, `fecha`, `hora`, `evidencia`) VALUES
+(1, 1, 4, 'Se llaman a las autoridades.', 2, '2024-05-08', '00:00:00', NULL),
+(1, 2, 4, 'Se arrestó de manera brusca.', 3, '2024-05-08', '00:00:00', '\\imagenes\\imagenesSeguimiento\\1717643978162.jpeg');
 
 -- --------------------------------------------------------
 
@@ -415,7 +450,11 @@ CREATE TABLE `tipo_propiedad` (
 INSERT INTO `tipo_propiedad` (`id_tipo_propiedad`, `descripcion`, `pago`, `recargo`) VALUES
 (1, 'casa', 800, 200),
 (2, 'terreno', 500, 150),
-(3, 'departamento', 750, 250);
+(3, 'departamento', 750, 250),
+(4, 'Local Comercial', 1000, 350),
+(5, 'Cabaña', 500, 200),
+(6, 'Penthouse', 1200, 450),
+(7, 'Departamento Estándar ', 900, 300);
 
 -- --------------------------------------------------------
 
@@ -467,7 +506,29 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `correo_electronico`, `password`,
 (4, 'Isaac', 'IsaacGallegos@gmail.com', '$2b$12$x12.RpNjleTnslNzHs7S3eKPGbzjuVxnyj72rWrrXR12T5zTEzCIK', 4, 4, '449 568 6105'),
 (5, 'Odette', 'ReginaOdette@gmail.com', '$2b$12$NW7UbFZy20tqgoZ5xztNhO.2.OzItFkLe9W.I2iN5/0KQAEUtoOVm', 2, 4, '351 304 6049'),
 (6, 'Martin Contreras', 'martin.contreras.romo@cetis155.edu.mx', '$2b$12$FiY7dY.GKsNP5nF9xq1JweJp57FwkBJ09fgxiS5pjz5AGfDWopgLG', 3, 4, '449 555 8755'),
-(7, 'Ian', 'ianYeshua@gmail.com', '$2b$12$mNtF3BfNJpMah78Dyw93i.CQYrF/tD6h7jscGgBuxtb/R4mImlqpy', 4, 4, '449 429 6282');
+(7, 'Ian', 'ianYeshua@gmail.com', '$2b$12$mNtF3BfNJpMah78Dyw93i.CQYrF/tD6h7jscGgBuxtb/R4mImlqpy', 4, 4, '449 429 6282'),
+(8, 'LopezGarcia', 'LopezGarcia@gmail.com', '$2b$12$8zvs7lxKpQuku71ZNKU0Eu.rr8kjCn76Q7kqwGGb0WagqDq500GNK', 3, 4, '449 115 8901'),
+(9, 'hugo', 'hugo@cetis155.edu.mx', '$2b$12$mdCy6dpPZ9KW1Aw.1aZ3iOwShkkmNn7IJGc/cdW5gJQGYb35bMtli', 3, 4, '449 032 2115'),
+(10, 'Juan Pablo', 'JuanPablo@gmail.com', '$2b$12$k8x0/O3fFh0gGHXUzXFk3.QbFrVOkQFl9MHlW9dFQ1Cb7mgds8l2G', 3, 4, '558 212 1212'),
+(11, 'Juan Sebastian', 'juanSebas@gmail.com', '$2b$12$w0R1l.ybfnpaLzdglNSQKOIdnvjZVvSn1WA5SI2PXoWu0KRyoFBMi', 3, 4, '449 012 4343'),
+(12, 'Patricia Gómez Aguirre', 'PatriciaGA@gmail.com', '$2b$12$jtyoNswX1TO9KArp.eZOAeH3sGJh1VcNTXqSLGwP73gnuFmUnqzo.', 3, 4, '449 202 1023'),
+(13, 'Hernandez Lopez', 'Hernandez@cetis155.edu.mx', '$2b$12$znCF1n0RnC8qJCvR8pHJC.H3LLwFMon/b1HoYjyBMZh04FExZuX4C', 3, 4, '449 032 9338'),
+(14, 'Jose Alexis', 'Jose@gmail.com', '$2b$12$8ALN6b3DKFPkKhPJex/Uk.1ZIZ7MbSCTfreFirAAFkjPZAmgOY366', 3, 3, '449 183 3899'),
+(15, 'luis', 'luis@gmail.com', '$2b$12$fi7P/qEouRGdVWKQkjwdIexj/fYxZ7gjOCg.vxlLyrHpW1XyNeUMe', 3, 1, '449 827 2722'),
+(16, 'Julio César Chávez', 'julioBox@gmail.com', '$2b$12$dIoPWA0yfCCSFqS0VE3KRuUGk7GLL/D2QapZ.VjXgE/V.3MKRQfnG', 3, 4, '449 238 2119'),
+(17, 'Rebeca Aguilar Peréz', 'RRaguilar@gmail.com', '$2b$12$rQxA05wza4ILvUT2oBoaxOss81a5QaoT9lX7/GiKB9SQLo1Mjz3t2', 3, 4, '499 021 2023'),
+(18, 'Josefa Solorio Ruíz', 'Ruizjose@hotmail.com', '$2b$12$J.OCwSgpVwqDR3HHV3l4t.XZGyiHxFEfHt.vq266M2K/TcvSOsOhS', 3, 2, '440 332 0112'),
+(19, 'Lorena Ramírez Guzmán ', 'Guz83@gmail.com', '$2b$12$57G3yKAAmc3sh9tpcGhgCOE4QYN36BWplzKocMIQm25T1GtZ9P9Wm', 3, 5, '449 530 2022'),
+(20, 'Erick', 'Ercik@gmail.com', 'Cgt$2024@', 4, 1, '555 123 4567'),
+(21, 'Juan ', 'juan.perez@gmail.com', 'JuAn1234.', 4, 1, '555 123 4568'),
+(22, 'Carlos', 'carlos@gmail.com', 'Chsysu7.&', 4, 1, '449 338 2333'),
+(23, 'luisa Martinez', 'luisaMartinez@gmail.com', 'Amg#9876!', 4, 1, '555 234 5678'),
+(24, 'María ', 'maria.garcia@gmail.com', 'MaRiA5678.', 4, 1, '555 234 5674'),
+(25, 'Oliver', 'asdfgauf@gmail.com', 'O23452adf#4', 4, 1, '423 242 4524'),
+(26, 'José Hernández', 'JosePerez@gmail.com', 'Jhp@3210$', 4, 1, '555 345 6789'),
+(27, 'Javier Oliver ', 'OliverDiaz@gmail.com', 'Oliver343#$$', 4, 1, '423 245 2234'),
+(28, 'Luis Angel', 'Luisangel@gmail.com', 'LuisAngel5434#4', 4, 1, '449 425 2454'),
+(29, 'Jorge Ramírez', 'jorgeRamirez@gmail.com', 'cm$6374&A', 4, 1, '555 789 0199');
 
 --
 -- Índices para tablas volcadas
@@ -603,19 +664,19 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `clasificacion_incidencia`
 --
 ALTER TABLE `clasificacion_incidencia`
-  MODIFY `id_clasificacion_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_clasificacion_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `id_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_empleado` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `incidencia`
 --
 ALTER TABLE `incidencia`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
@@ -633,7 +694,7 @@ ALTER TABLE `pago_plazos`
 -- AUTO_INCREMENT de la tabla `propiedad`
 --
 ALTER TABLE `propiedad`
-  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_propiedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `status`
@@ -675,7 +736,7 @@ ALTER TABLE `tipo_pago`
 -- AUTO_INCREMENT de la tabla `tipo_propiedad`
 --
 ALTER TABLE `tipo_propiedad`
-  MODIFY `id_tipo_propiedad` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_tipo_propiedad` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_usuario`
@@ -687,7 +748,7 @@ ALTER TABLE `tipo_usuario`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Restricciones para tablas volcadas

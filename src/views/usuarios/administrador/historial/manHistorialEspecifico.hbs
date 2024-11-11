@@ -34,7 +34,24 @@
                     <input type="hidden" name="campo" value="{{campo}}" />
                     {{#each formFields}}
                     <div class="p-2 {{this.colSpan}}">
-                        {{#isEqual this.type "select"}}
+                        {{#isEqual this.type "radio"}}
+                        <!-- Renderizar radio buttons con las opciones correctas -->
+                        <div class="flex items-center space-x-4">
+                            <label class="text-lg">
+                                {{#if this.icon}} <!-- Verificar si hay un icono -->
+                                <i class="{{this.icon}}"></i> <!-- Agregar el icono aquí -->
+                                {{/if}}
+                                {{this.label}}
+                            </label>
+                            {{#each this.options}}
+                            <div class="flex items-center">
+                                <input type="radio" name="{{../name}}" value="{{this.value}}"
+                                    id="{{../name}}_{{this.value}}" class="mr-2" />
+                                <label for="{{../name}}_{{this.value}}" class="text-lg">{{this.text}}</label>
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{else isEqual this.type "select"}}
                         <!-- Renderizar select con las opciones correctas -->
                         <label for="{{this.name}}" class="block text-lg">
                             {{#if this.icon}} <!-- Verificar si hay un icono -->
