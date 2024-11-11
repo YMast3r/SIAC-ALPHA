@@ -297,7 +297,6 @@ function altaPago(req, res) {
         }
 
         const data = req.body;
-        console.log(data)
         const nombre = req.session.name;
         const idCon = req.session.idCon;
         const idPro = req.session.idPropiedad;
@@ -397,7 +396,6 @@ function altaPago(req, res) {
                                 }
 
                                 // Verificar si la fecha proporcionada es mayor al último pago
-                                console.log(`(((${year} > ${data.year}) && ${mes} > 1) || (${year} == ${data.year} && ${mes} > (${data.mes} + 1)))`)
                                 if (((year > parseInt(data.year)) && mes > 1) || (year == parseInt(data.year) && mes > (parseInt(data.mes) + 1))) {
                                     req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPagoPlazo = "";
@@ -695,12 +693,12 @@ function altaPagoPlazo(req, res) {
                                         
                                             // Iterar sobre los meses del año actual
                                             for (let mes = mesIni; mes <= mesFinLoop; mes++) {
-                                                cont++; 
                                                 if (cont < data.mesesVarios) {
                                                     recargoOperacion2 = data.recargoPagoVarios;
                                                 } else {
                                                     recargoOperacion2 = 0.00;
                                                 }
+                                                cont++; 
                                         
                                                 if (tipo == 3) {
                                                     pagos.push([idPro, data.importeVarios, recargoOperacion2, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta, id_plazo]);

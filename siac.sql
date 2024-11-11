@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-11-2024 a las 01:52:32
+-- Tiempo de generación: 11-11-2024 a las 18:03:43
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -113,6 +113,7 @@ CREATE TABLE `incidencia` (
   `clasificacion_incidencia` int(11) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha` date NOT NULL,
+  `hora` time DEFAULT NULL,
   `id_status_incidencia` int(11) NOT NULL,
   `id_administardor` int(11) DEFAULT NULL,
   `asunto` varchar(255) DEFAULT NULL,
@@ -123,18 +124,18 @@ CREATE TABLE `incidencia` (
 -- Volcado de datos para la tabla `incidencia`
 --
 
-INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `clasificacion_incidencia`, `descripcion`, `fecha`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
-(1, 3, 2, 7, 'Se metió Mauricio a mi casa a comer', '2024-05-07', 1, NULL, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg'),
-(2, 8, 6, 18, 'El día de ayer me atendieron de mala gana solo por por que pregunte sobre los servicios que me brinden y no me respondieron y me atendieron grosero', '2024-10-30', 1, NULL, 'Por atención al cliente', NULL),
-(3, 14, 1, 1, 'Ayer en la tarde se fue la luz en toda la colonia y sigue sin regresar', '2024-10-31', 1, NULL, 'se fue la luz en toda la colonia', NULL),
-(4, 19, 3, 8, 'Hoy pasaba por la calle illinois a las 12:30 pm y note que los focos de las farolas no estaban prendidos', '2024-11-02', 1, NULL, 'Focos de farolas fundidos por la calle Illinois', '/imagenes/imagenesIncidencia/1730769406724.jpg'),
-(5, 17, 1, 1, ' El sistema de refrigeración no está funcionando correctamente, lo que pone en riesgo los servidores.', '2024-10-29', 1, NULL, 'Fallo en el sistema de refrigeración en el Departamento de IT', '/imagenes/imagenesIncidencia/1730769445604.jpg'),
-(6, 15, 4, 11, 'Los empleados han reportado ruidos constantes debido a obras nocturnas en la zona. Esto está afectando la productividad.', '2024-11-06', 1, 2, 'Ruidos molestos durante la noche por obras cercana', '/imagenes/imagenesIncidencia/1730769583760.jpeg'),
-(7, 16, 1, 1, ' Las luces de la oficina principal no encienden correctamente, lo que dificulta el trabajo de los empleados.', '2024-11-02', 1, 2, 'Problema con la iluminación en el área de oficinas', '/imagenes/imagenesIncidencia/1730769661187.jpg'),
-(8, 6, 3, 10, 'Solicitud para fumigar el departamento debido a la presencia de insectos.', '2024-11-01', 1, 2, 'Solicitud de fumigación', '/imagenes/imagenesIncidencia/1730770039491.jpeg'),
-(9, 18, 2, 6, ' El sistema de cámaras en el estacionamiento no está funcionando correctamente, lo que aumenta el riesgo de incidentes.', '2024-10-29', 1, 2, 'Fallo en el sistema de cámaras de seguridad en el estacionamiento', '/imagenes/imagenesIncidencia/1730770576994.jpg'),
-(10, 9, 5, 16, 'Solicitud de limpieza adicional en el salón de eventos.', '2024-10-23', 1, 2, 'Solicitud de limpieza en la sala', '/imagenes/imagenesIncidencia/1730771689112.jpeg'),
-(11, 10, 1, 2, 'Reporte de un goteo de agua en la tubería de la cocina del departamento.', '2024-10-18', 1, 2, 'Goteo en la cocina', '/imagenes/imagenesIncidencia/1730772128428.jpeg');
+INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `clasificacion_incidencia`, `descripcion`, `fecha`, `hora`, `id_status_incidencia`, `id_administardor`, `asunto`, `evidencia`) VALUES
+(1, 3, 2, 7, 'Se metió Mauricio a mi casa a comer', '2024-05-07', '00:00:00', 1, NULL, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg'),
+(2, 8, 6, 18, 'El día de ayer me atendieron de mala gana solo por por que pregunte sobre los servicios que me brinden y no me respondieron y me atendieron grosero', '2024-10-30', '00:00:00', 1, NULL, 'Por atención al cliente', NULL),
+(3, 14, 1, 1, 'Ayer en la tarde se fue la luz en toda la colonia y sigue sin regresar', '2024-10-31', '00:00:00', 1, NULL, 'se fue la luz en toda la colonia', NULL),
+(4, 19, 3, 8, 'Hoy pasaba por la calle illinois a las 12:30 pm y note que los focos de las farolas no estaban prendidos', '2024-11-02', '00:00:00', 1, NULL, 'Focos de farolas fundidos por la calle Illinois', '/imagenes/imagenesIncidencia/1730769406724.jpg'),
+(5, 17, 1, 1, ' El sistema de refrigeración no está funcionando correctamente, lo que pone en riesgo los servidores.', '2024-10-29', '00:00:00', 1, NULL, 'Fallo en el sistema de refrigeración en el Departamento de IT', '/imagenes/imagenesIncidencia/1730769445604.jpg'),
+(6, 15, 4, 11, 'Los empleados han reportado ruidos constantes debido a obras nocturnas en la zona. Esto está afectando la productividad.', '2024-11-06', '00:00:00', 1, 2, 'Ruidos molestos durante la noche por obras cercana', '/imagenes/imagenesIncidencia/1730769583760.jpeg'),
+(7, 16, 1, 1, ' Las luces de la oficina principal no encienden correctamente, lo que dificulta el trabajo de los empleados.', '2024-11-02', '00:00:00', 1, 2, 'Problema con la iluminación en el área de oficinas', '/imagenes/imagenesIncidencia/1730769661187.jpg'),
+(8, 6, 3, 10, 'Solicitud para fumigar el departamento debido a la presencia de insectos.', '2024-11-01', '00:00:00', 1, 2, 'Solicitud de fumigación', '/imagenes/imagenesIncidencia/1730770039491.jpeg'),
+(9, 18, 2, 6, ' El sistema de cámaras en el estacionamiento no está funcionando correctamente, lo que aumenta el riesgo de incidentes.', '2024-10-29', '00:00:00', 1, 2, 'Fallo en el sistema de cámaras de seguridad en el estacionamiento', '/imagenes/imagenesIncidencia/1730770576994.jpg'),
+(10, 9, 5, 16, 'Solicitud de limpieza adicional en el salón de eventos.', '2024-10-23', '00:00:00', 1, 2, 'Solicitud de limpieza en la sala', '/imagenes/imagenesIncidencia/1730771689112.jpeg'),
+(11, 10, 1, 2, 'Reporte de un goteo de agua en la tubería de la cocina del departamento.', '2024-10-18', '00:00:00', 1, 2, 'Goteo en la cocina', '/imagenes/imagenesIncidencia/1730772128428.jpeg');
 
 -- --------------------------------------------------------
 
@@ -289,6 +290,7 @@ CREATE TABLE `seguimiento` (
   `comentario` text NOT NULL,
   `id_status_seguimiento` int(11) NOT NULL,
   `fecha` date NOT NULL,
+  `hora` time NOT NULL,
   `evidencia` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -296,9 +298,9 @@ CREATE TABLE `seguimiento` (
 -- Volcado de datos para la tabla `seguimiento`
 --
 
-INSERT INTO `seguimiento` (`folio`, `movimiento`, `id_empleado`, `comentario`, `id_status_seguimiento`, `fecha`, `evidencia`) VALUES
-(1, 1, 4, 'Se llaman a las autoridades.', 2, '2024-05-08', NULL),
-(1, 2, 4, 'Se arrestó de manera brusca.', 3, '2024-05-08', '\\imagenes\\imagenesSeguimiento\\1717643978162.jpeg');
+INSERT INTO `seguimiento` (`folio`, `movimiento`, `id_empleado`, `comentario`, `id_status_seguimiento`, `fecha`, `hora`, `evidencia`) VALUES
+(1, 1, 4, 'Se llaman a las autoridades.', 2, '2024-05-08', '00:00:00', NULL),
+(1, 2, 4, 'Se arrestó de manera brusca.', 3, '2024-05-08', '00:00:00', '\\imagenes\\imagenesSeguimiento\\1717643978162.jpeg');
 
 -- --------------------------------------------------------
 

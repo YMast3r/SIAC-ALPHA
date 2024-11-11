@@ -75,6 +75,7 @@
                         </th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Status</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Fecha</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Hora</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg text-center">
                             Descripción</th>
                     </tr>
@@ -91,6 +92,7 @@
                         </td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center ">{{this.status}}</td>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.fecha}}</td>
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.hora}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center">
                             {{this.descripcion}}</td>
                     </tr>
@@ -138,6 +140,7 @@
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Comentario</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Status</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Fecha</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Hora</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">Evidencia
                         </th>
                     </tr>
@@ -151,6 +154,7 @@
                         <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.comentario}}</td>
                         <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.status}}</td>
                         <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.fecha}}</td>
+                        <td class="px-4 py-2 bg-white  text-center border-b-2 border-gray-200 shadow-b-xl">{{this.hora}}</td>
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">
                             {{#if this.evidencia}}
                             <img src="{{this.evidencia}}" alt="Evidencia" class="w-16 h-16 object-cover rounded-sm mx-auto"
@@ -222,6 +226,10 @@
             <input type="date" id="fecha" name="fecha" required
                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
                 value="{{data.fecha}}">
+                
+            <label for="hora"><i class="fas fa-calendar"></i> Hora</label>
+            <input type="time" id="hora" name="hora"
+                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
 
             <label for="status"><i class="fas fa-spinner">&nbsp;</i>
                 Status</label>

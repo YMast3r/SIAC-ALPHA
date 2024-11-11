@@ -106,7 +106,7 @@ function manSeguimiento(req, res) {
                                                     }
                                                     if (statusRows && statusRows.length > 0) {
                                                         const status = statusRows;
-                                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, c.descripcion AS status, a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia WHERE a.folio = ? ORDER BY a.folio DESC', [id], (err, inciRows) => {
+                                                        conn.query('SELECT a.folio, a.asunto, a.fecha, a.hora, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, c.descripcion AS status, a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia WHERE a.folio = ? ORDER BY a.folio DESC', [id], (err, inciRows) => {
                                                             if (err) {
                                                                 console.log(err);
                                                                 return;
@@ -117,7 +117,7 @@ function manSeguimiento(req, res) {
                                                                     fecha: formatDate(inciRows.fecha), // Formatea la fecha
                                                                 }));
 
-                                                                conn.query('SELECT s.folio, s.movimiento, u.nombre AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.evidencia FROM seguimiento s JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = ? ORDER BY s.movimiento DESC', [id], (err, rows) => {
+                                                                conn.query('SELECT s.folio, s.movimiento, COALESCE(u.nombre, "Sin empleado") AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.hora, s.evidencia FROM seguimiento s LEFT JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = 12 ORDER BY s.movimiento DESC', [id], (err, rows) => {
                                                                     if (err) {
                                                                         console.log(err);
                                                                         return;
@@ -265,7 +265,7 @@ function altaSeguimiento(req, res) {
                                     data.empleado = null;
                                 }
                                 const imagenRuta = req.file ? `/imagenes/imagenesSeguimiento/${req.file.filename}` : null;
-                                conn.query('INSERT INTO seguimiento (folio, movimiento, id_empleado, comentario, id_status_seguimiento, fecha, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, movimiento, data.empleado, data.comentario, data.status, data.fecha, imagenRuta], (err, rows) => {
+                                conn.query('INSERT INTO seguimiento (folio, movimiento, id_empleado, comentario, id_status_seguimiento, fecha, hora, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [id, movimiento, data.empleado, data.comentario, data.status, data.fecha, data.hora, imagenRuta], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                         req.session.errorMSeg = 'Error al insertar el seguimiento';

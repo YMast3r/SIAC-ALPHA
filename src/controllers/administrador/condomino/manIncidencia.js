@@ -83,7 +83,7 @@ function manIncidencia(req, res) {
                             if (rows && rows.length > 0) {
                                 const clasificacion = rows;
 
-                                conn.query('SELECT a.folio, a.asunto, a.fecha, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, c.descripcion AS status , a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia WHERE a.id_usuario = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                conn.query('SELECT a.folio, a.asunto, a.fecha, a.hora, a.evidencia, b.descripcion AS tipo, e.descripcion AS clasificacion, c.descripcion AS status , a.descripcion, d.nombre AS usuario FROM incidencia a JOIN tipo_incidencia b ON a.id_tipo_incidencia = b.id_tipo_incidencia JOIN status_incidencia c ON a.id_status_incidencia = c.id_status_incidencia JOIN usuario d ON a.id_usuario = d.id_usuario JOIN clasificacion_incidencia e ON a.clasificacion_incidencia = e.id_clasificacion_incidencia WHERE a.id_usuario = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                     if (err) {
                                         console.log(err);
                                         return;
@@ -166,11 +166,11 @@ function altaIncidencia(req, res) {
                     let evidencia = req.file ? `/imagenes/imagenesIncidencia/${req.file.filename}` : null;
 
                     if (tipo == 3) {
-                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, clasificacion_incidencia, fecha, id_status_incidencia, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-                        parametros = [idCon, data.descripcion, data.tipo, data.clasificacion, data.fecha, 1, data.asunto, evidencia];
+                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, clasificacion_incidencia, fecha, hora, id_status_incidencia, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        parametros = [idCon, data.descripcion, data.tipo, data.clasificacion, data.fecha, data.hora, 1, data.asunto, evidencia];
                     } else {
-                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, clasificacion_incidencia, fecha, id_status_incidencia, id_administardor, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                        parametros = [idCon, data.descripcion, data.tipo, data.clasificacion, data.fecha, 1, idAdm, data.asunto, evidencia];
+                        consulta = 'INSERT INTO incidencia (id_usuario, descripcion, id_tipo_incidencia, clasificacion_incidencia, fecha, hora, id_status_incidencia, id_administardor, asunto, evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        parametros = [idCon, data.descripcion, data.tipo, data.clasificacion, data.fecha, data.hora, 1, idAdm, data.asunto, evidencia];
                     }
                     conn.query(consulta, parametros, (err, rows) => {
                         if (err) {
