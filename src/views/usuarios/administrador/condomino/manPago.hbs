@@ -440,6 +440,7 @@
                         <select id="tipoPagoPlazo" name="tipoPagoPlazo"
                             class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
                             required>
+                            <option selected value="">Selecciona el tipo de pago</option>
                             {{#each tipoPago}}
                             <option value="{{this.id_tipo_pago}}" 
                                 data-precioPago="{{this.importe}}"
@@ -455,6 +456,14 @@
                             {{/each}}
                         </select>
                     </div>
+
+                    <!-- Campos ocultos para almacenar los valores data-* -->
+                    <input type="hidden" name="importeVarios" id="importeVarios">
+                    <input type="hidden" name="recargoPagoVarios" id="recargoPagoVarios">
+                    <input type="hidden" name="mesesVarios" id="mesesVarios">
+                    <input type="hidden" name="fechaRVarios" id="fechaRVarios">
+                    <input type="hidden" name="mesVarios" id="mesVarios">
+                    <input type="hidden" name="yearVarios" id="yearVarios">
 
                     <!-- Campo de monto -->
                     <div class="w-1/2">
@@ -621,14 +630,21 @@
             let year = selectedOption.getAttribute('data-year') || '';
             let cuotaPago = selectedOption.getAttribute('data-cuotaPago') || '';
 
-            // Asignamos estos valores a los campos ocultos
+            // Asignamos estos valores a los campos ocultos (agregados para tipoPagoPlazo)
+            document.getElementById('importeVarios').value = precio ? precio : '';
+            document.getElementById('recargoPagoVarios').value = recargoPago ? recargoPago : '';
+            document.getElementById('mesesVarios').value = meses ? meses : '';
+            document.getElementById('fechaRVarios').value = fechaR ? fechaR : '';
+            document.getElementById('mesVarios').value = mes ? mes : '';
+            document.getElementById('yearVarios').value = year ? year : '';
+
+            // Asignamos los valores a los campos visibles
             document.getElementById('importe').value = precio ? precio : '';
             document.getElementById('recargoPago').value = recargoPago ? recargoPago : '';
             document.getElementById('meses').value = meses ? meses : '';
             document.getElementById('fechaR').value = fechaR ? fechaR : '';
             document.getElementById('mes').value = mes ? mes : '';
             document.getElementById('year').value = year ? year : '';
-            document.getElementById('cuotaPago').value = cuotaPago ? cuotaPago : '';
 
             // Mostrar el precio correspondiente o limpiar el campo si no hay precio definido
             let precioInput = document.getElementById(precioInputId);
@@ -642,7 +658,6 @@
             } else {
                 contenedorInput.style.display = 'none';
             }
-
         }
 
         // Escuchar cambios en el select de tipoPago
@@ -654,7 +669,6 @@
         document.getElementById('tipoPagoPlazo').addEventListener('change', function () {
             handleTipoPagoChange(this, 'precio', 'recargoPlazo', 'recargoPlazoContainer', 'mensajePagoPlazo');
         });
-
     </script>
 
     <script defer>
