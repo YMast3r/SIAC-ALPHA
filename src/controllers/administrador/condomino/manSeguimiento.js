@@ -117,7 +117,7 @@ function manSeguimiento(req, res) {
                                                                     fecha: formatDate(inciRows.fecha), // Formatea la fecha
                                                                 }));
 
-                                                                conn.query('SELECT s.folio, s.movimiento, COALESCE(u.nombre, "Sin empleado") AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.hora, s.evidencia FROM seguimiento s LEFT JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = 12 ORDER BY s.movimiento DESC', [id], (err, rows) => {
+                                                                conn.query('SELECT s.folio, s.movimiento, COALESCE(u.nombre, "Sin empleado") AS empleado, s.comentario, ss.descripcion AS status, s.fecha, s.hora, s.evidencia FROM seguimiento s LEFT JOIN usuario u ON s.id_empleado = u.id_usuario JOIN status_seguimiento ss ON s.id_status_seguimiento = ss.id_status_seguimiento WHERE s.folio = ? ORDER BY s.movimiento DESC', [id], (err, rows) => {
                                                                     if (err) {
                                                                         console.log(err);
                                                                         return;

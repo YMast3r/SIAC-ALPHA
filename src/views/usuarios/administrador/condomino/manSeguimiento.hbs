@@ -76,8 +76,8 @@
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Status</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Fecha</th>
                         <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium">Hora</th>
-                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg text-center">
-                            Descripción</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg text-center">Descripción</th>
+                        <th class="px-4 py-2 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg text-center">Evidencia</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,6 +95,16 @@
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">{{this.hora}}</td>
                         <td class="px-4 py-2 bg-white border-b-2 border-gray-200 shadow-b-xl text-center">
                             {{this.descripcion}}</td>
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200 shadow-b-xl">
+                        {{#if this.evidencia}}
+                        <img src="{{this.evidencia}}" alt="Evidencia" class="w-16 h-16 object-cover rounded-sm mx-auto"
+                            onclick="mostrarImagen(this.src)">
+                        {{else}}
+                        <div class="w-20 h-20 object-cover rounded-sm text-lg  shadow-l-lg mx-auto" >
+                            <img src="/imagenes/sinImagen.png" alt="Sin evidencia">
+                        </div>
+                        {{/if}}
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -163,7 +173,6 @@
                             <div class="w-20 h-20 object-cover rounded-sm text-lg  shadow-l-lg mx-auto" >
                                 <img src="/imagenes/sinImagen.png" alt="Sin evidencia">
                             </div>
-                            
                             {{/if}}
                         </td>
                     </tr>
