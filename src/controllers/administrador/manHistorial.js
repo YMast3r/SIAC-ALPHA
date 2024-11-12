@@ -335,7 +335,12 @@ function manPagos(req, res) {
             return;
         }
 
+        let orden;
+        orden = orderByParam;
         // Modificar la consulta para incluir la ordenación dinámica y el WHERE dinámico
+        if (orderByParam == "mes"){
+            orden = 'mesId';
+        }
         conn.query(
             `SELECT 
                     a.folio, 
@@ -346,6 +351,7 @@ function manPagos(req, res) {
                     t.descripcion AS tipo_pago, 
                     a.fecha, 
                     b.descripcion AS mes, 
+                    b.mes AS mesId, 
                     a.año, 
                     COALESCE(u.nombre, 'Sin administrador') AS administrador, 
                     c.nombre AS condomino, 
@@ -365,7 +371,7 @@ function manPagos(req, res) {
                 JOIN 
                     usuario c ON p.id_usuario = c.id_usuario
              ${whereClause} 
-             ORDER BY ${orderByParam} ${orderDirectionParam}`,
+             ORDER BY ${orden} ${orderDirectionParam}`,
             params,
             (err, rows) => {
                 if (err) {

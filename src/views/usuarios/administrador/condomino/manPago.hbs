@@ -213,12 +213,20 @@
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
                             NO. RECIBO
                         </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg">
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
                             ID DE VARIOS PAGOS
                         </th>
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
+                            C/A
+                        </th>
+                    {{#isEqual tipoUsuario 2}}
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg"> </th>
+                    {{/isEqual}}
+
                     </tr>
                 </thead>
                 <tbody id="tablaPagosBody">
+                    {{#isEqual tipoUsuario 3}}
                     {{#each datos}}
                     <tr class="w-full">
                     <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-tl-lg">{{this.folio}}</td>
@@ -228,10 +236,31 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.importe}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
-                    <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
                         <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.C_A}}</td>
                     </tr>
                     {{/each}}
+                    {{else}}
+                    {{#each datos}}
+                    <tr class="w-full">
+                    <td class="px-2 bg-white border-b-2 border-gray-200 text-lg text-center rounded-tl-lg">{{this.folio}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.año}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.mes}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.tipo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.importe}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.recargo}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
+                        <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
+                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.C_A}}</td>
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
+                            <a id="{{this.folio}}" href="/manActivoCancelado-{{this.folio}}"
+                                class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md">Cancelar</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                    {{/isEqual}}
                 </tbody>
             <tbody id="mensajeNoResultados" style="display: none;">
                     <tr>
@@ -297,16 +326,14 @@
                     </div>
                 </div>
 
-
                 <!-- Campo para ingresar el Recargo -->
-                <div id="recargoContainer" class="w-full overflow-hidden">
+                <div style="display: none;" id="recargoContainer" class="w-full overflow-hidden">
                     <label for="recargo" id="recargoLabel" class="block text-lg"><i class="fa-solid fa-calendar-days"></i>
                     Recargo y meses por pagar</label>
                     <textarea id="recargo" name="recargo" placeholder="Recargo" readonly
                         class="border border-gray-200 w-full text-lg p-2 pl-1 my-2 focus:bg-white hover:bg-gray-300 resize-y h-auto min-h-[2.5rem]">
                     </textarea>
                 </div>
-
 
                 <label for="fecha"><i class="fas fa-calendar"></i> Fecha</label>
                 <input type="month" id="fecha" name="fecha" placeholder="YYYY-MM" value="{{data.fecha}}"
@@ -317,11 +344,11 @@
                 <label for="reciboFolio"><i class="fas fa-user"></i> Recibo Folio</label>
                 <input type="tel" id="reciboFolio" name="reciboFolio" placeholder="Recibo Folio" value="{{data.reciboFolio}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                {{/isEqual}}
-
+                {{else}}
                 <label for="referencia"><i class="fas fa-user"></i> Referencia</label>
                 <input type="text" id="referencia" name="referencia" placeholder="Referencia" value="{{data.referencia}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                {{/isEqual}}
 
                 <!-- Campo para subir una imagen -->
                 <label for="imagen"><i class="fas fa-image pr-2"></i>Sube un comprobante de pago</label>
@@ -477,16 +504,13 @@
                     </div>
                 </div>
 
-                <div id="recargoPlazoContainer" class="w-full overflow-hidden whitespace-normal">
+                <div style="display: none;" id="recargoPlazoContainer" class="w-full overflow-hidden whitespace-normal">
                     <label for="recargoPlazo" id="recargoPlazoLabel" class="block text-lg"><i class="fa-solid fa-calendar-days"></i>
                     Recargo y meses por pagar</label>
                     <textarea id="recargoPlazo" name="recargoPlazo" placeholder="recargoPlazo" readonly
                         class="border border-gray-200 w-full text-lg p-2 pl-1 my-2 focus:bg-white hover:bg-gray-300 resize-y h-auto min-h-[2.5rem]">
                     </textarea>
                 </div>
-
-
-
 
                 <label for="fechaInicio"><i class="fas fa-calendar"></i> Fecha Inicial</label>
                 <input type="month" id="fechaInicio" name="fechaInicio" placeholder="YYYY-MM" value="{{data.fechaInicio}}"
@@ -503,11 +527,11 @@
                 <label for="reciboFolioPlazo"><i class="fas fa-user"></i> Recibo Folio</label>
                 <input type="tel" id="reciboFolioPlazo" name="reciboFolioPlazo" placeholder="Recibo Folio" value="{{data.reciboFolioPlazo}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                {{/isEqual}}
-
+                {{else}}
                 <label for="referenciaPlazo"><i class="fas fa-user"></i> Referencia</label>
                 <input type="text" id="referenciaPlazo" name="referenciaPlazo" placeholder="Referencia" value="{{data.referenciaPlazo}}"
                     class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                {{/isEqual}}
 
                 <!-- Campo para subir una imagen -->
                 <label for="imagen"><i class="fas fa-image"></i> Sube un comprobante de pago</label>
@@ -762,6 +786,7 @@
             const añoFiltro = document.getElementById("filtroAño");
             const tipoFiltro = document.getElementById("tipoFiltro");
             const tablaPagos = document.getElementById("tablaPagos");
+            const mensajeNoResultados = document.getElementById("mensajeNoResultados");
             const filas = tablaPagos.getElementsByTagName("tr");
 
             function filtrarTabla() {
@@ -781,8 +806,10 @@
 
                     if (coincideMes && coincideAño && coincideTipo) {
                         fila.style.display = "";
+                        mensajeNoResultados.style.display = 'none';
                     } else {
                         fila.style.display = "none";
+                        mensajeNoResultados.style.display = '';
                     }
                 }
 

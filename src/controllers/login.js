@@ -68,7 +68,7 @@ function ingresoAP(req, res){
     req.session.idUser = 2;
     req.session.tipoUsuario = 2;
     req.session.idCon = 3;
-    res.redirect('/manPago-2');
+    res.redirect('/manPago-1');
 }
 
 function ingresoAS(req, res){

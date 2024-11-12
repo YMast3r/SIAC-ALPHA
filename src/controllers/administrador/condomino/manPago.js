@@ -198,7 +198,7 @@ function manPago(req, res) {
                                 }
                                 if (rows.length > 0) {
                                     const tipoPago = rows;
-                                    conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                    conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo, a.C_A FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                         if (err) {
                                             console.log(err);
                                         }
@@ -403,7 +403,10 @@ function altaPago(req, res) {
                                 }
 
                                 // Verificar si la fecha proporcionada es mayor al último pago
-                                if (((year > parseInt(data.year)) && mes > 1) || (year == parseInt(data.year) && mes > (parseInt(data.mes) + 1))) {
+                                if (
+                                    (year > parseInt(data.year) && !(parseInt(data.mes) == 12 && mes == 1)) || 
+                                    (year == parseInt(data.year) && mes != (parseInt(data.mes) + 1))
+                                ) {
                                     req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPagoPlazo = "";
                                     req.session.errorMPagoP = "";
@@ -629,7 +632,10 @@ function altaPagoPlazo(req, res) {
                                 }
 
                                 // Verificar si la fecha proporcionada es mayor al último pago
-                                if (((añoInicio > parseInt(data.yearVarios)) && mesInicio > 1) || (añoInicio == parseInt(data.yearVarios) && mesInicio > (parseInt(data.mesVarios) + 1))) {
+                                if (
+                                    (añoInicio > parseInt(data.yearVarios) && !(parseInt(data.mesVarios) == 12 && mesInicio == 1)) || 
+                                    (añoInicio === parseInt(data.yearVarios) && mesInicio != (parseInt(data.mesVarios) + 1))
+                                ){
                                     req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPago = "";
                                     req.session.errorMPago = "";
