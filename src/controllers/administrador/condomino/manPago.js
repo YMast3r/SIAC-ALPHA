@@ -366,7 +366,7 @@ function altaPago(req, res) {
                         console.log('No hay imagen');
                     }
 
-                    conn.query('SELECT COUNT(*) AS pago FROM pago WHERE mes = ? AND año = ? AND id_propiedad = ? AND tipo_pago = ?', [mes, year, idPro, data.tipoPago], (err, rows) => {
+                    conn.query('SELECT COUNT(*) AS pago FROM pago WHERE mes = ? AND año = ? AND id_propiedad = ? AND tipo_pago = ? AND C_A = "A"', [mes, year, idPro, data.tipoPago], (err, rows) => {
                         if (err) {
                             console.log(err);
                         }
@@ -376,7 +376,8 @@ function altaPago(req, res) {
                         } catch {
                             console.log('No hay imagen');
                         }
-                        if (rows[0].pago == 0) {
+                        const contador = rows[0].pago;
+                        if (contador == 0) {
                             conn.query(`SELECT DATE_FORMAT(fecha_anexo, '%Y-%m') AS año_mes_anexo FROM propiedad WHERE id_propiedad = ?`, [idPro], (err, rows) => {
                                 if (err) {
                                     console.log(err);
@@ -388,7 +389,7 @@ function altaPago(req, res) {
                                 const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
 
                                 // Si no hay último pago, verificar por la fecha anexo
-                                if (year < yearAnexo || (year == yearAnexo && mes < mesAnexo)) {
+                                if (year < yearAnexo || (year == yearAnexo && mes < mesAnexo)  && (contador != 0)) {
                                     req.session.errorMPago = 'No se pueden hacer pagos anteriores a la fecha de anexo';
                                     req.session.mensajeAltaPagoPlazo = "";
                                     req.session.errorMPagoP = "";
@@ -405,7 +406,7 @@ function altaPago(req, res) {
                                 // Verificar si la fecha proporcionada es mayor al último pago
                                 if (
                                     (year > parseInt(data.year) && !(parseInt(data.mes) == 12 && mes == 1)) || 
-                                    (year == parseInt(data.year) && mes != (parseInt(data.mes) + 1))
+                                    (year == parseInt(data.year) && mes != (parseInt(data.mes) + 1)) && (contador != 0)
                                 ) {
                                     req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPagoPlazo = "";
@@ -584,7 +585,7 @@ function altaPagoPlazo(req, res) {
                     const tipo = rows[0].tipo_usuario;
 
                     // Verificar si existe algún pago en el rango de fechas seleccionado
-                    conn.query('SELECT COUNT(*) AS count FROM pago WHERE id_propiedad = ? AND tipo_pago = ? AND ((año > ? OR (año = ? AND mes >= ?)) AND (año < ? OR (año = ? AND mes <= ?)))',
+                    conn.query('SELECT COUNT(*) AS count FROM pago WHERE C_A = "A" AND id_propiedad = ? AND tipo_pago = ? AND ((año > ? OR (año = ? AND mes >= ?)) AND (año < ? OR (año = ? AND mes <= ?)))',
                         [idPro, data.tipoPagoPlazo, añoInicio, añoInicio, mesInicio, añoFin, añoFin, mesFin], (err, rows) => {
                             if (err) {
                                 console.log(err);

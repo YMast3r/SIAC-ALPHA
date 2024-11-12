@@ -13,6 +13,12 @@ router.get('/renderRecuperarPropiedadPago', pagoController.renderRecuperarPropie
 router.get('/manActivoCancelado-:idFC', (req, res) => {
     const idFC = req.params.idFC;
     const idP = req.session.idPropiedad;
+    req.session.errorMPago = "";
+    req.session.errorMPagoP = "";
+    req.session.dataCampos = "";
+    // Limpiamos los mensajes de alta
+    req.session.mensajeAltaPago = "";
+    req.session.mensajeAltaPagoPlazo = "";
     req.getConnection((err, conn) => {
         conn.query("UPDATE pago SET `C_A`='C' WHERE folio = ?", [idFC], (err, rows) => {
             res.redirect(`/manPago-${idP}`);

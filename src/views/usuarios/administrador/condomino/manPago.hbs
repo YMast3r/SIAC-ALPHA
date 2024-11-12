@@ -216,9 +216,6 @@
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
                             ID DE VARIOS PAGOS
                         </th>
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            C/A
-                        </th>
                     {{#isEqual tipoUsuario 2}}
                     <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg"> </th>
                     {{/isEqual}}
@@ -238,7 +235,6 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
                         <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
-                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.C_A}}</td>
                     </tr>
                     {{/each}}
                     {{else}}
@@ -253,11 +249,14 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
                         <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
-                        <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.C_A}}</td>
+                        {{#isEqual this.C_A "A"}}
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
                             <a id="{{this.folio}}" href="/manActivoCancelado-{{this.folio}}"
                                 class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md">Cancelar</a>
                         </td>
+                        {{else}}
+                        <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">Cancelado</td>
+                        {{/isEqual}}
                     </tr>
                     {{/each}}
                     {{/isEqual}}
