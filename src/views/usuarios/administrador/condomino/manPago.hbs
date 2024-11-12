@@ -768,7 +768,7 @@
 
                     const coincideMes = mes === "" || celdaMes.includes(mes);
                     const coincideAño = año === "" || celdaAño.includes(año);
-                    const coincideTipo = tipo === "" || celdaTipo.includes(tipo);
+                    const coincideTipo = tipo === "" || celdaTipo == tipo;
 
                     if (coincideMes && coincideAño && coincideTipo) {
                         fila.style.display = "";

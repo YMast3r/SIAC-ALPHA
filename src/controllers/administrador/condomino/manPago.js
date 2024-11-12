@@ -184,14 +184,20 @@ function manPago(req, res) {
                             ...row,
                             fecha_anexo: formatDate(row.fecha_anexo), // Formatea la fecha
                         }));
-                        conn.query("SELECT t.id_tipo_pago, t.descripcion, CASE WHEN t.id_tipo_pago = 1 THEN tp.pago ELSE t.precio END AS importe, CASE WHEN t.id_tipo_pago = 1 THEN tp.recargo ELSE t.recargo END AS recargo, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (EXTRACT(YEAR FROM p.fecha_anexo) * 12 + EXTRACT(MONTH FROM p.fecha_anexo)) ELSE (EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (pg.max_año * 12 + pg.max_mes) - 1) END AS meses_por_pagar, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN CONCAT((SELECT descripcion FROM mes WHERE mes.mes = EXTRACT(MONTH FROM p.fecha_anexo)), ' de ', EXTRACT(YEAR FROM p.fecha_anexo)) ELSE CONCAT((SELECT descripcion FROM mes WHERE mes.mes = pg.max_mes + 1), ' de ', pg.max_año) END AS fecha, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(MONTH FROM p.fecha_anexo) ELSE pg.max_mes END AS mes, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(YEAR FROM p.fecha_anexo) ELSE pg.max_año END AS year FROM tipo_pago t CROSS JOIN propiedad p LEFT JOIN tipo_propiedad tp ON p.id_tipo_propiedad = tp.id_tipo_propiedad LEFT JOIN (SELECT id_propiedad, tipo_pago, MAX(año) AS max_año, MAX(mes) AS max_mes FROM pago GROUP BY id_propiedad, tipo_pago) pg ON p.id_propiedad = pg.id_propiedad AND pg.tipo_pago = t.id_tipo_pago WHERE p.id_propiedad = ? ORDER BY t.id_tipo_pago", [id], (err, rows) => {
+
+                        conn.query("SELECT * FROM tipo_pago", [id], (err, rows) => {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            const tipoPagoFiltro = rows;
+                            conn.query("SELECT t.id_tipo_pago, t.descripcion, CASE WHEN t.id_tipo_pago = 1 THEN tp.pago ELSE t.precio END AS importe, CASE WHEN t.id_tipo_pago = 1 THEN tp.recargo ELSE t.recargo END AS recargo, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (EXTRACT(YEAR FROM p.fecha_anexo) * 12 + EXTRACT(MONTH FROM p.fecha_anexo)) ELSE (EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (pg.max_año * 12 + pg.max_mes) - 1) END AS meses_por_pagar, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN CONCAT((SELECT descripcion FROM mes WHERE mes.mes = EXTRACT(MONTH FROM p.fecha_anexo)), ' de ', EXTRACT(YEAR FROM p.fecha_anexo)) ELSE CONCAT((SELECT descripcion FROM mes WHERE mes.mes = pg.max_mes + 1), ' de ', pg.max_año) END AS fecha, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(MONTH FROM p.fecha_anexo) ELSE pg.max_mes END AS mes, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(YEAR FROM p.fecha_anexo) ELSE pg.max_año END AS year FROM tipo_pago t CROSS JOIN propiedad p LEFT JOIN tipo_propiedad tp ON p.id_tipo_propiedad = tp.id_tipo_propiedad LEFT JOIN (SELECT id_propiedad, tipo_pago, MAX(año) AS max_año, MAX(mes) AS max_mes FROM pago GROUP BY id_propiedad, tipo_pago) pg ON p.id_propiedad = pg.id_propiedad AND pg.tipo_pago = t.id_tipo_pago WHERE p.id_propiedad = ? ORDER BY t.id_tipo_pago", [id], (err, rows) => {
                                 if (err) {
                                     console.log(err);
                                     return;
                                 }
                                 if (rows.length > 0) {
                                     const tipoPago = rows;
-                                    const tipoPagoFiltro = rows;
                                     conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                         if (err) {
                                             console.log(err);
@@ -272,6 +278,7 @@ function manPago(req, res) {
                                     });//
                                 }
                             });
+                        });
                     }
                 });
             } else {
@@ -644,10 +651,10 @@ function altaPagoPlazo(req, res) {
                                 // Calcular el número total de meses
                                 const totalMeses = (añoFin - añoInicio) * 12 + (mesFin - mesInicio + 1);
 
-                                if (data.mesesVarios <= totalMeses){
+                                if (data.mesesVarios <= totalMeses) {
                                     recargoOperacion = data.recargoPagoVarios * (data.mesesVarios >= 0 ? data.mesVarios : 0);
-                                }else{
-                                    recargoOperacion = data.recargoPagoVarios * totalMeses;     
+                                } else {
+                                    recargoOperacion = data.recargoPagoVarios * totalMeses;
                                 }
 
                                 // Asegurarte de que recargoOperacion sea un número
@@ -685,12 +692,12 @@ function altaPagoPlazo(req, res) {
                                         }
                                         const id_plazo = rows[0].folio;
                                         let recargoOperacion2;
-                                        let cont = 0; 
+                                        let cont = 0;
                                         for (let año = añoInicio; año <= añoFin; año++) {
                                             // Definir el mes de inicio y fin para cada año
                                             let mesIni = (año === añoInicio) ? mesInicio : 1;
                                             let mesFinLoop = (año === añoFin) ? mesFin : 12;
-                                        
+
                                             // Iterar sobre los meses del año actual
                                             for (let mes = mesIni; mes <= mesFinLoop; mes++) {
                                                 if (cont < data.mesesVarios) {
@@ -698,15 +705,15 @@ function altaPagoPlazo(req, res) {
                                                 } else {
                                                     recargoOperacion2 = 0.00;
                                                 }
-                                                cont++; 
-                                        
+                                                cont++;
+
                                                 if (tipo == 3) {
                                                     pagos.push([idPro, data.importeVarios, recargoOperacion2, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta, id_plazo]);
                                                 } else {
                                                     pagos.push([idPro, data.importeVarios, recargoOperacion2, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta, id_plazo]);
                                                 }
                                             }
-                                        }                                        
+                                        }
 
                                         const queryPagos = tipo == 3 ?
                                             'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia, id_plazo) VALUES ?' :
