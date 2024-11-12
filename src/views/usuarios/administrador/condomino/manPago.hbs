@@ -195,8 +195,14 @@
                     <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
                             AÑO
                         </th>
-                    <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
-                            MES
+                            <th id="contenedorFlechaMes" style="cursor: pointer;" class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 ">
+                                <span class="inline-flex items-center space-x-1">
+                                    <p>MES</p>
+                                    <a href="#" id="flechaDescMes" data-order="desc">&darr;</a>
+                                    <a href="#" id="flechaAscMes" data-order="asc">&uarr;</a>
+                                </span>
+                            </th>
+
                         </th>
                     <th class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
                             TIPO PAGO
@@ -1001,7 +1007,68 @@
             });
         });
     </script>
-    -->
+    -->´
+
+    <script>
+        document.getElementById('contenedorFlechaMes').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    // flechas para la columna "MES"
+    let abajo = document.getElementById('flechaDescMes');
+    let arriba = document.getElementById('flechaAscMes');
+    let orden;
+
+    // Alternar la dirección de orden
+    if (abajo.getAttribute('data-order') === 'desc') {
+        abajo.innerHTML = '&uarr;';
+        abajo.setAttribute('data-order', 'asc');
+        orden = 'asc';
+
+        arriba.innerHTML = '&darr;';
+        arriba.setAttribute('data-order', 'desc');
+    } else {
+        abajo.innerHTML = '&darr;';
+        abajo.setAttribute('data-order', 'desc');
+        orden = 'desc';
+
+        arriba.innerHTML = '&uarr;';
+        arriba.setAttribute('data-order', 'asc');
+    }
+
+    // Array de meses en orden
+    const monthOrder = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    
+    // Obtener el tbody y las filas de la tabla
+    let tbody = document.querySelector('#tablaPagos tbody');
+    let filas = Array.from(tbody.getElementsByTagName('tr'));
+
+    // Ordenar las filas en base a la columna de mes
+    filas.sort(function (a, b) {
+        // Ajusta el índice de columna si es necesario; supongamos que "MES" está en la tercera columna (índice 2)
+        let mesA = a.getElementsByTagName('td')[2].innerText.toLowerCase().trim(); 
+        let mesB = b.getElementsByTagName('td')[2].innerText.toLowerCase().trim();
+
+        let indexA = monthOrder.indexOf(mesA);
+        let indexB = monthOrder.indexOf(mesB);
+
+        if (indexA === -1 || indexB === -1) {
+            console.error(`Mes no encontrado en la lista: ${mesA} o ${mesB}`);
+            return 0;
+        }
+
+        return orden === 'asc' ? indexA - indexB : indexB - indexA;
+    });
+
+    // Limpiar el tbody y agregar las filas ordenadas
+    tbody.innerHTML = '';
+    filas.forEach(function (fila) {
+        tbody.appendChild(fila);
+    });
+});
+
+
+</script>
+
 </body>
 
 </html>
