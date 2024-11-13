@@ -137,6 +137,7 @@ function manSeguimiento(req, res) {
                                                                             status: status,
                                                                             error: error,
                                                                             data: data,
+                                                                            id: req.session.idUser,
                                                                             name: req.session.name,
                                                                             tipoUsuario: tipo
                                                                         });
@@ -148,6 +149,7 @@ function manSeguimiento(req, res) {
                                                                             tipoUsuario: tipo,
                                                                             segui: 1,
                                                                             error: error,
+                                                                            id: req.session.idUser,
                                                                             usuario: usuario,
                                                                             incidencia: incidencia,
                                                                             status: status,

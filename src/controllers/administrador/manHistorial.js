@@ -787,11 +787,23 @@ function consultaEspesifica(req, res) {
     req.session.campoDatos = data;
 
     if (data.campo == 'pagos') {
-        manPagos(req, res);
+        try {
+            res.redirect('/manPagosConsulta');
+        } catch (error) {
+            manPagos(req, res);
+        }
     } else if (data.campo == 'incidencias') {
-        manIncidencias(req, res);
+        try {
+            res.redirect('/manIncidenciasConsulta');
+        } catch (error) {
+            manIncidencias(req, res);
+        }
     } else if (data.campo == 'seguimientos') {
-        manSeguimiento(req, res);
+        try {
+            res.redirect('/manSeguimientoConsulta');
+        } catch (error) {
+            manSeguimiento(req, res);
+        }
     } else {
         console.log("adios: ");
     }

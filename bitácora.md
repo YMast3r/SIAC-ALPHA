@@ -27,10 +27,10 @@
 
 ### Versión 3.4.5 (11/09/2024): Back-end
 - Verificar que la fecha final sea mayor a la fecha de inicio,
-  dado el caso que no lo sea mandar su mensaje de error correspondiente.
+  dado el caso que no lo sea mandar su mensaje de error correspondiente.
 - Verificar que no se ha registrado ningún pago individual que esté en el plazo
-  ejemplo: Se registra septiembre, y el usuario selecciona agosto a octubre,
-  debe de mostrar el mensaje de error correspondiente.
+  ejemplo: Se registra septiembre, y el usuario selecciona agosto a octubre,
+  debe de mostrar el mensaje de error correspondiente.
 - Debe de dar de alta los pagos de manisera individual en la tabla "pagos".
 - Debe de ingresar un pago específico desde que mesI, añoI, hasata MesF y AñoF en la tabla "pagoPlazos". 
 - Debe de mantener la misma estructura.

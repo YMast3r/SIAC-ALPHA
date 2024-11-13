@@ -703,7 +703,7 @@ function altaPagoPlazo(req, res) {
                                         for (let año = añoInicio; año <= añoFin; año++) {
                                             // Definir el mes de inicio y fin para cada año
                                             let mesIni = (año === añoInicio) ? mesInicio : 1;
-                                            let mesFinLoop = (año === añoFin) ? mesFin : 12;
+                                            let mesFinLoop = (año == añoFin) ? mesFin : 12;
 
                                             // Iterar sobre los meses del año actual
                                             for (let mes = mesIni; mes <= mesFinLoop; mes++) {

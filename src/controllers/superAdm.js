@@ -169,7 +169,7 @@ function manipulaAdm(req, res){
         conn.query(consulta, parametros, (err, userdata) => {
             if (userdata.length > 0) {
                 //console.log(userdata.length);
-                req.session.errorMSA = 'Error: El usuario ya existe o el correo o el teléfono ya existe!';
+                req.session.errorMSA = 'Error: El usuario o el correo o el teléfono ya existe!';
                 req.session.dataCampos = data;
                 if (idMod){
                     ediAdm(req, res);
