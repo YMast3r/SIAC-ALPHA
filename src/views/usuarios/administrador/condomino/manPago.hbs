@@ -222,9 +222,7 @@
                     <th title="Id de varios pagos en una toma" class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0">
                             ID DE V. P.
                         </th>
-                    {{#isEqual tipoUsuario 2}}
-                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg"> </th>
-                    {{/isEqual}}
+                    <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-r-lg">ESTADO</th>
 
                     </tr>
                 </thead>
@@ -241,8 +239,14 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
                         <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
+                    {{#isEqual this.Cancelado_Activo "Activo"}}
+                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">Activo</td>
+                    {{else}}
+                    <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">Cancelado</td>
+                    {{/isEqual}}
                     </tr>
                     {{/each}}
+
                     {{else}}
                     {{#each datos}}
                     <tr class="w-full">
@@ -255,7 +259,7 @@
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">${{this.total}}</td>
                         <td class="py-2 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.numero_recibo}}</td>
                         <td class="px-1 bg-white border-b-2 border-gray-200 text-lg text-center">{{this.plazo}}</td>
-                        {{#isEqual this.C_A "A"}}
+                        {{#isEqual this.Cancelado_Activo "Activo"}}
                         <td class="px-4 py-2 bg-white text-center border-b-2 border-gray-200">
                             <a id="{{this.folio}}" href="/manActivoCancelado-{{this.folio}}"
                                 class="px-4 py-2 text-white bg-gray-600 border-gray-400 font-medium rounded-md">Cancelar</a>
@@ -269,7 +273,7 @@
                 </tbody>
             <tbody id="mensajeNoResultados" style="display: none;">
                     <tr>
-                        <td colspan="11" class="px-4 py-4 bg-white text-center font-normal rounded text-lg">     
+                        <td colspan="10" class="px-4 py-4 bg-white text-center font-normal rounded text-lg">     
                             No se encontró ningún pago
                         </td>
                     </tr>
@@ -785,12 +789,33 @@
     </script>
     <!--Filtro fecha y mes-->
     <script defer>
+        
+        function verificarPagos() {
+            const tablaPagosBody = document.getElementById('tablaPagosBody');
+            const filas = tablaPagosBody.getElementsByTagName('tr');
+            const mensajeNoResultados = document.getElementById('mensajeNoResultados');
+
+            let hayResultados = false;
+            for (let i = 0; i < filas.length; i++) {
+                if (filas[i].style.display != 'none') {
+                    hayResultados = true;
+                    break;
+                }
+            }
+
+            console.log("hayResultados: ", hayResultados)
+            if (!hayResultados) {
+                mensajeNoResultados.style.display = '';
+            } else {
+                mensajeNoResultados.style.display = 'none';
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             const mesFiltro = document.getElementById("mesFiltro");
             const añoFiltro = document.getElementById("filtroAño");
             const tipoFiltro = document.getElementById("tipoFiltro");
             const tablaPagos = document.getElementById("tablaPagos");
-            const mensajeNoResultados = document.getElementById("mensajeNoResultados");
             const filas = tablaPagos.getElementsByTagName("tr");
 
             function filtrarTabla() {
@@ -810,34 +835,12 @@
 
                     if (coincideMes && coincideAño && coincideTipo) {
                         fila.style.display = "";
-                        mensajeNoResultados.style.display = 'none';
                     } else {
                         fila.style.display = "none";
-                        mensajeNoResultados.style.display = '';
                     }
-                }
-
                 verificarPagos();  // Verificar si hay resultados después de aplicar los filtros
-            }
-
-            function verificarPagos() {
-                const tablaPagosBody = document.getElementById('tablaPagosBody');
-                const filas = tablaPagosBody.getElementsByTagName('tr');
-                const mensajeNoResultados = document.getElementById('mensajeNoResultados');
-
-                let hayResultados = false;
-                for (let i = 0; i < filas.length; i++) {
-                    if (filas[i].style.display !== 'none') {
-                        hayResultados = true;
-                        break;
-                    }
                 }
 
-                if (!hayResultados) {
-                    mensajeNoResultados.style.display = '';
-                } else {
-                    mensajeNoResultados.style.display = 'none';
-                }
             }
 
             // Agregar eventos para los tres filtros
@@ -988,24 +991,6 @@
             document.getElementById('pagos_plazos').classList.remove('hidden');
         }
     </script>
-    <!--filtro del tipo-->
-    <!--
-    <script>
-        document.getElementById('tipoFiltro').addEventListener('change', function () {
-            const tipoSeleccionado = this.value.toLowerCase();
-            const filas = document.querySelectorAll('#tablaPagosBody tr');
-
-            filas.forEach(fila => {
-                const tipo = fila.querySelector('td:nth-child(4)').textContent.toLowerCase();
-                if (tipoSeleccionado === "" || tipo.includes(tipoSeleccionado)) {
-                    fila.style.display = "";
-                } else {
-                    fila.style.display = "none";
-                }
-            });
-        });
-    </script>
-    -->´
 
     <script>
         document.getElementById('contenedorFlechaMes').addEventListener('click', function (event) {

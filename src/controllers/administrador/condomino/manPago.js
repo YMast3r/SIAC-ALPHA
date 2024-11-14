@@ -191,14 +191,14 @@ function manPago(req, res) {
                                 return;
                             }
                             const tipoPagoFiltro = rows;
-                            conn.query("SELECT t.id_tipo_pago, t.descripcion, CASE WHEN t.id_tipo_pago = 1 THEN tp.pago ELSE t.precio END AS importe, CASE WHEN t.id_tipo_pago = 1 THEN tp.recargo ELSE t.recargo END AS recargo, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (EXTRACT(YEAR FROM p.fecha_anexo) * 12 + EXTRACT(MONTH FROM p.fecha_anexo)) ELSE (EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (pg.max_año * 12 + pg.max_mes) - 1) END AS meses_por_pagar, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN CONCAT((SELECT descripcion FROM mes WHERE mes.mes = EXTRACT(MONTH FROM p.fecha_anexo)), ' de ', EXTRACT(YEAR FROM p.fecha_anexo)) ELSE CONCAT((SELECT descripcion FROM mes WHERE mes.mes = pg.max_mes + 1), ' de ', pg.max_año) END AS fecha, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(MONTH FROM p.fecha_anexo) ELSE pg.max_mes END AS mes, CASE WHEN pg.max_año IS NULL AND pg.max_mes IS NULL THEN EXTRACT(YEAR FROM p.fecha_anexo) ELSE pg.max_año END AS year FROM tipo_pago t CROSS JOIN propiedad p LEFT JOIN tipo_propiedad tp ON p.id_tipo_propiedad = tp.id_tipo_propiedad LEFT JOIN (SELECT id_propiedad, tipo_pago, MAX(año) AS max_año, MAX(mes) AS max_mes FROM pago GROUP BY id_propiedad, tipo_pago) pg ON p.id_propiedad = pg.id_propiedad AND pg.tipo_pago = t.id_tipo_pago WHERE p.id_propiedad = ? ORDER BY t.id_tipo_pago", [id], (err, rows) => {
+                            conn.query("SELECT t.id_tipo_pago, t.descripcion, CASE WHEN t.id_tipo_pago = 1 THEN tp.pago ELSE t.precio END AS importe, CASE WHEN t.id_tipo_pago = 1 THEN tp.recargo ELSE t.recargo END AS recargo, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (EXTRACT(YEAR FROM p.fecha_anexo) * 12 + EXTRACT(MONTH FROM p.fecha_anexo)) ELSE (EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (pg.año * 12 + pg.mes) - 1) END AS meses_por_pagar, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN CONCAT((SELECT descripcion FROM mes WHERE mes.mes = EXTRACT(MONTH FROM p.fecha_anexo)), ' de ', EXTRACT(YEAR FROM p.fecha_anexo)) ELSE CONCAT((SELECT descripcion FROM mes WHERE mes.mes = pg.mes + 1), ' de ', pg.año) END AS fecha, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(MONTH FROM p.fecha_anexo) ELSE pg.mes END AS mes, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(YEAR FROM p.fecha_anexo) ELSE pg.año END AS year FROM tipo_pago t CROSS JOIN propiedad p LEFT JOIN tipo_propiedad tp ON p.id_tipo_propiedad = tp.id_tipo_propiedad LEFT JOIN (SELECT p1.id_propiedad, p1.tipo_pago, p1.año, p1.mes FROM pago p1 JOIN (SELECT id_propiedad, tipo_pago, MAX(CONCAT(año, LPAD(mes, 2, '0'))) AS max_fecha FROM pago GROUP BY id_propiedad, tipo_pago) p2 ON p1.id_propiedad = p2.id_propiedad AND p1.tipo_pago = p2.tipo_pago AND CONCAT(p1.año, LPAD(p1.mes, 2, '0')) = p2.max_fecha) pg ON p.id_propiedad = pg.id_propiedad AND pg.tipo_pago = t.id_tipo_pago WHERE p.id_propiedad = ? ORDER BY t.id_tipo_pago;", [id], (err, rows) => {
                                 if (err) {
                                     console.log(err);
                                     return;
                                 }
                                 if (rows.length > 0) {
                                     const tipoPago = rows;
-                                    conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo, a.C_A FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
+                                    conn.query('SELECT a.folio, a.año, b.descripcion AS mes, a.fecha, COALESCE(a.numero_recibo, "Indefinido") AS numero_recibo, COALESCE(a.referencia, "Indefinido") AS referencia, FORMAT(a.importe, 2) AS importe, FORMAT(a.recargo, 2) AS recargo, FORMAT(a.importe + a.recargo, 2) AS total, COALESCE(c.nombre, "Condomino") AS registro, t.descripcion AS tipo, a.evidencia, COALESCE(a.id_plazo, "Individual") AS plazo, a.Cancelado_Activo FROM pago a LEFT JOIN usuario c ON a.id_administrador = c.id_usuario JOIN mes b ON a.mes = b.mes JOIN tipo_pago t ON a.tipo_pago = t.id_tipo_pago WHERE a.id_propiedad = ? ORDER BY a.folio DESC', [id], (err, rows) => {
                                         if (err) {
                                             console.log(err);
                                         }
@@ -366,7 +366,7 @@ function altaPago(req, res) {
                         console.log('No hay imagen');
                     }
 
-                    conn.query('SELECT COUNT(*) AS pago FROM pago WHERE mes = ? AND año = ? AND id_propiedad = ? AND tipo_pago = ? AND C_A = "A"', [mes, year, idPro, data.tipoPago], (err, rows) => {
+                    conn.query('SELECT COUNT(*) AS pago FROM pago WHERE mes = ? AND año = ? AND id_propiedad = ? AND tipo_pago = ? AND Cancelado_Activo = "Activo"', [mes, year, idPro, data.tipoPago], (err, rows) => {
                         if (err) {
                             console.log(err);
                         }
@@ -389,7 +389,7 @@ function altaPago(req, res) {
                                 const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
 
                                 // Si no hay último pago, verificar por la fecha anexo
-                                if (year < yearAnexo || (year == yearAnexo && mes < mesAnexo)  && (contador != 0)) {
+                                if (year < yearAnexo || (year == yearAnexo && mes < mesAnexo) && (contador != 0)) {
                                     req.session.errorMPago = 'No se pueden hacer pagos anteriores a la fecha de anexo';
                                     req.session.mensajeAltaPagoPlazo = "";
                                     req.session.errorMPagoP = "";
@@ -405,8 +405,9 @@ function altaPago(req, res) {
 
                                 // Verificar si la fecha proporcionada es mayor al último pago
                                 if (
-                                    (year > parseInt(data.year) && !(parseInt(data.mes) == 12 && mes == 1)) || 
-                                    (year == parseInt(data.year) && mes != (parseInt(data.mes) + 1)) && (contador != 0)
+                                    (parseInt(year) > parseInt(data.year) + 1) || // Evita años más de un año por delante
+                                    (parseInt(year) == parseInt(data.year) + 1 && !(parseInt(data.mes) == 12 && parseInt(mes) == 1)) || // Permitir solo diciembre a enero del siguiente año
+                                    (parseInt(year) == parseInt(data.year) && parseInt(mes) > (parseInt(data.mes) + 1)) // Dentro del mismo año, no permitir meses adelantados
                                 ) {
                                     req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPagoPlazo = "";
@@ -585,7 +586,7 @@ function altaPagoPlazo(req, res) {
                     const tipo = rows[0].tipo_usuario;
 
                     // Verificar si existe algún pago en el rango de fechas seleccionado
-                    conn.query('SELECT COUNT(*) AS count FROM pago WHERE C_A = "A" AND id_propiedad = ? AND tipo_pago = ? AND ((año > ? OR (año = ? AND mes >= ?)) AND (año < ? OR (año = ? AND mes <= ?)))',
+                    conn.query('SELECT COUNT(*) AS count FROM pago WHERE Cancelado_Activo = "Activo" AND id_propiedad = ? AND tipo_pago = ? AND ((año > ? OR (año = ? AND mes >= ?)) AND (año < ? OR (año = ? AND mes <= ?)))',
                         [idPro, data.tipoPagoPlazo, añoInicio, añoInicio, mesInicio, añoFin, añoFin, mesFin], (err, rows) => {
                             if (err) {
                                 console.log(err);
@@ -634,9 +635,10 @@ function altaPagoPlazo(req, res) {
 
                                 // Verificar si la fecha proporcionada es mayor al último pago
                                 if (
-                                    (añoInicio > parseInt(data.yearVarios) && !(parseInt(data.mesVarios) == 12 && mesInicio == 1)) || 
-                                    (añoInicio === parseInt(data.yearVarios) && mesInicio != (parseInt(data.mesVarios) + 1))
-                                ){
+                                    (parseInt(añoInicio) > parseInt(data.yearVarios) + 1) || // Evita años más de un año por delante
+                                    (añoInicio > parseInt(data.yearVarios) && !(parseInt(data.mesVarios) == 12 && mesInicio == 1)) || // Permitir solo diciembre a enero del siguiente año
+                                    (añoInicio === parseInt(data.yearVarios) && mesInicio != (parseInt(data.mesVarios) + 1)) // Dentro del mismo año, no permitir meses adelantados
+                                ) {
                                     req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPago = "";
                                     req.session.errorMPago = "";

@@ -186,31 +186,32 @@ CREATE TABLE `pago` (
   `evidencia` text DEFAULT NULL,
   `id_administrador` int(11) DEFAULT NULL,
   `id_plazo` int(11) DEFAULT NULL,
-  `C_A` varchar(20) NOT NULL DEFAULT 'A'
+  `Cancelado_Activo` varchar(20) NOT NULL DEFAULT 'Activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `pago`
 --
 
-INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`, `C_A`) VALUES
-(1, 1, 800, 0, 2024, 1, '2024-09-11', 1, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'A'),
-(2, 1, 800, 0, 2024, 2, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'A'),
-(3, 1, 800, 0, 2024, 3, '2024-09-11', 1, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'A'),
-(4, 1, 800, 0, 2024, 4, '2024-09-11', 1, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'A'),
-(5, 1, 800, 0, 2024, 5, '2024-09-11', 1, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'A'),
-(6, 1, 800, 0, 2024, 6, '2024-09-11', 1, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'A'),
-(7, 1, 800, 200, 2024, 7, '2024-09-11', 1, 7, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'A'),
-(8, 1, 800, 200, 2024, 8, '2024-09-11', 1, 8, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'A'),
-(9, 1, 800, 200, 2024, 9, '2024-09-11', 1, 9, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'A'),
-(10, 2, 500, 0, 2024, 1, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'A'),
-(11, 2, 500, 0, 2024, 2, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'A'),
-(12, 2, 500, 0, 2024, 3, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'A'),
-(13, 2, 500, 0, 2024, 4, '2024-09-11', 1, 13, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'A'),
-(14, 2, 500, 0, 2024, 5, '2024-09-11', 1, 14, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'A'),
-(15, 2, 500, 0, 2024, 6, '2024-09-11', 1, 15, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'A'),
-(16, 1, 800, 200, 2024, 10, '2024-09-11', 1, 17, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2, 'A'),
-(17, 1, 800, 0, 2024, 11, '2024-09-11', 1, 18, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2, 'A');
+INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`, `fecha`, `tipo_pago`, `numero_recibo`, `referencia`, `evidencia`, `id_administrador`, `id_plazo`, `Cancelado_Activo`) VALUES
+(1, 1, 800, 0, 2024, 1, '2024-09-11', 1, 1, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'Activo'),
+(2, 1, 800, 0, 2024, 2, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'Activo'),
+(3, 1, 800, 0, 2024, 3, '2024-09-11', 1, 3, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'Activo'),
+(4, 1, 800, 0, 2024, 4, '2024-09-11', 1, 4, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'Activo'),
+(5, 1, 800, 0, 2024, 5, '2024-09-11', 1, 5, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'Activo'),
+(6, 1, 800, 0, 2024, 6, '2024-09-11', 1, 6, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 1, 'Activo'),
+(7, 1, 800, 200, 2024, 7, '2024-09-11', 1, 7, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'Activo'),
+(8, 1, 800, 200, 2024, 8, '2024-09-11', 1, 8, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'Activo'),
+(9, 1, 800, 200, 2024, 9, '2024-09-11', 1, 9, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'Activo'),
+(10, 2, 500, 0, 2024, 1, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
+(11, 2, 500, 0, 2024, 2, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
+(12, 2, 500, 0, 2024, 3, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
+(13, 2, 500, 0, 2024, 4, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
+(14, 2, 500, 0, 2024, 5, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
+(15, 2, 500, 0, 2024, 6, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
+(16, 1, 800, 200, 2024, 10, '2024-09-11', 1, 17, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2, 'Activo'),
+(17, 1, 800, 0, 2024, 11, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2, 'Activo'),
+(18, 1, 800, 0, 2024, 12, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -683,7 +684,7 @@ ALTER TABLE `incidencia`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `pago_plazos`

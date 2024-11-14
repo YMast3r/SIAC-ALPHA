@@ -20,7 +20,7 @@ router.get('/manActivoCancelado-:idFC', (req, res) => {
     req.session.mensajeAltaPago = "";
     req.session.mensajeAltaPagoPlazo = "";
     req.getConnection((err, conn) => {
-        conn.query("UPDATE pago SET `C_A`='C' WHERE folio = ?", [idFC], (err, rows) => {
+        conn.query("UPDATE pago SET `Cancelado_Activo`='Cancelado' WHERE folio = ?", [idFC], (err, rows) => {
             res.redirect(`/manPago-${idP}`);
         });
     });
