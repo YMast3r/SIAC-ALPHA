@@ -568,6 +568,39 @@
                 });
             });
         </script>
+        <style>
+            /* Ajustes de altura */
+            .select2-container--default .select2-selection--single {
+                height: 3rem;
+                /* Ajusta este valor según el tamaño que quieras */
+                display: flex;
+                align-items: center;
+                /* Centra el texto verticalmente */
+                position: relative;
+                /* Posición relativa para manejar la x */
+            }
+
+            .select2-container .select2-selection--single .select2-selection__rendered {
+                line-height: 3rem;
+                /* Ajusta este valor al mismo valor que el height */
+            }
+
+            .select2-container .select2-selection--single .select2-selection__arrow {
+                height: 3rem;
+                /* Ajusta el ícono del desplegable */
+            }
+
+            /* Mover la X al lado derecho */
+            .select2-container--default .select2-selection--single .select2-selection__clear {
+                position: absolute;
+                right: 10px;
+                /* Ajusta la distancia del borde derecho */
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                /* Cambia el cursor a pointer para mayor claridad */
+            }
+        </style>
         <script>
             // Función para mostrar una sección y ocultar las demás
             function mostrarSeccion(seccion) {

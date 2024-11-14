@@ -74,8 +74,6 @@ function renderManTipo(req, res) {
     req.session.errorMT = "";
     req.session.dataCampos = "";
     req.session.altaTDM = "";
-    req.session.formF = formularios['pagos'];
-    req.session.tablaC = tablas['pagos'];
     renTipo(req, res)
 }
 

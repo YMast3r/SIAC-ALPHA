@@ -299,6 +299,13 @@ function manPagos(req, res) {
                 whereClause += ' AND a.recargo = 0.00';
             }
         }
+        if (campoDatos.estado) {
+            if (campoDatos.estado == 'cancelado') {
+                whereClause += ' AND a.Cancelado_Activo = "cancelado"';
+            } else {
+                whereClause += ' AND a.Cancelado_Activo = "activo"';
+            }
+        }
         if (campoDatos.tipoPropiedad) {
             whereClause += ' AND p.id_propiedad = ?';
             params.push(campoDatos.tipoPropiedad);
@@ -357,7 +364,8 @@ function manPagos(req, res) {
                     c.nombre AS condomino, 
                     c.id_usuario, 
                     COALESCE(a.numero_recibo, 'Indefinido') AS numero_recibo, 
-                    COALESCE(a.referencia, 'Indefinido') AS referencia 
+                    COALESCE(a.referencia, 'Indefinido') AS referencia,
+                    a.Cancelado_Activo
                 FROM 
                     pago a 
                 JOIN 
@@ -401,7 +409,8 @@ function manPagos(req, res) {
                         { name: 'Administrador', field: 'administrador', sortable: false },
                         { name: 'Condómino', field: 'condomino', sortable: false },
                         { name: 'Número de Recibo', field: 'numero_recibo', sortable: false },
-                        { name: 'Referencia', field: 'referencia', sortable: false }
+                        { name: 'Referencia', field: 'referencia', sortable: false },
+                        { name: 'Estado', field: 'Cancelado_Activo', sortable: false }
                     ].map(header => ({
                         ...header,
                         orderDirection: header.sortable && orderByParam === header.field ? orderDirectionParam : null
@@ -613,6 +622,16 @@ function manHistorialEspecifico(req, res) {
                         options: [
                             { value: 'con_recargo', text: 'Con recargo' },
                             { value: 'sin_recargo', text: 'Sin recargo' }
+                        ]
+                    },                    
+                    {
+                        label: 'Estado:',
+                        type: 'radio',  // Cambiado de 'select' a 'radio'
+                        name: 'estado',
+                        colSpan: 'md:col-span-2',
+                        options: [
+                            { value: 'cancelado', text: 'Cancelado' },
+                            { value: 'activo', text: 'Activo' }
                         ]
                     },                    
                     {
