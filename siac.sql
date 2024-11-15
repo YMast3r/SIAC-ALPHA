@@ -209,7 +209,7 @@ INSERT INTO `pago` (`folio`, `id_propiedad`, `importe`, `recargo`, `año`, `mes`
 (13, 2, 500, 0, 2024, 4, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
 (14, 2, 500, 0, 2024, 5, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
 (15, 2, 500, 0, 2024, 6, '2024-09-11', 1, NULL, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', NULL, NULL, 'Activo'),
-(16, 1, 800, 200, 2024, 10, '2024-09-11', 1, 17, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2, 'Activo'),
+(16, 1, 800, 200, 2024, 10, '2024-09-11', 1, 10, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2, 'Activo'),
 (17, 1, 800, 0, 2024, 11, '2024-09-11', 1, 11, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, 2, 'Activo'),
 (18, 1, 800, 0, 2024, 12, '2024-09-11', 1, 12, '3456 7890 1234', '/imagenes/imagenesPago/1717619209683.jpg', 2, NULL, 'Activo');
 
