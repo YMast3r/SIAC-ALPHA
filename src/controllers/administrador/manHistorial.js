@@ -393,6 +393,9 @@ function manPagos(req, res) {
                 if (rows.length > 0) {
                     const pagos = rows.map(row => ({
                         ...row,
+                        importe: `$${row.importe}`,  
+                        recargo: `$${row.recargo}`,  
+                        total: `$${row.total}`,  
                         fecha: formatDate(row.fecha),
                     }));
 
