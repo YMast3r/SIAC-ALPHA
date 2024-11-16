@@ -636,8 +636,8 @@ function altaPagoPlazo(req, res) {
                                 // Verificar si la fecha proporcionada es mayor al último pago
                                 if (
                                     (parseInt(añoInicio) > parseInt(data.yearVarios) + 1) || // Evita años más de un año por delante
-                                    (añoInicio == parseInt(data.yearVarios) + 1 && !(parseInt(data.mesVarios) == 12 && mesInicio == 1)) || // Permitir solo diciembre a enero del siguiente año
-                                    (añoInicio == parseInt(data.yearVarios) && mesInicio != (parseInt(data.mesVarios) + 1)) // Dentro del mismo año, no permitir meses adelantados
+                                    (parseInt(añoInicio) == parseInt(data.yearVarios) + 1 && !(parseInt(data.mesVarios) == 12 && mesInicio == 1)) || // Permitir solo diciembre a enero del siguiente año
+                                    (parseInt(añoInicio) == parseInt(data.yearVarios) && parseInt(mesInicio) > (parseInt(data.mesVarios) + 1)) // Dentro del mismo año, no permitir meses adelantados
                                 ) {
                                     req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPago = "";
