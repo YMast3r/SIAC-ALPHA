@@ -378,88 +378,78 @@ function altaPago(req, res) {
                         }
                         const contador = rows[0].pago;
                         if (contador == 0) {
-                            conn.query(`SELECT DATE_FORMAT(fecha_anexo, '%Y-%m') AS año_mes_anexo FROM propiedad WHERE id_propiedad = ?`, [idPro], (err, rows) => {
+
+                            // Si no hay último pago, verificar por la fecha anexo
+                            if (year < data.year || (year == data.year && mes < data.mes)) {
+                                req.session.errorMPago = 'No se pueden hacer pagos anteriores a la fecha de anexo';
+                                req.session.mensajeAltaPagoPlazo = "";
+                                req.session.errorMPagoP = "";
+                                req.session.dataCampos = data;
+                                try {
+                                    borrarImagenTemporal(tempPath);
+                                } catch {
+                                    console.log('No hay imagen');
+                                }
+                                renPago(req, res);
+                                return;
+                            }
+
+                            // Verificar si la fecha proporcionada es mayor al último pago
+                            if (
+                                (parseInt(year) > parseInt(data.year) + 1) || // Evita años más de un año por delante
+                                (parseInt(year) == parseInt(data.year) + 1 && !(parseInt(data.mes) == 12 && parseInt(mes) == 1)) || // Permitir solo diciembre a enero del siguiente año
+                                (parseInt(year) == parseInt(data.year) && parseInt(mes) > (parseInt(data.mes) + 1)) // Dentro del mismo año, no permitir meses adelantados
+                            ) {
+                                req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                req.session.mensajeAltaPagoPlazo = "";
+                                req.session.errorMPagoP = "";
+                                req.session.dataCampos = data;
+                                try {
+                                    borrarImagenTemporal(tempPath);
+                                } catch {
+                                    console.log('No hay imagen');
+                                }
+                                renPago(req, res);
+                                return;
+                            }
+                            if (data.meses <= 0) {
+                                data.recargoPago = 0.00
+                            }
+
+                            if (tipo == 3) {
+                                consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?, ?, ?)';
+                                parametros = [idPro, data.importe, data.recargoPago, year, mes, data.reciboFolio, data.referencia, data.tipoPago, imagenRuta];
+                            } else {
+                                consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?, ?, ?, ?)';
+                                parametros = [idPro, data.importe, data.recargoPago, year, mes, data.reciboFolio, data.referencia, data.tipoPago, idAdm, imagenRuta];
+                            }
+
+                            // Si pasó las verificaciones, proceder con la inserción del pago
+                            conn.query(consulta, parametros, (err, rows) => {
                                 if (err) {
                                     console.log(err);
-                                    req.session.errorMPago = 'Error en la consulta de propiedad';
-                                    renPago(req, res);
-                                    return;
-                                }
-
-                                const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
-
-                                // Si no hay último pago, verificar por la fecha anexo
-                                if (year < yearAnexo || (year == yearAnexo && mes < mesAnexo) && (contador != 0)) {
-                                    req.session.errorMPago = 'No se pueden hacer pagos anteriores a la fecha de anexo';
-                                    req.session.mensajeAltaPagoPlazo = "";
-                                    req.session.errorMPagoP = "";
-                                    req.session.dataCampos = data;
-                                    try {
-                                        borrarImagenTemporal(tempPath);
-                                    } catch {
-                                        console.log('No hay imagen');
-                                    }
-                                    renPago(req, res);
-                                    return;
-                                }
-
-                                // Verificar si la fecha proporcionada es mayor al último pago
-                                if (
-                                    (parseInt(year) > parseInt(data.year) + 1) || // Evita años más de un año por delante
-                                    (parseInt(year) == parseInt(data.year) + 1 && !(parseInt(data.mes) == 12 && parseInt(mes) == 1)) || // Permitir solo diciembre a enero del siguiente año
-                                    (parseInt(year) == parseInt(data.year) && parseInt(mes) > (parseInt(data.mes) + 1)) // Dentro del mismo año, no permitir meses adelantados
-                                ) {
-                                    req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
-                                    req.session.mensajeAltaPagoPlazo = "";
-                                    req.session.errorMPagoP = "";
-                                    req.session.dataCampos = data;
-                                    try {
-                                        borrarImagenTemporal(tempPath);
-                                    } catch {
-                                        console.log('No hay imagen');
-                                    }
-                                    renPago(req, res);
-                                    return;
-                                }
-                                if (data.meses <= 0) {
-                                    data.recargoPago = 0.00
-                                }
-
-                                if (tipo == 3) {
-                                    consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?, ?, ?)';
-                                    parametros = [idPro, data.importe, data.recargoPago, year, mes, data.reciboFolio, data.referencia, data.tipoPago, imagenRuta];
+                                    return res.status(500).send("Error en la insert");
                                 } else {
-                                    consulta = 'INSERT INTO pago(id_propiedad , importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia) VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?, ?, ?, ?)';
-                                    parametros = [idPro, data.importe, data.recargoPago, year, mes, data.reciboFolio, data.referencia, data.tipoPago, idAdm, imagenRuta];
-                                }
-
-                                // Si pasó las verificaciones, proceder con la inserción del pago
-                                conn.query(consulta, parametros, (err, rows) => {
-                                    if (err) {
-                                        console.log(err);
-                                        return res.status(500).send("Error en la insert");
+                                    if (imagenRuta) {
+                                        const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
+                                        fs.rename(tempPath, targetPath, function (err) {
+                                            if (err) {
+                                                console.log(err);
+                                                req.session.errorMPago = 'Error al mover la imagen';
+                                                req.session.mensajeAltaPagoPlazo = "";
+                                                req.session.errorMPagoP = "";
+                                                renPago(req, res);
+                                                return;
+                                            }
+                                            renderPago(req, res);
+                                        });
                                     } else {
-                                        if (imagenRuta) {
-                                            const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
-                                            fs.rename(tempPath, targetPath, function (err) {
-                                                if (err) {
-                                                    console.log(err);
-                                                    req.session.errorMPago = 'Error al mover la imagen';
-                                                    req.session.mensajeAltaPagoPlazo = "";
-                                                    req.session.errorMPagoP = "";
-                                                    renPago(req, res);
-                                                    return;
-                                                }
-                                                renderPago(req, res);
-                                            });
-                                        } else {
-                                            req.session.mensajeAltaPago = "Se registró el pago correctamente";
-                                            req.session.mensajeAltaPagoPlazo = "";
-                                            req.session.errorMPagoP = "";
-                                            renPagoAlta(req, res);
-                                        }
+                                        req.session.mensajeAltaPago = "Se registró el pago correctamente";
+                                        req.session.mensajeAltaPagoPlazo = "";
+                                        req.session.errorMPagoP = "";
+                                        renPagoAlta(req, res);
                                     }
-                                });
+                                }
                             });
                         } else {
                             req.session.errorMPago = 'Ya existe un pago registrado';
@@ -608,155 +598,145 @@ function altaPagoPlazo(req, res) {
                                 renPago(req, res);
                                 return;
                             }
-                            conn.query(`SELECT DATE_FORMAT(fecha_anexo, '%Y-%m') AS año_mes_anexo FROM propiedad WHERE id_propiedad = ?`, [idPro], (err, rows) => {
+
+                            // Si no hay último pago, verificar por la fecha anexo
+                            if (añoInicio < data.yearVarios || (añoInicio == data.yearVarios && mesInicio < data.mesVarios)) {
+                                req.session.errorMPagoP = 'No se pueden hacer pagos anteriores a la fecha de anexo';
+                                req.session.mensajeAltaPago = "";
+                                req.session.errorMPago = "";
+                                req.session.dataCampos = data;
+                                try {
+                                    borrarImagenTemporal(tempPath);
+                                } catch {
+                                    console.log('No hay imagen');
+                                }
+                                renPago(req, res);
+                                return;
+                            }
+
+                            // Verificar si la fecha proporcionada es mayor al último pago
+                            if (
+                                (parseInt(añoInicio) > parseInt(data.yearVarios) + 1) || // Evita años más de un año por delante
+                                (parseInt(añoInicio) == parseInt(data.yearVarios) + 1 && !(parseInt(data.mesVarios) == 12 && mesInicio == 1)) || // Permitir solo diciembre a enero del siguiente año
+                                (parseInt(añoInicio) == parseInt(data.yearVarios) && parseInt(mesInicio) > (parseInt(data.mesVarios) + 1)) // Dentro del mismo año, no permitir meses adelantados
+                            ) {
+                                req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
+                                req.session.mensajeAltaPago = "";
+                                req.session.errorMPago = "";
+                                req.session.dataCampos = data;
+                                try {
+                                    borrarImagenTemporal(tempPath);
+                                } catch {
+                                    console.log('No hay imagen');
+                                }
+                                renPago(req, res);
+                                return;
+                            }
+
+                            let pagos = [];
+                            let recargoOperacion;
+                            const fechaActual = new Date();
+                            const fechaFormateada = fechaActual.toISOString().split('T')[0];
+
+                            // Calcular el número total de meses
+                            const totalMeses = (añoFin - añoInicio) * 12 + (mesFin - mesInicio + 1);
+
+                            if (data.mesesVarios <= totalMeses) {
+                                recargoOperacion = data.recargoPagoVarios * (data.mesesVarios >= 0 ? data.mesVarios : 0);
+                            } else {
+                                recargoOperacion = data.recargoPagoVarios * totalMeses;
+                            }
+
+                            // Asegurarte de que recargoOperacion sea un número
+                            if (isNaN(recargoOperacion)) {
+                                recargoOperacion = 0; // O algún valor por defecto apropiado
+                            }
+
+                            // Ingresar el pago en la tabla "pagoPlazos"
+                            const queryPagoPlazo = tipo == 3 ?
+                                'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
+                                'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                            let pagoPlazo;
+
+                            const importePlazo = data.importeVarios * totalMeses;
+                            if (tipo == 3) {
+                                pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, importePlazo, recargoOperacion, imagenRuta];
+                            } else {
+                                pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, idAdm, importePlazo, recargoOperacion, imagenRuta];
+                            }
+
+                            conn.query(queryPagoPlazo, pagoPlazo, (err) => {
                                 if (err) {
                                     console.log(err);
-                                    req.session.errorMPagoP = 'Error en la consulta de propiedad';
-                                    renPago(req, res);
-                                    return;
-                                }
-
-                                const [yearAnexo, mesAnexo] = rows[0].año_mes_anexo.split('-').map(Number);
-
-                                // Si no hay último pago, verificar por la fecha anexo
-                                if (añoInicio < yearAnexo || (añoInicio == yearAnexo && mesInicio < mesAnexo)) {
-                                    req.session.errorMPagoP = 'No se pueden hacer pagos anteriores a la fecha de anexo';
+                                    req.session.errorMPagoP = 'Error al insertar el pago en pagoPlazos';
                                     req.session.mensajeAltaPago = "";
-                                    req.session.errorMPago = "";
-                                    req.session.dataCampos = data;
-                                    try {
-                                        borrarImagenTemporal(tempPath);
-                                    } catch {
-                                        console.log('No hay imagen');
-                                    }
                                     renPago(req, res);
-                                    return;
                                 }
 
-                                // Verificar si la fecha proporcionada es mayor al último pago
-                                if (
-                                    (parseInt(añoInicio) > parseInt(data.yearVarios) + 1) || // Evita años más de un año por delante
-                                    (parseInt(añoInicio) == parseInt(data.yearVarios) + 1 && !(parseInt(data.mesVarios) == 12 && mesInicio == 1)) || // Permitir solo diciembre a enero del siguiente año
-                                    (parseInt(añoInicio) == parseInt(data.yearVarios) && parseInt(mesInicio) > (parseInt(data.mesVarios) + 1)) // Dentro del mismo año, no permitir meses adelantados
-                                ) {
-                                    req.session.errorMPagoP = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
-                                    req.session.mensajeAltaPago = "";
-                                    req.session.errorMPago = "";
-                                    req.session.dataCampos = data;
-                                    try {
-                                        borrarImagenTemporal(tempPath);
-                                    } catch {
-                                        console.log('No hay imagen');
-                                    }
-                                    renPago(req, res);
-                                    return;
-                                }
-
-                                let pagos = [];
-                                let recargoOperacion;
-                                const fechaActual = new Date();
-                                const fechaFormateada = fechaActual.toISOString().split('T')[0];
-
-                                // Calcular el número total de meses
-                                const totalMeses = (añoFin - añoInicio) * 12 + (mesFin - mesInicio + 1);
-
-                                if (data.mesesVarios <= totalMeses) {
-                                    recargoOperacion = data.recargoPagoVarios * (data.mesesVarios >= 0 ? data.mesVarios : 0);
-                                } else {
-                                    recargoOperacion = data.recargoPagoVarios * totalMeses;
-                                }
-
-                                // Asegurarte de que recargoOperacion sea un número
-                                if (isNaN(recargoOperacion)) {
-                                    recargoOperacion = 0; // O algún valor por defecto apropiado
-                                }
-
-                                // Ingresar el pago en la tabla "pagoPlazos"
-                                const queryPagoPlazo = tipo == 3 ?
-                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' :
-                                    'INSERT INTO pago_plazos (mes_inicio, año_Inicio, mes_final, año_final, id_propiedad, id_tipo_pago, fecha, numero_recibo, referencia, id_administrador, importe, recargo, comprobante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                                let pagoPlazo;
-
-                                const importePlazo = data.importeVarios * totalMeses;
-                                if (tipo == 3) {
-                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, importePlazo, recargoOperacion, imagenRuta];
-                                } else {
-                                    pagoPlazo = [mesInicio, añoInicio, mesFin, añoFin, idPro, data.tipoPagoPlazo, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, idAdm, importePlazo, recargoOperacion, imagenRuta];
-                                }
-
-                                conn.query(queryPagoPlazo, pagoPlazo, (err) => {
+                                conn.query('SELECT MAX(folio) as folio FROM pago_plazos', (err, rows) => {
                                     if (err) {
                                         console.log(err);
-                                        req.session.errorMPagoP = 'Error al insertar el pago en pagoPlazos';
+                                        req.session.errorMPagoP = 'Error al insertar los pagos';
                                         req.session.mensajeAltaPago = "";
                                         renPago(req, res);
                                     }
+                                    const id_plazo = rows[0].folio;
+                                    let recargoOperacion2;
+                                    let cont = 0;
+                                    for (let año = añoInicio; año <= añoFin; año++) {
+                                        // Definir el mes de inicio y fin para cada año
+                                        let mesIni = (año === añoInicio) ? mesInicio : 1;
+                                        let mesFinLoop = (año == añoFin) ? mesFin : 12;
 
-                                    conn.query('SELECT MAX(folio) as folio FROM pago_plazos', (err, rows) => {
+                                        // Iterar sobre los meses del año actual
+                                        for (let mes = mesIni; mes <= mesFinLoop; mes++) {
+                                            if (cont < data.mesesVarios) {
+                                                recargoOperacion2 = data.recargoPagoVarios;
+                                            } else {
+                                                recargoOperacion2 = 0.00;
+                                            }
+                                            cont++;
+
+                                            if (tipo == 3) {
+                                                pagos.push([idPro, data.importeVarios, recargoOperacion2, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta, id_plazo]);
+                                            } else {
+                                                pagos.push([idPro, data.importeVarios, recargoOperacion2, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta, id_plazo]);
+                                            }
+                                        }
+                                    }
+
+                                    const queryPagos = tipo == 3 ?
+                                        'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia, id_plazo) VALUES ?' :
+                                        'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia, id_plazo) VALUES ?';
+
+                                    conn.query(queryPagos, [pagos], (err) => {
                                         if (err) {
                                             console.log(err);
                                             req.session.errorMPagoP = 'Error al insertar los pagos';
                                             req.session.mensajeAltaPago = "";
                                             renPago(req, res);
                                         }
-                                        const id_plazo = rows[0].folio;
-                                        let recargoOperacion2;
-                                        let cont = 0;
-                                        for (let año = añoInicio; año <= añoFin; año++) {
-                                            // Definir el mes de inicio y fin para cada año
-                                            let mesIni = (año === añoInicio) ? mesInicio : 1;
-                                            let mesFinLoop = (año == añoFin) ? mesFin : 12;
 
-                                            // Iterar sobre los meses del año actual
-                                            for (let mes = mesIni; mes <= mesFinLoop; mes++) {
-                                                if (cont < data.mesesVarios) {
-                                                    recargoOperacion2 = data.recargoPagoVarios;
-                                                } else {
-                                                    recargoOperacion2 = 0.00;
+                                        if (imagenRuta) {
+                                            const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
+                                            fs.rename(req.file.path, targetPath, function (err) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    req.session.errorMPagoP = 'Error al mover la imagen';
+                                                    req.session.mensajeAltaPago = "";
+                                                    renPago(req, res);
                                                 }
-                                                cont++;
-
-                                                if (tipo == 3) {
-                                                    pagos.push([idPro, data.importeVarios, recargoOperacion2, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, imagenRuta, id_plazo]);
-                                                } else {
-                                                    pagos.push([idPro, data.importeVarios, recargoOperacion2, año, mes, fechaFormateada, data.reciboFolioPlazo, data.referenciaPlazo, data.tipoPagoPlazo, idAdm, imagenRuta, id_plazo]);
-                                                }
-                                            }
+                                                return renderPago(req, res);
+                                            });
+                                        } else {
+                                            req.session.mensajeAltaPagoPlazo = "Se registró el pago a plazos correctamente";
+                                            req.session.mensajeAltaPago = "";
+                                            return renPagoAlta(req, res);
                                         }
-
-                                        const queryPagos = tipo == 3 ?
-                                            'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, evidencia, id_plazo) VALUES ?' :
-                                            'INSERT INTO pago (id_propiedad, importe, recargo, año, mes, fecha, numero_recibo, referencia, tipo_pago, id_administrador, evidencia, id_plazo) VALUES ?';
-
-                                        conn.query(queryPagos, [pagos], (err) => {
-                                            if (err) {
-                                                console.log(err);
-                                                req.session.errorMPagoP = 'Error al insertar los pagos';
-                                                req.session.mensajeAltaPago = "";
-                                                renPago(req, res);
-                                            }
-
-                                            if (imagenRuta) {
-                                                const targetPath = path.join(__dirname, '../../../public/imagenes/imagenesPago', req.file.filename);
-                                                fs.rename(req.file.path, targetPath, function (err) {
-                                                    if (err) {
-                                                        console.log(err);
-                                                        req.session.errorMPagoP = 'Error al mover la imagen';
-                                                        req.session.mensajeAltaPago = "";
-                                                        renPago(req, res);
-                                                    }
-                                                    return renderPago(req, res);
-                                                });
-                                            } else {
-                                                req.session.mensajeAltaPagoPlazo = "Se registró el pago a plazos correctamente";
-                                                req.session.mensajeAltaPago = "";
-                                                return renPagoAlta(req, res);
-                                            }
-                                        });
                                     });
                                 });
                             });
-                        });//
+                        });
                 }
             });
         });
