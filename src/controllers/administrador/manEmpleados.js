@@ -154,8 +154,14 @@ function manEmpleados(req, res) {
                 return res.status(500).send("Error al recuperar los empleados");
             }
 
+            let consulta;
+            if (req.session.tipoUsuario == 2){
+                consulta = 'SELECT id_tipo_empleado, descripcion, FORMAT(salario,2) AS salario FROM tipo_empleado WHERE id_tipo_empleado != 1'
+            }else{
+                consulta = 'SELECT id_tipo_empleado, descripcion, FORMAT(salario,2) AS salario FROM tipo_empleado'
+            }
             // Consulta para obtener los tipos de empleado
-            conn.query('SELECT id_tipo_empleado, descripcion, FORMAT(salario,2) AS salario FROM tipo_empleado', (err, tiposEmpleado) => {
+            conn.query(consulta, (err, tiposEmpleado) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send("Error al recuperar los tipos de empleado");
@@ -167,7 +173,7 @@ function manEmpleados(req, res) {
                 }));
                 res.render('usuarios/administrador/manEmpleado', {
                     name: req.session.name,
-                    tipoUsuario: 2,
+                    tipoUsuario: req.session.tipoUsuario,
                     empleados: datos,
                     data: data,
                     error: error,

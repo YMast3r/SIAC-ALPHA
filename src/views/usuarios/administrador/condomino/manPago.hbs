@@ -312,6 +312,7 @@
                                 data-meses="{{this.meses_por_pagar}}"
                                 data-fechaR="{{this.fecha}}"
                                 data-mes="{{this.mes}}"
+                                data-folio="{{this.folio}}"
                                 data-year="{{this.year}}">
                                 {{this.descripcion}}
                             </option>
@@ -325,6 +326,7 @@
                     <input type="hidden" name="fechaR" id="fechaR">
                     <input type="hidden" name="mes" id="mes">
                     <input type="hidden" name="year" id="year">
+                    <input type="hidden" name="folio" id="folio">
                     <input type="hidden" name="cuotaPago" id="cuotaPago">
 
                     {{!-- Monto --}}
@@ -489,6 +491,7 @@
                                 data-fechaR="{{this.fecha}}"
                                 data-fechaR="{{this.fecha}}"
                                 data-mes="{{this.mes}}"
+                                data-folio="{{this.folio}}"
                                 data-year="{{this.year}}">
                                 {{this.descripcion}}
                             </option>
@@ -503,6 +506,7 @@
                     <input type="hidden" name="fechaRVarios" id="fechaRVarios">
                     <input type="hidden" name="mesVarios" id="mesVarios">
                     <input type="hidden" name="yearVarios" id="yearVarios">
+                    <input type="hidden" name="folioVarios" id="folioVarios">
 
                     <!-- Campo de monto -->
                     <div class="w-1/2">
@@ -669,6 +673,7 @@
             let fechaR = selectedOption.getAttribute('data-fechaR') || selectedOption.getAttribute('data-fechaR');
             let mes = selectedOption.getAttribute('data-mes') || '';
             let year = selectedOption.getAttribute('data-year') || '';
+            let folio = selectedOption.getAttribute('data-folio') || '';
             let cuotaPago = selectedOption.getAttribute('data-cuotaPago') || '';
 
             // Asignamos estos valores a los campos ocultos (agregados para tipoPagoPlazo)
@@ -678,6 +683,7 @@
             document.getElementById('fechaRVarios').value = fechaR ? fechaR : '';
             document.getElementById('mesVarios').value = mes ? mes : '';
             document.getElementById('yearVarios').value = year ? year : '';
+            document.getElementById('folioVarios').value = folio ? folio : '';
 
             // Asignamos los valores a los campos visibles
             document.getElementById('importe').value = precio ? precio : '';
@@ -686,6 +692,7 @@
             document.getElementById('fechaR').value = fechaR ? fechaR : '';
             document.getElementById('mes').value = mes ? mes : '';
             document.getElementById('year').value = year ? year : '';
+            document.getElementById('folio').value = folio ? folio : '';
 
             // Mostrar el precio correspondiente o limpiar el campo si no hay precio definido
             let precioInput = document.getElementById(precioInputId);
@@ -803,7 +810,6 @@
                 }
             }
 
-            console.log("hayResultados: ", hayResultados)
             if (!hayResultados) {
                 mensajeNoResultados.style.display = '';
             } else {
