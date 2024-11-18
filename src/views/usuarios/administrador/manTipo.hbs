@@ -24,7 +24,7 @@
         <h1 class="font-medium text-2xl mb-4 text-center text-gray-700">{{titulo}}</h1>
 
         <!-- Campo de búsqueda -->
-        <div class="flex justify-center pt-10 mx-auto w-8/12 max-w-7xl">
+        <div class="flex justify-center pt-2 mb-0 w-full lg:w-8/12 mx-auto">
             <div class="relative w-full">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
@@ -35,125 +35,114 @@
         </div>
 
 
-        <div class="w-8/12 mx-auto max-h-60 overflow-y-auto">
-            <table id="tipoTable" class="w-full table-auto border-collapse">
-                <thead class="bg-white sticky top-0">
-                    <tr>
-                        {{#each tableHeaders}}
-                        <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
-                            {{#if this.sortable}}
-                            <a id="{{this.name}}" href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
-                                class="flex items-center justify-center text-center">
-                                {{this.name}}
-                                {{#if this.orderDirection}}
-                                <span class="ml-2">
-                                    {{#isEqual this.orderDirection 'ASC'}}
-                                    ↑↓
-                                    {{else}}
-                                    ↓↑
-                                    {{/isEqual}}
-                                </span>
+        <div class="flex justify-center mx-auto w-full lg:w-8/12 px-4">
+            <div class="overflow-x-auto max-h-60 mb-10 w-full border border-gray-200 rounded-lg shadow">
+                <table class="w-full text-sm md:text-base lg:text-lg">
+                    <thead class="sticky top-0 bg-gray-100">
+                        <tr>
+                            {{#each tableHeaders}}
+                            <th class="px-4 py-4 bg-white border-b-2 border-gray-400 font-medium rounded-tl-lg text-xl">
+                                {{#if this.sortable}}
+                                <a id="{{this.name}}"
+                                    href="?orderBy={{this.field}}&orderDirection={{../orderDirection}}"
+                                    class="flex items-center justify-center text-center">
+                                    {{this.name}}
+                                    {{#if this.orderDirection}}
+                                    <span class="ml-2">
+                                        {{#isEqual this.orderDirection 'ASC'}}
+                                        ↑↓
+                                        {{else}}
+                                        ↓↑
+                                        {{/isEqual}}
+                                    </span>
+                                    {{/if}}
+                                </a>
+                                {{else}}
+                                <span class="text-center">{{this.name}}</span>
                                 {{/if}}
-                            </a>
-                            {{else}}
-                            <span class="text-center">{{this.name}}</span>
-                            {{/if}}
-                        </th>
+                            </th>
+                            {{/each}}
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 text-lg">
+                        {{#each tableData}}
+                        <tr class="hover:bg-gray-100">
+                            {{#each ../tableHeaders}}
+                            <td id="{{this.name}}" class="px-4 py-2 text-center whitespace-nowrap">
+                                {{lookup ../this this.field}}
+                            </td>
+                            {{/each}}
+                        </tr>
                         {{/each}}
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200 text-lg">
-                    {{#each tableData}}
-                    <tr class="hover:bg-gray-100">
-                        {{#each ../tableHeaders}}
-                        <td id="{{this.name}}" class="px-4 py-2 text-center whitespace-nowrap">
-                            {{lookup ../this this.field}}
-                        </td>
-                        {{/each}}
-                    </tr>
-                    {{/each}}
-                    <!-- Fila para "No se encontró ninguna descripción" -->
-                    <tr id="noResult" style="display: none;">
-                        <td colspan="{{tableHeaders.length}}"
-                            class="px-4 py-4 bg-white text-center font-normal rounded text-lg">
-                            No se encontró ninguna descripción
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        <!-- Fila para "No se encontró ninguna descripción" -->
+                        <tr id="noResult" style="display: none;">
+                            <td colspan="{{tableHeaders.length}}"
+                                class="px-4 py-4 bg-white text-center font-normal rounded text-lg">
+                                No se encontró ninguna descripción
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         {{!-- Tabla de la Alta de tipo pago --}}
 
-        <h1 class="font-semibold text-4xl flex justify-center m-5">Alta</h1>
-
-        <div class="text-lg mx-auto my-2 p-2 bg-white   w-2/6 border rounded-lg ">
-            <form action="/altaTipo" method="POST">
-                <input type="hidden" name="tipo" value="{{tipo}}" />
-                {{#each formFields}}
-                <div class="p-2">
-                    {{#isEqual this.name "precio"}}
-                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
-                    <!-- Renderizar campo Precio con el icono de moneda -->
-                    <div class="relative">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16"
-                            height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                            <path d="M12 3v3m0 12v3" />
-                        </svg>
-                        <input id="recargo" type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
-                            required="{{this.required}}">
-                    </div>
-                    {{else}}
-                    {{/isEqual}}
-                    {{#isEqual this.name "recargo"}}
-                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
-                    <!-- Renderizar campo Precio con el icono de moneda -->
-                    <div class="relative">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16"
-                            height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                            <path d="M12 3v3m0 12v3" />
-                        </svg>
-                        <input id="precio" type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
-                            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
-                            required="{{this.required}}">
-                    </div>
-                    {{else}}
-                    {{#isEqual this.type "select"}}
-                    <!-- Renderizar select con las opciones correctas -->
-                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
-                    <select name="{{this.name}}" id="{{this.name}}" required
-                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
-                        <option value=""></option>
-                        {{#each this.options}}
-                        <option value="{{this.value}}">{{this.text}}</option>
+        <!-- Formulario de tipo propiedad -->
+        <div class="flex justify-center px-4 sm:px-6 lg:px-8 py-20">
+            <div class="w-full sm:w-8/12 md:w-6/12 lg:w-4/12">
+                <h2 class="font-semibold text-2xl pt-3 text-center">Registrar tipo aquí</h2>
+                <div class="bg-white p-4 border rounded-lg shadow-lg text-lg">
+                    <form action="/altaTipo" method="POST">
+                        <input type="hidden" name="tipo" value="{{tipo}}" />
+                        {{#each formFields}}
+                        <div class="p-2">
+                            {{#isEqual this.name "precio"}}
+                            <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                            <div class="relative">
+                                <!-- Ícono SVG de moneda -->
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16"
+                                    height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                                    <path d="M12 3v3m0 12v3" />
+                                </svg>
+                                <input id="{{this.name}}" type="{{this.type}}" name="{{this.name}}"
+                                    value="{{this.data}}"
+                                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300"
+                                    {{#if this.required}}required{{/if}}>
+                            </div>
+                            {{/isEqual}}
+                            {{#isEqual this.type "select"}}
+                            <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                            <select name="{{this.name}}" id="{{this.name}}"
+                                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
+                                {{#if this.required}}required{{/if}}>
+                                <option value=""></option>
+                                {{#each this.options}}
+                                <option value="{{this.value}}">{{this.text}}</option>
+                                {{/each}}
+                            </select>
+                            {{/isEqual}}
+                            {{#isEqual this.type "text"}}
+                            <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
+                            <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}"
+                                placeholder="{{this.label}}" class="border border-gray-200 w-full text-lg p-2" {{#if
+                                this.required}}required{{/if}}>
+                            {{/isEqual}}
+                        </div>
                         {{/each}}
-                    </select>
-                    {{/isEqual}}
-                    {{#isEqual this.type "text"}}
-                    <!-- Renderizar cualquier otro campo de texto -->
-                    <label for="{{this.name}}" class="block text-lg">{{this.label}}</label>
-                    <input type="{{this.type}}" name="{{this.name}}" value="{{this.data}}" placeholder="{{this.label}}"
-                        class="border border-gray-200 w-full text-lg p-2" required="{{this.required}}">
-                    {{/isEqual}}
-                    {{/isEqual}}
+                        <button id="registrarTipo" type="submit"
+                            class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-3 block mt-4 mb-2 text-center">
+                            Registrar
+                        </button>
+                    </form>
                 </div>
-                {{/each}}
-                <button id="registrarTipo" type="submit"
-                    class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-xl px-6 py-3 block mt-4 mb-2 text-center">
-                    Registrar
-                </button>
-            </form>
+            </div>
         </div>
-
 
         <!-- Popup de error -->
         <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
@@ -167,7 +156,7 @@
                 </div>
             </div>
         </div>
-        
+
         <script>
             document.getElementById('searchTipo').addEventListener('keyup', function () {
                 let filter = this.value.toLowerCase();

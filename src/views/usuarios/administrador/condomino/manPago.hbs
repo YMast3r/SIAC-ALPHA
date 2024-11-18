@@ -16,7 +16,7 @@
 
     {{!-- Tabla de las propiedades del condomino--}}
     <div class="text-center">
-        <h1 class="font-semibold text-4xl flex justify-center m-5 pt-5">Propiedades del condómino</h1>
+        <h1 class="font-semibold text-2xl sm:text-3xl md:text-4xl hover:text-gray-400 flex justify-center pt-2 sm:pt-4">Propiedades del condómino</h1>
 
 
         <div class="w-full">
@@ -130,60 +130,59 @@
     </div>
 
     {{!-- CAMPOS DE BÚSQUEDA --}}
-    <div class="flex flex-col items-center w-full">
-        <div class="flex space-x-4 mb-1 items-center justify-center w-full max-w-4xl">
+    <div class="w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mx-auto max-w-5xl">
             <!-- Selector de mes -->
-            <div class="w-full max-w-xs">
-            <div class="flex items-center space-x-2">
-                <span class="text-xl font-medium text-gray-700 whitespace-nowrap">Buscar por Mes</span>
-                <select id="mesFiltro"
-                        class="border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 rounded-lg bg-white w-full">
-                <option value="">Todos</option>
-                <option value="enero">Enero</option>
-                <option value="febrero">Febrero</option>
-                <option value="marzo">Marzo</option>
-                <option value="abril">Abril</option>
-                <option value="mayo">Mayo</option>
-                <option value="junio">Junio</option>
-                <option value="julio">Julio</option>
-                <option value="agosto">Agosto</option>
-                <option value="septiembre">Septiembre</option>
-                <option value="octubre">Octubre</option>
-                <option value="noviembre">Noviembre</option>
-                <option value="diciembre">Diciembre</option>
-                </select>
+            <div class="w-full">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl font-medium text-gray-700 whitespace-nowrap">Buscar por Mes</span>
+                    <select id="mesFiltro" class="border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 rounded-lg bg-white w-full">
+                        <option value="">Todos</option>
+                        <option value="enero">Enero</option>
+                        <option value="febrero">Febrero</option>
+                        <option value="marzo">Marzo</option>
+                        <option value="abril">Abril</option>
+                        <option value="mayo">Mayo</option>
+                        <option value="junio">Junio</option>
+                        <option value="julio">Julio</option>
+                        <option value="agosto">Agosto</option>
+                        <option value="septiembre">Septiembre</option>
+                        <option value="octubre">Octubre</option>
+                        <option value="noviembre">Noviembre</option>
+                        <option value="diciembre">Diciembre</option>
+                    </select>
+                </div>
             </div>
-            </div>
+
             <!-- Campo de búsqueda de año (centrado) -->
-            <div class="relative w-full max-w-md">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
-            </span>
-            <input type="text" id="filtroAño" placeholder="Buscar por año..."
+            <div class="relative w-full">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <i class="fas fa-search text-gray-500"></i> <!-- Ícono de lupa -->
+                </span>
+                <input type="tel" id="filtroAño" placeholder="Buscar por año..."
                     class="border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 w-full rounded-lg pl-10 bg-white">
             </div>
+
             <!-- Selector de tipo -->
-            <div class="w-full max-w-xs">
-            <div class="flex items-center space-x-2">
-                <span class="text-xl font-medium text-gray-700 whitespace-nowrap">Buscar por Tipo</span>
-                <select id="tipoFiltro"
-                        class="border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 rounded-lg bg-white w-full">
-                <option value="">Todos</option>
-                {{#each tipoPagoFiltro}}
-                <option value="{{this.descripcion}}">{{this.descripcion}}</option>
-                {{/each}}
-                </select>
-            </div>
+            <div class="w-full">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl font-medium text-gray-700 whitespace-nowrap">Buscar por Tipo</span>
+                    <select id="tipoFiltro" class="border border-gray-200 text-lg placeholder-gray-500 p-2 focus:bg-white hover:bg-gray-300 rounded-lg bg-white w-full">
+                        <option value="">Todos</option>
+                        {{#each tipoPagoFiltro}}
+                        <option value="{{this.descripcion}}">{{this.descripcion}}</option>
+                        {{/each}}
+                    </select>
+                </div>
             </div>
         </div>
     </div>
 
-
     <!-- Tabla de pagos -->
-    <div class="w-full">
-        <div class="overflow-x-auto max-h-72 mb-10 w-11/12 mx-auto">
-            <table class="w-full table-fixed" id="tablaPagos">
-                <thead>
+    <div class="flex justify-center mx-auto w-full lg:w-11/12 px-4">
+        <div class="overflow-x-auto max-h-60 mb-10 w-full border border-gray-200 rounded-lg shadow">
+            <table class="w-full text-sm md:text-base lg:text-lg"  id="tablaPagos">
+                <thead class="sticky top-0 bg-gray-100">
                     <tr>
                     <th id="contenedorFlecha" style="cursor: pointer;" class="px-2 py-4 bg-white border-b-2 border-gray-400 font-medium text-xl text-center sticky top-0 rounded-l-lg">
                             FOLIO
