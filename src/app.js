@@ -106,14 +106,18 @@ app.get('/', (req, res) => {
 	if (req.session.loggedin) {
 		let name = req.session.name;
         let tipoUsuario = req.session.tipoUsuario;
-        let id = req.session.idUser;
-        /* 
-            1 =  Super Administrador    
-            2 =  Administrador    
-            3 =  Condomino    
-            4 =  Vigilante   
-        */
- 		res.render('principal', { name, tipoUsuario, id});
+        let id = req.session.idUser; 
+        let tipo;
+            if (tipoUsuario == 1){
+                tipo = "Super Administrador"
+            }else if (tipoUsuario == 2){
+                tipo = "Administrador"
+            }else if (tipoUsuario == 3){
+                tipo = "Condomino"
+            }else{
+                tipo = "Empleado"
+            }
+ 		res.render('principal', { name, tipoUsuario, id, tipo});
 	} else {
 		res.render('principal', { acceder: false });
 	}
