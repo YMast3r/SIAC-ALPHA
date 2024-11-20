@@ -66,6 +66,7 @@ function manIncidencia(req, res) {
             }
             if (rows && rows.length > 0) {
                 const usuario = rows;
+                const estado = usuario[0].status;
 
                 conn.query('SELECT * FROM tipo_incidencia', (err, rows) => {
                     if (err) {
@@ -99,6 +100,7 @@ function manIncidencia(req, res) {
                                             error: error,
                                             data: data,
                                             tipos: tipos,
+                                            estado: estado,
                                             clasificacionLista: clasificacion,
                                             name: req.session.name,
                                             id: req.session.idUser,
@@ -113,6 +115,7 @@ function manIncidencia(req, res) {
                                             errorDatos: 1,
                                             usuario: usuario,
                                             tipos: tipos,
+                                            estado: estado,
                                             clasificacionLista: clasificacion,
                                         });
                                     }

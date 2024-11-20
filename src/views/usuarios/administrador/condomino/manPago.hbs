@@ -287,7 +287,7 @@
     {{/if}}
 
     <div id="pagos" class="p-4 hidden">
-
+        {{#isEqual estado "Activo"}}
         <div class="mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/3 border rounded-lg shadow-lg">
             <!-- Encabezado-->
             <!-- Título del formulario-->
@@ -377,6 +377,11 @@
                 {{/if}}
             </form><!-- Cierre del formulario -->
         </div> <!-- Cierre del contenedor principal -->
+        {{else}}
+        <center>
+            <h1 class="font-semibold text-4xl flex justify-center m-5">No hay incidencias registrados</h1>
+        </center>
+        {{/isEqual}}
     </div>
 
     <div id="pagos_plazos" class="p-4 hidden">
@@ -388,9 +393,7 @@
 
         {{!-- Condición para ver si hay pagos --}}
         {{else}}
-
         <h1 class="font-semibold text-4xl flex justify-center m-5">Varios pagos en una toma</h1>
-
         <!-- Tabla de pagos a plazos -->
         <div class="w-full">
             <div class="overflow-x-auto max-h-60 mb-10 w-4/5 mx-auto">
@@ -461,14 +464,13 @@
                 </table>
             </div>
         </div>
-
         {{/if}}
-        {{!-- Formulario para los pagos en plazos --}}
+
+        {{#isEqual estado "Activo"}}
+        <!-- Título del formulario-->
         <h1 class="text-2x1 m-5 font-bold text-center  text-xl">Registra varios pagos en una toma aquí</h1>
         <div class="mx-auto my-8 p-4 bg-white w-full sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-1/3 border rounded-lg shadow-lg">
-        <!-- Título del formulario-->
-            
-
+        {{!-- Formulario para los pagos en plazos --}}
             <form action="/altaPagoPlazo" method="POST" class="mt-4" enctype="multipart/form-data">
                 <!-- Campos para los datos del pago-->
 
@@ -561,6 +563,11 @@
                 {{/if}}
             </form><!-- Cierre del formulario -->
         </div> <!-- Cierre del contenedor principal -->
+        {{else}}
+        <center>
+            <h1 class="font-semibold text-4xl flex justify-center m-5">No se pueden ingresar registros porque no está activo el condomino</h1>
+        </center>
+        {{/isEqual}}
     </div>
 
     <div id="info">

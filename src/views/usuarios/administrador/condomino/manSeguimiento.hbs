@@ -155,7 +155,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody id="tablaSeguimiento">
+                <tbody id="seguimientosTable">
                     {{#each datos}}
                     <tr class="dataRow">
                         </td>
@@ -177,8 +177,12 @@
                         </td>
                     </tr>
                     {{/each}}
-                    <tr id="noResultsRow" style="display:none;">
-                        <td colspan="7" class="text-center p-4 bg-gray-200">No se encontraron comentarios</td>
+                    <!-- Fila para "No se encontró ninguna comentario" -->
+                    <tr id="noResult" style="display: none;">
+                        <td colspan="7"
+                            class="px-4 py-4 bg-white text-center font-normal rounded text-lg">
+                            No se encontró ningún comentario
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -187,6 +191,7 @@
 
     {{/if}}
 
+    {{#isEqual estado "Activo"}}
     {{#isEqual tipoUsuario 2}}
     <div class="flex justify-center m-5">
         <h1 class="font-semibold text-4xl flex justify-center m-5">Alta</h1>
@@ -276,6 +281,11 @@
         </script>
     </div>
     {{/isEqual}}
+    {{else}}
+    <center>
+        <h1 class="font-semibold text-4xl flex justify-center m-5">No se pueden ingresar registros porque no está activo el condomino</h1>
+    </center>
+    {{/isEqual}}
 
 
     </div>
@@ -283,26 +293,26 @@
     <script>
         function searchComments() {
             const searchInput = document.getElementById('searchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#seguimientosTable tbody tr.dataRow');
-            const noResultsRow = document.getElementById('noResultsRow');
+            const rows = document.querySelectorAll('#seguimientosTable tr');
+            const noResultsRow = document.getElementById('noResult');
             let found = false;
 
             rows.forEach(row => {
-                const comentario = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const comentario = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
                 if (comentario.includes(searchInput)) {
                     row.style.display = '';
                     found = true;
                 } else {
                     row.style.display = 'none';
                 }
+                // Mostrar mensaje si no se encontraron comentarios
+                if (found) {
+                    noResultsRow.style.display = 'none';
+                } else {
+                    noResultsRow.style.display = '';
+                }
             });
 
-            // Mostrar mensaje si no se encontraron comentarios
-            if (found) {
-                noResultsRow.style.display = 'none';
-            } else {
-                noResultsRow.style.display = '';
-            }
         }
         // Abre una nueva ventana con la imagen en tamaño completo
         function mostrarImagen(src) {
