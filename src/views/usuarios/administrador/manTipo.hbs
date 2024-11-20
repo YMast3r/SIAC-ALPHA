@@ -64,7 +64,7 @@
                             {{/each}}
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200 text-lg">
+                    <tbody id="tipoTable" class="bg-white divide-y divide-gray-200 text-lg">
                         {{#each tableData}}
                         <tr class="hover:bg-gray-100">
                             {{#each ../tableHeaders}}
@@ -160,7 +160,7 @@
         <script>
             document.getElementById('searchTipo').addEventListener('keyup', function () {
                 let filter = this.value.toLowerCase();
-                let rows = document.querySelectorAll('#tipoTable tbody tr');
+                let rows = document.querySelectorAll('#tipoTable tr');
                 let noResult = true;
 
                 rows.forEach(row => {

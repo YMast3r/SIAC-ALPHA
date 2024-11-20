@@ -98,6 +98,7 @@ function manSeguimiento(req, res) {
                                             }
                                             if (UsuarioRows && UsuarioRows.length > 0) {
                                                 const usuario = UsuarioRows;
+                                                const estado = usuario[0].status;
                                                 // Consulta para obtener los status
                                                 conn.query('SELECT * FROM status_seguimiento WHERE id_status_seguimiento != 1', (err, statusRows) => {
                                                     if (err) {
@@ -137,6 +138,7 @@ function manSeguimiento(req, res) {
                                                                             status: status,
                                                                             error: error,
                                                                             data: data,
+                                                                            estado: estado,
                                                                             id: req.session.idUser,
                                                                             name: req.session.name,
                                                                             tipoUsuario: tipo
@@ -153,6 +155,7 @@ function manSeguimiento(req, res) {
                                                                             usuario: usuario,
                                                                             incidencia: incidencia,
                                                                             status: status,
+                                                                            estado: estado,
                                                                             empleado: empleado,
                                                                             tipos: tipos,
                                                                             tipoEmpleado: tipoEmpleado,
