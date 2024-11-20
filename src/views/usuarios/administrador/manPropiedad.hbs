@@ -26,42 +26,41 @@
             </button>
 
             <button id="formaClipPathT"
-                class="overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 whitespace-nowrap transition-all duration-300 ease-in-out rounded-b-lg -mr-4"
+                class="overflow-hidden bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 whitespace-nowrap transition-all duration-300 ease-in-out rounded-b-lg -mr-2"
                 onclick="mostrarSeccion('tipo')">Tipo
             </button>
         </nav>
     </div>
+<script>
+    // Selecciona los elementos y sus configuraciones
+    const elementos = [
+        { id: 'formaClipPathP', textoInicial: 'Propiedad', textoHover: 'Propiedad', widthInicial: '9rem', widthHover: '14rem' }, // Propiedad
+        { id: 'formaClipPathT', textoInicial: 'Tipo', textoHover: 'Tipo Propiedad', widthInicial: '7rem', widthHover: '12rem' } // Tipo Propiedad
+    ];
 
-    <script>
-        // Selecciona los elementos y sus configuraciones
-        const elementos = [
-            { id: 'formaClipPathP', textoInicial: 'Propiedad', textoHover: 'Propiedad', widthInicial: '9rem', widthHover: '14rem' }, // Propiedad
-            { id: 'formaClipPathT', textoInicial: 'Tipo', textoHover: 'Tipo Propiedad', widthInicial: '7rem', widthHover: '12rem' } // Tipo Propiedad
-        ];
+    // Función para aplicar el clip-path y estilos
+    elementos.forEach(elemento => {
+        const el = document.getElementById(elemento.id);
+        el.style.clipPath = 'polygon(5% 0, 95% 0, 95% 100%, 5% 100%, 0 50%)'; // Triángulo en la izquierda y plano en la derecha
+        el.style.position = 'relative';
+        el.style.width = elemento.widthInicial; // Establece el ancho inicial
 
-        // Función para aplicar el clip-path y estilos
-        elementos.forEach(elemento => {
-            const el = document.getElementById(elemento.id);
-            el.style.clipPath = 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)';
-            el.style.position = 'relative';
-            el.style.top = elemento.top;
-            el.style.width = elemento.widthInicial; // Establece el ancho inicial
+        if (elemento.textoInicial) {
+            el.textContent = elemento.textoInicial;
 
-            if (elemento.textoInicial) {
+            el.addEventListener('mouseover', () => {
+                el.style.width = elemento.widthHover;
+                el.textContent = elemento.textoHover || elemento.textoInicial;
+            });
+
+            el.addEventListener('mouseout', () => {
+                el.style.width = elemento.widthInicial;
                 el.textContent = elemento.textoInicial;
+            });
+        }
+    });
+</script>
 
-                el.addEventListener('mouseover', () => {
-                    el.style.width = elemento.widthHover;
-                    el.textContent = elemento.textoHover || elemento.textoInicial;
-                });
-
-                el.addEventListener('mouseout', () => {
-                    el.style.width = elemento.widthInicial;
-                    el.textContent = elemento.textoInicial;
-                });
-            }
-        });
-    </script>
 
     <div>
         <a id="renderManPropiedad" href="/renderManPropiedad"
