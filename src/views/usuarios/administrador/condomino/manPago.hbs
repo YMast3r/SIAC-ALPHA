@@ -82,26 +82,25 @@
 
         // Función para aplicar el clip-path y estilos
         elementos.forEach(elemento => {
-            const el = document.getElementById(elemento.id);
-            el.style.clipPath = 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)';
-            el.style.position = 'relative';
-            el.style.top = elemento.top;
+        const el = document.getElementById(elemento.id);
+        el.style.clipPath = 'polygon(5% 0, 95% 0, 95% 100%, 5% 100%, 0 50%)'; // Triángulo en la izquierda y plano en la derecha
+        el.style.position = 'relative';
+        el.style.width = elemento.widthInicial; // Establece el ancho inicial
 
-            if (elemento.textoInicial) {
-                el.textContent = elemento.textoInicial;
+        if (elemento.textoInicial) {
+            el.textContent = elemento.textoInicial;
+
+            el.addEventListener('mouseover', () => {
+                el.style.width = elemento.widthHover;
+                el.textContent = elemento.textoHover || elemento.textoInicial;
+            });
+
+            el.addEventListener('mouseout', () => {
                 el.style.width = elemento.widthInicial;
-
-                el.addEventListener('mouseover', () => {
-                    el.style.width = elemento.widthHover;
-                    el.textContent = elemento.textoHover;
-                });
-
-                el.addEventListener('mouseout', () => {
-                    el.style.width = elemento.widthInicial;
-                    el.textContent = elemento.textoInicial;
-                });
-            }
-        });
+                el.textContent = elemento.textoInicial;
+            });
+        }
+    });
     </script>
 
     <div class="flex justify-around bg-gray-200 p-4">
