@@ -192,8 +192,101 @@ function formatDate(dateString) {
     return `${day}/${month}/${year}`;
 }
 
+function ediEmpleados(req, res) {
+    const error = req.session.errorMEmpleado;
+    const data = req.session.dataCampos;
+    
+    req.getConnection((err, conn) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send("Error en la conexión con la base de datos");
+        }
+
+        // Consulta para obtener los empleados
+        conn.query('SELECT e.id_empleado, e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.apellidos, u.descripcion AS tipo_empleado, FORMAT(e.salario, 2) AS salario, e.fecha_contratacion, e.empresa FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado ORDER BY e.id_empleado DESC', (err, rows) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send("Error al recuperar los empleados");
+            }
+
+            // Consulta para obtener los tipos de empleado
+            conn.query('SELECT id_tipo_empleado, descripcion, FORMAT(salario,2) AS salario FROM tipo_empleado', (err, tiposEmpleado) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Error al recuperar los tipos de empleado");
+                }
+
+                // Formatear las fechas de contratación
+                const datos = rows.map(row => ({
+                    ...row,
+                    fecha_contratacion: formatDate(row.fecha_contratacion), // Asegúrate de definir esta función o usar librerías como moment o date-fns
+                }));
+
+                res.render('usuarios/administrador/manEmpleado', {
+                    name: req.session.name,
+                    tipoUsuario: 2,
+                    empleados: datos,
+                    data: data,
+                    error: error,
+                    tiposEmpleado: tiposEmpleado, // Pasar los tipos de empleado a la vista
+                    mensaje: "Página para modificar empleado",  // Cambiar el mensaje a algo más adecuado
+                    modificar: 1
+                });
+            });
+        });
+    });
+}
+
+
+function manipulaEmpleados(){
+        const { nombre, apellidos, tipo_empleado, salario, fecha_contratacion, telefono, correo_electronico, empresa, password } = req.body;
+    
+        // Validar los campos requeridos
+        if (!nombre || !apellidos || !tipo_empleado || !salario || !telefono || !correo_electronico || !empresa) {
+            return res.status(400).json({ mensaje: "Por favor, complete todos los campos obligatorios." });
+        }
+    
+        // Opcional: Encriptar contraseña si está presente
+        let hashedPassword = null;
+        if (password) {
+            const bcrypt = require('bcrypt');
+            hashedPassword = bcrypt.hashSync(password, 10);
+        }
+    
+        // Insertar en la base de datos
+        const sqlInsert = `
+            INSERT INTO empleado (nombre, apellidos, tipo_empleado, salario, fecha_contratacion, telefono, correo_electronico, empresa, password)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+        
+        const values = [
+            nombre,
+            apellidos,
+            tipo_empleado,
+            salario,
+            fecha_contratacion || new Date(),  // Si no se proporciona fecha, poner fecha actual
+            telefono,
+            correo_electronico,
+            empresa,
+            hashedPassword || null  // Si no se proporciona contraseña, dejar null
+        ];
+    
+        db.query(sqlInsert, values, (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ mensaje: "Hubo un error al registrar al empleado." });
+            }
+    
+            res.status(201).json({ mensaje: "Empleado registrado con éxito." });
+        });
+    };
+    
+
+
 module.exports = {
     renderEmpleados,
     registrarEmpleado,
-    manEmpleados
+    manEmpleados,
+    manipulaEmpleados,
+    ediEmpleados
 };
