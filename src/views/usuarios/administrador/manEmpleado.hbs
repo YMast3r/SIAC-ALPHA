@@ -1,6 +1,7 @@
 {{#if name}}
 <!DOCTYPE html>
 <html lang="es">
+
 <body>
     <a id="renderEmpleados" href="/renderEmpleados">
         <h1 class="font-semibold text-4xl hover:text-gray-400 flex justify-center pt-4 pb-8">Empleados Registrados</h1>
@@ -22,8 +23,9 @@
             <table class="w-full">
                 <thead class="sticky top-0 bg-white">
                     <tr>
-                        <tr>
-                            <th id="contenedorFlecha" style="cursor: pointer;" class="px-4 {{!-- py-4 --}} bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg ">
+                    <tr>
+                        <th id="contenedorFlecha" style="cursor: pointer;"
+                            class="px-4 {{!-- py-4 --}} bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tl-lg ">
                             <span class="inline-flex items-center space-x-1">
                                 <p> ID </p>
                                 {{!-- &nbsp; --}}
@@ -48,264 +50,134 @@
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.id_empleado}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.nombre}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.apellidos}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.correo_electronico}}</td>
+                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.correo_electronico}}
+                        </td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.telefono}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.tipo_empleado}}</td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">${{this.salario}}</td>
-                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.fecha_contratacion}}</td>
+                        <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.fecha_contratacion}}
+                        </td>
                         <td class="px-4 py-2 border-b-2 border-gray-200 text-center text-lg">{{this.empresa}}</td>
                         <td class="px-3 py-2 bg-white text-lg text-center border-b-2 border-gray-200 text-center"><a
-                                    href="/ediEmpleados{{id_empleado}}"><svg class="  mx-auto h-8 w-10 text-gray-600" width="24"
-                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" />
-                                        <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
-                                        <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
-                                    </svg></a></td>
+                                href="/ediEmpleados-{{id_empleado}}"><svg class="  mx-auto h-8 w-10 text-gray-600"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                    <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+                                    <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+                                </svg></a></td>
                     </tr>
                     {{/each}}
-                    <tbody id="noResultsRow" style="display: none;">
-                        <tr>
-                            <td colspan="10" class="px-4 py-4 bg-white text-center font-normal rounded text-lg">No se encontró ningún Empleado</td>
-                        </tr>
-                    </tbody>
+                <tbody id="noResultsRow" style="display: none;">
+                    <tr>
+                        <td colspan="10" class="px-4 py-4 bg-white text-center font-normal rounded text-lg">No se
+                            encontró ningún Empleado</td>
+                    </tr>
+                </tbody>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <h1 class="font-semibold text-2xl pt-3 text-center">Registra un empleado</h1>
-    <div class="mx-auto my-8 p-4 bg-white w-9/12 md:w-8/12 lg:w-6/12 xl:w-5/12 border rounded-lg shadow-lg">
-    <form id="registroForm" action="/registrarEmpleado" method="POST"
-        onsubmit="return telefonoValid() && correoValid()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Nombre y Apellidos -->
-        <div class="md:col-span-1">
-            <label for="nombre"><i class="fas fa-user"></i> Nombre(s):</label>
-            <input type="text" id="nombre" name="nombre"  value="{{data.nombre}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-        <div class="md:col-span-1">
-            <label for="apellidos"><i class="fas fa-user"></i> Apellidos:</label>
-            <input type="text" id="apellidos" name="apellidos"  value="{{data.apellidos}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-
-        
-        <!-- Tipo de Empleadono y Salari -->
-        <div class="md:col-span-1">
-            <label for="tipo_empleado"><i class="fas fa-user-tie"></i> Tipo de Empleado:</label>
-            <select id="tipo_empleado" name="tipo_empleado" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
-                onchange="actualizarSalario()">
-                <option value="" selected>Seleccione</option>
-                {{#each tiposEmpleado}}
-                <option value="{{this.id_tipo_empleado}}" data-salario="{{this.salario}}">{{this.descripcion}}</option>
-                {{/each}}
-            </select>
-        </div>
-        <div class="md:col-span-1">
-            <label for="salario" class="block text-lg"><i class="fas fa-dollar-sign"></i>
-            Salario:</label>
-            <div class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16" height="16"
-                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                    <path d="M12 3v3m0 12v3" />
-                </svg>
-                <input type="text" id="salario" name="salario" value="{{data.salario}}" placeholder="0.00" step="0.01" required
-                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300">
-            </div>
-        </div>
-
-
-        <!-- Empresa de subcontratación  -->
-        <div class="md:col-span-2">
-            <label for="empresa"><i class="fas fa-map-marker-alt">&nbsp;</i> Empresa de subcontratación:</label>
-            <input type="text" id="empresa" name="empresa"  value="{{data.empresa}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-
-        <!-- Teléfono y Correo -->
-        <div class="md:col-span-1">
-            <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
-            <input type="tel" name="telefono" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300" id="telefono" placeholder="Teléfono (ej. 449 223 9955)" value="{{data.telefono}}" required>
-            <small id="telefonoError" class="form-text text-danger text-red-600"></small>
-        </div>
-        <div class="md:col-span-1">
-            <label for="correo_electronico"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
-            <input type="email" name="correo_electronico" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300" placeholder="Correo electrónico" id="correo_electronico" value="{{data.correo_electronico}}" required>
-            <small id="correoError" class="form-text text-danger text-red-600"></small>
-        </div>
-
-        <!-- Contraseña y Confirmar Contraseña -->
-        <div class="md:col-span-1">
-            <label for="password"><i class="fas fa-lock">&nbsp;</i> Contraseña:</label>
-            <div class="relative">
-                    <input type="password" name="password"  id="password" placeholder="Contraseña" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10" value="{{data.password}}" required >
-
-                    <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
-                        {{!-- ojo abierto --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                        </svg>
-
-                        {{!-- ojo cerrado --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
-                            <path d="M3 15l2.5 -3.8" />
-                            <path d="M21 14.976l-2.492 -3.776" />
-                            <path d="M9 17l.5 -4" />
-                            <path d="M15 17l-.5 -4" />
-                        </svg>
-                    </div>
-                </div>
-        </div>
-        <div class="md:col-span-1">
-            <label for="confirm_password"><i class="fas fa-lock">&nbsp;</i> Confirmar Contraseña:</label>
-            <div class="relative">
-                <input type="password" name="confPassword" id="confPassword" placeholder="Confirmar contraseña" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"  value="{{data.confPassword}}" required>
-                <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
-                    {{!-- ojo abierto --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                    </svg>
-
-                    {{!-- ojo cerrado --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
-                        <path d="M3 15l2.5 -3.8" />
-                        <path d="M21 14.976l-2.492 -3.776" />
-                        <path d="M9 17l.5 -4" />
-                        <path d="M15 17l-.5 -4" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Fecha de  Fecha de Contratación -->
-        <div class="md:col-span-1">
-            <label for="fecha_contratacion"><i class="fas fa-calendar"></i> Fecha de Contratación:</label>
-            <input type="date" id="fecha_contratacion" name="fecha_contratacion"  value="{{data.fecha_contratacion}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-
-        <!-- Botón de registrar -->
-        <div class="md:col-span-1 flex justify-end mt-4">
-            <button id="enviar" type="submit"
-                class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
-                Registrar
-            </button>
-        </div>
-    </form>
-</div>
-
-
-    <!-- Popup de error -->
-    <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 shadow-lg">
-            <div class="mb-4">
-                <p>Algo ha salido mal, intentalo de nuevo</p>
-            </div>
-            <div class="flex justify-end">
-                <button id="close-modal"
-                    class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cerrar</button>
-            </div>
         </div>
     </div>
 
     {{#if modificar}}
     <h1 class="font-semibold text-2xl pt-3 text-center">Edita un empleado</h1>
     <div class="mx-auto my-8 p-4 bg-white w-9/12 md:w-8/12 lg:w-6/12 xl:w-5/12 border rounded-lg shadow-lg">
-    <form id="registroForm" action="/registrarEmpleado" method="POST"
-        onsubmit="return telefonoValid() && correoValid()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Nombre y Apellidos -->
-        <div class="md:col-span-1">
-            <label for="nombre"><i class="fas fa-user"></i> Nombre(s):</label>
-            <input type="text" id="nombre" name="nombre"  value="{{data.nombre}}" readonly
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-        <div class="md:col-span-1">
-            <label for="apellidos"><i class="fas fa-user"></i> Apellidos:</label>
-            <input type="text" id="apellidos" name="apellidos"  value="{{data.apellidos}}" readonly
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
-
-        
-        <!-- Tipo de Empleadono y Salari -->
-        <div class="md:col-span-1">
-            <label for="tipo_empleado"><i class="fas fa-user-tie"></i> Tipo de Empleado:</label>
-            <select id="tipo_empleado" name="tipo_empleado" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
-                onchange="actualizarSalario()">
-                <option value="" selected>Seleccione</option>
-                {{#each tiposEmpleado}}
-                <option value="{{this.id_tipo_empleado}}" data-salario="{{this.salario}}">{{this.descripcion}}</option>
-                {{/each}}
-            </select>
-        </div>
-        <div class="md:col-span-1">
-            <label for="salario" class="block text-lg"><i class="fas fa-dollar-sign"></i>
-            Salario:</label>
-            <div class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16" height="16"
-                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                    <path d="M12 3v3m0 12v3" />
-                </svg>
-                <input type="text" id="salario" name="salario" value="{{data.salario}}" placeholder="0.00" step="0.01" required
-                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300">
+        <form id="registroForm" action="/registrarEmpleadoEdi" method="POST"
+            onsubmit="return telefonoValid() && correoValid()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Nombre y Apellidos -->
+            <div class="md:col-span-1">
+                <label for="nombre"><i class="fas fa-user"></i> Nombre(s):</label>
+                <input type="text" id="nombre" name="nombre" value="{{data.nombre}}" readonly
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
             </div>
-        </div>
+            <div class="md:col-span-1">
+                <label for="apellidos"><i class="fas fa-user"></i> Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" value="{{data.apellidos}}" readonly
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+            </div>
 
 
-        <!-- Empresa de subcontratación  -->
-        <div class="md:col-span-2">
-            <label for="empresa"><i class="fas fa-map-marker-alt">&nbsp;</i> Empresa de subcontratación:</label>
-            <input type="text" id="empresa" name="empresa"  value="{{data.empresa}}" required
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
+            <!-- Tipo de Empleadono y Salari -->
+            <div class="md:col-span-1">
+                <label for="tipo_empleado"><i class="fas fa-user-tie"></i> Tipo de Empleado:</label>
+                <select id="tipo_empleado" name="tipo_empleado" required
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
+                    onchange="actualizarSalario()">
+                    <option value="" selected>Seleccione</option>
+                    {{#each tiposEmpleado}}
+                    <option value="{{this.id_tipo_empleado}}" data-salario="{{this.salario}}">{{this.descripcion}}
+                    </option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="md:col-span-1">
+                <label for="salario" class="block text-lg"><i class="fas fa-dollar-sign"></i>
+                    Salario:</label>
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16" height="16"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                        <path d="M12 3v3m0 12v3" />
+                    </svg>
+                    <input type="text" id="salario" name="salario" value="{{data.salario}}" placeholder="0.00"
+                        step="0.01" required
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300">
+                </div>
+            </div>
 
-        <!-- Teléfono y Correo -->
-        <div class="md:col-span-1">
-            <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
-            <input type="tel" name="telefono" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300" id="telefono" placeholder="Teléfono (ej. 449 223 9955)" value="{{data.telefono}}" required>
-            <small id="telefonoError" class="form-text text-danger text-red-600"></small>
-        </div>
-        <div class="md:col-span-1">
-            <label for="correo_electronico"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
-            <input type="email" name="correo_electronico" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300" placeholder="Correo electrónico" id="correo_electronico" value="{{data.correo_electronico}}" required>
-            <small id="correoError" class="form-text text-danger text-red-600"></small>
-        </div>
 
-        <!-- Contraseña y Confirmar Contraseña -->
-        <div class="md:col-span-1">
-            <label for="password"><i class="fas fa-lock">&nbsp;</i> Contraseña:</label>
-            <div class="relative">
-                    <input type="password" name="password"  id="password" placeholder="Nueva contraseña (si no desea modificar la contraseña, déjelo en blanco)" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10" value="{{data.password}}"  >
+            <!-- Empresa de subcontratación  -->
+            <div class="md:col-span-2">
+                <label for="empresa"><i class="fas fa-map-marker-alt">&nbsp;</i> Empresa de subcontratación:</label>
+                <input type="text" id="empresa" name="empresa" value="{{data.empresa}}" required
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+            </div>
+
+            <!-- Teléfono y Correo -->
+            <div class="md:col-span-1">
+                <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
+                <input type="tel" name="telefono"
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
+                    id="telefono" placeholder="Teléfono (ej. 449 223 9955)" value="{{data.telefono}}" required>
+                <small id="telefonoError" class="form-text text-danger text-red-600"></small>
+            </div>
+            <div class="md:col-span-1">
+                <label for="correo_electronico"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
+                <input type="email" name="correo_electronico"
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
+                    placeholder="Correo electrónico" id="correo_electronico" value="{{data.correo_electronico}}"
+                    required>
+                <small id="correoError" class="form-text text-danger text-red-600"></small>
+            </div>
+
+            <!-- Contraseña y Confirmar Contraseña -->
+            <div class="md:col-span-1">
+                <label for="password"><i class="fas fa-lock">&nbsp;</i> Contraseña:</label>
+                <div class="relative">
+                    <input type="password" name="password" id="password"
+                        placeholder="Nueva contraseña (si no desea modificar la contraseña, déjelo en blanco)"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
+                        value="{{data.password}}">
 
                     <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
                         {{!-- ojo abierto --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30"
+                            height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                            <path
+                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
                         </svg>
 
                         {{!-- ojo cerrado --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed"
+                            width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
                             <path d="M3 15l2.5 -3.8" />
                             <path d="M21 14.976l-2.492 -3.776" />
@@ -314,48 +186,214 @@
                         </svg>
                     </div>
                 </div>
-        </div>
-        <div class="md:col-span-1">
-            <label for="confirm_password"><i class="fas fa-lock">&nbsp;</i> Confirmar Contraseña:</label>
-            <div class="relative">
-                <input type="password" name="confPassword" id="confPassword" placeholder="Confirmar contraseña" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"  value="{{data.confPassword}}" required>
-                <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
-                    {{!-- ojo abierto --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                    </svg>
+            </div>
+            <div class="md:col-span-1">
+                <label for="confirm_password"><i class="fas fa-lock">&nbsp;</i> Confirmar Contraseña:</label>
+                <div class="relative">
+                    <input type="password" name="confPassword" id="confPassword" placeholder="Confirmar contraseña"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
+                        value="{{data.confPassword}}" required>
+                    <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
+                        {{!-- ojo abierto --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30"
+                            height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            <path
+                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                        </svg>
 
-                    {{!-- ojo cerrado --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
-                        <path d="M3 15l2.5 -3.8" />
-                        <path d="M21 14.976l-2.492 -3.776" />
-                        <path d="M9 17l.5 -4" />
-                        <path d="M15 17l-.5 -4" />
-                    </svg>
+                        {{!-- ojo cerrado --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed"
+                            width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
+                            <path d="M3 15l2.5 -3.8" />
+                            <path d="M21 14.976l-2.492 -3.776" />
+                            <path d="M9 17l.5 -4" />
+                            <path d="M15 17l-.5 -4" />
+                        </svg>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Fecha de  Fecha de Contratación -->
-        <div class="md:col-span-1">
-            <label for="fecha_contratacion"><i class="fas fa-calendar"></i> Fecha de Contratación:</label>
-            <input type="date" id="fecha_contratacion" name="fecha_contratacion"  value="{{data.fecha_contratacion}}" readonly
-                class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
-        </div>
+            <!-- Fecha de  Fecha de Contratación -->
+            <div class="md:col-span-1">
+                <label for="fecha_contratacion"><i class="fas fa-calendar"></i> Fecha de Contratación:</label>
+                <input type="date" id="fecha_contratacion" name="fecha_contratacion" value="{{data.fecha_contratacion}}"
+                    readonly
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+            </div>
 
-        <!-- Botón de registrar -->
-        <div class="md:col-span-1 flex justify-end mt-4">
-            <button type="submit"
-                class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
-                Registrar
-            </button>
-        </div>
-    </form>
-</div>
+            <!-- Botón de registrar -->
+            <div class="md:col-span-1 flex justify-end mt-4">
+                <button type="submit"
+                    class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
+                    Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+    {{else}}
+
+    <h1 class="font-semibold text-2xl pt-3 text-center">Registra un empleado</h1>
+    <div class="mx-auto my-8 p-4 bg-white w-9/12 md:w-8/12 lg:w-6/12 xl:w-5/12 border rounded-lg shadow-lg">
+        <form id="registroForm" action="/registrarEmpleado" method="POST"
+            onsubmit="return telefonoValid() && correoValid()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Nombre y Apellidos -->
+            <div class="md:col-span-1">
+                <label for="nombre"><i class="fas fa-user"></i> Nombre(s):</label>
+                <input type="text" id="nombre" name="nombre" value="{{data.nombre}}" required
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+            </div>
+            <div class="md:col-span-1">
+                <label for="apellidos"><i class="fas fa-user"></i> Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" value="{{data.apellidos}}" required
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+            </div>
+
+
+            <!-- Tipo de Empleadono y Salari -->
+            <div class="md:col-span-1">
+                <label for="tipo_empleado"><i class="fas fa-user-tie"></i> Tipo de Empleado:</label>
+                <select id="tipo_empleado" name="tipo_empleado" required
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
+                    onchange="actualizarSalario()">
+                    <option value="" selected>Seleccione</option>
+                    {{#each tiposEmpleado}}
+                    <option value="{{this.id_tipo_empleado}}" data-salario="{{this.salario}}">{{this.descripcion}}
+                    </option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="md:col-span-1">
+                <label for="salario" class="block text-lg"><i class="fas fa-dollar-sign"></i>
+                    Salario:</label>
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" width="16" height="16"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 1 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
+                        <path d="M12 3v3m0 12v3" />
+                    </svg>
+                    <input type="text" id="salario" name="salario" value="{{data.salario}}" placeholder="0.00"
+                        step="0.01" required
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 pl-6 focus:bg-white hover:bg-gray-300">
+                </div>
+            </div>
+
+
+            <!-- Empresa de subcontratación  -->
+            <div class="md:col-span-2">
+                <label for="empresa"><i class="fas fa-map-marker-alt">&nbsp;</i> Empresa de subcontratación:</label>
+                <input type="text" id="empresa" name="empresa" value="{{data.empresa}}" required
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+            </div>
+
+            <!-- Teléfono y Correo -->
+            <div class="md:col-span-1">
+                <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
+                <input type="tel" name="telefono"
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
+                    id="telefono" placeholder="Teléfono (ej. 449 223 9955)" value="{{data.telefono}}" required>
+                <small id="telefonoError" class="form-text text-danger text-red-600"></small>
+            </div>
+            <div class="md:col-span-1">
+                <label for="correo_electronico"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
+                <input type="email" name="correo_electronico"
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300"
+                    placeholder="Correo electrónico" id="correo_electronico" value="{{data.correo_electronico}}"
+                    required>
+                <small id="correoError" class="form-text text-danger text-red-600"></small>
+            </div>
+
+            <!-- Contraseña y Confirmar Contraseña -->
+            <div class="md:col-span-1">
+                <label for="password"><i class="fas fa-lock">&nbsp;</i> Contraseña:</label>
+                <div class="relative">
+                    <input type="password" name="password" id="password" placeholder="Contraseña"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
+                        value="{{data.password}}" required>
+
+                    <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
+                        {{!-- ojo abierto --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30"
+                            height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            <path
+                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                        </svg>
+
+                        {{!-- ojo cerrado --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed"
+                            width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
+                            <path d="M3 15l2.5 -3.8" />
+                            <path d="M21 14.976l-2.492 -3.776" />
+                            <path d="M9 17l.5 -4" />
+                            <path d="M15 17l-.5 -4" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-1">
+                <label for="confirm_password"><i class="fas fa-lock">&nbsp;</i> Confirmar Contraseña:</label>
+                <div class="relative">
+                    <input type="password" name="confPassword" id="confPassword" placeholder="Confirmar contraseña"
+                        class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10"
+                        value="{{data.confPassword}}" required>
+                    <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
+                        {{!-- ojo abierto --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="30"
+                            height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            <path
+                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                        </svg>
+
+                        {{!-- ojo cerrado --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-closed"
+                            width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
+                            <path d="M3 15l2.5 -3.8" />
+                            <path d="M21 14.976l-2.492 -3.776" />
+                            <path d="M9 17l.5 -4" />
+                            <path d="M15 17l-.5 -4" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fecha de  Fecha de Contratación -->
+            <div class="md:col-span-1">
+                <label for="fecha_contratacion"><i class="fas fa-calendar"></i> Fecha de Contratación:</label>
+                <input type="date" id="fecha_contratacion" name="fecha_contratacion" value="{{data.fecha_contratacion}}"
+                    required
+                    class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300">
+            </div>
+
+            <!-- Botón de registrar -->
+            <div class="md:col-span-1 flex justify-end mt-4">
+                <button id="enviar" type="submit"
+                    class="rounded-md bg-gray-500 w-full text-white hover:bg-gray-600 focus:bg-gray-700 font-medium text-base px-6 py-3 block mt-4 mb-2 text-center">
+                    Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+    {{/if}}
 
 
     <!-- Popup de error -->
@@ -370,9 +408,6 @@
             </div>
         </div>
     </div>
-
-    {{else}}
-
 
     <script src="telefono.js"></script>
     <script src="correo.js"></script>
@@ -441,112 +476,112 @@
 
         validarInput(nss);
         validarInput(codigo_postal);
-</script>
-<script>
-function actualizarSalario() {
-    const selectTipoEmpleado = document.getElementById('tipo_empleado');
-    const selectedOption = selectTipoEmpleado.options[selectTipoEmpleado.selectedIndex];
-    const salario = selectedOption.getAttribute('data-salario');
+    </script>
+    <script>
+        function actualizarSalario() {
+            const selectTipoEmpleado = document.getElementById('tipo_empleado');
+            const selectedOption = selectTipoEmpleado.options[selectTipoEmpleado.selectedIndex];
+            const salario = selectedOption.getAttribute('data-salario');
 
-    document.getElementById('salario').value = salario ? salario : '';
-}
-</script>
-<script>
-    // Mostrar mensaje de error personalizado si hay un mensaje de error
-    const errorMessage = '{{error}}'; // Asumiendo que 'errorT' contiene el mensaje de error desde el backend
-    if (errorMessage) {
-        // Reemplazar los <br> por saltos de línea visibles en HTML
-        const formattedMessage = errorMessage.replace(/&lt;br&gt;/g, '<br>');
-        // Crear el contenedor del mensaje de error
-        const errorContainer = document.createElement('div');
-        errorContainer.setAttribute('role', 'alert');
-        errorContainer.innerHTML = `
+            document.getElementById('salario').value = salario ? salario : '';
+        }
+    </script>
+    <script>
+        // Mostrar mensaje de error personalizado si hay un mensaje de error
+        const errorMessage = '{{error}}'; // Asumiendo que 'errorT' contiene el mensaje de error desde el backend
+        if (errorMessage) {
+            // Reemplazar los <br> por saltos de línea visibles en HTML
+            const formattedMessage = errorMessage.replace(/&lt;br&gt;/g, '<br>');
+            // Crear el contenedor del mensaje de error
+            const errorContainer = document.createElement('div');
+            errorContainer.setAttribute('role', 'alert');
+            errorContainer.innerHTML = `
             <div class="border border-red-400 bg-red-100 px-4 py-3 text-red-700 rounded-md w-full mb-4">
                 <p>${formattedMessage}</p>
             </div>
         `;
 
-        // Colocar el mensaje de error justo antes del formulario
-        const form = document.getElementById('registroForm');
-        form.parentNode.insertBefore(errorContainer, form);
+            // Colocar el mensaje de error justo antes del formulario
+            const form = document.getElementById('registroForm');
+            form.parentNode.insertBefore(errorContainer, form);
 
-        // Mostrar el popup solo si hay error
-        const popup = document.getElementById('info-popup');
-        popup.classList.remove('hidden'); // Mostrar el popup si hay error
-    }
-
-    // Cerrar el popup cuando se haga clic en "Cancelar"
-    document.getElementById('close-modal').addEventListener('click', function () {
-        const popup = document.getElementById('info-popup');
-        popup.classList.add('hidden'); // Ocultar el popup
-    });
-
-    // Cerrar el popup cuando se haga clic en "Confirmar"
-    document.getElementById('confirm-button').addEventListener('click', function () {
-        const popup = document.getElementById('info-popup');
-        popup.classList.add('hidden'); // Ocultar el popup
-    });
-
-</script>
-<script>
-    document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
-        event.preventDefault();
-
-        // flechas
-        let abajo = document.getElementById('flechaDesc');
-        let arriba = document.getElementById('flechaAsc');
-
-        let orden; // Definir la variable "orden"
-
-        // Verificar si está en descendente
-        if (abajo.getAttribute('data-order') === 'desc') {
-            // Cambio a orden ascendente
-            abajo.innerHTML = '&uarr;';
-            abajo.setAttribute('data-order', 'asc');
-            orden = 'asc'; // Cambiar el valor de "orden"
-
-            // Cambiar arriba a descendente
-            arriba.innerHTML = '&darr;';
-            arriba.setAttribute('data-order', 'desc');
-        } else {
-            // Cambio a orden descendente
-            abajo.innerHTML = '&darr;';
-            abajo.setAttribute('data-order', 'desc');
-            orden = 'desc'; // Cambiar el valor de "orden"
-
-            // Cambiar arriba a ascendente
-            arriba.innerHTML = '&uarr;';
-            arriba.setAttribute('data-order', 'asc');
+            // Mostrar el popup solo si hay error
+            const popup = document.getElementById('info-popup');
+            popup.classList.remove('hidden'); // Mostrar el popup si hay error
         }
 
-        let tbody = document.getElementById('tabla');
-        let filas = Array.from(tbody.getElementsByTagName('tr'));
+        // Cerrar el popup cuando se haga clic en "Cancelar"
+        document.getElementById('close-modal').addEventListener('click', function () {
+            const popup = document.getElementById('info-popup');
+            popup.classList.add('hidden'); // Ocultar el popup
+        });
 
-        // Ordenar las filas en base a la primera columna (FOLIO)
-        filas.sort(function (a, b) {
-            let valorA = a.getElementsByTagName('td')[0].innerText;
-            let valorB = b.getElementsByTagName('td')[0].innerText;
+        // Cerrar el popup cuando se haga clic en "Confirmar"
+        document.getElementById('confirm-button').addEventListener('click', function () {
+            const popup = document.getElementById('info-popup');
+            popup.classList.add('hidden'); // Ocultar el popup
+        });
 
-            if (orden === 'asc') {
-                return valorA.localeCompare(valorB, undefined, { numeric: true });
+    </script>
+    <script>
+        document.getElementById('contenedorFlecha').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // flechas
+            let abajo = document.getElementById('flechaDesc');
+            let arriba = document.getElementById('flechaAsc');
+
+            let orden; // Definir la variable "orden"
+
+            // Verificar si está en descendente
+            if (abajo.getAttribute('data-order') === 'desc') {
+                // Cambio a orden ascendente
+                abajo.innerHTML = '&uarr;';
+                abajo.setAttribute('data-order', 'asc');
+                orden = 'asc'; // Cambiar el valor de "orden"
+
+                // Cambiar arriba a descendente
+                arriba.innerHTML = '&darr;';
+                arriba.setAttribute('data-order', 'desc');
             } else {
-                return valorB.localeCompare(valorA, undefined, { numeric: true });
-            }
-        });
+                // Cambio a orden descendente
+                abajo.innerHTML = '&darr;';
+                abajo.setAttribute('data-order', 'desc');
+                orden = 'desc'; // Cambiar el valor de "orden"
 
-        // Limpiar el tbody y agregar las filas ordenadas
-        tbody.innerHTML = '';
-        filas.forEach(function (fila) {
-            tbody.appendChild(fila);
+                // Cambiar arriba a ascendente
+                arriba.innerHTML = '&uarr;';
+                arriba.setAttribute('data-order', 'asc');
+            }
+
+            let tbody = document.getElementById('tabla');
+            let filas = Array.from(tbody.getElementsByTagName('tr'));
+
+            // Ordenar las filas en base a la primera columna (FOLIO)
+            filas.sort(function (a, b) {
+                let valorA = a.getElementsByTagName('td')[0].innerText;
+                let valorB = b.getElementsByTagName('td')[0].innerText;
+
+                if (orden === 'asc') {
+                    return valorA.localeCompare(valorB, undefined, { numeric: true });
+                } else {
+                    return valorB.localeCompare(valorA, undefined, { numeric: true });
+                }
+            });
+
+            // Limpiar el tbody y agregar las filas ordenadas
+            tbody.innerHTML = '';
+            filas.forEach(function (fila) {
+                tbody.appendChild(fila);
+            });
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>
 
 {{else}}
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
-    </div>
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <h1 style="font-size: 3em;">La sesión ha expirado. Por favor, inicie la sesión nuevamente.</h1>
+</div>
 {{/if}}

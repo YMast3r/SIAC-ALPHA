@@ -195,7 +195,8 @@ function formatDate(dateString) {
 function ediEmpleados(req, res) {
     const error = req.session.errorMEmpleado;
     const data = req.session.dataCampos;
-    
+    const id = req.params.id;
+
     req.getConnection((err, conn) => {
         if (err) {
             console.log(err);
@@ -203,7 +204,7 @@ function ediEmpleados(req, res) {
         }
 
         // Consulta para obtener los empleados
-        conn.query('SELECT e.id_empleado, e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.apellidos, u.descripcion AS tipo_empleado, FORMAT(e.salario, 2) AS salario, e.fecha_contratacion, e.empresa FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado ORDER BY e.id_empleado DESC', (err, rows) => {
+        conn.query('SELECT e.id_empleado, e.nombre AS nombre_usuario, e.correo_electronico, e.telefono, e.nombre, e.apellidos, u.descripcion AS tipo_empleado, FORMAT(e.salario, 2) AS salario, e.fecha_contratacion, e.empresa FROM empleado e LEFT JOIN tipo_empleado u ON e.tipo_empleado = u.id_tipo_empleado ORDER BY e.id_empleado DESC', (err, rows) => {
             if (err) {
                 console.log(err);
                 return res.status(500).send("Error al recuperar los empleados");
@@ -222,12 +223,17 @@ function ediEmpleados(req, res) {
                     fecha_contratacion: formatDate(row.fecha_contratacion), // Asegúrate de definir esta función o usar librerías como moment o date-fns
                 }));
 
+                // Buscamos el empleado por id 
+                const empleado = datos.find(row => row.id_empleado == id);
+                console.log("empleado", empleado)
+
                 res.render('usuarios/administrador/manEmpleado', {
                     name: req.session.name,
                     tipoUsuario: 2,
                     empleados: datos,
                     data: data,
                     error: error,
+                    data: empleado,
                     tiposEmpleado: tiposEmpleado, // Pasar los tipos de empleado a la vista
                     mensaje: "Página para modificar empleado",  // Cambiar el mensaje a algo más adecuado
                     modificar: 1
