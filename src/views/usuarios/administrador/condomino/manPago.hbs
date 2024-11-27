@@ -372,7 +372,7 @@
 
                 <!--Sección para mostrar errores-->
                 {{#if error}}
-                <p class="text-red-500 font-bold text-lg my-3">*{{{error}}}</p>
+                <p id="error" class="text-red-500 font-bold text-lg my-3">*{{{error}}}</p>
                 {{/if}}
             </form><!-- Cierre del formulario -->
         </div> <!-- Cierre del contenedor principal -->
@@ -558,7 +558,7 @@
                 </button>
                 <!--Sección para mostrar errores-->
                 {{#if errorP}}
-                <p class="text-red-500 font-bold text-lg my-3">*{{{errorP}}}</p>
+                <p id="errorp" class="text-red-500 font-bold text-lg my-3">*{{{errorP}}}</p>
                 {{/if}}
             </form><!-- Cierre del formulario -->
         </div> <!-- Cierre del contenedor principal -->
@@ -797,6 +797,13 @@
 
             // Mostrar solo la sección seleccionada
             document.getElementById(seccion).classList.remove('hidden');
+            // Asume que los errores están dentro de elementos con IDs
+            document.getElementById('error').innerHTML = '';
+            document.getElementById('errorP').innerHTML = '';
+            
+            // Refrescar la página
+            location.reload();
+            
         }
     </script>
     <!--Filtro fecha y mes-->
@@ -1046,7 +1053,7 @@
         let indexB = monthOrder.indexOf(mesB);
 
         if (indexA === -1 || indexB === -1) {
-            console.error(`Mes no encontrado en la lista: ${mesA} o ${mesB}`);
+            console.error(Mes no encontrado en la lista: ${mesA} o ${mesB});
             return 0;
         }
 
