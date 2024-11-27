@@ -174,6 +174,7 @@ function manPago(req, res) {
             }
             if (rows.length > 0) {
                 const usuario = rows;
+                const estado = usuario[0].status;
                 conn.query('SELECT a.id_propiedad, a.descripcion, a.fecha_anexo, m.descripcion AS mes, DATE_FORMAT(a.fecha_anexo, \'%y\') AS año, b.descripcion AS tipo_propiedad, b.pago FROM propiedad a LEFT JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad LEFT JOIN mes m ON DATE_FORMAT(a.fecha_anexo, \'%m\') = m.mes WHERE a.id_propiedad = ?', [id], (err, rows) => {
                     if (err) {
                         console.log(err);
@@ -221,6 +222,7 @@ function manPago(req, res) {
                                                         datosPlazo: datosPlazo,
                                                         datos: datos,
                                                         usuario: usuario,
+                                                        estado: estado,
                                                         usuarioPro: usuarioPro,
                                                         tipoPago: tipoPago,
                                                         tipoPagoFiltro: tipoPagoFiltro,
@@ -245,6 +247,7 @@ function manPago(req, res) {
                                                         propia: 1,
                                                         data: data,
                                                         usuario: usuario,
+                                                        estado: estado,
                                                         usuarioPro: usuarioPro,
                                                         tipoPago: tipoPago,
                                                         tipoPagoFiltro: tipoPagoFiltro,
@@ -266,6 +269,7 @@ function manPago(req, res) {
                                                 propia: 1,
                                                 data: data,
                                                 usuario: usuario,
+                                                estado: estado,
                                                 usuarioPro: usuarioPro,
                                                 tipoPago: tipoPago,
                                                 tipoPagoFiltro: tipoPagoFiltro,

@@ -128,14 +128,14 @@ INSERT INTO `incidencia` (`folio`, `id_usuario`, `id_tipo_incidencia`, `clasific
 (1, 3, 2, 7, 'Se metió Mauricio a mi casa a comer', '2024-05-07', '00:00:00', 1, NULL, 'invasión a propiedad', '\\imagenes\\imagenesIncidencia\\1717625837807.jpg'),
 (2, 8, 6, 18, 'El día de ayer me atendieron de mala gana solo por por que pregunte sobre los servicios que me brinden y no me respondieron y me atendieron grosero', '2024-10-30', '00:00:00', 1, NULL, 'Por atención al cliente', NULL),
 (3, 14, 1, 1, 'Ayer en la tarde se fue la luz en toda la colonia y sigue sin regresar', '2024-10-31', '00:00:00', 1, NULL, 'se fue la luz en toda la colonia', NULL),
-(4, 19, 3, 8, 'Hoy pasaba por la calle illinois a las 12:30 pm y note que los focos de las farolas no estaban prendidos', '2024-11-02', '00:00:00', 1, NULL, 'Focos de farolas fundidos por la calle Illinois', '/imagenes/imagenesIncidencia/1730769406724.jpg'),
-(5, 17, 1, 1, ' El sistema de refrigeración no está funcionando correctamente, lo que pone en riesgo los servidores.', '2024-10-29', '00:00:00', 1, NULL, 'Fallo en el sistema de refrigeración en el Departamento de IT', '/imagenes/imagenesIncidencia/1730769445604.jpg'),
-(6, 15, 4, 11, 'Los empleados han reportado ruidos constantes debido a obras nocturnas en la zona. Esto está afectando la productividad.', '2024-11-06', '00:00:00', 1, 2, 'Ruidos molestos durante la noche por obras cercana', '/imagenes/imagenesIncidencia/1730769583760.jpeg'),
-(7, 16, 1, 1, ' Las luces de la oficina principal no encienden correctamente, lo que dificulta el trabajo de los empleados.', '2024-11-02', '00:00:00', 1, 2, 'Problema con la iluminación en el área de oficinas', '/imagenes/imagenesIncidencia/1730769661187.jpg'),
-(8, 6, 3, 10, 'Solicitud para fumigar el departamento debido a la presencia de insectos.', '2024-11-01', '00:00:00', 1, 2, 'Solicitud de fumigación', '/imagenes/imagenesIncidencia/1730770039491.jpeg'),
-(9, 18, 2, 6, ' El sistema de cámaras en el estacionamiento no está funcionando correctamente, lo que aumenta el riesgo de incidentes.', '2024-10-29', '00:00:00', 1, 2, 'Fallo en el sistema de cámaras de seguridad en el estacionamiento', '/imagenes/imagenesIncidencia/1730770576994.jpg'),
-(10, 9, 5, 16, 'Solicitud de limpieza adicional en el salón de eventos.', '2024-10-23', '00:00:00', 1, 2, 'Solicitud de limpieza en la sala', '/imagenes/imagenesIncidencia/1730771689112.jpeg'),
-(11, 10, 1, 2, 'Reporte de un goteo de agua en la tubería de la cocina del departamento.', '2024-10-18', '00:00:00', 1, 2, 'Goteo en la cocina', '/imagenes/imagenesIncidencia/1730772128428.jpeg');
+(4, 19, 3, 8, 'Hoy pasaba por la calle illinois a las 12:30 pm y note que los focos de las farolas no estaban prendidos', '2024-11-02', '00:00:00', 1, NULL, 'Focos de farolas fundidos por la calle Illinois', NUll),
+(5, 17, 1, 1, ' El sistema de refrigeración no está funcionando correctamente, lo que pone en riesgo los servidores.', '2024-10-29', '00:00:00', 1, NULL, 'Fallo en el sistema de refrigeración en el Departamento de IT', null),
+(6, 15, 4, 11, 'Los empleados han reportado ruidos constantes debido a obras nocturnas en la zona. Esto está afectando la productividad.', '2024-11-06', '00:00:00', 1, 2, 'Ruidos molestos durante la noche por obras cercana', null),
+(7, 16, 1, 1, ' Las luces de la oficina principal no encienden correctamente, lo que dificulta el trabajo de los empleados.', '2024-11-02', '00:00:00', 1, 2, 'Problema con la iluminación en el área de oficinas', null),
+(8, 6, 3, 10, 'Solicitud para fumigar el departamento debido a la presencia de insectos.', '2024-11-01', '00:00:00', 1, 2, 'Solicitud de fumigación', NULL),
+(9, 18, 2, 6, ' El sistema de cámaras en el estacionamiento no está funcionando correctamente, lo que aumenta el riesgo de incidentes.', '2024-10-29', '00:00:00', 1, 2, 'Fallo en el sistema de cámaras de seguridad en el estacionamiento', NULL),
+(10, 9, 5, 16, 'Solicitud de limpieza adicional en el salón de eventos.', '2024-10-23', '00:00:00', 1, 2, 'Solicitud de limpieza en la sala', NULL),
+(11, 10, 1, 2, 'Reporte de un goteo de agua en la tubería de la cocina del departamento.', '2024-10-18', '00:00:00', 1, 2, 'Goteo en la cocina', NULL);
 
 -- --------------------------------------------------------
 

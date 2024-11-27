@@ -11,15 +11,23 @@ const formularios = {
         id: 'pagos',
         campos: [
             { label: 'Tipo pago', type: 'text', name: 'descripcion', required: true },
-            { label: 'Precio', type: 'tel', name: 'precio', required: true },
-            { label: 'Recargo', type: 'tel', name: 'recargo', required: true }
+            { label: 'Precio', type: 'tel', name: 'precio', required: true, step: '0.00' },
+            { label: 'Recargo', type: 'tel', name: 'recargo', required: true, step: '0.00' }
+        ]
+    },
+    propiedad: {
+        id: 'propiedad',
+        campos: [
+            { label: 'Tipo propiedad', type: 'text', name: 'descripcion', required: true },
+            { label: 'Pago', type: 'tel', name: 'precio', required: true, step: '0.00' },
+            { label: 'Recargo', type: 'tel', name: 'recargo', required: true, step: '0.00' }
         ]
     },
     empleado: {
         id: 'empleado',
         campos: [
             { label: 'Tipo empleado', type: 'text', name: 'descripcion', required: true },
-            { label: 'Precio', type: 'tel', name: 'precio', required: true }
+            { label: 'Salario', type: 'tel', name: 'precio', required: true, step: '0.00' }
         ]
     },
     incidencia: {
@@ -34,11 +42,15 @@ const formularios = {
 const tablas = {
     clasificacion: {
         id: 'clasificacion',
-        columnas: ['clasificacion_incidencia', 'id_clasificacion_incidencia', 'Clasificación inidencia']
+        columnas: ['clasificacion_incidencia', 'id_clasificacion_incidencia', 'Clasificación incidencia']
     },
     pagos: {
         id: 'pagos',
         columnas: ['tipo_pago', 'id_tipo_pago', 'Tipo pago']
+    },
+    propiedad: {
+        id: 'propiedad',
+        columnas: ['tipo_propiedad', 'id_tipo_propiedad', 'Tipo propiedad']
     },
     incidencia: {
         id: 'incidencia',
@@ -51,21 +63,22 @@ const tablas = {
 };
 
 function renTipo(req, res) {
-    const formFields = req.session.formF;
-    const tablaCampos = req.session.tablaC;
+    const redirecciones = {
+        pagos: '/manTipoPago',
+        incidencia: '/manTipoIncidencia',
+        clasificacion: '/manClasificacion',
+        propiedad: '/manTipoPropiedad',
+        empleado: '/manTipoEmpleado'
+    };
+
     try {
-        if (tablaCampos['id'] == 'pagos') {
-            res.redirect('/manTipoPago');
-        } else if (tablaCampos['id'] == 'incidencia') {
-            res.redirect('/manTipoIncidencia');
-        } else if (tablaCampos['id'] == 'clasificacion') {
-            res.redirect('/manClasificacion');
-        } else {
-            res.redirect('/manTipoEmpleado');
-        }
+        const tablaId = req.session.tablaC?.id;
+        const ruta = redirecciones[tablaId] || '/manTipoEmpleado';
+        res.redirect(ruta);
     } catch (error) {
         console.error('Error:', error);
-        manTipo(req, res, tablaCampos['columnas'][0], tablaCampos['columnas'][1], tablaCampos['columnas'][2], formFields);
+        const { columnas } = req.session.tablaC || {};
+        manTipo(req, res, columnas[0], columnas[1], columnas[2], req.session.formF);
     }
 }
 
@@ -80,169 +93,180 @@ function renderManTipo(req, res) {
 function renderManTipoAlta(req, res) {
     req.session.errorMT = "";
     req.session.dataCampos = "";
+
     const altaTD = req.session.altaTDM;
-    if (altaTD == "Se registró tipo incidencia correctamente") {
-        req.session.formF = formularios['incidencia']
-        req.session.tablaC = tablas['incidencia']
-    } else if (altaTD == "Se registró tipo empleado correctamente") {
-        req.session.formF = formularios['empleado']
-        req.session.tablaC = tablas['empleado']
-    } else if (altaTD == "Se registró Clasificación incidencia correctamente") {
-        req.session.formF = formularios['clasificacion']
-        req.session.tablaC = tablas['clasificacion']
-    } else {
-        req.session.formF = formularios['pagos']
-        req.session.tablaC = tablas['pagos']
-    }
-    renTipo(req, res)
+    const mapaAlta = {
+        "Se registró tipo incidencia correctamente": 'incidencia',
+        "Se registró tipo empleado correctamente": 'empleado',
+        "Se registró clasificación incidencia correctamente": 'clasificacion',
+        "Se registró tipo propiedad correctamente": 'propiedad'
+    };
+
+    const tipo = mapaAlta[altaTD] || 'pagos';
+    req.session.formF = formularios[tipo];
+    req.session.tablaC = tablas[tipo];
+
+    renTipo(req, res);
 }
 
-function manTipo(req, res, tableName, idField, descriptionField, formFields, orderBy = idField, orderDirection = 'DESC') {
 
-    if (req.session.errorBorrar != req.session.errorBorrarR) {
+function manTipo(req, res, tableName, idField, descriptionField, formFields, orderBy = idField, orderDirection = 'DESC') {
+    if (req.session.errorBorrar !== req.session.errorBorrarR) {
         req.session.errorMT = "";
         req.session.dataCampos = "";
         req.session.altaTDM = "";
     }
+
     const errorT = req.session.errorMT;
     const data = req.session.dataCampos;
 
+    // Parámetros de orden
     const orderByParam = req.query.orderBy || orderBy;
     const orderDirectionParam = req.query.orderDirection || orderDirection;
 
     req.getConnection((err, conn) => {
         if (err) {
-            console.log(err);
-            return;
+            console.error("Error de conexión:", err);
+            return res.status(500).send("Error de conexión a la base de datos");
         }
 
         let query;
         let tableHeaders = [];
         let updatedFormFields = formFields.map(field => ({
             ...field,
-            data: data[field.name] || '' // Asignamos el valor de data o una cadena vacía si no existe
+            data: data[field.name] || "" // Asignar valor de data o vacío si no existe
         }));
 
-        if (tableName === "tipo_pago") {
-            query = `SELECT ${idField}, descripcion, COALESCE(CONCAT('$', FORMAT(precio, 2)), 'Por tipo de propiedad') AS precio, COALESCE(CONCAT('$', FORMAT(recargo, 2)), 'Por tipo de propiedad') AS recargo 
-                     FROM ${tableName} 
-                     ORDER BY ${orderByParam} ${orderDirectionParam}`;
-            tableHeaders = [
-                { name: 'ID', field: idField, sortable: true, orderDirection: orderByParam === idField ? orderDirectionParam : null },
-                { name: descriptionField, field: 'descripcion', sortable: false, orderDirection: orderByParam === 'descripcion' ? orderDirectionParam : null },
-                { name: 'Precio', field: 'precio', sortable: false },
-                { name: 'Recargo', field: 'recargo', sortable: false }
-            ];
-        } else if (tableName === 'clasificacion_incidencia') {
-            const queryIncidencias = `SELECT id_tipo_incidencia, descripcion FROM tipo_incidencia`;
-
-            // Primero consultamos las incidencias
-            conn.query(queryIncidencias, (err, incidencias) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-
-                // Generamos las opciones para el select de tipo_incidencia
-                const incidenciaOptions = incidencias.map(row => ({
-                    value: row.id_tipo_incidencia,
-                    text: row.descripcion
-                }));
-
-                // Actualizamos formFields con las opciones del select
-                updatedFormFields = formFields.map(field => {
-                    if (field.name === 'tipo_incidencia') {
-                        return { ...field, options: incidenciaOptions }; // Añadimos las opciones
-                    }
-                    return {
-                        ...field,
-                        data: data[field.name] || ''
-                    };
-                });
-
+        switch (tableName) {
+            case "tipo_pago":
                 query = `
-                    SELECT a.id_clasificacion_incidencia, a.descripcion, b.descripcion AS tipo
-                    FROM clasificacion_incidencia a 
-                    LEFT JOIN tipo_incidencia b ON a.tipo_incidencia = b.id_tipo_incidencia 
-                    ORDER BY ${orderByParam} ${orderDirectionParam};
-                `;
+                    SELECT ${idField}, descripcion,
+                    COALESCE(CONCAT('$', FORMAT(precio, 2)), 'Por tipo de propiedad') AS precioP,
+                    COALESCE(CONCAT('$', FORMAT(recargo, 2)), 'Por tipo de propiedad') AS recargoP
+                    FROM ${tableName}
+                    ORDER BY ${orderByParam} ${orderDirectionParam}`;
                 tableHeaders = [
-                    { name: 'ID', field: idField, sortable: true, orderDirection: orderByParam === idField ? orderDirectionParam : null },
-                    { name: descriptionField, field: 'descripcion', sortable: false, orderDirection: orderByParam === 'descripcion' ? orderDirectionParam : null },
-                    { name: 'Tipo incidencia', field: 'tipo', sortable: false } // Corregido a 'tipo'
+                    { name: 'ID', id: idField, field: idField, sortable: true },
+                    { name: descriptionField, field: 'descripcion', sortable: false },
+                    { name: 'Precio', id: 'precio', field: 'precioP', sortable: true },
+                    { name: 'Recargo', id: 'precio', field: 'recargoP', sortable: true }
                 ];
+                break;
 
-                // Ejecutar la consulta principal
-                conn.query(query, (err, rows) => {
+            case "clasificacion_incidencia":
+                // Consulta adicional para rellenar opciones del select
+                conn.query('SELECT id_tipo_incidencia, descripcion FROM tipo_incidencia', (err, incidencias) => {
                     if (err) {
-                        console.log(err);
-                        return;
+                        console.error("Error al obtener incidencias:", err);
+                        return res.status(500).send("Error al cargar las opciones");
                     }
 
-                    return res.render('usuarios/administrador/manTipo', {
-                        name: req.session.name,
-                        tipoUsuario: 2,
-                        titulo: "Clasificación incidencia",
-                        tableData: rows,
-                        tableHeaders: tableHeaders,
-                        formFields: updatedFormFields,
-                        orderBy: orderByParam,
-                        orderDirection: orderDirectionParam === 'ASC' ? 'DESC' : 'ASC',
-                        tipo: tableName,
-                        errorT: errorT
+                    const incidenciaOptions = incidencias.map(row => ({
+                        value: row.id_tipo_incidencia,
+                        text: row.descripcion
+                    }));
+
+                    updatedFormFields = formFields.map(field =>
+                        field.name === "tipo_incidencia"
+                            ? { ...field, options: incidenciaOptions }
+                            : { ...field, data: data[field.name] || "" }
+                    );
+
+                    query = `
+                        SELECT a.id_clasificacion_incidencia, a.descripcion, b.descripcion AS tipo
+                        FROM clasificacion_incidencia a
+                        LEFT JOIN tipo_incidencia b ON a.tipo_incidencia = b.id_tipo_incidencia
+                        ORDER BY ${orderByParam} ${orderDirectionParam}`;
+                    tableHeaders = [
+                        { name: 'ID', id: idField, field: idField, sortable: true },
+                        { name: descriptionField, field: 'descripcion', sortable: false },
+                        { name: 'Tipo incidencia', field: 'tipo', sortable: false }
+                    ];
+
+                    // Ejecutamos la consulta principal
+                    conn.query(query, (err, rows) => {
+                        if (err) {
+                            console.error("Error al obtener clasificaciones:", err);
+                            return res.status(500).send("Error al cargar clasificaciones");
+                        }
+
+                        renderTable(req, res, tableName, rows, tableHeaders, updatedFormFields, errorT);
                     });
                 });
-            });
+                return;
 
-            return; // Salimos de la función después de hacer la consulta de incidencias
-        } else if (tableName === "tipo_empleado") {
-            query = `SELECT ${idField}, descripcion, CONCAT('$', FORMAT(salario, 2)) AS precio 
-                     FROM ${tableName} 
-                     ORDER BY ${orderByParam} ${orderDirectionParam}`;
-            tableHeaders = [
-                { name: 'ID', field: idField, sortable: true, orderDirection: orderByParam === idField ? orderDirectionParam : null },
-                { name: descriptionField, field: 'descripcion', sortable: false, orderDirection: orderByParam === 'descripcion' ? orderDirectionParam : null },
-                { name: 'Salario', field: 'precio', sortable: false }
-            ];
-        } else {
-            query = `SELECT ${idField}, descripcion
-            FROM ${tableName} 
-            ORDER BY ${orderByParam} ${orderDirectionParam}`;
-            tableHeaders = [
-                { name: 'ID', field: idField, sortable: true, orderDirection: orderByParam === idField ? orderDirectionParam : null },
-                { name: descriptionField, field: 'descripcion', sortable: false, orderDirection: orderByParam === 'descripcion' ? orderDirectionParam : null }
-            ];
+            case "tipo_empleado":
+                query = `
+                    SELECT ${idField}, descripcion, CONCAT('$', FORMAT(salario, 2)) AS salarioP
+                    FROM ${tableName}
+                    ORDER BY ${orderByParam} ${orderDirectionParam}`;
+                tableHeaders = [
+                    { name: 'ID', id: idField, field: idField, sortable: true },
+                    { name: descriptionField, field: 'descripcion', sortable: false },
+                    { name: 'Salario', id: 'salario', field: 'salarioP', sortable: true }
+                ];
+                break;
+
+            case "tipo_propiedad":
+                query = `
+                    SELECT ${idField}, descripcion,
+                    CONCAT('$', FORMAT(pago, 2)) AS pagoP,
+                    COALESCE(CONCAT('$', FORMAT(recargo, 2)), 'Por tipo de propiedad') AS recargoP
+                    FROM ${tableName}
+                    ORDER BY ${orderByParam} ${orderDirectionParam}`;
+                tableHeaders = [
+                    { name: 'ID', id: idField, field: idField, sortable: true },
+                    { name: descriptionField, field: 'descripcion', sortable: false },
+                    { name: 'Pago', id: 'pago', field: 'pagoP', sortable: true },
+                    { name: 'Recargo', id: 'recargo', id: idField, field: 'recargoP', sortable: true }
+                ];
+                break;
+
+            default:
+                query = `
+                    SELECT ${idField}, descripcion
+                    FROM ${tableName}
+                    ORDER BY ${orderByParam} ${orderDirectionParam}`;
+                tableHeaders = [
+                    { name: 'ID', id: idField, field: idField, sortable: true },
+                    { name: descriptionField, field: 'descripcion', sortable: false }
+                ];
         }
 
-        // Ejecutamos la consulta principal para tablas que no sean clasificacion_incidencia
+        // Ejecutamos la consulta principal
         conn.query(query, (err, rows) => {
             if (err) {
-                console.log(err);
-                return;
+                console.error(`Error al obtener datos de ${tableName}:`, err);
+                return res.status(500).send("Error al cargar los datos");
             }
-
-            let titulo;
-            if (tableName === "tipo_pago") {
-                titulo = "Tipo pago";
-            } else if (tableName === "tipo_empleado") {
-                titulo = "Tipo empleado";
-            } else {
-                titulo = "Tipo incidencia";
-            }
-
-            return res.render('usuarios/administrador/manTipo', {
-                name: req.session.name,
-                tipoUsuario: 2,
-                titulo: titulo,
-                tableData: rows,
-                tableHeaders: tableHeaders,
-                formFields: updatedFormFields,
-                orderBy: orderByParam,
-                orderDirection: orderDirectionParam === 'ASC' ? 'DESC' : 'ASC',
-                tipo: tableName,
-                errorT: errorT
-            });
+            renderTable(req, res, tableName, rows, tableHeaders, updatedFormFields, errorT);
         });
+    });
+}
+
+// Función auxiliar para renderizar la tabla
+function renderTable(req, res, tableName, rows, tableHeaders, formFields, errorT) {
+    const tituloMap = {
+        tipo_pago: "Tipo Pago",
+        clasificacion_incidencia: "Clasificación Incidencia",
+        tipo_empleado: "Tipo Empleado",
+        tipo_propiedad: "Tipo Propiedad",
+        tipo_incidencia: "Tipo Incidencia"
+    };
+
+    const titulo = tituloMap[tableName] || "Datos";
+
+    res.render("usuarios/administrador/manTipo", {
+        name: req.session.name,
+        tipoUsuario: 2,
+        titulo,
+        tableData: rows,
+        tableHeaders,
+        formFields,
+        orderBy: req.query.orderBy || "id",
+        orderDirection: req.query.orderDirection === "ASC" ? "DESC" : "ASC",
+        tipo: tableName,
+        errorT
     });
 }
 
@@ -260,6 +284,9 @@ function altaTipo(req, res) {
         if (tipo === "tipo_empleado") {
             req.session.formF = formularios['empleado'];
             req.session.tablaC = tablas['empleado'];
+        } else if (tipo === "tipo_propiedad") {
+            req.session.formF = formularios['propiedad'];
+            req.session.tablaC = tablas['propiedad'];
         } else {
             req.session.formF = formularios['pagos'];
             req.session.tablaC = tablas['pagos'];
@@ -294,10 +321,12 @@ function altaTipo(req, res) {
                     } else if (tipo == 'tipo_empleado') {
                         insertQuery = 'INSERT INTO tipo_empleado (descripcion, salario) VALUES (?, ?)';
                         insertParams = [data.descripcion, data.precio];
+                    } else if (tipo == 'tipo_propiedad') {
+                        insertQuery = 'INSERT INTO tipo_propiedad (descripcion, pago, recargo) VALUES (?, ?, ?)';
+                        insertParams = [data.descripcion, data.precio, data.recargo];
                     } else {
                         insertQuery = `INSERT INTO ${tipo}  (descripcion) VALUES (?)`;
                         insertParams = [data.descripcion];
-
                     }
 
                     conn.query(insertQuery, insertParams, (error, rows) => {
@@ -311,6 +340,8 @@ function altaTipo(req, res) {
                             req.session.altaTDM = "Se registró tipo empleado correctamente";
                         } else if (tipo === "clasificacion_incidencia") {
                             req.session.altaTDM = "Se registró Clasificación incidencia correctamente";
+                        }else {
+                            req.session.altaTDM = "Se registró tipo propiedad correctamente";
                         }
                         renderManTipoAlta(req, res);
                     });
@@ -324,6 +355,9 @@ function altaTipo(req, res) {
                     } else if (tipo === "tipo_empleado") {
                         req.session.formF = formularios['empleado'];
                         req.session.tablaC = tablas['empleado'];
+                    } else if (tipo === "tipo_propiedad") {
+                        req.session.formF = formularios['propiedad'];
+                        req.session.tablaC = tablas['propiedad'];
                     } else if (tipo === "clasificacion_incidencia") {
                         req.session.formF = formularios['clasificacion'];
                         req.session.tablaC = tablas['clasificacion'];

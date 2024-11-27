@@ -1,17 +1,17 @@
 const bcrypt = require('bcrypt');
 const { render } = require('express/lib/response');
 
-function renderManCondomino(req, res){
+function renderManCondomino(req, res) {
     req.session.errorMC = "";
-    req.session.dataCampos = "";  
+    req.session.dataCampos = "";
 
     req.session.id_usuario = "";
-    req.session.idEdi = ""; 
+    req.session.idEdi = "";
 
-    try{
+    try {
         res.redirect('/manCondomino');
-    }catch{
-        manAdm(req, res);
+    } catch {
+        manCondomino(req, res);
     }
 }
 
@@ -21,71 +21,73 @@ function ediCondomino(req, res) {
     const idEdi = req.session.idEdi;
     // recupera algun mensaje de error 
     let error = req.session.errorMC;
-    if (req.params.id){
+    if (req.params.id) {
         // recupera el id de la ruta inicial
         id = req.params.id;
-    }else{
+    } else {
         id = idEdi;
     }
     // envia el id a manipula
     req.session.id_usuario = id;
-    req.getConnection((err, conn) =>{
-        conn.query("SELECT a.id_usuario as id, a.nombre, a.correo_electronico, a.password,a.telefono, a.tipo_usuario, a.status, b.descripcion as tipo, c.descripcion as status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.tipo_usuario = 3 ORDER BY id_usuario ASC",(err, rows) => {
-            if (err){
+    req.getConnection((err, conn) => {
+        conn.query("SELECT a.id_usuario as id, a.nombre, a.correo_electronico, a.password,a.telefono, a.tipo_usuario, a.status, b.descripcion as tipo, c.descripcion as status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.tipo_usuario = 3 ORDER BY id_usuario ASC", (err, rows) => {
+            if (err) {
                 console.log(err);
             };
-            if (rows && rows.length > 0){
+            if (rows && rows.length > 0) {
                 const datos = rows;
 
-                if (req.params.id){
+                if (req.params.id) {
                     conn.query('SELECT a.id_usuario as id, a.nombre, a.correo_electronico, a.telefono, a.tipo_usuario, a.status, a.status as estado, b.descripcion as tipo, c.descripcion as status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.id_usuario = ?', [id], (err, rows) => {
                         if (err) {
                             console.log(err);
                         }
                         if (rows && rows.length > 0) {
-                            if (!err){
+                            if (!err) {
                                 const usuario = rows[0];
                                 conn.query('SELECT id_status, descripcion, ? as correcto FROM status', [usuario.estado], (err, rows) => {
-                                    if (err){
+                                    if (err) {
                                         console.log(err);
                                     }
-        
+
                                     if (rows && rows.length > 0) {
                                         const estados = rows;
-                                        res.render('usuarios/administrador/condomino/manCondomino', { 
-                                            datos: datos, 
-                                            estados: estados, 
-                                            name: req.session.name, 
-                                            tipoUsuario: 2, 
-                                            usuario: usuario, 
-                                            mensaje: "Página para modificar condómino", 
-                                            modificar: 1});
-                                            return;     
+                                        res.render('usuarios/administrador/condomino/manCondomino', {
+                                            datos: datos,
+                                            estados: estados,
+                                            name: req.session.name,
+                                            tipoUsuario: 2,
+                                            usuario: usuario,
+                                            mensaje: "Página para modificar condómino",
+                                            modificar: 1
+                                        });
+                                        return;
                                     }
                                 });
                             }
                         }
                     });
-                }else{
+                } else {
                     const usuario = req.session.dataCampos;
                     console.log("usuario", usuario);
                     conn.query('SELECT id_status, descripcion, ? as correcto FROM status', [usuario.estado], (err, rows) => {
-                        if (err){
+                        if (err) {
                             console.log(err);
                         }
 
                         if (rows && rows.length > 0) {
                             const estados = rows;
-                            res.render('usuarios/administrador/condomino/manCondomino', { 
-                                datos: datos, 
-                                estados: estados, 
-                                name: req.session.name, 
-                                tipoUsuario: 2, 
-                                usuario: usuario, 
-                                error: error, 
-                                mensaje: "Página para modificar condómino", 
-                                modificar: 1});
-                                return;
+                            res.render('usuarios/administrador/condomino/manCondomino', {
+                                datos: datos,
+                                estados: estados,
+                                name: req.session.name,
+                                tipoUsuario: 2,
+                                usuario: usuario,
+                                error: error,
+                                mensaje: "Página para modificar condómino",
+                                modificar: 1
+                            });
+                            return;
                         }
                     });
                 }
@@ -100,71 +102,75 @@ function recuperarPropiedad(req, res) {
     const idEdi = req.session.idEdi;
     // recupera algun mensaje de error 
     const error = req.session.errorM
-    if (req.params.id){
+    if (req.params.id) {
         // recupera el id de la ruta inicial
         id = req.params.id;
-    }else{
+    } else {
         id = idEdi;
     }
     // envia el id a manipula
     req.session.id_usuario = id;
-    req.getConnection((err, conn) =>{
+    req.getConnection((err, conn) => {
         conn.query("SELECT a.id_usuario as id, a.nombre, a.correo_electronico, a.telefono, a.tipo_usuario, a.status, a.status as estado, b.descripcion as tipo, c.descripcion as status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.id_usuario = ?", [id], (err, rowsUsuario) => {
-            if (err){
+            if (err) {
                 console.log(err);
             };
-            if (rowsUsuario && rowsUsuario.length > 0){
-                if (!err){
+            if (rowsUsuario && rowsUsuario.length > 0) {
+                if (!err) {
                     const datos = rowsUsuario;
                     conn.query('SELECT a.id_propiedad, a.descripcion, b.descripcion AS tipo_propiedad FROM propiedad a LEFT JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad WHERE a.id_usuario = ?', [id], (err, rowsPropia) => {
-                        if (err){
+                        if (err) {
                             console.log(err);
                         }
-                        if (rowsPropia){
+                        if (rowsPropia) {
                             const propia = rowsPropia;
                             conn.query('SELECT a.id_propiedad, a.descripcion, b.descripcion AS tipo_propiedad FROM propiedad a LEFT JOIN tipo_propiedad b ON a.id_tipo_propiedad = b.id_tipo_propiedad WHERE a.id_usuario IS NULL', (err, rowsPropiedad) => {
                                 const propiedades = rowsPropiedad;
-                                if (err){
-                                console.log(err);
+                                if (err) {
+                                    console.log(err);
                                 }
                                 if (rowsPropiedad && rowsPropiedad.length > 0) {
-                                    res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
-                                    propiedades: propiedades, 
-                                    datos: datos, 
-                                    error: error,
-                                    propia: propia,
-                                    name: req.session.name, 
-                                    tipoUsuario: 2, 
-                                    anexarPropiedad: 1});
-                                    return;     
-                            }else if(rowsPropiedad.length <= 0){
-                                res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
-                                propia: propia,
-                                datos: datos, 
-                                name: req.session.name, 
-                                tipoUsuario: 2, 
-                                anexarPropiedad: 1});
-                                return;
-                                }else if (rowsPropiedad.length > 0 && rowsPropia.length <= 0){
-                                    res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
+                                    res.render('usuarios/administrador/condomino/manAnexarPropiedad', {
+                                        propiedades: propiedades,
+                                        datos: datos,
+                                        error: error,
+                                        propia: propia,
+                                        name: req.session.name,
+                                        tipoUsuario: 2,
+                                        anexarPropiedad: 1
+                                    });
+                                    return;
+                                } else if (rowsPropiedad.length <= 0) {
+                                    res.render('usuarios/administrador/condomino/manAnexarPropiedad', {
+                                        propia: propia,
+                                        datos: datos,
+                                        name: req.session.name,
+                                        tipoUsuario: 2,
+                                        anexarPropiedad: 1
+                                    });
+                                    return;
+                                } else if (rowsPropiedad.length > 0 && rowsPropia.length <= 0) {
+                                    res.render('usuarios/administrador/condomino/manAnexarPropiedad', {
                                         error: error,
                                         propiedades: propiedades,
-                                        datos: datos, 
-                                        name: req.session.name, 
-                                        tipoUsuario: 2, 
-                                        anexarPropiedad: 1});
-                                        return;
+                                        datos: datos,
+                                        name: req.session.name,
+                                        tipoUsuario: 2,
+                                        anexarPropiedad: 1
+                                    });
+                                    return;
                                 }
                             });//
-                        }else if(rowsPropia.length <= 0){
-                            res.render('usuarios/administrador/condomino/manAnexarPropiedad', { 
-                            error: error,
-                            datos: datos, 
-                            name: req.session.name, 
-                            tipoUsuario: 2, 
-                            anexarPropiedad: 1});
+                        } else if (rowsPropia.length <= 0) {
+                            res.render('usuarios/administrador/condomino/manAnexarPropiedad', {
+                                error: error,
+                                datos: datos,
+                                name: req.session.name,
+                                tipoUsuario: 2,
+                                anexarPropiedad: 1
+                            });
                             return;
-                            }
+                        }
                     });//
                 }
             }
@@ -173,22 +179,32 @@ function recuperarPropiedad(req, res) {
 }
 
 
-function anexarPropiedad(req, res){
+function anexarPropiedad(req, res) {
     const id_propiedad = req.params.id;
     const idMod = req.session.id_usuario;
-    
+
     req.getConnection((err, conn) => {
         if (err) {
             console.log(err);
             return res.status(500).send("Error de conexión a la base de datos");
         }
-            conn.query('UPDATE propiedad SET id_usuario=?, fecha_anexo=CURDATE() WHERE id_propiedad = ?', [idMod, id_propiedad], (err, rows) => {
+        conn.query('SELECT status FROM usuario WHERE id_usuario = ?', [idMod], (err, rows) => {
             if (err) {
-            console.log(err);
-            return res.status(500).send("Error al agregar la propiedad");
-        } else {
-            renderManCondomino(req, res);
-        }
+                console.log(err);
+                return res.status(500).send("Error al agregar la propiedad");
+            } if (rows[0].status == 4) {
+                conn.query('UPDATE propiedad SET id_usuario=?, fecha_anexo=CURDATE() WHERE id_propiedad = ?', [idMod, id_propiedad], (err, rows) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send("Error al agregar la propiedad");
+                    } else {
+                        renderManCondomino(req, res);
+                    }
+                });
+            }else{
+                req.session.errorMC = "El condomino no está activo";
+                return manCondomino(req, res);
+            }
         });
     });
 }
@@ -196,31 +212,35 @@ function anexarPropiedad(req, res){
 function manCondomino(req, res) {
     const usuario = req.session.dataCampos;
     const error = req.session.errorMC;
-    
+
     req.getConnection((err, conn) => {
         conn.query('SELECT id_status, descripcion, 4 as correcto FROM status', (err, rows) => {
-            if(err){
+            if (err) {
                 console.log(err);
             }
             if (rows.length > 0) {
                 const estados = rows;
                 conn.query('SELECT a.id_usuario as id, a.nombre, a.correo_electronico, a.password,a.telefono, a.tipo_usuario, a.status, b.descripcion as tipo, c.descripcion as status FROM usuario a, tipo_usuario b, status c WHERE b.id_tipo_usuario = a.tipo_usuario AND c.id_status = a.status AND a.tipo_usuario = 3 ORDER BY id_usuario DESC', (err, rows) => {
                     if (rows.length > 0) {
-                        const datos = rows; 
-                        res.render('usuarios/administrador/condomino/manCondomino', { datos: datos, 
-                            estados: estados, 
-                            name: req.session.name, 
-                            tipoUsuario: 2, 
-                            usuario: usuario, 
-                            error: error});
-                            return;
+                        const datos = rows;
+                        res.render('usuarios/administrador/condomino/manCondomino', {
+                            datos: datos,
+                            estados: estados,
+                            name: req.session.name,
+                            tipoUsuario: 2,
+                            usuario: usuario,
+                            error: error
+                        });
+                        return;
                     } else {
-                        res.render('usuarios/administrador/condomino/manCondomino', { estados: estados, 
-                            name: req.session.name, 
-                            tipoUsuario: 2, 
-                            usuario: usuario, 
-                            error: error});
-                            return;
+                        res.render('usuarios/administrador/condomino/manCondomino', {
+                            estados: estados,
+                            name: req.session.name,
+                            tipoUsuario: 2,
+                            usuario: usuario,
+                            error: error
+                        });
+                        return;
                     }
                 });
             } else {
@@ -233,7 +253,7 @@ function manCondomino(req, res) {
 function manipulaCondomino(req, res) {
     const data = req.body;
     const idMod = req.session.id_usuario;
-    req.session.idEdi = idMod; 
+    req.session.idEdi = idMod;
     let passIgual;
 
     if (idMod) {
@@ -246,7 +266,7 @@ function manipulaCondomino(req, res) {
         if (data.password !== data.confPassword) {
             req.session.errorMC = 'Error: La contraseña y la confirmación no coinciden';
             req.session.dataCampos = data;
-            
+
             if (idMod) {
                 ediCondomino(req, res);
             } else {
@@ -311,7 +331,7 @@ function manipulaCondomino(req, res) {
                                 res.redirect('/ruta-de-error'); // Redirige a una ruta de error
                                 return;
                             }
-                            renderManCondomino(req, res); 
+                            renderManCondomino(req, res);
                         });
                     });
 
@@ -337,7 +357,7 @@ function manipulaCondomino(req, res) {
                     if (errorMensaje !== "") {
                         const errM = 'La contraseña debe tener al menos.<br>' + errorMensaje;
                         req.session.errorMC = errM;
-                        req.session.dataCampos = data;  
+                        req.session.dataCampos = data;
                         if (idMod) {
                             ediCondomino(req, res);
                         } else {
@@ -373,7 +393,7 @@ function manipulaCondomino(req, res) {
                                         res.redirect('/ruta-de-error'); // Redirige a una ruta de error
                                         return;
                                     }
-                                    renderManCondomino(req, res); 
+                                    renderManCondomino(req, res);
                                 });
                             });
                         }); // termina hash

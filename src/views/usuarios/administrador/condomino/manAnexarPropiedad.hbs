@@ -12,7 +12,8 @@
                     <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">NOMBRE</th>
                     <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">CORREO</th>
                     <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium">TELÉFONO</th>
-                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">ESTADO</th>
+                    <th class="px-6 py-4 bg-white border-b-2 border-gray-400 text-xl font-medium rounded-tr-lg">ESTADO
+                    </th>
                     </th>
                 </tr>
             </thead>
@@ -96,7 +97,8 @@
     </div>
 </div>
 {{else}}
-<h2 class="font-semibold text-center text-gray-700 text-3xl pt-10 pb-5">No hay propiedades que le pertenezcan al condómino
+<h2 class="font-semibold text-center text-gray-700 text-3xl pt-10 pb-5">No hay propiedades que le pertenezcan al
+    condómino
 </h2>
 {{/if}}
 <!-- Segunda tabla -->
@@ -311,4 +313,10 @@
             tbody.appendChild(fila);
         });
     });
+</script>
+<script>
+    const errorMessage = '{{error}}';  // Ajusta según tu motor de plantillas
+    if (errorMessage) {
+        alert(errorMessage);
+    }
 </script>
