@@ -17,6 +17,13 @@ function renderEmpleados(req, res) {
 function registrarEmpleado(req, res) {
     const data = req.body;
 
+    if (data.salario == 0.00) {
+        req.session.errorMEmpleado = 'Error: No puedes ingresar un precio de 0.00';
+        req.session.dataCampos = data;
+        renEmpleados(req, res);
+        return;
+    }
+
     if (data.password !== data.confPassword) {
         req.session.errorMEmpleado = 'Error: La contraseña y la confirmación no coinciden';
         req.session.dataCampos = data;
