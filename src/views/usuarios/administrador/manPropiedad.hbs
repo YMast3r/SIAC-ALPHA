@@ -127,15 +127,11 @@
                                             <label for="tipoPropiedad">
                                                 <i class="fas fa-city">&nbsp;</i>
                                                 Tipo de Propiedad</label>
-                                            <select id="tipoPropiedad" name="tipoPropiedad"
+                                            <select id="tipoPropiedad" name="tipoPropiedad" required
                                                 class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white hover:bg-gray-300 pr-10">
+                                                <option value=""></option>
                                                 {{#each tipoPropiedad}}
-                                                {{#isEqual this.id_status 1}}
-                                                <option value="{{this.id_tipo_propiedad}}" selected>{{this.descripcion}}
-                                                </option>
-                                                {{else}}
                                                 <option value="{{this.id_tipo_propiedad}}">{{this.descripcion}}</option>
-                                                {{/isEqual}}
                                                 {{/each}}
                                             </select>
                                         </td>
@@ -239,6 +235,18 @@
             $(document).ready(function () {
                 $('#condomino').select2({
                     placeholder: "Seleccione un condómino",
+                    allowClear: true,
+                    language: {
+                        noResults: function () {
+                            return "No se encontraron resultados";
+                        }
+                    }
+                });
+            });
+
+            $(document).ready(function () {
+                $('#tipoPropiedad').select2({
+                    placeholder: "Seleccione un tipo de propiedad",
                     allowClear: true,
                     language: {
                         noResults: function () {

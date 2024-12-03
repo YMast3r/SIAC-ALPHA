@@ -95,16 +95,8 @@ function renderManTipoAlta(req, res) {
     req.session.dataCampos = "";
 
     const altaTD = req.session.altaTDM;
-    const mapaAlta = {
-        "Se registró tipo incidencia correctamente": 'incidencia',
-        "Se registró tipo empleado correctamente": 'empleado',
-        "Se registró clasificación incidencia correctamente": 'clasificacion',
-        "Se registró tipo propiedad correctamente": 'propiedad'
-    };
-
-    const tipo = mapaAlta[altaTD] || 'pagos';
-    req.session.formF = formularios[tipo];
-    req.session.tablaC = tablas[tipo];
+    req.session.formF = formularios[altaTD];
+    req.session.tablaC = tablas[altaTD];
 
     renTipo(req, res);
 }
@@ -148,8 +140,8 @@ function manTipo(req, res, tableName, idField, descriptionField, formFields, ord
                 tableHeaders = [
                     { name: 'ID', id: idField, field: idField, sortable: true },
                     { name: descriptionField, field: 'descripcion', sortable: false },
-                    { name: 'Precio', id: 'precio', field: 'precioP', sortable: true },
-                    { name: 'Recargo', id: 'precio', field: 'recargoP', sortable: true }
+                    { name: 'Precio', id: 'precioT', field: 'precioP', sortable: true },
+                    { name: 'Recargo', id: 'recargoT', field: 'recargoP', sortable: true }
                 ];
                 break;
 
@@ -218,7 +210,7 @@ function manTipo(req, res, tableName, idField, descriptionField, formFields, ord
                     { name: 'ID', id: idField, field: idField, sortable: true },
                     { name: descriptionField, field: 'descripcion', sortable: false },
                     { name: 'Pago', id: 'pago', field: 'pagoP', sortable: true },
-                    { name: 'Recargo', id: 'recargo', id: idField, field: 'recargoP', sortable: true }
+                    { name: 'Recargo', id: 'recargoT', field: 'recargoP', sortable: true }
                 ];
                 break;
 
@@ -293,6 +285,22 @@ function altaTipo(req, res) {
         }
         renTipo(req, res);
         return;
+    } else if (data.recargo == 0.00) {
+        req.session.errorMT = 'No puedes ingresar un recargo de 0.00';
+        req.session.dataCampos = data;
+        req.session.errorBorrar = tipo;
+        if (tipo === "tipo_empleado") {
+            req.session.formF = formularios['empleado'];
+            req.session.tablaC = tablas['empleado'];
+        } else if (tipo === "tipo_propiedad") {
+            req.session.formF = formularios['propiedad'];
+            req.session.tablaC = tablas['propiedad'];
+        } else {
+            req.session.formF = formularios['pagos'];
+            req.session.tablaC = tablas['pagos'];
+        }
+        renTipo(req, res);
+        return;
     } else {
         req.getConnection((err, conn) => {
             if (err) {
@@ -308,6 +316,9 @@ function altaTipo(req, res) {
                 if (rows[0].cont == 0) {
                     if (data.precio) {
                         data.precio = data.precio.replace(/,/g, ''); // Remueve todas las comas del precio
+                    }
+                    if (data.recargo) {
+                        data.recargo = data.recargo.replace(/,/g, ''); // Remueve todas las comas del precio
                     }
                     // Ajusta la consulta de inserción según el tipo
                     let insertQuery;
@@ -335,13 +346,15 @@ function altaTipo(req, res) {
                             return res.status(500).send("Error al agregar el tipo");
                         }
                         if (tipo === "tipo_incidencia") {
-                            req.session.altaTDM = "Se registró tipo incidencia correctamente";
+                            req.session.altaTDM = "incidencia";
                         } else if (tipo === "tipo_empleado") {
-                            req.session.altaTDM = "Se registró tipo empleado correctamente";
+                            req.session.altaTDM = "empleado";
                         } else if (tipo === "clasificacion_incidencia") {
-                            req.session.altaTDM = "Se registró Clasificación incidencia correctamente";
-                        }else {
-                            req.session.altaTDM = "Se registró tipo propiedad correctamente";
+                            req.session.altaTDM = "clasificacion";
+                        } else if (tipo === "tipo_pago") {
+                            req.session.altaTDM = "pagos";
+                        } else {
+                            req.session.altaTDM = "propiedad";
                         }
                         renderManTipoAlta(req, res);
                     });

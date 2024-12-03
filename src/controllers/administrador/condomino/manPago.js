@@ -192,7 +192,7 @@ function manPago(req, res) {
                                 return;
                             }
                             const tipoPagoFiltro = rows;
-                            conn.query("SELECT t.id_tipo_pago, t.descripcion, pg.folio, CASE WHEN t.id_tipo_pago = 1 THEN tp.pago ELSE t.precio END AS importe, CASE WHEN t.id_tipo_pago = 1 THEN tp.recargo ELSE t.recargo END AS recargo, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (EXTRACT(YEAR FROM p.fecha_anexo) * 12 + EXTRACT(MONTH FROM p.fecha_anexo)) ELSE (EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (pg.año * 12 + pg.mes) - 1) END AS meses_por_pagar, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN CONCAT((SELECT descripcion FROM mes WHERE mes.mes = EXTRACT(MONTH FROM p.fecha_anexo)), ' de ', EXTRACT(YEAR FROM p.fecha_anexo)) ELSE CONCAT((SELECT descripcion FROM mes WHERE mes.mes = pg.mes + 1), ' de ', pg.año) END AS fecha, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(MONTH FROM p.fecha_anexo) ELSE pg.mes END AS mes, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(YEAR FROM p.fecha_anexo) ELSE pg.año END AS year FROM tipo_pago t CROSS JOIN propiedad p LEFT JOIN tipo_propiedad tp ON p.id_tipo_propiedad = tp.id_tipo_propiedad LEFT JOIN (SELECT p1.id_propiedad, p1.tipo_pago, p1.año, p1.mes, p1.folio FROM pago p1 JOIN (SELECT id_propiedad, tipo_pago, MAX(CONCAT(año, LPAD(mes, 2, '0'))) AS max_fecha FROM pago WHERE Cancelado_Activo = 'Activo' GROUP BY id_propiedad, tipo_pago) p2 ON p1.id_propiedad = p2.id_propiedad AND p1.tipo_pago = p2.tipo_pago AND CONCAT(p1.año, LPAD(p1.mes, 2, '0')) = p2.max_fecha) pg ON p.id_propiedad = pg.id_propiedad AND pg.tipo_pago = t.id_tipo_pago WHERE p.id_propiedad = ? ORDER BY t.id_tipo_pago;", [id], (err, rows) => {
+                            conn.query("SELECT t.id_tipo_pago, t.descripcion, pg.folio, CASE WHEN t.id_tipo_pago = 1 THEN tp.pago ELSE t.precio END AS importe, CASE WHEN t.id_tipo_pago = 1 THEN tp.recargo ELSE t.recargo END AS recargo, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (EXTRACT(YEAR FROM p.fecha_anexo) * 12 + EXTRACT(MONTH FROM p.fecha_anexo)) ELSE (EXTRACT(YEAR FROM CURDATE()) * 12 + EXTRACT(MONTH FROM CURDATE()) - (pg.año * 12 + pg.mes) - 1) END AS meses_por_pagar, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN CONCAT((SELECT descripcion FROM mes WHERE mes.mes = EXTRACT(MONTH FROM p.fecha_anexo)), ' de ', EXTRACT(YEAR FROM p.fecha_anexo)) ELSE CONCAT((SELECT descripcion FROM mes WHERE mes.mes = pg.mes + 1), ' de ', pg.año) END AS fecha, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(MONTH FROM p.fecha_anexo) - 1 ELSE pg.mes END AS mes, CASE WHEN pg.año IS NULL AND pg.mes IS NULL THEN EXTRACT(YEAR FROM p.fecha_anexo) ELSE pg.año END AS year FROM tipo_pago t CROSS JOIN propiedad p LEFT JOIN tipo_propiedad tp ON p.id_tipo_propiedad = tp.id_tipo_propiedad LEFT JOIN (SELECT p1.id_propiedad, p1.tipo_pago, p1.año, p1.mes, p1.folio FROM pago p1 JOIN (SELECT id_propiedad, tipo_pago, MAX(CONCAT(año, LPAD(mes, 2, '0'))) AS max_fecha FROM pago WHERE Cancelado_Activo = 'Activo' GROUP BY id_propiedad, tipo_pago) p2 ON p1.id_propiedad = p2.id_propiedad AND p1.tipo_pago = p2.tipo_pago AND CONCAT(p1.año, LPAD(p1.mes, 2, '0')) = p2.max_fecha) pg ON p.id_propiedad = pg.id_propiedad AND pg.tipo_pago = t.id_tipo_pago WHERE p.id_propiedad = ? ORDER BY t.id_tipo_pago;", [id], (err, rows) => {
                                 if (err) {
                                     console.log(err);
                                     return;
@@ -414,16 +414,11 @@ function altaPago(req, res) {
                                     return;
                                 }
 
-                                let numero = 0;
-                                if (data.folio) {
-                                    numero = 1;
-                                }
-
                                 // Verificar si la fecha proporcionada es mayor al último pago
                                 if (
                                     (year > yearUltimo + 1) || // Evita años más de un año por delante
                                     (year == yearUltimo + 1 && !(mesUltimo == 12 && mes == 1)) || // Permitir solo diciembre a enero del siguiente año
-                                    (year == yearUltimo && mes > (mesUltimo + numero)) // Dentro del mismo año, no permitir meses adelantados
+                                    (year == yearUltimo && mes > (mesUltimo + 1)) // Dentro del mismo año, no permitir meses adelantados
                                 ) {
                                     req.session.errorMPago = 'No se pueden adelantar pagos sin cubrir los meses anteriores';
                                     req.session.mensajeAltaPagoPlazo = "";
